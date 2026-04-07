@@ -27,6 +27,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
   <style>
     :root{
@@ -437,7 +443,7 @@
 <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 
-<body class="bg-bg-dark text-text-light antialiased">
+<body>
   
   <!-- HEADER / NAVIGATION -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10">
@@ -572,7 +578,8 @@
     </div>
   </div>
 
-  <header class="wrap">
+<main style="padding-top: 80px;">
+  <div class="wrap">
 
     <nav class="breadcrumbs" aria-label="Breadcrumbs">
       <a href="/que-es-el-trading/">¿Qué es el trading?</a> <span>›</span>
@@ -620,9 +627,7 @@
         </figure>
       </div>
     </section>
-  </header>
 
-  <main class="wrap">
     <div class="grid">
       <article class="card content" aria-label="Contenido principal">
         <div id="empezar" class="sr-only">Inicio del contenido</div>
@@ -820,7 +825,8 @@
         </div>
       </aside>
     </div>
-  </main>
+  </div>
+</main>
 
   <!-- ========== FOOTER (va antes de </body>) ========== -->
   <footer id="about-cdl" class="bg-bg-blue py-12 border-t border-white/10">
