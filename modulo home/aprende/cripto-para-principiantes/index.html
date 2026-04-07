@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ✅ SEO básico -->
+  <title>Cripto para trading: qué es y cómo se opera</title>
+  <meta name="description" content="Aprende qué es el mercado cripto, cómo se hace trading con criptomonedas, riesgos, volatilidad, tipos de instrumentos (spot, futuros, CFDs) y buenas prácticas." />
+  <link rel="canonical" href="https://aprende.condinerolibre.com/cripto/" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Cripto para trading: qué es y cómo se opera" />
+  <meta property="og:description" content="Guía clara de criptomonedas para trading: conceptos, instrumentos, riesgos y cómo empezar con orden." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/cripto/" />
+
+  <meta name="color-scheme" content="dark" />
+
+  <!-- ✅ Datos estructurados: Breadcrumb + Article + FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.condinerolibre.com/"},
+          {"@type":"ListItem","position":2,"name":"Aprende","item":"https://www.condinerolibre.com/aprende/"},
+          {"@type":"ListItem","position":3,"name":"Cripto","item":"https://www.condinerolibre.com/aprende/cripto/"}
+        ]
+      },
+      {
+        "@type":"Article",
+        "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.condinerolibre.com/aprende/cripto/"},
+        "headline":"Cripto para trading: qué es y cómo se opera",
+        "description":"Aprende qué es el mercado cripto, cómo se hace trading con criptomonedas, riesgos, volatilidad y tipos de instrumentos (spot, futuros, CFDs).",
+        "author":{"@type":"Person","name":"ConDineroLibre"},
+        "publisher":{"@type":"Organization","name":"ConDineroLibre"},
+        "inLanguage":"es"
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"¿Qué es una criptomoneda?",
+            "acceptedAnswer":{"@type":"Answer","text":"Una criptomoneda es un activo digital que funciona sobre tecnología blockchain. Su precio se mueve por oferta y demanda y puede ser altamente volátil."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿Cripto se opera 24/7?",
+            "acceptedAnswer":{"@type":"Answer","text":"Sí. El mercado cripto suele operar 24 horas al día, 7 días a la semana, lo que aumenta oportunidades pero también exige más control de riesgo."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿Qué es mejor para empezar: spot o derivados?",
+            "acceptedAnswer":{"@type":"Answer","text":"Para muchos principiantes, spot es más simple porque no usa apalancamiento. Derivados (futuros/CFDs) amplifican ganancias y pérdidas, y requieren más gestión."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --muted:#9aa0a6;
+      --text:#f2f3f5;
+      --line:rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --max: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(255,255,255,.06), transparent 55%),
+                  radial-gradient(1000px 500px at 80% 10%, rgba(255,255,255,.04), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--text); text-decoration:none}
+    a:hover{opacity:.9}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 0 22px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      font-size:14px; color:var(--muted);
+      border:1px solid transparent; padding:8px 10px; border-radius:10px;
+    }
+    .nav a:hover{border-color:var(--line); color:var(--text); background:rgba(255,255,255,.03)}
+    .hero{
+      display:grid; grid-template-columns: 1.3fr .7fr;
+      gap:18px; align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .inner{padding:22px}
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(0,0,0,.18);
+    }
+    h1{
+      font-size: clamp(28px, 3.2vw, 44px);
+      margin:14px 0 10px;
+      line-height:1.12;
+      letter-spacing:-.5px;
+    }
+    .lead{
+      margin:0;
+      color: rgba(242,243,245,.85);
+      font-size:16px;
+      max-width: 62ch;
+    }
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn:hover{background: rgba(255,255,255,.07)}
+    .btn.primary{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.18);
+    }
+    .mini{display:grid; gap:10px; padding:22px}
+    .mini h2{margin:0; font-size:16px}
+    .mini p{margin:0; color:var(--muted); font-size:14px}
+    .section{
+      margin-top:20px;
+      padding:22px;
+      border-top: 1px solid var(--line);
+    }
+    h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
+    h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
+    .muted{color:var(--muted)}
+    .bullets{margin:10px 0 0; padding-left:18px}
+    .bullets li{margin:7px 0; color: rgba(242,243,245,.9)}
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+    @media (max-width: 900px){ .grid2{grid-template-columns:1fr} }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background: rgba(0,0,0,.18);
+    }
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid var(--line);
+    }
+    .table th, .table td{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+      text-align:left;
+      font-size:14px;
+    }
+    .table th{color:rgba(242,243,245,.9); background:rgba(255,255,255,.03)}
+    .table td{color:rgba(242,243,245,.86)}
+    .table tr:last-child td{border-bottom:none}
+    .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .chip{
+      display:inline-flex; align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: rgba(242,243,245,.9);
+      font-size:14px;
+    }
+    .chip:hover{background: rgba(255,255,255,.06)}
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background: rgba(0,0,0,.18);
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
+    footer{
+      margin:26px 0 10px;
+      color: var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--line);
+      padding-top:16px;
+    }
+    .breadcrumbs{
+      font-size:13px;
+      color: var(--muted);
+      margin-top:10px;
+    }
+    .breadcrumbs a{color:var(--muted); text-decoration:underline; text-underline-offset:2px}
+  </style>
+<link rel="stylesheet" href="/shared/cdl-shell.css">
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span>ConDineroLibre</span>
+        <span class="badge">Aprende · Tipos de Mercado</span>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="https://www.condinerolibre.com/">Inicio</a>
+        <a href="https://www.condinerolibre.com/aprende/">Aprende</a>
+        <a href="https://portal.condinerolibre.com/login" rel="nofollow">Acceder</a>
+      </nav>
+    </div>
+
+    <div class="card">
+      <div class="inner hero">
+        <div>
+          <span class="kicker">📌 Satélite: Cripto</span>
+          <h1>Cripto para trading: qué es y cómo se opera</h1>
+          <p class="lead">
+            Cripto es un mercado rápido, 24/7 y con alta volatilidad. Aquí entiendes qué es,
+            cómo se opera (spot, futuros o CFDs), qué riesgos existen y cómo empezar con orden.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">Volver a “Qué es el Trading”</a>
+            <a class="btn primary" href="https://www.condinerolibre.com/aprende/">Explorar guías</a>
+          </div>
+
+          <div class="breadcrumbs" aria-label="Breadcrumbs">
+            <a href="https://www.condinerolibre.com/">Inicio</a> ›
+            <a href="https://www.condinerolibre.com/aprende/">Aprende</a> ›
+            <span>Cripto</span>
+          </div>
+        </div>
+
+        <aside class="card" style="background:transparent;border:none;box-shadow:none">
+          <div class="mini card">
+            <div>
+              <h2>Qué vas a lograr</h2>
+              <p class="muted">Entender el mercado cripto sin humo y con prioridades claras.</p>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:8px;">Checklist rápido</div>
+              <ul class="bullets">
+                <li>Qué es cripto (y qué es blockchain, sin enredos)</li>
+                <li>Qué significa operar 24/7 (oportunidad + riesgo)</li>
+                <li>Spot vs Futuros vs CFDs (cuándo usar cada uno)</li>
+                <li>Errores comunes del principiante en cripto</li>
+              </ul>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:6px;">Nota de riesgo</div>
+              <p class="muted" style="margin:0">
+                Cripto puede ser extremadamente volátil. Este contenido es educativo, no recomendación financiera.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="section" id="que-es-cripto">
+        <h2>¿Qué es cripto?</h2>
+        <p class="muted">
+          “Cripto” se refiere a activos digitales (como Bitcoin o Ethereum) que se registran en una
+          base de datos distribuida llamada <strong>blockchain</strong>. En trading, lo importante es entender
+          que su precio se mueve por oferta y demanda, liquidez, noticias y sentimiento del mercado.
+        </p>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>La idea simple</h3>
+            <p class="muted" style="margin:0">
+              Cripto funciona como un mercado global: compradores y vendedores determinan el precio en tiempo real.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Lo que debes priorizar</h3>
+            <p class="muted" style="margin:0">
+              Volatilidad + gestión de riesgo + costos (spread/financiación) antes que “la mejor coin”.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="24-7">
+        <h2>Cripto opera 24/7: ¿qué significa para el trader?</h2>
+        <ul class="bullets">
+          <li><strong>Siempre abierto</strong>: hay movimiento cualquier día, cualquier hora.</li>
+          <li><strong>Más oportunidades</strong>, pero también más tentación de sobre-operar.</li>
+          <li><strong>Riesgo de eventos</strong>: noticias y liquidaciones pueden mover el precio rápido.</li>
+          <li><strong>Disciplina</strong>: necesitas horarios y reglas, aunque el mercado no cierre.</li>
+        </ul>
+      </div>
+
+      <div class="section" id="como-se-opera">
+        <h2>¿Cómo se hace trading con cripto?</h2>
+        <p class="muted">
+          Hay tres formas comunes de operar cripto (la elección cambia tu riesgo y tus costos):
+        </p>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>Spot (compra/venta directa)</h3>
+            <ul class="bullets">
+              <li>Compras el activo (BTC, ETH, etc.).</li>
+              <li>Sin apalancamiento por defecto (más simple).</li>
+              <li>Útil para swing/inversión o aprendizaje inicial.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Futuros (derivados)</h3>
+            <ul class="bullets">
+              <li>Permite apalancamiento (sube el riesgo).</li>
+              <li>Puedes operar al alza o a la baja.</li>
+              <li>Muy usado en day trading, pero exige experiencia.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>CFDs (según broker)</h3>
+            <ul class="bullets">
+              <li>Operas el movimiento sin comprar la cripto “real”.</li>
+              <li>Importa mucho el <a href="https://www.condinerolibre.com/aprende/que-es-el-spread/">spread</a> y el overnight.</li>
+              <li>Puede ser más simple para algunos traders tradicionales.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Regla práctica</h3>
+            <ul class="bullets">
+              <li>Si estás empezando: spot o muy poco apalancamiento.</li>
+              <li>Primero aprende estructura, riesgo y costos.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="que-operar">
+        <h2>¿Qué criptomonedas se suelen operar?</h2>
+        <p class="muted">
+          En trading, normalmente se prioriza <strong>liquidez</strong> y <strong>spreads razonables</strong>.
+          Por eso muchos empiezan con:
+        </p>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>BTC (Bitcoin)</h3>
+            <p class="muted" style="margin:0">
+              Suele ser el más líquido y el “termómetro” del mercado cripto.
+            </p>
+          </div>
+          <div class="box">
+            <h3>ETH (Ethereum)</h3>
+            <p class="muted" style="margin:0">
+              Alta liquidez y movimientos claros en muchas fases del mercado.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Altcoins</h3>
+            <p class="muted" style="margin:0">
+              Más riesgo: pueden moverse más, pero también tienen spreads y liquidaciones más agresivas.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Consejo de orden</h3>
+            <p class="muted" style="margin:0">
+              Primero domina BTC/ETH. Luego, si quieres, amplías a altcoins con criterio.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="errores">
+        <h2>Errores comunes del principiante en cripto</h2>
+        <ul class="bullets">
+          <li><strong>Sobre-operar</strong> por el 24/7.</li>
+          <li><strong>Usar apalancamiento alto</strong> sin experiencia (liquidaciones).</li>
+          <li><strong>Operar “la coin del momento”</strong> sin liquidez real.</li>
+          <li><strong>No considerar costos</strong> (spread y financiación overnight).</li>
+          <li><strong>No tener plan</strong>: entrada, stop, objetivo, y tamaño de posición.</li>
+        </ul>
+
+        <div class="ctaRow" style="margin-top:14px">
+          <a class="btn" href="https://www.condinerolibre.com/aprende/que-es-el-spread/">Entender el spread</a>
+          <a class="btn" href="https://www.condinerolibre.com/aprende/indices-para-trading/">Ver índices</a>
+        </div>
+      </div>
+
+      <div class="section" id="enlaces-internos">
+        <h2>Guías relacionadas (para seguir el camino)</h2>
+        <p class="muted">
+          Para mantener el aprendizaje ordenado en “Tipos de Mercado”, te conviene conectar con:
+        </p>
+
+        <div class="links" aria-label="Enlaces internos recomendados">
+          <a class="chip" href="https://www.condinerolibre.com/aprende/forex/">Forex</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/indices-para-trading/">Índices para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/acciones-para-trading/">Acciones para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/horarios-sesiones-forex/">Horarios y sesiones</a>
+        </div>
+
+        <div class="ctaRow" style="margin-top:14px">
+          <a class="btn primary" href="https://www.condinerolibre.com/cursos/">Ver formación (cuando estés listo)</a>
+          <a class="btn" href="https://www.condinerolibre.com/aprende/">Seguir aprendiendo</a>
+        </div>
+      </div>
+
+      <div class="section" id="faq">
+        <h2>Preguntas frecuentes</h2>
+
+        <details>
+          <summary>¿Qué es una criptomoneda?</summary>
+          <p class="muted">
+            Es un activo digital registrado en blockchain. Su precio se mueve por oferta y demanda, noticias y sentimiento del mercado.
+          </p>
+        </details>
+
+        <details>
+          <summary>¿Cripto se opera 24/7?</summary>
+          <p class="muted">
+            Sí. Eso da oportunidades, pero también exige disciplina (horarios y reglas) para no sobre-operar.
+          </p>
+        </details>
+
+        <details>
+          <summary>¿Qué es mejor para empezar: spot o derivados?</summary>
+          <p class="muted">
+            Spot suele ser más simple. Derivados (futuros/CFDs) pueden amplificar pérdidas y requieren más control de riesgo.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <footer>
+      <div><strong>ConDineroLibre</strong> · Aprende</div>
+      <div>Contenido educativo. El trading conlleva riesgo y puede no ser adecuado para todos.</div>
+    </footer>
+  </div>
+<script defer src="/shared/cdl-shell.js"></script>
+</body>
+</html>

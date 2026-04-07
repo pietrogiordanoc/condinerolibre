@@ -1,0 +1,93 @@
+{
+  "titulo": "Curso de TradingView: Domina la Herramienta Esencial para Traders",
+  "slogan": "Todo lo que necesitas saber de la herramienta más poderosa de análisis técnico en el trading.",
+  "video": {
+    "src": "https://youtu.be/lFxy4dAKuBg",
+    "poster": "",
+    "alt": "Video de bienvenida"
+  },
+  "instructor": {
+    "nombre": "Pietro Giordano",
+    "titulo": "Instructor Senior & Trader",
+    "foto": "teacher.webp"
+  },
+  "concepto": [
+    "¡Bienvenido al Curso Completo de TradingView! Si estás buscando aprender desde cero cómo utilizar esta poderosa plataforma para tus análisis financieros y mejorar tus habilidades en trading, estás en el lugar indicado.",
+    "Soy CondineroLibre, un experto en trading con años de experiencia y presencia activa en la web. He creado este curso con un objetivo claro: enseñarte integralmente todo lo que necesitas saber sobre TradingView, desde lo básico hasta sus herramientas más avanzadas.",
+    "<strong>¿Qué aprenderás en este curso?</strong>",
+    "<ul><li>Cómo configurar tu cuenta y personalizar tu espacio de trabajo en TradingView.</li><li>Uso de gráficos, indicadores técnicos y herramientas de dibujo.</li><li>Estrategias prácticas para realizar análisis de mercados en tiempo real.</li><li>Consejos para maximizar el potencial de TradingView en tu trading diario.</li><li>Una estrategia de como usar las lineas tendenciales Señales Pinescript que es?</li><li>La escencia de como organizar tus instrumentos financieros para obtener la mayor facilidad de analisis en tus trades.</li></ul>",
+    "Dominar Tradingview es uno de los pasos escenciales para el exito en el trading.",
+    "Además, mi misión no solo es enseñarte a dominar esta plataforma, sino también invitarte a continuar aprendiendo más sobre trading. ¡Este es solo el comienzo de todo lo que puedes lograr!"
+  ],
+  "paraQuien": [
+    "Principiantes absolutos que quieren iniciar desde cero.",
+    "Traders intermedios que no logran consistencia.",
+    "Personas un estilo de vida distinto."
+  ],
+  "requisitos": [
+    "Internet de alta velocidad",
+    "Computadora de escritorio ambientes Windows o Mac",
+    "Este Curso de TradingView Básico es un excelente complemento para el Curso Master Pro Académico"
+  ],
+  "destrezas": [
+    {
+      "icono": "insights",
+      "titulo": "Análisis Técnico",
+      "descripcion": "Domina chartismo, indicadores y estructura de mercado."
+    },
+    {
+      "icono": "psychology",
+      "titulo": "Psicotrading",
+      "descripcion": "Controla tus emociones y opera con disciplina férrea."
+    },
+    {
+      "icono": "account_balance",
+      "titulo": "Gestión de Capital",
+      "descripcion": "Aprende a proteger tu dinero antes de multiplicarlo."
+    },
+    {
+      "icono": "school",
+      "titulo": "Educación Financiera",
+      "descripcion": "Aprende los fundamentos para tomar mejores decisiones de inversión."
+    }
+  ],
+  "planEstudios": {
+    "resumen": {
+      "secciones": 1,
+      "clases": 21,
+      "duracion": "4h 5m"
+    },
+    "secciones": [
+      {
+        "nombre": "Introducción",
+        "resumen": {
+          "clases": 21,
+          "duracion": "4h 5m"
+        },
+        "contenido": [
+          {"titulo": "Que podemos hacer en Tradingview", "tiempo": "12:14"},
+          {"titulo": "Por que preferimos Tradingview", "tiempo": "12:20"},
+          {"titulo": "Resumen de Posibilidades y creando tu cuenta", "tiempo": "11:32"},
+          {"titulo": "Opciones de la cuenta 1-3", "tiempo": "13:27"},
+          {"titulo": "Opciones de la cuenta 2-3", "tiempo": "11:54"},
+          {"titulo": "Opciones de la cuenta 3-3", "tiempo": "14:28"},
+          {"titulo": "Secciones 1", "tiempo": "13:47"},
+          {"titulo": "Secciones 2", "tiempo": "11:21"},
+          {"titulo": "Secciones 3", "tiempo": "11:51"},
+          {"titulo": "Herramientas", "tiempo": "08:23"},
+          {"titulo": "Fibonacci y Gann", "tiempo": "12:46"},
+          {"titulo": "Patrone y ciclos", "tiempo": "11:54"},
+          {"titulo": "Prevision y medida", "tiempo": "12:56"},
+          {"titulo": "Herramientas extras", "tiempo": "14:48"},
+          {"titulo": "La regla e iconos", "tiempo": "08:12"},
+          {"titulo": "Los Simbolos o Tickers", "tiempo": "12:29"},
+          {"titulo": "Las Listas", "tiempo": "11:38"},
+          {"titulo": "Tipos de gráfico linea velas y Heikenashi", "tiempo": "09:26"},
+          {"titulo": "Lineas Tendenciales y estrategia", "tiempo": "11:27"},
+          {"titulo": "Indicadores bandas bolinger y ejemplo", "tiempo": "09:13"},
+          {"titulo": "Editando un script", "tiempo": "09:08"}
+        ]
+      }
+    ]
+  }
+}

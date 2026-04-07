@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Esta página es solo “puerta de entrada” -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <title>CDL Portal</title>
+
+  <style>
+    body {
+      background:#000;
+      color:#fff;
+      font-family: Arial, sans-serif;
+      min-height:100vh;
+      margin:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .box{
+      width:100%;
+      max-width:520px;
+      background:#141414;
+      padding:32px;
+      border-radius:14px;
+      border:1px solid #222;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      text-align:center;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:1.6rem;
+      font-weight:700;
+    }
+    p{
+      margin:0 0 18px;
+      color:#bdbdbd;
+      line-height:1.4;
+      font-size:.95rem;
+    }
+    .btn{
+      width:100%;
+      display:block;
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      font-size:1rem;
+    }
+    .btn-primary{
+      background:#22c55e;
+      color:#001;
+    }
+    .btn-secondary{
+      background:#1f1f1f;
+      color:#fff;
+      border:1px solid #333;
+    }
+    .small{
+      margin-top:18px;
+      font-size:.9rem;
+      color:#9ca3af;
+    }
+    a{ color:#7dd3fc; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>CDL Portal</h1>
+    <p>Accede a tu cuenta o crea una nueva.</p>
+
+    <!-- IMPORTANTE: rutas correctas dentro de /cdl-portal -->
+    <button class="btn btn-primary" onclick="window.location.href='./registro/';">
+      Crear cuenta
+    </button>
+
+    <button class="btn btn-secondary" onclick="window.location.href='./login/';">
+      Iniciar sesión
+    </button>
+
+    <div class="small">
+      ¿Necesitas ayuda?
+      <a href="./login/">Ir a login</a> ·
+      <a href="./registro/">Ir a registro</a>
+    </div>
+  </div>
+</body>
+</html>

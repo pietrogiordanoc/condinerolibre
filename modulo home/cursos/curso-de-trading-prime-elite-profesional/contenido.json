@@ -1,0 +1,89 @@
+{
+  "titulo": "Curso de Trading Prime Elite Profesional",
+  "slogan": "Maestría del trading real y eficaz. Curso Profesional para traders Elite",
+  "video": {
+    "src": "welcomevideo.mp4",
+    "poster": "",
+    "alt": "Video de bienvenida"
+  },
+  "instructor": {
+    "nombre": "Pietro Giordano",
+    "titulo": "Instructor Senior & Trader",
+    "foto": "teacher.webp"
+  },
+  "concepto": [
+    "Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones",
+    "La práctica real y eficaz del trading rentable, basada en un enfoque institucional, es una oportunidad única para aquellos que buscan un camino hacia el éxito en los mercados financieros. Con un enfoque disciplinado y estratégico, aprenderás a gestionar riesgos y maximizar tus ganancias de manera efectiva, todo mientras sigues los mismos principios que utilizan las instituciones financieras más grandes del mundo.",
+    "Conviértete en un trader con un promedio de rentabilidad entre el 45% y el 65%, una cifra que te permitirá generar ingresos consistentes a lo largo del tiempo. Aprenderás a operar cualquier cuenta de reto de fondeo, lo que te brindará la flexibilidad y las herramientas necesarias para comenzar a operar con capital real de forma segura. Además, podrás operar con capitales privados, lo que te abrirá las puertas a una mayor cantidad de oportunidades de inversión.",
+    "El enfoque de esta formación es aplicable a cualquier instrumento de FOREX, permitiéndote operar con divisas de todo el mundo. También podrás especializarte en índices como el NASDAQ, DAX y NIKKEI, mercados que presentan grandes oportunidades debido a su volatilidad y potencial de ganancias.",
+    "Este sistema es totalmente aplicable a mercados de futuros y commodities como el oro, la plata, el petróleo, y más. Gracias a este enfoque, podrás obtener beneficios diarios, alcanzando rendimientos del 1%, 2%, 3%, 4% o incluso más cada día, haciendo que tus esfuerzos en el trading sean rentables y efectivos a largo plazo."
+  ],
+  "paraQuien": [
+    "Principiantes absolutos que quieren iniciar desde cero.",
+    "Traders intermedios que no logran consistencia.",
+    "Personas un estilo de vida distinto."
+  ],
+  "requisitos": [
+    "Internet de alta velocidad",
+    "Computadora de escritorio ambientes Windows o Mac",
+    "El Curso Master Pro Académico es básico y recomendable para entender este curso en el caso de ser un principiante en el trading"
+  ],
+  "destrezas": [
+    {
+      "icono": "insights",
+      "titulo": "Análisis Técnico",
+      "descripcion": "Domina chartismo, indicadores y estructura de mercado."
+    },
+    {
+      "icono": "psychology",
+      "titulo": "Psicotrading",
+      "descripcion": "Controla tus emociones y opera con disciplina férrea."
+    },
+    {
+      "icono": "account_balance",
+      "titulo": "Gestión de Capital",
+      "descripcion": "Aprende a proteger tu dinero antes de multiplicarlo."
+    },
+    {
+      "icono": "school",
+      "titulo": "Educación Financiera",
+      "descripcion": "Aprende los fundamentos para tomar mejores decisiones de inversión."
+    }
+  ],
+  "planEstudios": {
+    "resumen": {
+      "secciones": 2,
+      "clases": 18,
+      "duracion": "4h 55m"
+    },
+    "secciones": [
+      {
+        "nombre": "BÁSICO",
+        "resumen": {
+          "clases": 9,
+          "duracion": "2h 30m"
+        },
+        "contenido": [
+          {"titulo": "Aula", "tiempo": "11:39"},
+          {"titulo": "Trading View 01", "tiempo": "08:27"},
+          {"titulo": "Altos y Bajos", "tiempo": "19:23"},
+          {"titulo": "Order Block 01", "tiempo": "28:40"},
+          {"titulo": "Order Block 02", "tiempo": "24:06"},
+          {"titulo": "Fibonacci y PD Array 01", "tiempo": "10:55"},
+          {"titulo": "Fibonacci y PD Array 02", "tiempo": "10:15"},
+          {"titulo": "Fibonacci y PD Array 03", "tiempo": "12:27"},
+          {"titulo": "Sesión NY - NASDAQ", "tiempo": "53:26"},
+          {"titulo": "Ciclo Premium 01", "tiempo": "13:58"},
+          {"titulo": "Ciclo Premium 02", "tiempo": "18:22"},
+          {"titulo": "Ciclo Bitcoin", "tiempo": "18:33"},
+          {"titulo": "Ruptura de Mercado NASDAQ", "tiempo": "56:15"},
+          {"titulo": "Ruptura de Mercado DAX Fib Expansion", "tiempo": "15:55"},
+          {"titulo": "Ruptura de Mercado NICKEY225 Fib Expansion", "tiempo": "02:18"},
+          {"titulo": "Opening Gaps", "tiempo": "45:13"},
+          {"titulo": "Operando Sesión NY en Vivo", "tiempo": "51:55"},
+          {"titulo": "La Bailarina", "tiempo": "02:49"}
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ✅ SEO básico -->
+  <title>¿Qué es el slippage? (Trading) Ejemplos y cómo reducirlo</title>
+  <meta name="description" content="Aprende qué es el slippage en trading, por qué ocurre, cuándo se dispara (noticias, baja liquidez), ejemplos reales y cómo reducir su impacto." />
+  <link rel="canonical" href="https://www.condinerolibre.com/aprende/que-es-el-slippage/" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="¿Qué es el slippage? Ejemplos y cómo reducirlo" />
+  <meta property="og:description" content="Guía clara del slippage: definición, causas, ejemplos y consejos prácticos para controlarlo." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/que-es-el-slippage/" />
+
+  <meta name="color-scheme" content="dark" />
+
+  <!-- ✅ Datos estructurados: Breadcrumb + Article + FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.condinerolibre.com/"},
+          {"@type":"ListItem","position":2,"name":"Aprende","item":"https://www.condinerolibre.com/aprende/"},
+          {"@type":"ListItem","position":3,"name":"¿Qué es el slippage?","item":"https://www.condinerolibre.com/aprende/que-es-el-slippage/"}
+        ]
+      },
+      {
+        "@type":"Article",
+        "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.condinerolibre.com/aprende/que-es-el-slippage/"},
+        "headline":"¿Qué es el slippage? (Trading) Ejemplos y cómo reducirlo",
+        "description":"Aprende qué es el slippage en trading, por qué ocurre, cuándo se dispara y cómo reducir su impacto.",
+        "author":{"@type":"Person","name":"ConDineroLibre"},
+        "publisher":{"@type":"Organization","name":"ConDineroLibre"},
+        "inLanguage":"es"
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"¿Qué es el slippage en trading?",
+            "acceptedAnswer":{"@type":"Answer","text":"El slippage es la diferencia entre el precio que esperabas (o solicitaste) y el precio real al que se ejecuta tu orden. Suele ocurrir cuando el mercado se mueve rápido o hay poca liquidez."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿El slippage siempre es negativo?",
+            "acceptedAnswer":{"@type":"Answer","text":"No. Puede ser negativo (peor precio) o positivo (mejor precio). En la práctica, el trader suele notarlo más cuando es negativo."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿Cuándo se dispara el slippage?",
+            "acceptedAnswer":{"@type":"Answer","text":"Suele aumentar en noticias fuertes, baja liquidez, alta volatilidad y en activos poco líquidos. También en aperturas/cierres o momentos de “gap”."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --muted:#9aa0a6;
+      --text:#f2f3f5;
+      --line:rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --max: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(255,255,255,.06), transparent 55%),
+                  radial-gradient(1000px 500px at 80% 10%, rgba(255,255,255,.04), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--text); text-decoration:none}
+    a:hover{opacity:.9}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 0 22px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      font-size:14px; color:var(--muted);
+      border:1px solid transparent; padding:8px 10px; border-radius:10px;
+    }
+    .nav a:hover{border-color:var(--line); color:var(--text); background:rgba(255,255,255,.03)}
+    .hero{
+      display:grid; grid-template-columns: 1.3fr .7fr;
+      gap:18px; align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .inner{padding:22px}
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(0,0,0,.18);
+    }
+    h1{
+      font-size: clamp(28px, 3.2vw, 44px);
+      margin:14px 0 10px;
+      line-height:1.12;
+      letter-spacing:-.5px;
+    }
+    .lead{
+      margin:0;
+      color: rgba(242,243,245,.85);
+      font-size:16px;
+      max-width: 62ch;
+    }
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn:hover{background: rgba(255,255,255,.07)}
+    .btn.primary{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.18);
+    }
+    .mini{display:grid; gap:10px; padding:22px}
+    .mini h2{margin:0; font-size:16px}
+    .mini p{margin:0; color:var(--muted); font-size:14px}
+    .section{
+      margin-top:20px;
+      padding:22px;
+      border-top: 1px solid var(--line);
+    }
+    h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
+    h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
+    .muted{color:var(--muted)}
+    .bullets{margin:10px 0 0; padding-left:18px}
+    .bullets li{margin:7px 0; color: rgba(242,243,245,.9)}
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+    @media (max-width: 900px){ .grid2{grid-template-columns:1fr} }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background: rgba(0,0,0,.18);
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background: rgba(0,0,0,.18);
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
+    footer{
+      margin:26px 0 10px;
+      color: var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--line);
+      padding-top:16px;
+    }
+    .breadcrumbs{
+      font-size:13px;
+      color: var(--muted);
+      margin-top:10px;
+    }
+    .breadcrumbs a{color:var(--muted); text-decoration:underline; text-underline-offset:2px}
+    .callout{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius:14px;
+      padding:14px;
+      margin-top:12px;
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      color: rgba(242,243,245,.9);
+      background: rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      overflow:auto;
+    }
+  </style>
+<link rel="stylesheet" href="/shared/cdl-shell.css">
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span>ConDineroLibre</span>
+        <span class="badge">Aprende · Costos</span>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="https://www.condinerolibre.com/">Inicio</a>
+        <a href="https://www.condinerolibre.com/aprende/">Aprende</a>
+        <a href="https://portal.condinerolibre.com/cdl-portal/login" rel="nofollow">Acceder</a>
+      </nav>
+    </div>
+
+    <div class="card">
+      <div class="inner hero">
+        <div>
+          <span class="kicker">📌 Satélite: ¿Qué es el slippage?</span>
+          <h1>¿Qué es el slippage en trading y cuándo te puede afectar?</h1>
+          <p class="lead">
+            Slippage es cuando tu orden se ejecuta a un precio diferente al que esperabas.
+            Pasa más en noticias, baja liquidez y movimientos rápidos. Si no lo controlas,
+            puede romper tu estadística, especialmente en scalping.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">Volver a “Qué es el Trading”</a>
+            <a class="btn primary" href="https://www.condinerolibre.com/aprende/">Explorar guías</a>
+          </div>
+
+          <div class="breadcrumbs" aria-label="Breadcrumbs">
+            <a href="https://www.condinerolibre.com/">Inicio</a> ›
+            <a href="https://www.condinerolibre.com/aprende/">Aprende</a> ›
+            <span>¿Qué es el slippage?</span>
+          </div>
+        </div>
+
+        <aside class="card" style="background:transparent;border:none;box-shadow:none">
+          <div class="mini card">
+            <div>
+              <h2>Qué vas a lograr</h2>
+              <p class="muted">Detectar cuándo es normal y cuándo es una señal de alerta.</p>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:8px;">Checklist rápido</div>
+              <ul class="bullets">
+                <li>Definición simple (precio esperado vs precio real)</li>
+                <li>Slippage positivo vs negativo</li>
+                <li>Momentos donde se dispara</li>
+                <li>Cómo reducirlo en tu operativa</li>
+              </ul>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:6px;">Nota</div>
+              <p class="muted" style="margin:0">
+                Contenido educativo. El trading implica riesgo y costos.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="section" id="definicion">
+        <h2>Definición simple: slippage = ejecución diferente</h2>
+        <p class="muted">
+          El slippage es la diferencia entre el precio que <strong>esperabas</strong> (o solicitaste)
+          y el precio al que tu orden se <strong>ejecuta realmente</strong>.
+        </p>
+
+        <div class="callout">
+          <div class="muted" style="font-weight:700;margin-bottom:8px;">Ejemplo rápido (slippage negativo)</div>
+          <div class="mono">Quiero comprar en 100.00 → se ejecuta en 100.15 → Slippage = +0.15 (peor precio)</div>
+          <p class="muted" style="margin:10px 0 0">
+            En compras, un precio más alto es peor. En ventas, un precio más bajo es peor.
+          </p>
+        </div>
+
+        <div class="callout">
+          <div class="muted" style="font-weight:700;margin-bottom:8px;">Ejemplo (slippage positivo)</div>
+          <div class="mono">Quiero comprar en 100.00 → se ejecuta en 99.95 → Slippage = -0.05 (mejor precio)</div>
+          <p class="muted" style="margin:10px 0 0">
+            Sí, a veces también te beneficia. Pero suele notarse menos porque “no duele”.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" id="por-que-pasa">
+        <h2>¿Por qué ocurre el slippage?</h2>
+        <ul class="bullets">
+          <li><strong>Mercado rápido</strong>: el precio cambia entre el clic y la ejecución.</li>
+          <li><strong>Liquidez limitada</strong>: no hay suficiente volumen al precio que quieres.</li>
+          <li><strong>Órdenes de mercado</strong>: se ejecutan al “mejor precio disponible”, no al exacto que ves.</li>
+          <li><strong>Volatilidad</strong>: en movimientos bruscos, el precio salta niveles.</li>
+        </ul>
+      </div>
+
+      <div class="section" id="cuando-se-dispara">
+        <h2>Cuándo se dispara (momentos típicos)</h2>
+        <div class="grid2">
+          <div class="box">
+            <h3>Noticias y eventos</h3>
+            <p class="muted" style="margin:0">
+              Datos macro, resultados (earnings), anuncios inesperados. El precio puede “saltar”.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Baja liquidez</h3>
+            <p class="muted" style="margin:0">
+              Horas muertas, cambios de sesión, activos poco operados (microcaps/altcoins pequeñas).
+            </p>
+          </div>
+          <div class="box">
+            <h3>Aperturas / gaps</h3>
+            <p class="muted" style="margin:0">
+              En acciones/índices, las aperturas pueden traer gaps y slippage fuerte.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Stops en pánico</h3>
+            <p class="muted" style="margin:0">
+              Si muchos stops se activan a la vez, el mercado “barrerá” niveles y ejecutará peor.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="slippage-vs-spread">
+        <h2>Slippage vs spread (no son lo mismo)</h2>
+        <div class="grid2">
+          <div class="box">
+            <h3>Spread</h3>
+            <p class="muted" style="margin:0">
+              Es la diferencia Bid/Ask (costo “fijo/variable” del mercado). Guía:
+              <a href="https://www.condinerolibre.com/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+            </p>
+          </div>
+          <div class="box">
+            <h3>Slippage</h3>
+            <p class="muted" style="margin:0">
+              Es una ejecución diferente a la esperada. Suele aumentar con velocidad, volatilidad y poca liquidez.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p class="muted" style="margin:0">
+            Puedes tener spread bajo y aun así sufrir slippage en noticias. Y puedes tener poco slippage en calma,
+            pero spread alto en un activo poco líquido. Son problemas distintos.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" id="como-reducir">
+        <h2>Cómo reducir el slippage (sin complicarte)</h2>
+        <div class="grid2">
+          <div class="box">
+            <h3>1) Evita noticias fuertes</h3>
+            <p class="muted" style="margin:0">
+              Si no eres trader de noticias, no operes en ese momento. El slippage puede ser brutal.
+            </p>
+          </div>
+          <div class="box">
+            <h3>2) Prioriza liquidez</h3>
+            <p class="muted" style="margin:0">
+              Acciones grandes, índices líquidos, BTC/ETH. Evita “activos raros” al inicio.
+            </p>
+          </div>
+          <div class="box">
+            <h3>3) Usa órdenes limit (cuando aplica)</h3>
+            <p class="muted" style="margin:0">
+              Una limit intenta ejecutarte a tu precio o mejor (pero puede no ejecutarse).
+            </p>
+          </div>
+          <div class="box">
+            <h3>4) No uses stops ridículamente ajustados</h3>
+            <p class="muted" style="margin:0">
+              En mercados rápidos, un stop muy corto se vuelve “imposible” de ejecutar limpio.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="muted" style="font-weight:700;margin-bottom:8px;">Regla práctica</div>
+          <p class="muted" style="margin:0">
+            Si tu estrategia depende de “2-3 ticks” de precisión, slippage + spread te van a matar.
+            Ajusta tu estilo o cambia a activos/horarios más líquidos.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" id="enlaces">
+        <h2>Guías relacionadas (costos y ejecución)</h2>
+        <div class="links" aria-label="Enlaces internos recomendados">
+          <a class="chip" href="https://www.condinerolibre.com/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">¿Qué es el trading?</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/indices-para-trading/">Índices para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/acciones-para-trading/">Acciones para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/cripto/">Cripto</a>
+        </div>
+
+        <div class="ctaRow" style="margin-top:14px">
+          <a class="btn primary" href="https://www.condinerolibre.com/cursos/">Ver formación (cuando estés listo)</a>
+          <a class="btn" href="https://www.condinerolibre.com/aprende/">Seguir aprendiendo</a>
+        </div>
+      </div>
+
+      <div class="section" id="faq">
+        <h2>Preguntas frecuentes</h2>
+
+        <details>
+          <summary>¿Qué es el slippage en trading?</summary>
+          <p class="muted">
+            Es la diferencia entre el precio esperado/solicitado y el precio real de ejecución.
+            Pasa más cuando el mercado se mueve rápido o hay poca liquidez.
+          </p>
+        </details>
+
+        <details>
+          <summary>¿El slippage siempre es negativo?</summary>
+          <p class="muted">
+            No. Puede ser positivo o negativo. Pero normalmente se sufre cuando es negativo (te da peor precio).
+          </p>
+        </details>
+
+        <details>
+          <summary>¿Cómo lo reduzco?</summary>
+          <p class="muted">
+            Operando activos y horarios líquidos, evitando noticias fuertes si no es tu estilo,
+            usando órdenes limit cuando aplique, y gestionando el riesgo con margen realista.
+          </p>
+        </details>
+      </div>
+    </div>
+
+    <footer>
+      <div><strong>ConDineroLibre</strong> · Aprende</div>
+      <div>Contenido educativo. El trading conlleva riesgo y puede no ser adecuado para todos.</div>
+    </footer>
+  </div>
+<script defer src="/shared/cdl-shell.js"></script>
+</body>
+</html>

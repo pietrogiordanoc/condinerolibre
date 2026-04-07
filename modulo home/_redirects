@@ -1,0 +1,28 @@
+# ConDineroLibre - Redirects centralizados
+# Todos los módulos unificados en un solo sitio
+
+# Portal - Login y Dashboard
+/login /cdl-portal/login/index.html 200
+/dashboard /cdl-portal/dashboard/index.html 200
+/registro /cdl-portal/registro/index.html 200
+/reset-password /cdl-portal/reset-password.html 200
+
+# Aprende - Artículos educativos
+/aprende /aprende/que-es-el-trading/index.html 200
+
+# Cursos - Páginas de cursos
+/cursos /cursos/index.html 200
+
+# Radar - CDLRadar Tool
+/radar /radar/index.html 200
+/radar/* /radar/:splat 200
+
+# Contacto
+/contacto /contacto/index.html 200
+
+# Brokers
+/brokers /brokers/index.html 200
+/brokers/* /brokers/:splat 200
+
+# Home
+/ /index.html 200
