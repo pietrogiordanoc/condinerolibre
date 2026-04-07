@@ -28,6 +28,7 @@
       '  <a class="cdl-shell-logo" href="' + mapPath('/') + '">' +
       '    <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" alt="ConDineroLibre" />' +
       '  </a>' +
+      '  <span style="font-size: 24px; margin: 0 12px;">🔴</span>' +
       '  <nav class="cdl-shell-nav">' +
       '    <a href="' + mapPath('/cdl-portal/registro/') + '">Plataforma</a>' +
       '    <a href="' + mapPath('/aprende/que-es-el-trading/') + '">Aprende</a>' +
@@ -47,7 +48,7 @@
       '  <div class="cdl-shell-grid">' +
       '    <div class="cdl-shell-brand">' +
       '      <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" alt="ConDineroLibre" />' +
-      '      <p>Trading y libertad financiera<br>Formacion en trading aplicada a mercados reales, con enfoque en riesgo, disciplina y consistencia.</p>' +
+      '      <p>🔴 Trading y libertad financiera<br>Formacion en trading aplicada a mercados reales, con enfoque en riesgo, disciplina y consistencia.</p>' +
       '    </div>' +
       '    <div class="cdl-shell-col">' +
       '      <a href="' + mapPath('/cursos/curso-de-trading-master-gratuito/') + '">Cursos</a>' +
