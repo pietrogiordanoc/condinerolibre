@@ -1,0 +1,133 @@
+body.cdl-shell-enabled {
+  padding-top: 82px;
+}
+
+.cdl-shell-hidden {
+  display: none !important;
+}
+
+#cdl-shell-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#cdl-shell-header .cdl-shell-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+#cdl-shell-header .cdl-shell-logo img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+
+#cdl-shell-header .cdl-shell-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+#cdl-shell-header .cdl-shell-nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#cdl-shell-header .cdl-shell-nav a:hover {
+  color: #39e079;
+}
+
+#cdl-shell-header .cdl-shell-cta {
+  background: #8ee61b;
+  color: #000 !important;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-weight: 800;
+}
+
+#cdl-shell-footer {
+  margin-top: 48px;
+  background: #0d3b6f;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e5e7eb;
+}
+
+#cdl-shell-footer .cdl-shell-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 18px 20px;
+}
+
+#cdl-shell-footer .cdl-shell-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 18px;
+}
+
+#cdl-shell-footer .cdl-shell-brand img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+#cdl-shell-footer .cdl-shell-brand p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.45;
+  font-size: 0.94rem;
+}
+
+#cdl-shell-footer .cdl-shell-col a {
+  display: block;
+  color: #ffffff;
+  text-decoration: underline;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+#cdl-shell-footer .cdl-shell-disclaimer {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  margin-top: 18px;
+  padding-top: 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+#cdl-shell-footer .cdl-shell-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  margin-top: 14px;
+  padding-top: 12px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 900px) {
+  #cdl-shell-header .cdl-shell-nav {
+    gap: 10px;
+  }
+
+  #cdl-shell-header .cdl-shell-nav a {
+    font-size: 0.82rem;
+  }
+
+  #cdl-shell-footer .cdl-shell-grid {
+    grid-template-columns: 1fr;
+  }
+}

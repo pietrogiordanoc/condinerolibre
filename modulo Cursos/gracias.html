@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>¡Gracias por tu compra! | ConDineroLibre</title>
+    <meta content="Confirmación de compra exitosa. Tu acceso al curso será enviado a tu email." name="description"/>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6dff4d",
+                        "secondary": "#F5E04C",
+                        "bg-dark": "#0b0f12",
+                        "bg-card": "#121a1f",
+                        "border-dark": "#1f2a32",
+                        "text-subtle": "#9fb0bf",
+                        "text-light": "#e2e8f0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f12; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2a32; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2d3b45; 
+        }
+        
+        @keyframes checkmark {
+            0% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-check {
+            stroke-dasharray: 100;
+            animation: checkmark 0.8s ease-in-out 0.3s forwards;
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-bg-dark text-text-light font-body antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-bg-dark/95 backdrop-blur-md border-b border-border-dark">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="https://www.condinerolibre.com/" class="flex items-center gap-2">
+                <span class="text-xl font-bold text-primary">ConDineroLibre</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center justify-center px-4 pt-20 pb-12">
+        <div class="max-w-2xl w-full">
+            
+            <!-- Success Icon -->
+            <div class="flex justify-center mb-8 fade-in-up" style="animation-delay: 0.1s;">
+                <div class="relative">
+                    <div class="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
+                        <svg class="w-16 h-16" viewBox="0 0 52 52">
+                            <circle class="stroke-primary" cx="26" cy="26" r="23" fill="none" stroke-width="3"/>
+                            <path class="animate-check stroke-primary" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l8 8 16-16"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Message -->
+            <div class="text-center mb-8 fade-in-up" style="animation-delay: 0.3s;">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    ¡Pago Confirmado!
+                </h1>
+                <p class="text-lg text-white mb-3">
+                    Gracias por tu compra. Tu transacción se ha procesado exitosamente.
+                </p>
+                <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 rounded-lg px-4 py-2 mt-2">
+                    <i data-lucide="clock" class="text-primary w-5 h-5"></i>
+                    <p class="text-sm text-text-light">
+                        <span class="font-semibold">Tus credenciales llegarán en los próximos minutos</span> a tu correo electrónico
+                    </p>
+                </div>
+            </div>
+
+            <!-- Info Card -->
+            <div class="bg-bg-card border border-border-dark rounded-xl p-6 md:p-8 mb-6 fade-in-up" style="animation-delay: 0.5s;">
+                <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="mail" class="text-primary w-6 h-6"></i>
+                    ¿Qué sigue ahora?
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <i data-lucide="check-circle" class="text-primary w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold text-white mb-1">Revisa tu bandeja de entrada</h3>
+                            <p class="text-sm text-text-subtle">En unos minutos recibirás un correo con tus credenciales de acceso, el enlace directo al curso y toda la información necesaria para comenzar.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <i data-lucide="graduation-cap" class="text-primary w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold text-white mb-1">Accede cuando estés listo</h3>
+                            <p class="text-sm text-text-subtle">Una vez recibas el correo, podrás ingresar a la plataforma y comenzar tu aprendizaje de inmediato. No hay prisa, tu acceso es permanente.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <i data-lucide="inbox" class="text-primary w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold text-white mb-1">¿No lo ves todavía?</h3>
+                            <p class="text-sm text-text-subtle">El envío puede tardar entre 2 y 10 minutos. Mientras tanto, revisa tu carpeta de spam o correo no deseado por si acaso.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <i data-lucide="headphones" class="text-primary w-5 h-5 mt-0.5 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold text-white mb-1">¿Necesitas ayuda?</h3>
+                            <p class="text-sm text-text-subtle">Si después de 15 minutos no has recibido nada, contáctanos y te asistiremos personalmente para que puedas acceder cuanto antes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 rounded-xl p-6 mb-8 fade-in-up" style="animation-delay: 0.7s;">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="info" class="text-primary w-8 h-8 flex-shrink-0"></i>
+                    <div>
+                        <h3 class="font-bold text-white mb-2">Información importante</h3>
+                        <ul class="text-sm text-text-subtle space-y-1">
+                            <li>• El acceso al curso es de por vida</li>
+                            <li>• Podrás ver las lecciones cuantas veces quieras</li>
+                            <li>• Recibirás actualizaciones del contenido gratis</li>
+                            <li>• Tienes soporte directo del instructor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up" style="animation-delay: 0.9s;">
+                <a href="https://www.condinerolibre.com/" class="bg-primary hover:bg-primary/90 text-bg-dark font-bold py-3 px-8 rounded-lg transition-all hover:scale-105 text-center">
+                    Volver al Inicio
+                </a>
+                <a href="https://portal.condinerolibre.com/contacto/" class="bg-bg-card hover:bg-border-dark border border-border-dark text-white font-semibold py-3 px-8 rounded-lg transition-all text-center">
+                    Ir a Contacto
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border-dark py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center text-sm text-text-subtle">
+                <p class="mb-2">© 2024-2026 ConDineroLibre. Todos los derechos reservados.</p>
+                <p class="text-xs">Formación profesional en trading y mercados financieros</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Check for UTM parameters or transaction info
+        const urlParams = new URLSearchParams(window.location.search);
+        const txId = urlParams.get('tx') || urlParams.get('transaction_id');
+        
+        // Log for analytics (optional)
+        if (txId) {
+            console.log('Transaction completed:', txId);
+        }
+        
+        // Optional: Send analytics event
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'purchase_complete', {
+                'transaction_id': txId || 'unknown',
+                'value': 1,
+                'currency': 'USD'
+            });
+        }
+    </script>
+
+</body>
+</html>

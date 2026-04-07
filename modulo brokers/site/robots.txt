@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brokers.condinerolibre.com/sitemap.xml

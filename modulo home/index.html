@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>ConDineroLibre - Cursos de Trading Profesional y TradingView</title>
+  <meta name="description" content="Plataforma educativa de trading profesional. Cursos de TradingView, análisis técnico, prop trading y CDL Radar. Formación real sin promesas.">
+  <link rel="canonical" href="https://www.condinerolibre.com/">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ConDineroLibre">
+  <meta property="og:title" content="ConDineroLibre - Trading Profesional sin Promesas">
+  <meta property="og:description" content="Aprende trading real con metodología profesional. Cursos, TradingView, CDL Radar y formación aplicada.">
+  <meta property="og:url" content="https://www.condinerolibre.com/">
+  <meta property="og:image" content="https://www.condinerolibre.com/og-home.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+  
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "cta-yellow": "#F5E04C",
+            "bg-dark": "#000000",
+            "bg-blue": "#003366",
+            "bg-blue-light": "#004080",
+            "text-light": "#ffffff",
+            "text-muted": "#9ca3af",
+          },
+          fontFamily: {
+            display: ["Lexend", "sans-serif"],
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Styles -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans', sans-serif; }
+    
+    /* Mega Menu Styles */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+      pointer-events: none;
+    }
+    .nav-item-dropdown.is-open .mega-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: all;
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
+    }
+    .platform-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -185px;
+    }
+    .platform-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28);
+    }
+    .platform-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .learn-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -270px;
+    }
+    .learn-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
+    }
+    .learn-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    
+    /* Hero Background */
+    .hero-bg {
+      position: relative;
+      background-image: url('images/bull.jpg');
+      background-size: cover;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, 
+        rgba(0,0,0,0.95) 0%, 
+        rgba(0,0,0,0.75) 40%,
+        rgba(0,0,0,0.4) 70%, 
+        rgba(0,0,0,0.2) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Ticker Animation */
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-animate { animation: ticker 20s linear infinite; }
+
+    /* TradingView ticker tape */
+    #tv-ticker-wrap {
+      background: #000000 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      overflow: hidden !important;
+      --tv-widget-background-color: transparent !important;
+    }
+    #tv-ticker-wrap tv-ticker-tape {
+      display: block !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+    }
+    #tv-ticker-wrap iframe {
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+    }
+    
+    /* Hide scrollbar but keep functionality */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Mobile menu animation */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    
+    /* Menu navigation styles */
+    .nav-menu {
+      font-size: 0.8rem; /* 70% del tamaño original */
+    }
+  </style>
+</head>
+
+<body class="bg-bg-dark text-text-light antialiased">
+  
+  <!-- HEADER / NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo y Menú juntos -->
+        <div class="flex items-center space-x-12">
+          <!-- Logo -->
+          <a href="/" class="flex items-center space-x-2 z-50">
+            <img src="images/logocdl.avif" 
+                 alt="ConDineroLibre Logo" 
+                 class="h-14 w-auto object-contain">
+          </a>
+          
+          <!-- Desktop Menu -->
+          <div class="hidden lg:flex items-center space-x-6 nav-menu">
+            <!-- Plataforma -->
+            <div class="nav-item-dropdown relative">
+              <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+                <span>Plataforma</span>
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+              </button>
+            
+            <!-- Mega Menu Plataforma -->
+            <div class="mega-menu platform-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+              <div class="grid grid-cols-[205px_minmax(0,1fr)] items-start gap-6">
+                <div class="pt-2 text-[#0f172a] leading-[1.15]">
+                  <h3 class="mb-7 text-[1.02rem] font-extrabold text-[#d0d0d0]">Plataforma</h3>
+                  <a href="/cdl-portal/registro/" class="mb-1.5 inline-block text-[0.9rem] font-semibold leading-[1.1] text-[#527164] underline decoration-[#527164] underline-offset-2">
+                    Crear Cuenta
+                  </a>
+                  <a href="/cdl-portal/login/" class="mt-2 block w-fit rounded-[4px] bg-[#8ee61b] px-4 py-[10px] text-[0.9rem] font-extrabold leading-none text-black transition-colors hover:bg-[#9cf229]">
+                    Acceder al Dashboard
+                  </a>
+                  <p class="mt-3 text-[0.95rem] leading-[1.15] text-[#9ca3af]">Accede a tu panel personal</p>
+                  <div class="mt-9">
+                    <p class="text-[0.92rem] font-extrabold leading-[1.1] text-[#0f172a]">Cómo Funciona CDL</p>
+                  </div>
+                </div>
+                <div class="platform-preview overflow-hidden rounded-[4px] border border-black/50 bg-[#10161d]">
+                  <img src="images/spotplataforma.avif" 
+                       alt="Dashboard Preview" 
+                       class="h-[165px] w-full object-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Aprende -->
+          <div class="nav-item-dropdown relative">
+            <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+              <span>Aprende</span>
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+            
+            <!-- Mega Menu Aprende -->
+            <div class="mega-menu learn-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+              <div class="grid grid-cols-[185px_165px_minmax(0,1fr)] items-start gap-7 text-[#0f172a]">
+                <div class="pt-2">
+                  <h3 class="mb-3 text-[1.02rem] font-extrabold uppercase tracking-tight text-[#d0d0d0]">Aprende</h3>
+                  <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                    <li><a href="/aprende/que-es-el-trading/" class="font-extrabold text-[#0f172a] hover:text-[#3b82f6]">Que es el Trading</a></li>
+                    <li><a href="/aprende/tipos-de-mercado/" class="hover:text-[#3b82f6]">Tipos de Mercado</a></li>
+                    <li><a href="/aprende/forex-para-principiantes/" class="hover:text-[#3b82f6]">Forex</a></li>
+                    <li><a href="/aprende/indices-para-trading/" class="hover:text-[#3b82f6]">Indices para trading</a></li>
+                    <li><a href="/aprende/acciones-para-trading/" class="hover:text-[#3b82f6]">Acciones para trading</a></li>
+                    <li><a href="/aprende/cripto-para-principiantes/" class="hover:text-[#3b82f6]">Cripto</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">El Spread</a></li>
+                    <li><a href="/aprende/que-es-el-slippage/" class="hover:text-[#3b82f6]">El Slippage</a></li>
+                    <li><a href="/aprende/el-swap-overnight/" class="hover:text-[#3b82f6]">El swap Overnight</a></li>
+                    <li><a href="/aprende/horarios-sesiones-forex/" class="hover:text-[#3b82f6]">Horarios sesiones forex</a></li>
+                  </ul>
+                </div>
+                <div class="pt-[2.2rem]">
+                  <h3 class="mb-3 text-[0.98rem] font-medium leading-[1.1] text-[#3b82f6]">Conceptos Clave</h3>
+                  <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Pips</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Lotes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Timeframes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Tipos de órdenes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Liquidez y Volatilidad</a></li>
+                  </ul>
+                  <div class="mt-7">
+                    <a href="/aprende/que-es-el-trading/" class="text-[0.96rem] font-extrabold leading-[1.1] text-[#0f172a] hover:text-[#3b82f6]">Blog</a>
+                  </div>
+                </div>
+                <div class="learn-preview overflow-hidden rounded-[4px] border border-black/60 bg-[#10161d]">
+                  <img src="images/spotaprende.avif" 
+                       alt="Trading Setup" 
+                       class="h-[165px] w-full object-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Soluciones -->
+          <a href="#cdlradar" class="text-white hover:text-primary transition-colors font-medium">Soluciones</a>
+          
+          <!-- Negocio -->
+          <a href="/contacto/" class="text-white hover:text-primary transition-colors font-medium">Negocio</a>
+          
+          <!-- About -->
+          <a href="#about-cdl" class="text-white hover:text-primary transition-colors font-medium">About</a>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden text-white p-2">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-gray-900 z-50 p-6 lg:hidden shadow-2xl">
+    <button id="mobile-menu-close" class="absolute top-4 right-4 text-white">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
+    
+    <div class="mt-12 space-y-6">
+      <a href="/cdl-portal/registro/" class="block text-white hover:text-primary text-lg font-medium">Plataforma</a>
+      <a href="/aprende/que-es-el-trading/" class="block text-white hover:text-primary text-lg font-medium">Aprende</a>
+      <a href="#cdlradar" class="block text-white hover:text-primary text-lg font-medium">Soluciones</a>
+      <a href="/contacto/" class="block text-white hover:text-primary text-lg font-medium">Negocio</a>
+      <a href="#about-cdl" class="block text-white hover:text-primary text-lg font-medium">About</a>
+      
+      <a href="/cdl-portal/login/" class="block bg-primary hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg text-center transition-colors mt-8">
+        Acceder al Dashboard
+      </a>
+    </div>
+  </div>
+  
+  <!-- HERO SECTION -->
+  <section class="hero-bg min-h-[50vh] flex items-center pt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12 hero-content">
+      <div class="max-w-[42rem]">
+        <h1 class="text-[1.75rem] md:text-[2rem] lg:text-[2.25rem] font-bold text-primary leading-[1.1] mb-3">
+          Cursos de Trading y TradingView para Principiantes y Avanzados
+        </h1>
+        
+        <p class="max-w-[42rem] text-[0.88rem] md:text-[0.92rem] text-white/80 mb-4 leading-[1.5]">
+          Aprende a leer el mercado como un trader profesional y detecta oportunidades en segundos con CDL Radar.
+        </p>
+        
+        <a href="#cursos" class="inline-block bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-3 px-7 rounded-lg text-base transition-all transform hover:scale-105 shadow-lg mb-4">
+          Ver cursos disponibles
+        </a>
+        
+        <div class="space-y-0.5 text-white/90 leading-[1.2]">
+          <p class="text-[0.94rem]">Guía FTMO: cómo operar con capital financiado</p>
+          <p class="text-[0.94rem]">Formación aplicada a trading real, gestión de riesgo y prop firms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- SUBTITLE SECTION -->
+  <section class="bg-black py-6 border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-white/80">
+        Formación aplicada a prop firms como 
+        <a href="#" class="text-primary hover:underline">FTMO</a>, 
+        <a href="#" class="text-primary hover:underline">TradingView</a> 
+        y brokers regulados.
+      </p>
+    </div>
+  </section>
+  
+  <!-- VALUE PROPOSITION -->
+  <section class="bg-black py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-[1.35rem] md:text-[1.6rem] font-semibold text-cta-yellow mb-4 leading-[1.25]">
+        Trading, análisis y mentoría financiera con enfoque profesional
+      </h2>
+      
+      <div class="max-w-3xl mx-auto space-y-2">
+        <p class="text-[0.88rem] text-white/70">
+          ConDineroLibre es una plataforma educativa enfocada en formar traders con criterio,
+          disciplina y gestión de riesgo real.
+        </p>
+        <p class="text-[0.82rem] text-white/45 italic">
+          Sin promesas. Sin humo. Con práctica.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- METODOLOGÍA SECTION -->
+  <section class="bg-black border-t border-white/10">
+
+    <!-- Fila superior: heading izquierda | texto derecha -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <h2 class="text-[1.2rem] md:text-[1.45rem] font-semibold text-white leading-[1.3]">
+          Metodología de Análisis de Mercado en Trading Profesional
+        </h2>
+        <div class="text-white/70 text-[0.88rem] space-y-1 leading-[1.55]">
+          <p>No enseñamos señales ni indicadores mágicos.</p>
+          <p>Enseñamos a leer el mercado con estructura, contexto y gestión de riesgo real,</p>
+          <p>como operan traders profesionales y prop firms.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticker TradingView -->
+    <div class="border-y border-white/10" style="height:60px; overflow:hidden; background:#000;">
+      <div id="tv-ticker-wrap" style="margin-top:-2px;">
+        <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+        <tv-ticker-tape
+          symbols="FOREXCOM:SPXUSD,FOREXCOM:NSXUSD,FOREXCOM:DJI,FX:EURUSD,BITSTAMP:BTCUSD,BITSTAMP:ETHUSD,CMCMARKETS:GOLD,TICKMILL:EURUSD,OANDA:USDJPY,OANDA:USDCAD,IG:NASDAQ,CAPITALCOM:SILVER,EASYMARKETS:OILUSD"
+          theme="dark"
+          item-size="compact"
+          transparent>
+        </tv-ticker-tape>
+      </div>
+    </div>
+
+    <!-- Fila inferior: bullets izquierda | gráfico derecha -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+        <!-- Left: caja bullets -->
+        <div class="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+          <span class="block text-white text-2xl font-bold mb-5">»</span>
+          <ul class="space-y-3">
+            <li class="flex items-start space-x-2">
+              <span class="text-white text-[0.88rem] font-medium">• Lectura de estructura de mercado y contexto</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-white text-[0.88rem] font-medium">• Gestión de riesgo aplicada en cada operación</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-white text-[0.88rem] font-medium">• Análisis replicable en TradingView</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-white text-[0.88rem] font-medium">• Metodología válida para prop firms y cuentas reales</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: TradingView Chart (compact) -->
+        <div class="relative rounded-2xl overflow-hidden border border-gray-800" style="height:380px;">
+          <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+            <div class="tradingview-widget-copyright">
+              <a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank">
+                <span class="blue-text">EURUSD chart</span>
+              </a>
+              <span class="trademark"> by TradingView</span>
+            </div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+            {
+              "allow_symbol_change": true,
+              "calendar": false,
+              "details": false,
+              "hide_side_toolbar": false,
+              "hide_top_toolbar": true,
+              "hide_legend": false,
+              "hide_volume": true,
+              "hotlist": false,
+              "interval": "15",
+              "locale": "en",
+              "save_image": false,
+              "style": "1",
+              "symbol": "TICKMILL:EURUSD",
+              "theme": "dark",
+              "timezone": "Etc/UTC",
+              "backgroundColor": "#0F0F0F",
+              "gridColor": "rgba(242, 242, 242, 0.06)",
+              "watchlist": [],
+              "withdateranges": false,
+              "compareSymbols": [],
+              "studies": [],
+              "autosize": true
+            }
+            </script>
+          </div>
+          <!-- EXTENDER button -->
+          <button onclick="document.getElementById('tv-modal').style.display='flex'"
+            class="absolute bottom-3 right-3 bg-cta-yellow hover:bg-yellow-400 text-black text-[0.72rem] font-bold px-3 py-1.5 rounded z-10 transition-colors uppercase tracking-wide">
+            EXTENDER
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MODAL: Gráfico expandido ===== -->
+  <div id="tv-modal" style="display:none;" class="fixed inset-0 z-[100] flex flex-col bg-[#131722]" onclick="if(event.target===this)this.style.display='none'">
+    <div class="flex flex-col w-full h-full" style="max-height:100vh; overflow:hidden;">
+
+      <!-- Cerrar -->
+      <button onclick="document.getElementById('tv-modal').style.display='none'"
+        class="absolute top-3 right-4 text-white/40 hover:text-white text-2xl z-10 leading-none font-light">✕</button>
+
+      <!-- Chart area -->
+      <div style="height:65vh; flex-shrink:0;">
+        <div class="tradingview-widget-container" style="height:100%;width:100%">
+          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+          <div class="tradingview-widget-copyright">
+            <a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank">
+              <span class="blue-text">EURUSD chart</span>
+            </a>
+            <span class="trademark"> by TradingView</span>
+          </div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+          {
+            "allow_symbol_change": true,
+            "calendar": false,
+            "details": false,
+            "hide_side_toolbar": false,
+            "hide_top_toolbar": false,
+            "hide_legend": false,
+            "hide_volume": false,
+            "hotlist": false,
+            "interval": "15",
+            "locale": "es",
+            "save_image": false,
+            "style": "1",
+            "symbol": "TICKMILL:EURUSD",
+            "theme": "dark",
+            "timezone": "Etc/UTC",
+            "backgroundColor": "#131722",
+            "gridColor": "rgba(242, 242, 242, 0.06)",
+            "watchlist": [],
+            "withdateranges": true,
+            "compareSymbols": [],
+            "studies": [],
+            "autosize": true
+          }
+          </script>
+        </div>
+      </div>
+
+      <!-- Leyenda -->
+      <div class="flex-1 overflow-y-auto bg-[#151924] border-t border-white/10">
+
+        <!-- Cabecera: título izq | link derecha -->
+        <div class="flex items-start justify-between px-6 pt-4 pb-3 border-b border-white/[0.08]">
+          <div>
+            <p class="text-[#f5c518] text-[0.82rem] font-semibold mb-1">Atajos rápidos en el gráfico (TradingView):</p>
+            <p class="text-white/55 text-[0.72rem]">Tip: Haz clic en el gráfico y escribe directamente cualquier símbolo de abajo para verlo en tiempo real</p>
+          </div>
+          <a href="#cursos" onclick="document.getElementById('tv-modal').style.display='none'"
+            class="text-white/45 hover:text-white/75 text-[0.72rem] whitespace-nowrap ml-6 transition-colors">
+            ¿Quieres aprender a leer estos gráficos como un profesional? → Empieza aquí
+          </a>
+        </div>
+
+        <!-- 6 columnas -->
+        <div class="grid grid-cols-6 gap-4 px-6 py-4 text-[0.71rem] leading-[1.65]">
+
+          <!-- Time Frames -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Time Frames</p>
+            <p class="text-white/65">1 (1m)</p>
+            <p class="text-white/65">15 (15m)</p>
+            <p class="text-white/65">60 (1h)</p>
+            <p class="text-white/65">D (día)</p>
+            <p class="text-white/65">W (semana)</p>
+            <p class="text-white/65">M (mes)</p>
+          </div>
+
+          <!-- Forex -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Forex</p>
+            <p class="text-white/65">• EURUSD</p>
+            <p class="text-white/65">• GBPUSD</p>
+            <p class="text-white/65">• USDJPY</p>
+            <p class="text-white/65">• USDCAD</p>
+            <p class="text-white/65">• AUDUSD</p>
+            <p class="text-white/65">• NZDUSD</p>
+            <p class="text-white/65">• USDCHF</p>
+            <p class="text-white/65">• EURGBP</p>
+            <p class="text-white/65">• EURJPY</p>
+            <p class="text-white/65">• GBPJPY</p>
+          </div>
+
+          <!-- Índices Bursátiles -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Índices Bursátiles</p>
+            <p class="text-white/65">• SPX500 (S&amp;P 500)</p>
+            <p class="text-white/65">• NAS100 (Nasdaq 100)</p>
+            <p class="text-white/65">• US30 (Dow Jones)</p>
+            <p class="text-white/65">• DAX (Alemania 40)</p>
+            <p class="text-white/65">• FTSE100 (UK 100)</p>
+            <p class="text-white/65">• EURO50 (Euro Stoxx 50)</p>
+            <p class="text-white/65">• FRA40 (CAC 40)</p>
+            <p class="text-white/65">• ESP35 (IBEX 35)</p>
+            <p class="text-white/65">• JP225 (Nikkei 225)</p>
+            <p class="text-white/65">• ASX200 (Australia 200)</p>
+          </div>
+
+          <!-- Commodities -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Commodities (Materias primas)</p>
+            <p class="text-white/65">• GOLD (Oro)</p>
+            <p class="text-white/65">• XAUUSD (Oro vs USD)</p>
+            <p class="text-white/65">• SILVER (Plata)</p>
+            <p class="text-white/65">• XAGUSD (Plata vs USD)</p>
+            <p class="text-white/65">• OIL (WTI Crude Oil)</p>
+            <p class="text-white/65">• USOIL</p>
+            <p class="text-white/65">• UKOIL (Brent Crude Oil)</p>
+            <p class="text-white/65">• NGAS (Gas Natural)</p>
+            <p class="text-white/65">• COPPER (Cobre)</p>
+            <p class="text-white/65">• COFFEE (Café)</p>
+          </div>
+
+          <!-- Acciones populares -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Acciones populares (EE.UU. e internacionales)</p>
+            <p class="text-white/65">• AAPL (Apple)</p>
+            <p class="text-white/65">• TSLA (Tesla)</p>
+            <p class="text-white/65">• NVDA (Nvidia)</p>
+            <p class="text-white/65">• AMZN (Amazon)</p>
+            <p class="text-white/65">• META (Facebook)</p>
+            <p class="text-white/65">• GOOGL (Google)</p>
+            <p class="text-white/65">• MSFT (Microsoft)</p>
+            <p class="text-white/65">• NFLX (Netflix)</p>
+            <p class="text-white/65">• AMD (Advanced Micro)</p>
+            <p class="text-white/65">• BABA (Alibaba)</p>
+          </div>
+
+          <!-- Atajos escenciales -->
+          <div>
+            <p class="text-[#4a9eff] font-semibold mb-1.5">Atajos escenciales</p>
+            <p class="text-white/65">• Alt + R → Resetear gráfico (vuelve a vista inicial)</p>
+            <p class="text-white/65">• Alt + I → Invertir escala (logarítmica ↔ lineal)</p>
+            <p class="text-white/65">• Alt + H → Dibujar línea horizontal</p>
+            <p class="text-white/65">• Alt + V → Dibujar línea vertical</p>
+            <p class="text-white/65">• Ctrl + Z → Deshacer último dibujo</p>
+            <p class="text-white/65">• Ctrl + clic → Mover dibujo sin seleccionarlo</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- CDLRADAR SECTION -->
+  <section id="cdlradar" class="bg-bg-blue py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Left: Text -->
+        <div>
+          <h2 class="text-5xl font-black text-white mb-6">CDLRadar</h2>
+          <h3 class="text-2xl font-bold text-primary mb-8">
+            Detecta oportunidades de trading en segundos
+          </h3>
+          
+          <div class="space-y-3 text-white/90 mb-8 text-[0.95rem]">
+            <p>Scanner multi-timeframe con señales claras y alineación técnica real.</p>
+            <p>Alcanza la fuerza del mercado y el contexto institucional con una herramienta de análisis diseñada dentro de nuestra metodología profesional.</p>
+            <p class="text-xs text-white/60">CDL Radar no genera señales automáticas ni promesas de resultados.</p>
+            <p class="text-xs text-white/60">Es un screener de análisis diseñado para apoyar la lectura de estructura, fuerza y condiciones del mercado.</p>
+          </div>
+          
+          <ul class="space-y-2 mb-8 text-[0.95rem]">
+            <li class="flex items-center space-x-2 text-white">
+              <span class="material-symbols-outlined text-primary text-[1.4rem]">check_circle</span>
+              <span>Evaluación de fuerza por instrumento</span>
+            </li>
+            <li class="flex items-center space-x-2 text-white">
+              <span class="material-symbols-outlined text-primary text-[1.4rem]">check_circle</span>
+              <span>Lectura de contexto de mercado</span>
+            </li>
+            <li class="flex items-center space-x-2 text-white">
+              <span class="material-symbols-outlined text-primary text-[1.4rem]">check_circle</span>
+              <span>Complemento directo a nuestra metodología de análisis</span>
+            </li>
+          </ul>
+          
+          <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" class="inline-block bg-primary hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg text-[0.9rem] transition-all transform hover:scale-105 shadow-lg">
+            Acceder al Dashboard CDL
+          </a>
+        </div>
+        
+        <!-- Right: Screenshot -->
+        <div style="transform: scale(1.15); transform-origin: center center;">
+          <div class="rounded-2xl overflow-hidden border-4 border-primary/20 shadow-2xl">
+            <img src="images/cdlradarspot.png" 
+                 alt="CDLRadar Dashboard" 
+                 class="w-full h-auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FORMACIÓN INTRO -->
+  <section class="bg-black py-12 border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <div class="flex items-center justify-center space-x-2 mb-2">
+        <span class="material-symbols-outlined text-white text-3xl">school</span>
+        <p class="text-white text-[0.88rem]">Esto es parte de la formación desde los primeros módulos.</p>
+      </div>
+      <p class="text-white/60">Empieza con una introducción gratuita a esta metodología</p>
+    </div>
+  </section>
+  
+  <!-- CURSO GRATIS SECTION -->
+  <section class="bg-black py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Intro Header (centered, minimal) -->
+      <div class="text-center mb-16">
+        <p class="text-white text-[0.8rem] font-semibold uppercase mb-1">Esto es parte de la formación desde los primeros módulos.</p>
+        <p class="text-white/50 text-[0.75rem]">Empieza con una introducción gratuita a esta metodología</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        
+        <!-- Left: Text -->
+        <div>
+          <p class="text-white text-xs font-semibold uppercase mb-2 tracking-widest">Formación en trading</p>
+          <h2 class="text-[1.8rem] font-bold text-cta-yellow mb-5 leading-[1.15]">
+            Curso Gratis de Trading Profesional para Principiantes
+          </h2>
+          
+          <p class="text-white/70 mb-6 text-[0.88rem] leading-[1.5]">
+            Intro Curso de trading rentable, en este video promocional, descubrirás todo lo que el Trading Master Pro Gold tiene para ofrecer:
+          </p>
+          
+          <ul class="space-y-2 mb-8">
+            <li class="flex items-start space-x-2.5 text-white text-[0.88rem]">
+              <span class="text-primary font-bold">•</span>
+              <span>Técnicas avanzadas de trading</span>
+            </li>
+            <li class="flex items-start space-x-2.5 text-white text-[0.88rem]">
+              <span class="text-primary font-bold">•</span>
+              <span>Análisis de mercados en tiempo real</span>
+            </li>
+            <li class="flex items-start space-x-2.5 text-white text-[0.88rem]">
+              <span class="text-primary font-bold">•</span>
+              <span>Estrategias de gestión de riesgos</span>
+            </li>
+            <li class="flex items-start space-x-2.5 text-white text-[0.88rem]">
+              <span class="text-primary font-bold">•</span>
+              <span>Material exclusivo y actualizado</span>
+            </li>
+          </ul>
+          
+          <a href="/cursos/curso-de-trading-master-gratuito/" class="inline-block bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-2.5 px-8 rounded-lg text-[0.82rem] transition-colors shadow-md uppercase tracking-wide">
+            ACCEDER
+          </a>
+        </div>
+        
+        <!-- Right: Image -->
+        <div>
+          <div class="relative inline-block w-full">
+            <img src="images/06.jpg" 
+                 alt="Trading Office" 
+                 class="w-full h-auto rounded-2xl shadow-2xl">
+            <div class="absolute top-4 left-4 z-10 shadow-lg">
+              <img src="images/gratis.avif" 
+                   alt="Gratis Badge" 
+                   class="h-16 w-auto">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CURSOS AVANZADOS -->
+  <section id="cursos" class="bg-black py-20 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-[1.35rem] md:text-[1.6rem] font-bold text-cta-yellow text-center mb-12">
+        Cursos Avanzados de Trading y TradingView
+      </h2>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <!-- Curso 1 -->
+        <div class="bg-gradient-to-b from-blue-900/40 to-blue-950/40 rounded-2xl overflow-hidden border border-blue-800/30 hover:border-blue-600/50 transition-all transform hover:scale-105">
+          <div class="aspect-square bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
+            <img src="images/curso01.avif" 
+                 alt="Trading Course" 
+                 class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <p class="text-xs text-blue-400 font-bold uppercase mb-2">Curso de Trading</p>
+            <h3 class="text-[0.95rem] font-semibold text-white mb-2">Master Pro Profesional Académico</h3>
+            <p class="text-sm text-white/70 mb-4">
+              Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.
+            </p>
+            <a href="/cursos/curso-de-trading-master-pro-profesional-academico/" 
+               class="block w-full bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors">
+              ver
+            </a>
+          </div>
+        </div>
+        
+        <!-- Curso 2 -->
+        <div class="bg-gradient-to-b from-blue-900/40 to-blue-950/40 rounded-2xl overflow-hidden border border-blue-800/30 hover:border-blue-600/50 transition-all transform hover:scale-105">
+          <div class="aspect-square bg-gradient-to-br from-blue-600/20 to-cyan-600/20 flex items-center justify-center">
+            <img src="images/curso02.avif" 
+                 alt="Trading Course" 
+                 class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <p class="text-xs text-blue-400 font-bold uppercase mb-2">Curso de Trading</p>
+            <h3 class="text-[0.95rem] font-semibold text-white mb-2">Trading Prime Elite Profesional</h3>
+            <p class="text-sm text-white/70 mb-4">
+              Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.
+            </p>
+            <a href="/cursos/curso-de-trading-prime-elite-profesional/" 
+               class="block w-full bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors">
+              ver
+            </a>
+          </div>
+        </div>
+        
+        <!-- Curso 3 -->
+        <div class="bg-gradient-to-b from-blue-900/40 to-blue-950/40 rounded-2xl overflow-hidden border border-blue-800/30 hover:border-blue-600/50 transition-all transform hover:scale-105">
+          <div class="aspect-square bg-gradient-to-br from-teal-600/20 to-blue-600/20 flex items-center justify-center">
+            <img src="images/curso03.avif" 
+                 alt="Trading Course" 
+                 class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <p class="text-xs text-blue-400 font-bold uppercase mb-2">Curso de Trading</p>
+            <h3 class="text-[0.95rem] font-semibold text-white mb-2">Velas Japonesas desde Cero</h3>
+            <p class="text-sm text-white/70 mb-4">
+              Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.
+            </p>
+            <a href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" 
+               class="block w-full bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors">
+              ver
+            </a>
+          </div>
+        </div>
+        
+        <!-- Curso 4 -->
+        <div class="bg-gradient-to-b from-purple-900/40 to-pink-950/40 rounded-2xl overflow-hidden border border-purple-800/30 hover:border-purple-600/50 transition-all transform hover:scale-105">
+          <div class="aspect-square bg-gradient-to-br from-purple-600/20 to-pink-600/20 flex items-center justify-center">
+            <img src="images/curso04.avif" 
+                 alt="Trading Course" 
+                 class="w-full h-full object-cover">
+          </div>
+          <div class="p-6">
+            <p class="text-xs text-purple-400 font-bold uppercase mb-2">Curso de Trading</p>
+            <h3 class="text-[0.95rem] font-semibold text-white mb-2">Trading View Básico</h3>
+            <p class="text-sm text-white/70 mb-4">
+              Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.
+            </p>
+            <a href="/cursos/curso-de-trading-tradingview-basico/" 
+               class="block w-full bg-cta-yellow hover:bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg text-center transition-colors">
+              ver
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- HERRAMIENTAS PROFESIONALES -->
+  <section id="herramientas" class="bg-black py-20 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-[1.2rem] md:text-[1.4rem] font-semibold text-white text-center mb-3">
+        Herramientas profesionales de trading
+      </h2>
+      
+      <p class="text-white/70 text-center max-w-3xl mx-auto mb-16 text-[0.88rem]">
+        Trabajamos con herramientas profesionales aplicadas a análisis técnico, gestión de riesgo y evaluación de traders.
+      </p>
+      
+      <!-- Logos Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center mb-12 opacity-80">
+        <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" aria-label="TradingView">
+          <img src="images/logotradingview.avif" alt="TradingView" class="h-8 object-contain brightness-0 invert transition-opacity hover:opacity-100">
+        </a>
+        <a href="https://www.multibank.com/" target="_blank" rel="noopener noreferrer" aria-label="MultiBank">
+          <img src="images/logomultibank.avif" alt="MultiBank" class="h-8 object-contain brightness-0 invert transition-opacity hover:opacity-100">
+        </a>
+        <a href="https://ftmo.com/" target="_blank" rel="noopener noreferrer" aria-label="FTMO">
+          <img src="images/logoftmowht.avif" alt="FTMO" class="h-8 object-contain brightness-0 invert transition-opacity hover:opacity-100">
+        </a>
+        <a href="https://www.thetradingpit.com/" target="_blank" rel="noopener noreferrer" aria-label="The Trading Pit">
+          <img src="images/logotradingpit.avif" alt="The Trading Pit" class="h-16 object-contain transition-opacity hover:opacity-100">
+        </a>
+        <a href="https://libertex.com/" target="_blank" rel="noopener noreferrer" aria-label="Libertex">
+          <img src="images/logolibertex.avif" alt="Libertex" class="h-8 object-contain brightness-0 invert transition-opacity hover:opacity-100">
+        </a>
+      </div>
+      
+      <p class="text-white/60 text-center text-[0.85rem] max-w-4xl mx-auto leading-[1.5]">
+        Operamos y formamos traders pensando en reglas reales: drawdown, consistencia, riesgo diario, ejecución y disciplina. La formación está alineada con los requisitos de empresas de fondeo y brokers regulados.
+      </p>
+    </div>
+  </section>
+  
+  <!-- TESTIMONIALES CARRUSEL -->
+  <section id="testimonios" class="bg-black py-20 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-[1.2rem] md:text-[1.4rem] font-semibold text-white text-center mb-2">
+        Testimonios de Estudiantes
+      </h2>
+      <p class="text-white/60 text-center text-[0.85rem] mb-12">
+        Conoce las experiencias de traders reales en nuestra plataforma
+      </p>
+
+      <style>
+        .testimonios-slider { 
+          width: 100%; 
+          padding: 40px 0; 
+          position: relative; 
+          overflow: hidden; 
+          background: transparent; 
+          cursor: grab; 
+        }
+        .testimonios-slider:active { cursor: grabbing; }
+        .slide-track-testimonios { 
+          display: flex; 
+          width: max-content; 
+          will-change: transform; 
+        }
+        .slide-testimonios { 
+          width: 380px; 
+          padding: 0 12px; 
+          flex-shrink: 0; 
+          pointer-events: none; 
+        }
+        
+        .glass-card-testimonios { 
+          pointer-events: auto;
+          background: rgba(255, 255, 255, 0.04); 
+          border: 1px solid rgba(255, 255, 255, 0.1); 
+          backdrop-filter: blur(12px); 
+          border-radius: 24px; 
+          padding: 25px; 
+          height: 320px;
+          display: flex; 
+          flex-direction: column; 
+          justify-content: space-between;
+        }
+
+        .avatar-initials-testimonios {
+          width: 44px; 
+          height: 44px;
+          display: flex; 
+          align-items: center; 
+          justify-content: center;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #00b67a, #008a5d);
+          color: white; 
+          font-weight: 800; 
+          font-size: 14px;
+          border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .star-filled-testimonios { color: #00b67a; font-size: 14px; }
+        .star-empty-testimonios { color: rgba(255,255,255,0.1); font-size: 14px; }
+        
+        .course-badge-testimonios {
+          display: inline-block; 
+          background: rgba(0, 182, 122, 0.15);
+          color: #00b67a; 
+          font-size: 9px; 
+          font-weight: 800; 
+          padding: 4px 10px;
+          border-radius: 100px; 
+          text-transform: uppercase; 
+          margin-bottom: 10px;
+        }
+      </style>
+
+      <div class="testimonios-slider" id="testimonios-slider">
+        <div class="slide-track-testimonios" id="testimonios-track">Cargando testimonios...</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const SHEET_ID = '15YLiyM9Gj2EvXsnRN7UfbUbBQL73jTiKYr_JT6N3JHk';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+
+    let x = 0;
+    let speed = 0.7;
+    let isPaused = false;
+    let isDragging = false;
+    let startX;
+    const track = document.getElementById('testimonios-track');
+
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+    }
+
+    async function cargarDatos() {
+      try {
+        const response = await fetch(CSV_URL);
+        const csvText = await response.text();
+        const filas = csvText.split(/\r?\n/).slice(1);
+        
+        const data = filas.map(fila => {
+          const m = fila.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$|\r|\n)/g);
+          if (!m || m.length < 4) return null;
+          
+          return {
+            curso: m[0]?.replace(/"/g,'') || "Curso",
+            nombre: m[1]?.replace(/"/g,'') || "Estudiante",
+            estrellas: parseFloat(m[2]?.replace(/"/g,'')) || 5,
+            comentario: m[3]?.replace(/"/g,'') || "",
+            fotoUrl: m[5]?.replace(/"/g,'').trim() 
+          };
+        }).filter(t => t !== null && t.nombre !== "");
+        
+        renderTestimonios(data);
+      } catch (e) { console.error(e); }
+    }
+
+    function getStars(rating) {
+      let h = '';
+      for(let i=1; i<=5; i++) {
+        h += `<span class="${i <= Math.floor(rating) ? 'star-filled-testimonios' : 'star-empty-testimonios'}">★</span>`;
+      }
+      return h;
+    }
+
+    function renderTestimonios(data) {
+      const html = data.map((item) => {
+        let avatarHTML;
+        if (item.fotoUrl && item.fotoUrl.startsWith('http')) {
+          avatarHTML = `<img src="${item.fotoUrl}" class="w-11 h-11 rounded-full object-cover border border-white/10">`;
+        } else {
+          avatarHTML = `<div class="avatar-initials-testimonios">${getInitials(item.nombre)}</div>`;
+        }
+
+        const texto = item.comentario === "-" || !item.comentario ? "Excelente formación." : item.comentario;
+
+        return `
+          <div class="slide-testimonios">
+            <div class="glass-card-testimonios">
+              <div>
+                <span class="course-badge-testimonios">${item.curso}</span>
+                <div class="flex gap-1 mb-4">${getStars(item.estrellas)}</div>
+                <p class="text-gray-300 text-sm italic leading-relaxed line-clamp-5">"${texto}"</p>
+              </div>
+              <div class="flex items-center gap-3">
+                ${avatarHTML}
+                <div>
+                  <div class="text-white font-bold text-[13px] uppercase tracking-tight">${item.nombre}</div>
+                  <div class="text-[#00b67a] text-[9px] font-black uppercase tracking-wider">Estudiante Real</div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+      
+      track.innerHTML = html + html;
+      iniciarAnimacionTestimonios();
+    }
+
+    function iniciarAnimacionTestimonios() {
+      function step() {
+        if (!isPaused && !isDragging) {
+          x -= speed;
+          if (Math.abs(x) >= track.offsetWidth / 2) x = 0;
+          track.style.transform = `translateX(${x}px)`;
+        }
+        requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    const slider = document.getElementById('testimonios-slider');
+    const start = (e) => { isDragging = true; startX = (e.pageX || e.touches[0].pageX) - x; };
+    const move = (e) => {
+      if (!isDragging) return;
+      x = (e.pageX || e.touches[0].pageX) - startX;
+      let limit = track.offsetWidth / 2;
+      if (x > 0) x = -limit;
+      if (x < -limit) x = 0;
+      track.style.transform = `translateX(${x}px)`;
+    };
+    const stop = () => { isDragging = false; };
+
+    slider.addEventListener('mousedown', start);
+    slider.addEventListener('touchstart', start);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move);
+    window.addEventListener('mouseup', stop);
+    window.addEventListener('touchend', stop);
+    slider.addEventListener('mouseenter', () => isPaused = true);
+    slider.addEventListener('mouseleave', () => isPaused = false);
+
+    cargarDatos();
+  </script>
+  
+  <!-- FAQ SECTION -->
+  <section id="faq" class="bg-black py-20 border-t border-white/10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-[1.05rem] md:text-[1.2rem] font-semibold text-white text-center mb-8">
+        Preguntas frecuentes
+      </h2>
+      
+      <div class="space-y-4">
+        
+        <!-- FAQ 1 -->
+        <div class="border border-gray-800 rounded-xl overflow-hidden">
+          <button class="faq-btn w-full text-left p-6 bg-gray-900/50 hover:bg-gray-900 transition-colors flex justify-between items-center">
+            <span class="text-white/90 font-medium text-[0.88rem]">¿Qué es ConDineroLibre y qué tipo de formación en trading ofrece?</span>
+            <span class="material-symbols-outlined text-white">expand_more</span>
+          </button>
+          <div class="faq-content hidden p-6 bg-gray-900/30">
+            <p class="text-white/80 mb-4">
+              ConDineroLibre es una plataforma educativa especializada en trading profesional. Ofrece cursos de trading online, TradingView, análisis técnico, prop trading y formación práctica para traders principiantes y avanzados.
+            </p>
+            <div class="flex space-x-3">
+              <button class="text-gray-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- FAQ 2 -->
+        <div class="border border-gray-800 rounded-xl overflow-hidden">
+          <button class="faq-btn w-full text-left p-6 bg-gray-900/50 hover:bg-gray-900 transition-colors flex justify-between items-center">
+            <span class="text-white/90 font-medium text-[0.88rem]">¿Necesito experiencia previa para aprender trading en ConDineroLibre?</span>
+            <span class="material-symbols-outlined text-white">expand_more</span>
+          </button>
+          <div class="faq-content hidden p-6 bg-gray-900/30">
+            <p class="text-white/80">
+              No necesitas experiencia previa. Tenemos cursos desde nivel principiante hasta avanzado. Comenzarás con conceptos fundamentales y progresarás hacia estrategias profesionales.
+            </p>
+          </div>
+        </div>
+        
+        <!-- FAQ 3 -->
+        <div class="border border-gray-800 rounded-xl overflow-hidden">
+          <button class="faq-btn w-full text-left p-6 bg-gray-900/50 hover:bg-gray-900 transition-colors flex justify-between items-center">
+            <span class="text-white/90 font-medium text-[0.88rem]">¿Qué es el prop trading y qué relación tiene ConDineroLibre con FTMO?</span>
+            <span class="material-symbols-outlined text-white">expand_more</span>
+          </button>
+          <div class="faq-content hidden p-6 bg-gray-900/30">
+            <p class="text-white/80">
+              El prop trading permite operar con capital de empresas como FTMO. Nuestra formación está alineada con los requisitos de estas empresas: gestión de riesgo, drawdown máximo y consistencia.
+            </p>
+          </div>
+        </div>
+        
+        <!-- FAQ 4 -->
+        <div class="border border-gray-800 rounded-xl overflow-hidden">
+          <button class="faq-btn w-full text-left p-6 bg-gray-900/50 hover:bg-gray-900 transition-colors flex justify-between items-center">
+            <span class="text-white/90 font-medium text-[0.88rem]">¿Los cursos de trading incluyen TradingView?</span>
+            <span class="material-symbols-outlined text-white">expand_more</span>
+          </button>
+          <div class="faq-content hidden p-6 bg-gray-900/30">
+            <p class="text-white/80">
+              Sí, todos nuestros cursos incluyen formación en TradingView, la plataforma de análisis técnico más utilizada por traders profesionales.
+            </p>
+          </div>
+        </div>
+        
+        <!-- FAQ 5 -->
+        <div class="border border-gray-800 rounded-xl overflow-hidden">
+          <button class="faq-btn w-full text-left p-6 bg-gray-900/50 hover:bg-gray-900 transition-colors flex justify-between items-center">
+            <span class="text-white/90 font-medium text-[0.88rem]">¿ConDineroLibre promete resultados garantizados en trading?</span>
+            <span class="material-symbols-outlined text-white">expand_more</span>
+          </button>
+          <div class="faq-content hidden p-6 bg-gray-900/30">
+            <p class="text-white/80">
+              No. El trading conlleva riesgo de pérdida de capital. Ofrecemos formación profesional, pero los resultados dependen de tu dedicación, práctica y gestión de riesgo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FOOTER -->
+  <footer id="about-cdl" class="bg-bg-blue py-12 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        
+        <!-- Column 1: Logo & Description -->
+        <div class="md:col-span-2">
+          <img src="images/logocdl.avif" 
+               alt="ConDineroLibre Logo" 
+               class="h-16 w-auto object-contain mb-4">
+          <p class="text-white/80 text-sm mb-4">
+            Trading y libertad financiera
+          </p>
+          <p class="text-white/60 text-sm leading-relaxed">
+            Formación en trading aplicada a mercados reales, con enfoque en riesgo, disciplina y consistencia.
+            <br>Sin promesas. Sin humo.
+          </p>
+        </div>
+        
+        <!-- Column 2: Links -->
+        <div>
+          <h3 class="text-white font-bold mb-4">Enlaces</h3>
+          <ul class="space-y-2">
+            <li><a href="#cursos" class="text-white/70 hover:text-primary text-sm transition-colors">Cursos</a></li>
+            <li><a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-primary text-sm transition-colors">TradingView</a></li>
+            <li><a href="https://ftmo.com/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-primary text-sm transition-colors">Prop Firms</a></li>
+            <li><a href="/aprende/que-es-el-trading/" class="text-white/70 hover:text-primary text-sm transition-colors">Blog</a></li>
+            <li><a href="/contacto/" class="text-white/70 hover:text-primary text-sm transition-colors">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3: Legal -->
+        <div>
+          <h3 class="text-white font-bold mb-4">Legal</h3>
+          <ul class="space-y-2">
+            <li><a href="/aviso-legal/" class="text-white/70 hover:text-primary text-sm transition-colors">Aviso legal</a></li>
+            <li><a href="/privacidad/" class="text-white/70 hover:text-primary text-sm transition-colors">Privacidad</a></li>
+            <li><a href="/afiliacion-disclosure/" class="text-white/70 hover:text-primary text-sm transition-colors">Afiliación / Disclosure</a></li>
+            <li><a href="/cdl-portal/" class="text-white/70 hover:text-primary text-sm transition-colors">©ConDineroLibre</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-6 mb-8">
+        <p class="text-white/55 text-[0.78rem] leading-[1.55] max-w-6xl mx-auto text-center">
+          Advertencia: El trading conlleva un alto riesgo de pérdida de capital. La información proporcionada es solo con fines educativos y no constituye asesoramiento financiero.
+        </p>
+      </div>
+      
+      <!-- Bottom Bar -->
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <p class="text-white/60 text-sm">© 2026 ConDineroLibre</p>
+        
+        <!-- Social Icons -->
+        <div class="flex space-x-4">
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- JAVASCRIPT -->
+  <script>
+    function rewriteLocalModuleLinks() {
+      const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+      if (!isLocal) return;
+
+      const rules = [
+        { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+        { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+        { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
+        { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
+      ];
+
+      document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+        const href = anchor.getAttribute('href');
+        const rule = rules.find((item) => href.startsWith(item.prefix));
+        if (!rule) return;
+        anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
+      });
+    }
+
+    rewriteLocalModuleLinks();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    
+    mobileMenuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+    });
+    
+    mobileMenuClose?.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+    });
+
+    // Desktop mega menus with delayed close
+    const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+
+    desktopDropdowns.forEach((dropdown) => {
+      let closeTimer;
+
+      const openMenu = () => {
+        clearTimeout(closeTimer);
+        desktopDropdowns.forEach((item) => {
+          if (item !== dropdown) item.classList.remove('is-open');
+        });
+        dropdown.classList.add('is-open');
+      };
+
+      const closeMenu = () => {
+        closeTimer = setTimeout(() => {
+          dropdown.classList.remove('is-open');
+        }, 260);
+      };
+
+      dropdown.addEventListener('mouseenter', openMenu);
+      dropdown.addEventListener('mouseleave', closeMenu);
+    });
+    
+    // Close mobile menu when clicking outside
+    mobileMenu?.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) {
+        mobileMenu.classList.remove('active');
+      }
+    });
+    
+    // FAQ Accordion
+    const faqButtons = document.querySelectorAll('.faq-btn');
+    
+    faqButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.material-symbols-outlined');
+        
+        // Toggle current FAQ
+        content.classList.toggle('hidden');
+        
+        // Rotate icon
+        if (content.classList.contains('hidden')) {
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Add scroll effect to header
+    let lastScroll = 0;
+    const header = document.querySelector('header');
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 100) {
+        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+      
+      lastScroll = currentScroll;
+    });
+  </script>
+</body>
+</html>

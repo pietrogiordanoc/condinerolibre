@@ -1,0 +1,14 @@
+{
+  "name": "condinerolibre-web",
+  "version": "1.0.0",
+  "description": "CDL Web - Módulos Portal, Admin, Cursos, Brokers",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -c-1",
+    "dev:portal": "npx http-server \"modulo portal/cdl-portal\" -p 8080 -c-1",
+    "dev:dashboard": "npx http-server \"modulo portal/cdl-portal/dashboard\" -p 8080 -c-1",
+    "start": "npx http-server -p 8080"
+  },
+  "keywords": ["cdl", "portal", "admin"],
+  "author": "",
+  "license": "ISC"
+}

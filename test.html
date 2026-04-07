@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Servidor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 40px;
+            border-radius: 20px;
+        }
+        h1 { margin: 0 0 20px 0; }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        a:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Servidor funcionando correctamente</h1>
+        <p>El servidor HTTP está activo en el puerto 8080</p>
+        <div style="margin-top: 30px;">
+            <a href="/modulo admin/cdl-admin/">Admin Login</a>
+            <a href="/modulo admin/dashboard/">Admin Dashboard</a>
+            <a href="/modulo portal/cdl-portal/login/">Portal Login</a>
+            <a href="/modulo portal/cdl-portal/dashboard/">Portal Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
