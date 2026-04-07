@@ -82,25 +82,174 @@
             ring-color: #6dff4d;
             --tw-ring-color: #6dff4d;
         }
+        
+        /* Mega Menu Styles */
+        .mega-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+            pointer-events: none;
+        }
+        .nav-item-dropdown.is-open .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: all;
+            transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
+        }
+        .platform-menu {
+            width: min(1035px, calc(100vw - 32px));
+            left: -185px;
+        }
+        .learn-menu {
+            width: min(1035px, calc(100vw - 32px));
+            left: -270px;
+        }
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
     </style>
 <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 <body class="bg-bg-dark text-text-light font-body antialiased selection:bg-primary/30 selection:text-white">
-<!-- Eliminado formulario oculto Netlify -->
-<nav class="fixed top-0 z-50 w-full border-b border-border-dark bg-bg-dark/95 backdrop-blur-sm">
-<div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-<div class="flex items-center gap-3">
-<a href="https://www.condinerolibre.com" target="_parent" rel="noopener">
-  <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" alt="Logo ConDineroLibre" class="h-14 w-auto mr-2" style="object-fit:contain;display:inline-block;vertical-align:middle;max-width:220px;" loading="lazy"/>
-</a>
-</div>
-<div class="flex items-center gap-4">
-<a class="hidden sm:flex h-9 items-center justify-center rounded-lg bg-secondary px-4 text-sm font-bold text-bg-dark transition-transform hover:scale-105 hover:bg-[#ffe600]" href="#precio">
-                    Empezar Ahora
-                </a>
-</div>
-</div>
-</nav>
+  
+  <!-- HEADER / NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo y Menú juntos -->
+        <div class="flex items-center space-x-12">
+          <!-- Logo -->
+          <a href="/" class="flex items-center space-x-2 z-50">
+            <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" 
+                 alt="ConDineroLibre Logo" 
+                 class="h-14 w-auto object-contain">
+          </a>
+          
+          <!-- Desktop Menu -->
+          <div class="hidden lg:flex items-center space-x-6">
+            <!-- Plataforma -->
+            <div class="nav-item-dropdown relative">
+              <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+                <span>Plataforma</span>
+                <span class="material-symbols-outlined text-sm">expand_more</span>
+              </button>
+            
+            <!-- Mega Menu Plataforma -->
+            <div class="mega-menu platform-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+              <div class="grid grid-cols-[205px_minmax(0,1fr)] items-start gap-6">
+                <div class="pt-2 text-[#0f172a] leading-[1.15]">
+                  <h3 class="mb-7 text-[1.02rem] font-extrabold text-[#d0d0d0]">Plataforma</h3>
+                  <a href="/cdl-portal/registro/" class="mb-1.5 inline-block text-[0.9rem] font-semibold leading-[1.1] text-[#527164] underline decoration-[#527164] underline-offset-2">
+                    Crear Cuenta
+                  </a>
+                  <a href="/cdl-portal/login/" class="mt-2 block w-fit rounded-[4px] bg-[#8ee61b] px-4 py-[10px] text-[0.9rem] font-extrabold leading-none text-black transition-colors hover:bg-[#9cf229]">
+                    Acceder al Dashboard
+                  </a>
+                  <p class="mt-3 text-[0.95rem] leading-[1.15] text-[#9ca3af]">Accede a tu panel personal</p>
+                  <div class="mt-9">
+                    <a href="/como-funciona/" class="text-[0.92rem] font-extrabold leading-[1.1] text-[#0f172a] hover:text-[#3b82f6] transition-colors">Cómo Funciona CDL →</a>
+                  </div>
+                </div>
+                <div class="overflow-hidden rounded-[4px] border border-black/50 bg-[#10161d]">
+                  <img src="/images/spotplataforma.avif" 
+                       alt="Dashboard Preview" 
+                       class="h-[165px] w-full object-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Aprende -->
+          <div class="nav-item-dropdown relative">
+            <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+              <span>Aprende</span>
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+            
+            <!-- Mega Menu Aprende -->
+            <div class="mega-menu learn-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+              <div class="grid grid-cols-[185px_165px_minmax(0,1fr)] items-start gap-7 text-[#0f172a]">
+                <div class="pt-2">
+                  <h3 class="mb-3 text-[1.02rem] font-extrabold uppercase tracking-tight text-[#d0d0d0]">Aprende</h3>
+                  <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                    <li><a href="/aprende/que-es-el-trading/" class="font-extrabold text-[#0f172a] hover:text-[#3b82f6]">Que es el Trading</a></li>
+                    <li><a href="/aprende/tipos-de-mercado/" class="hover:text-[#3b82f6]">Tipos de Mercado</a></li>
+                    <li><a href="/aprende/forex-para-principiantes/" class="hover:text-[#3b82f6]">Forex</a></li>
+                    <li><a href="/aprende/indices-para-trading/" class="hover:text-[#3b82f6]">Indices para trading</a></li>
+                    <li><a href="/aprende/acciones-para-trading/" class="hover:text-[#3b82f6]">Acciones para trading</a></li>
+                    <li><a href="/aprende/cripto-para-principiantes/" class="hover:text-[#3b82f6]">Cripto</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">El Spread</a></li>
+                    <li><a href="/aprende/que-es-el-slippage/" class="hover:text-[#3b82f6]">El Slippage</a></li>
+                    <li><a href="/aprende/el-swap-overnight/" class="hover:text-[#3b82f6]">El swap Overnight</a></li>
+                    <li><a href="/aprende/horarios-sesiones-forex/" class="hover:text-[#3b82f6]">Horarios sesiones forex</a></li>
+                  </ul>
+                </div>
+                <div class="pt-[2.2rem]">
+                  <h3 class="mb-3 text-[0.98rem] font-medium leading-[1.1] text-[#3b82f6]">Conceptos Clave</h3>
+                  <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Pips</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Lotes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Timeframes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Tipos de órdenes</a></li>
+                    <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Liquidez y Volatilidad</a></li>
+                  </ul>
+                  <div class="mt-7">
+                    <a href="/aprende/que-es-el-trading/" class="text-[0.96rem] font-extrabold leading-[1.1] text-[#0f172a] hover:text-[#3b82f6]">Blog</a>
+                  </div>
+                </div>
+                <div class="overflow-hidden rounded-[4px] border border-black/60 bg-[#10161d]">
+                  <img src="/images/spotaprende.avif" 
+                       alt="Trading Setup" 
+                       class="h-[165px] w-full object-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Soluciones -->
+          <a href="#cdlradar" class="text-white hover:text-primary transition-colors font-medium">Soluciones</a>
+          
+          <!-- Negocio -->
+          <a href="/contacto/" class="text-white hover:text-primary transition-colors font-medium">Negocio</a>
+          
+          <!-- About -->
+          <a href="#about-cdl" class="text-white hover:text-primary transition-colors font-medium">About</a>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden text-white p-2">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-gray-900 z-50 p-6 lg:hidden shadow-2xl">
+    <button id="mobile-menu-close" class="absolute top-4 right-4 text-white">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
+    
+    <div class="mt-12 space-y-6">
+      <a href="/cdl-portal/registro/" class="block text-white hover:text-primary text-lg font-medium">Plataforma</a>
+      <a href="/aprende/que-es-el-trading/" class="block text-white hover:text-primary text-lg font-medium">Aprende</a>
+      <a href="#cdlradar" class="block text-white hover:text-primary text-lg font-medium">Soluciones</a>
+      <a href="/contacto/" class="block text-white hover:text-primary text-lg font-medium">Negocio</a>
+      <a href="#about-cdl" class="block text-white hover:text-primary text-lg font-medium">About</a>
+      
+      <a href="/cdl-portal/login/" class="block bg-primary hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg text-center transition-colors mt-8">
+        Acceder al Dashboard
+      </a>
+    </div>
+  </div>
 <div class="mx-auto flex w-full max-w-7xl flex-col pt-20 lg:flex-row">
 <aside class="hidden lg:block lg:w-64 lg:shrink-0 lg:px-6 lg:py-8">
 <div class="sticky top-24 overflow-y-auto">
@@ -1006,6 +1155,177 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
+  <!-- FOOTER -->
+  <footer id="about-cdl" class="bg-bg-dark py-12 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        
+        <!-- Column 1: Logo & Description -->
+        <div class="md:col-span-2">
+          <img src="/images/logocdl.avif" 
+               alt="ConDineroLibre Logo" 
+               class="h-16 w-auto object-contain mb-4">
+          <p class="text-white/80 text-sm mb-4">
+            Trading y libertad financiera
+          </p>
+          <p class="text-white/60 text-sm leading-relaxed">
+            Formación en trading aplicada a mercados reales, con enfoque en riesgo, disciplina y consistencia.
+            <br>Sin promesas. Sin humo.
+          </p>
+        </div>
+        
+        <!-- Column 2: Links -->
+        <div>
+          <h3 class="text-white font-bold mb-4">Enlaces</h3>
+          <ul class="space-y-2">
+            <li><a href="/#cursos" class="text-white/70 hover:text-primary text-sm transition-colors">Cursos</a></li>
+            <li><a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-primary text-sm transition-colors">TradingView</a></li>
+            <li><a href="https://ftmo.com/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-primary text-sm transition-colors">Prop Firms</a></li>
+            <li><a href="/aprende/que-es-el-trading/" class="text-white/70 hover:text-primary text-sm transition-colors">Blog</a></li>
+            <li><a href="/contacto/" class="text-white/70 hover:text-primary text-sm transition-colors">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3: Legal -->
+        <div>
+          <h3 class="text-white font-bold mb-4">Legal</h3>
+          <ul class="space-y-2">
+            <li><a href="/contacto/aviso-legal.html" class="text-white/70 hover:text-primary text-sm transition-colors">Aviso legal</a></li>
+            <li><a href="/contacto/privacidad.html" class="text-white/70 hover:text-primary text-sm transition-colors">Privacidad</a></li>
+            <li><a href="/contacto/afiliacion.html" class="text-white/70 hover:text-primary text-sm transition-colors">Afiliación / Disclosure</a></li>
+            <li><a href="/cdl-portal/" class="text-white/70 hover:text-primary text-sm transition-colors">©ConDineroLibre</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-6 mb-8">
+        <p class="text-white/55 text-[0.78rem] leading-[1.55] max-w-6xl mx-auto text-center">
+          Advertencia: El trading conlleva un alto riesgo de pérdida de capital. La información proporcionada es solo con fines educativos y no constituye asesoramiento financiero.
+        </p>
+      </div>
+      
+      <!-- Bottom Bar -->
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <p class="text-white/60 text-sm">© 2026 ConDineroLibre</p>
+        
+        <!-- Social Icons -->
+        <div class="flex space-x-4">
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="text-white/60 hover:text-primary transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- JAVASCRIPT -->
+  <script>
+    function rewriteLocalModuleLinks() {
+      const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+      if (!isLocal) return;
+
+      const rules = [
+        { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+        { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+        { prefix: '/aprende/', replacement: '/modulo%20home/aprende/' },
+        { prefix: '/cursos/', replacement: '/modulo%20home/cursos/' }
+      ];
+
+      document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+        const href = anchor.getAttribute('href');
+        const rule = rules.find((item) => href.startsWith(item.prefix));
+        if (!rule) return;
+        anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
+      });
+    }
+
+    rewriteLocalModuleLinks();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    
+    mobileMenuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+    });
+    
+    mobileMenuClose?.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+    });
+
+    // Desktop mega menus with delayed close
+    const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+
+    desktopDropdowns.forEach((dropdown) => {
+      let closeTimer;
+
+      const openMenu = () => {
+        clearTimeout(closeTimer);
+        desktopDropdowns.forEach((item) => {
+          if (item !== dropdown) item.classList.remove('is-open');
+        });
+        dropdown.classList.add('is-open');
+      };
+
+      const closeMenu = () => {
+        closeTimer = setTimeout(() => {
+          dropdown.classList.remove('is-open');
+        }, 260);
+      };
+
+      dropdown.addEventListener('mouseenter', openMenu);
+      dropdown.addEventListener('mouseleave', closeMenu);
+    });
+    
+    // Close mobile menu when clicking outside
+    mobileMenu?.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) {
+        mobileMenu.classList.remove('active');
+      }
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Add scroll effect to header
+    let lastScroll = 0;
+    const header = document.querySelector('header');
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 100) {
+        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+      } else {
+        header.style.boxShadow = 'none';
+      }
+      
+      lastScroll = currentScroll;
+    });
+  </script>
+
 <script defer src="/shared/cdl-shell.js"></script>
 </body>
 </html>
