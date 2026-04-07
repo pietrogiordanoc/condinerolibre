@@ -56,37 +56,181 @@
             line-height: 1.75;
         }
     </style>
+    
+    <!-- Mega Menu Styles -->
+    <style>
+      .mega-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+        pointer-events: none;
+      }
+      .nav-item-dropdown.is-open .mega-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: all;
+        transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
+      }
+      .platform-menu {
+        width: min(1035px, calc(100vw - 32px));
+        left: -185px;
+      }
+      .learn-menu {
+        width: min(1035px, calc(100vw - 32px));
+        left: -270px;
+      }
+      .mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+      .mobile-menu.active {
+        transform: translateX(0);
+      }
+      .nav-menu {
+        font-size: 0.8rem;
+      }
+    </style>
+    
 <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 <body class="bg-background-light dark:bg-[#111418] font-display antialiased text-white overflow-x-hidden selection:bg-primary selection:text-white">
-<!-- Top Navigation -->
-<header class="sticky top-0 z-50 bg-[#111418]/90 backdrop-blur-md border-b border-border-dark">
-<div class="px-4 md:px-10 py-3 flex items-center justify-between max-w-7xl mx-auto">
-<div class="flex items-center gap-8">
-<div class="flex items-center gap-3 text-white">
-<div class="size-6 text-primary">
-<span class="material-symbols-outlined text-3xl">candlestick_chart</span>
-</div>
-<h2 class="text-white text-lg font-bold tracking-tight">BrokerReviews</h2>
-</div>
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Mejores Brokers</a>
-<a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Comparativas</a>
-<a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Cripto</a>
-<a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Aprender</a>
-</nav>
-</div>
-<div class="flex items-center gap-4">
-<button class="hidden md:flex items-center justify-center size-10 rounded-full hover:bg-white/5 transition-colors text-text-subtle">
-<span class="material-symbols-outlined">search</span>
-</button>
-<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary hover:bg-blue-600 transition-colors text-white text-sm font-bold shadow-lg shadow-blue-500/20">
-                    Suscríbete
-                </button>
-</div>
-</div>
+
+<!-- HEADER / NAVIGATION -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      
+      <!-- Logo y Menú juntos -->
+      <div class="flex items-center space-x-12">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-2 z-50">
+          <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" 
+               alt="ConDineroLibre Logo" 
+               class="h-14 w-auto object-contain">
+        </a>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden lg:flex items-center space-x-6 nav-menu">
+          <!-- Plataforma -->
+          <div class="nav-item-dropdown relative">
+            <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+              <span>Plataforma</span>
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+          
+          <!-- Mega Menu Plataforma -->
+          <div class="mega-menu platform-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+            <div class="grid grid-cols-[205px_minmax(0,1fr)] items-start gap-6">
+              <div class="pt-2 text-[#0f172a] leading-[1.15]">
+                <h3 class="mb-7 text-[1.02rem] font-extrabold text-[#d0d0d0]">Plataforma</h3>
+                <a href="/cdl-portal/registro/" class="mb-1.5 inline-block text-[0.9rem] font-semibold leading-[1.1] text-[#527164] underline decoration-[#527164] underline-offset-2">
+                  Crear Cuenta
+                </a>
+                <a href="/cdl-portal/login/" class="mt-2 block w-fit rounded-[4px] bg-[#8ee61b] px-4 py-[10px] text-[0.9rem] font-extrabold leading-none text-black transition-colors hover:bg-[#9cf229]">
+                  Acceder al Dashboard
+                </a>
+                <p class="mt-3 text-[0.95rem] leading-[1.15] text-[#9ca3af]">Accede a tu panel personal</p>
+                <div class="mt-9">
+                  <a href="/como-funciona/" class="text-[0.92rem] font-extrabold leading-[1.1] text-[#0f172a] hover:text-[#3b82f6] transition-colors">Cómo Funciona CDL →</a>
+                </div>
+              </div>
+              <div class="platform-preview overflow-hidden rounded-[4px] border border-black/50 bg-[#10161d]">
+                <img src="https://condinerolibre.netlify.app/images/spotplataforma.avif" 
+                     alt="Dashboard Preview" 
+                     class="h-[165px] w-full object-center">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Aprende -->
+        <div class="nav-item-dropdown relative">
+          <button class="text-white hover:text-primary transition-colors font-medium flex items-center space-x-1">
+            <span>Aprende</span>
+            <span class="material-symbols-outlined text-sm">expand_more</span>
+          </button>
+          
+          <!-- Mega Menu Aprende -->
+          <div class="mega-menu learn-menu absolute top-full mt-3 rounded-[34px] bg-[#f3f3f3] px-8 py-5 shadow-[0_28px_60px_rgba(0,0,0,0.28)]">
+            <div class="grid grid-cols-[185px_165px_minmax(0,1fr)] items-start gap-7 text-[#0f172a]">
+              <div class="pt-2">
+                <h3 class="mb-3 text-[1.02rem] font-extrabold uppercase tracking-tight text-[#d0d0d0]">Aprende</h3>
+                <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                  <li><a href="/aprende/que-es-el-trading/" class="font-extrabold text-[#0f172a] hover:text-[#3b82f6]">Que es el Trading</a></li>
+                  <li><a href="/aprende/tipos-de-mercado/" class="hover:text-[#3b82f6]">Tipos de Mercado</a></li>
+                  <li><a href="/aprende/forex-para-principiantes/" class="hover:text-[#3b82f6]">Forex</a></li>
+                  <li><a href="/aprende/indices-para-trading/" class="hover:text-[#3b82f6]">Indices para trading</a></li>
+                  <li><a href="/aprende/acciones-para-trading/" class="hover:text-[#3b82f6]">Acciones para trading</a></li>
+                  <li><a href="/aprende/cripto-para-principiantes/" class="hover:text-[#3b82f6]">Cripto</a></li>
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">El Spread</a></li>
+                  <li><a href="/aprende/que-es-el-slippage/" class="hover:text-[#3b82f6]">El Slippage</a></li>
+                  <li><a href="/aprende/el-swap-overnight/" class="hover:text-[#3b82f6]">El swap Overnight</a></li>
+                  <li><a href="/aprende/horarios-sesiones-forex/" class="hover:text-[#3b82f6]">Horarios sesiones forex</a></li>
+                </ul>
+              </div>
+              <div class="pt-[2.2rem]">
+                <h3 class="mb-3 text-[0.98rem] font-medium leading-[1.1] text-[#3b82f6]">Conceptos Clave</h3>
+                <ul class="space-y-[1px] text-[0.92rem] leading-[1.18]">
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Pips</a></li>
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Lotes</a></li>
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Time frames</a></li>
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Tipos de órdenes</a></li>
+                  <li><a href="/aprende/que-es-el-spread/" class="hover:text-[#3b82f6]">Liquidez y Volatilidad</a></li>
+                </ul>
+                <div class="mt-7">
+                  <a href="/aprende/que-es-el-trading/" class="text-[0.96rem] font-extrabold leading-[1.1] text-[#0f172a] hover:text-[#3b82f6]">Blog</a>
+                </div>
+              </div>
+              <div class="learn-preview overflow-hidden rounded-[4px] border border-black/60 bg-[#10161d]">
+                <img src="https://condinerolibre.netlify.app/images/spotaprende.avif" 
+                     alt="Trading Setup" 
+                     class="h-[165px] w-full object-center">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Soluciones -->
+        <a href="/#cdlradar" class="text-white hover:text-primary transition-colors font-medium">Soluciones</a>
+        
+        <!-- Negocio -->
+        <a href="/contacto/" class="text-white hover:text-primary transition-colors font-medium">Negocio</a>
+        
+        <!-- About -->
+        <a href="/#about-cdl" class="text-white hover:text-primary transition-colors font-medium">About</a>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="lg:hidden text-white p-2">
+        <span class="material-symbols-outlined text-3xl">menu</span>
+      </button>
+    </div>
+  </nav>
 </header>
-<div class="max-w-7xl mx-auto flex flex-col lg:flex-row min-h-screen">
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-gray-900 z-50 p-6 lg:hidden shadow-2xl">
+  <button id="mobile-menu-close" class="absolute top-4 right-4 text-white">
+    <span class="material-symbols-outlined text-3xl">close</span>
+  </button>
+  
+  <div class="mt-12 space-y-6">
+    <a href="/cdl-portal/registro/" class="block text-white hover:text-primary text-lg font-medium">Plataforma</a>
+    <a href="/aprende/que-es-el-trading/" class="block text-white hover:text-primary text-lg font-medium">Aprende</a>
+    <a href="/#cdlradar" class="block text-white hover:text-primary text-lg font-medium">Soluciones</a>
+    <a href="/contacto/" class="block text-white hover:text-primary text-lg font-medium">Negocio</a>
+    <a href="/#about-cdl" class="block text-white hover:text-primary text-lg font-medium">About</a>
+    
+    <a href="/cdl-portal/login/" class="block bg-primary hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg text-center transition-colors mt-8">
+      Acceder al Dashboard
+    </a>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row min-h-screen pt-20">
 <!-- Sidebar Navigation (Desktop) -->
 <aside class="hidden lg:block w-64 shrink-0 pt-12 pr-8 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto border-r border-border-dark/50">
 <div class="text-xs font-bold text-text-subtle uppercase tracking-wider mb-4 px-2">Tabla de Contenidos</div>
@@ -507,5 +651,103 @@
 </div>
 </div>
 </footer>
+
+<script>
+  function rewriteLocalModuleLinks() {
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    if (!isLocal) return;
+
+    const rules = [
+      { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+      { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+      { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
+      { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
+    ];
+
+    document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+      const href = anchor.getAttribute('href');
+      const rule = rules.find((item) => href.startsWith(item.prefix));
+      if (!rule) return;
+      anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
+    });
+  }
+
+  rewriteLocalModuleLinks();
+
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.add('active');
+  });
+  
+  mobileMenuClose?.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+  });
+
+  // Desktop mega menus with delayed close
+  const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+
+  desktopDropdowns.forEach((dropdown) => {
+    let closeTimer;
+
+    const openMenu = () => {
+      clearTimeout(closeTimer);
+      desktopDropdowns.forEach((item) => {
+        if (item !== dropdown) item.classList.remove('is-open');
+      });
+      dropdown.classList.add('is-open');
+    };
+
+    const closeMenu = () => {
+      closeTimer = setTimeout(() => {
+        dropdown.classList.remove('is-open');
+      }, 260);
+    };
+
+    dropdown.addEventListener('mouseenter', openMenu);
+    dropdown.addEventListener('mouseleave', closeMenu);
+  });
+  
+  // Close mobile menu when clicking outside
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+      mobileMenu.classList.remove('active');
+    }
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+  
+  // Add scroll effect to header
+  let lastScroll = 0;
+  const header = document.querySelector('header');
+  
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 100) {
+      header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+    } else {
+      header.style.boxShadow = 'none';
+    }
+    
+    lastScroll = currentScroll;
+  });
+</script>
+
 <script defer src="/shared/cdl-shell.js"></script>
 </body></html>

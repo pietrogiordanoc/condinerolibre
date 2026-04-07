@@ -172,6 +172,25 @@
     </nav>
   </header>
   
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-gray-900 z-50 p-6 lg:hidden shadow-2xl">
+    <button id="mobile-menu-close" class="absolute top-4 right-4 text-white">
+      <span class="material-symbols-outlined text-3xl">close</span>
+    </button>
+    
+    <div class="mt-12 space-y-6">
+      <a href="/cdl-portal/registro/" class="block text-white hover:text-primary text-lg font-medium">Plataforma</a>
+      <a href="/aprende/que-es-el-trading/" class="block text-white hover:text-primary text-lg font-medium">Aprende</a>
+      <a href="/#cdlradar" class="block text-white hover:text-primary text-lg font-medium">Soluciones</a>
+      <a href="/contacto/" class="block text-white hover:text-primary text-lg font-medium">Negocio</a>
+      <a href="/#about-cdl" class="block text-white hover:text-primary text-lg font-medium">About</a>
+      
+      <a href="/cdl-portal/login/" class="block bg-primary hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg text-center transition-colors mt-8">
+        Acceder al Dashboard
+      </a>
+    </div>
+  </div>
+  
   <!-- Contenido con Sidebar -->
   <div class="max-w-7xl mx-auto px-4 py-32">
     <div class="flex flex-col lg:flex-row gap-8">
@@ -284,7 +303,22 @@
     </div>
   </footer>
   
+  
   <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    
+    mobileMenuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+    });
+    
+    mobileMenuClose?.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+    });
+
+    // Desktop mega menus with delayed close
     const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
     desktopDropdowns.forEach((dropdown) => {
       let closeTimer;
@@ -302,6 +336,13 @@
       };
       dropdown.addEventListener('mouseenter', openMenu);
       dropdown.addEventListener('mouseleave', closeMenu);
+    });
+    
+    // Close mobile menu when clicking outside
+    mobileMenu?.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) {
+        mobileMenu.classList.remove('active');
+      }
     });
   </script>
 
