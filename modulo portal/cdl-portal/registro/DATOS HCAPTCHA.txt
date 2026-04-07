@@ -1,0 +1,8 @@
+SITEKEY (keypara la pagina web)Registro index.html
+b99060ec-bae6-4656-9e7e-2f4e2c88d29e
+
+
+SECRET PRIVADA PARA SUPABASE
+ES_0e43eb42013c424c96605cc259e91068
+
+

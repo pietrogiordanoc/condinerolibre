@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin CDL – Login</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 400px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .message {
+      margin-top: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Esta es la página del administrador de CDL</h1>
+
+    <form id="login-form">
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>Contraseña</label>
+      <input type="password" name="password" required>
+
+      <button type="submit" id="submit-btn">Login</button>
+    </form>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <!-- SUPABASE -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.0/+esm";
+
+    const supabaseUrl = "https://yhgqmbexjscojlrzguvh.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloZ3FtYmV4anNjb2pscnpndXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxNzA1NTcsImV4cCI6MjA4Mjc0NjU1N30.uXFLknfgsZ_3yH5t9cW0dfbwN_b3uOi6jcfM06inVu4";
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    const form = document.getElementById("login-form");
+    const statusEl = document.getElementById("message");
+    const submitBtn = document.getElementById("submit-btn");
+
+    // ✅ 1. Si ya hay sesión → entrar al dashboard
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        window.location.href = isLocal ? "../dashboard/" : "/dashboard/index.html";
+      }
+    })();
+
+    // ✅ 2. Login normal email + password
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      statusEl.textContent = "Conectando...";
+      statusEl.style.color = "#333";
+      submitBtn.disabled = true;
+
+      const email = form.email.value;
+      const password = form.password.value;
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      submitBtn.disabled = false;
+
+      if (error) {
+        statusEl.style.color = "#f97373";
+        statusEl.textContent = "Error: " + error.message;
+        return;
+      }
+
+      statusEl.style.color = "#4ade80";
+      statusEl.textContent = "Login correcto ✅, redirigiendo...";
+      
+      // 🕵️ Registrar login de admin
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          await supabase.from("audit_events").insert({
+            user_id: session.user.id,
+            event_type: "Login Admin",
+            metadata: { 
+              email: email,
+              admin: true,
+              timestamp: new Date().toISOString() 
+            },
+            created_at: new Date().toISOString()
+          });
+        }
+      } catch(e) { console.log("Audit log:", e); }
+      
+      setTimeout(() => {
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        window.location.href = isLocal ? "../dashboard/" : "/dashboard/index.html";
+      }, 500);
+    });
+  </script>
+</body>
+</html>

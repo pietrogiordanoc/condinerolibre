@@ -1,0 +1,9 @@
+# Redirect raíz a login
+/    /cdl-admin/index.html   200
+
+# Dashboard
+/dashboard/*    /dashboard/:splat   200
+
+# Login
+/login    /cdl-admin/index.html   200
+/cdl-admin/*    /cdl-admin/:splat   200

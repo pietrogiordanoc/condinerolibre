@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entrando…</title>
+</head>
+<body>
+  <p>Procesando inicio de sesión…</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const sb = supabase.createClient(
+      "https://yhgqmbexjscojlrzguvh.supabase.co",
+      "sb_publishable_NMK2BWWCVOIpXPRVguUwBQ_oWUzzlhj"
+    );
+
+    // Esto captura el token del magic link / recovery automáticamente
+    sb.auth.getSession().then(({ data }) => {
+      if (data?.session) {
+        window.location.replace("/dashboard/");
+      } else {
+        // si aún no hay sesión, manda al login
+        window.location.replace("/cdl-admin/");
+      }
+    });
+  </script>
+</body>
+</html>

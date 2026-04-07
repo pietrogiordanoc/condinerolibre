@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CDL Control Center</title>
+  
+  <!-- Librerías Externas -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  
+  <!-- Archivos del Sistema -->
+  <link rel="stylesheet" href="admin-ui.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 style="margin:0; font-size: 1.5rem;">CDL Control Center</h1>
+        <small style="color: #666;">Admin: <span id="sessionEmail">...</span></small>
+      </div>
+      <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+    </div>
+
+    <!-- Tabs de navegación -->
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
+      <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
+      <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
+    </div>
+
+    <!-- Vista de Usuarios -->
+    <div id="viewUsers">
+    <div class="filters">
+      <input id="q" placeholder="Buscar por nombre o email..." />
+      <select id="planFilter">
+        <option value="all">Todos los Planes</option>
+        <option value="free">Solo Free</option>
+        <option value="paid">Solo Paid</option>
+      </select>
+      <select id="statusFilter">
+        <option value="all">Todos los Estados</option>
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+      </select>
+      <button id="clearBtn" class="btn">Limpiar</button>
+    </div>
+
+    <div class="section-title"><span>⚙</span> GESTIÓN DE CLIENTES</div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="handleSort('displayName')">Usuario ↕</th>
+            <th onclick="handleSort('plan')">Plan ↕</th>
+            <th onclick="handleSort('online')">Estado ↕</th>
+            <th>Uso Radar Hoy</th>
+            <th>Historial</th>
+            <th onclick="handleSort('location')">Ubicación ↕</th>
+            <th>IP / Fingerprint</th>
+            <th>Acción</th>
+            <th>Notas Admin</th>
+          </tr>
+        </thead>
+        <tbody id="usersTbody"></tbody>
+      </table>
+    </div>
+    </div>
+
+    <!-- Vista de Historial Global -->
+    <div id="viewHistory" style="display:none;">
+      <div class="section-title">
+        <span>📋</span> HISTORIAL GLOBAL DE ACTIVIDAD
+        <span class="live-indicator">
+          <span class="pulse-dot"></span>
+          LIVE
+        </span>
+      </div>
+      <div class="filters" style="margin-bottom: 20px;">
+        <select id="historyLimit">
+          <option value="50">Últimos 50 eventos</option>
+          <option value="100">Últimos 100 eventos</option>
+          <option value="200">Últimos 200 eventos</option>
+        </select>
+        <button id="refreshHistoryBtn" class="btn btn-primary">Refrescar</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:160px;">Fecha y Hora</th>
+              <th style="width:200px;">Usuario</th>
+              <th style="width:180px;">Ubicación</th>
+              <th style="width:100px;">Plan</th>
+              <th style="width:100px;">Estado</th>
+              <th>Evento</th>
+            </tr>
+          </thead>
+          <tbody id="globalHistoryTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modales -->
+  <div id="modalNote" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div><div id="noteModalTitle" style="font-weight:900;">Notas Admin</div><div id="noteModalUser" class="muted">...</div></div>
+        <button onclick="closeNoteModal()" class="btn">✕ Cerrar</button>
+      </div>
+      <div style="padding:24px; flex: 1; overflow-y: auto; overflow-x: hidden;">
+        <textarea id="noteTextarea" class="note-textarea" placeholder="Escribe notas sobre este usuario..."></textarea>
+        <div class="note-counter">
+          <span id="noteCharCount">0</span> caracteres
+        </div>
+        <div style="margin-top:24px; text-align:right;"><button id="saveNoteBtn" class="btn btn-primary">💾 Guardar Cambios</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal" style="width: min(1200px, 98vw);">
+      <div class="modal-header">
+        <div>
+          <div style="font-weight:900; font-size:18px;">Historial de Usuario</div>
+          <div id="modalUserInfo" style="color:#888; font-size:13px; margin-top:4px;"></div>
+        </div>
+        <button onclick="document.getElementById('modalBackdrop').style.display='none'" class="btn">Cerrar</button>
+      </div>
+      <div class="modal-body" id="modalContent" style="padding:20px;"></div>
+    </div>
+  </div>
+
+  <!-- Scripts Módulares -->
+  <script src="admin-config.js"></script>
+  <script src="module-presence.js"></script>
+  <script src="module-history.js"></script>
+  <script src="module-notes.js"></script>
+  <script src="module-users.js"></script>
+  <script src="admin-core.js"></script>
+</body>
+</html>
