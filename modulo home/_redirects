@@ -3,6 +3,7 @@
 
 # Portal - Login y Dashboard
 /plataforma /cdl-portal/index.html 200
+/como-funciona /como-funciona/index.html 200
 /login /cdl-portal/login/index.html 200
 /dashboard /cdl-portal/dashboard/index.html 200
 /registro /cdl-portal/registro/index.html 200
