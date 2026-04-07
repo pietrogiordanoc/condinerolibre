@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Template System - CDL</title>
+  
+  <!-- Tailwind CDN para pruebas -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Configuración Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#8ee61b',
+            'bg-blue': '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Material Icons para dropdowns -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- CSS del Shell -->
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
+  
+  <!-- Mega-menu styles -->
+  <style>
+    .group button .material-icons {
+      transition: transform 0.24s ease;
+    }
+    .group button.is-open .material-icons {
+      transform: rotate(180deg);
+    }
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.24s ease, visibility 0.24s ease;
+    }
+    .group button.is-open + .mega-menu {
+      opacity: 1;
+      visibility: visible;
+    }
+    #mobile-menu {
+      transition: transform 0.3s ease;
+    }
+    #mobile-menu.active {
+      transform: translateX(0) !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  
+  <!-- El header y footer se inyectarán aquí via cdl-shell.js -->
+  
+  <main class="max-w-7xl mx-auto px-4 py-32">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-4">🧪 Test del Sistema de Templates</h1>
+      <p class="text-gray-600 mb-8">Si ves el header profesional arriba y el footer abajo, el sistema funciona.</p>
+      
+      <div class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto">
+        <h2 class="text-2xl font-bold mb-4">Checklist de Pruebas:</h2>
+        <ul class="text-left space-y-3">
+          <li>✅ Header profesional con logo visible</li>
+          <li>✅ Mega-menú "Plataforma" funcional al hover</li>
+          <li>✅ Mega-menú "Aprende" funcional con punto rojo</li>
+          <li>✅ Menú móvil responsive (pantallas pequeñas)</li>
+          <li>✅ Footer con 4 columnas y redes sociales</li>
+          <li>✅ Todos los enlaces correctamente configurados</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  
+  <!-- JavaScript del Shell - carga header.html y footer.html -->
+  <script src="/shared/cdl-shell.js"></script>
+</body>
+</html>
