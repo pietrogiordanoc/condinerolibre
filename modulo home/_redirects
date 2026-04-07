@@ -21,6 +21,13 @@
 
 # Contacto
 /contacto /contacto/index.html 200
+/contacto/ /contacto/index.html 200
+/aviso-legal /contacto/aviso-legal.html 200
+/aviso-legal/ /contacto/aviso-legal.html 200
+/privacidad /contacto/privacidad.html 200
+/privacidad/ /contacto/privacidad.html 200
+/afiliacion-disclosure /contacto/afiliacion.html 200
+/afiliacion-disclosure/ /contacto/afiliacion.html 200
 
 # Brokers
 /brokers /brokers/index.html 200
