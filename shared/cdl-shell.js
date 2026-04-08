@@ -29,7 +29,7 @@
    */
   function initHeaderInteractions() {
     // Mega-menú: delayed close
-    var dropdownButtons = document.querySelectorAll('.group button');
+    var dropdownButtons = document.querySelectorAll('.nav-item-dropdown button');
     dropdownButtons.forEach(function (btn) {
       var megaMenu = btn.nextElementSibling;
       var timeoutId;
