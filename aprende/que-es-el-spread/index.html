@@ -1,0 +1,524 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ✅ SEO básico -->
+  <title>¿Qué es el spread? (Trading) Cómo funciona y cómo te afecta</title>
+  <meta name="description" content="Aprende qué es el spread en trading, cómo se calcula, por qué existe, ejemplos reales (forex/índices/cripto) y cómo evitar que te destruya el rendimiento." />
+  <link rel="canonical" href="https://aprende.condinerolibre.com/que-es-el-spread/" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- ✅ Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="¿Qué es el spread? Cómo funciona y cómo te afecta" />
+  <meta property="og:description" content="Guía clara del spread: definición, cálculo, ejemplos y consejos para reducir costos." />
+  <meta property="og:url" content="https://aprende.condinerolibre.com/que-es-el-spread/" />
+
+  <meta name="color-scheme" content="dark" />
+
+  <!-- ✅ Datos estructurados: Breadcrumb + Article + FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.condinerolibre.com/"},
+          {"@type":"ListItem","position":2,"name":"Aprende","item":"https://www.condinerolibre.com/aprende/"},
+          {"@type":"ListItem","position":3,"name":"¿Qué es el spread?","item":"https://www.condinerolibre.com/aprende/que-es-el-spread/"}
+        ]
+      },
+      {
+        "@type":"Article",
+        "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.condinerolibre.com/aprende/que-es-el-spread/"},
+        "headline":"¿Qué es el spread? (Trading) Cómo funciona y cómo te afecta",
+        "description":"Aprende qué es el spread en trading, cómo se calcula, por qué existe, ejemplos reales y cómo reducir su impacto.",
+        "author":{"@type":"Person","name":"ConDineroLibre"},
+        "publisher":{"@type":"Organization","name":"ConDineroLibre"},
+        "inLanguage":"es"
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"¿Qué es el spread en trading?",
+            "acceptedAnswer":{"@type":"Answer","text":"El spread es la diferencia entre el precio de compra (Ask) y el precio de venta (Bid). Es un costo implícito: cuando abres una operación, normalmente empiezas “negativo” por esa diferencia."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿Spread es lo mismo que comisión?",
+            "acceptedAnswer":{"@type":"Answer","text":"No. La comisión es un cargo explícito por operación. El spread es un costo implícito (la diferencia Bid/Ask). Algunos brokers ofrecen spread bajo y cobran comisión, otros spread más alto y cero comisión."}
+          },
+          {
+            "@type":"Question",
+            "name":"¿Cuándo sube el spread?",
+            "acceptedAnswer":{"@type":"Answer","text":"Suele subir en noticias fuertes, baja liquidez, sesiones “muertas”, cambios de sesión o alta volatilidad. También puede variar entre activos y brokers."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --muted:#9aa0a6;
+      --text:#f2f3f5;
+      --line:rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --max: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(255,255,255,.06), transparent 55%),
+                  radial-gradient(1000px 500px at 80% 10%, rgba(255,255,255,.04), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--text); text-decoration:none}
+    a:hover{opacity:.9}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 0 22px;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.03);
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      font-size:14px; color:var(--muted);
+      border:1px solid transparent; padding:8px 10px; border-radius:10px;
+    }
+    .nav a:hover{border-color:var(--line); color:var(--text); background:rgba(255,255,255,.03)}
+    .hero{
+      display:grid; grid-template-columns: 1.3fr .7fr;
+      gap:18px; align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .inner{padding:22px}
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(0,0,0,.18);
+    }
+    h1{
+      font-size: clamp(28px, 3.2vw, 44px);
+      margin:14px 0 10px;
+      line-height:1.12;
+      letter-spacing:-.5px;
+    }
+    .lead{
+      margin:0;
+      color: rgba(242,243,245,.85);
+      font-size:16px;
+      max-width: 62ch;
+    }
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn:hover{background: rgba(255,255,255,.07)}
+    .btn.primary{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.18);
+    }
+    .mini{display:grid; gap:10px; padding:22px}
+    .mini h2{margin:0; font-size:16px}
+    .mini p{margin:0; color:var(--muted); font-size:14px}
+    .section{
+      margin-top:20px;
+      padding:22px;
+      border-top: 1px solid var(--line);
+    }
+    h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
+    h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
+    .muted{color:var(--muted)}
+    .bullets{margin:10px 0 0; padding-left:18px}
+    .bullets li{margin:7px 0; color: rgba(242,243,245,.9)}
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
+    @media (max-width: 900px){ .grid2{grid-template-columns:1fr} }
+    .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background: rgba(0,0,0,.18);
+    }
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid var(--line);
+    }
+    .table th, .table td{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+      text-align:left;
+      font-size:14px;
+    }
+    .table th{color:rgba(242,243,245,.9); background:rgba(255,255,255,.03)}
+    .table td{color:rgba(242,243,245,.86)}
+    .table tr:last-child td{border-bottom:none}
+    .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .chip{
+      display:inline-flex; align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: rgba(242,243,245,.9);
+      font-size:14px;
+    }
+    .chip:hover{background: rgba(255,255,255,.06)}
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background: rgba(0,0,0,.18);
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
+    footer{
+      margin:26px 0 10px;
+      color: var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--line);
+      padding-top:16px;
+    }
+    .breadcrumbs{
+      font-size:13px;
+      color: var(--muted);
+      margin-top:10px;
+    }
+    .breadcrumbs a{color:var(--muted); text-decoration:underline; text-underline-offset:2px}
+    .callout{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius:14px;
+      padding:14px;
+      margin-top:12px;
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      color: rgba(242,243,245,.9);
+      background: rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      overflow:auto;
+    }
+  </style>
+<style>
+  .mega-menu { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s; pointer-events: none; }
+  .nav-item-dropdown.is-open .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: all; transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s; }
+  .platform-menu { width: min(1035px, calc(100vw - 32px)); left: -185px; }
+  .platform-preview { box-shadow: 0 16px 38px rgba(0,0,0,0.28); }
+  .platform-preview img { object-fit: contain; background: #10161d; }
+  .learn-menu { width: min(1035px, calc(100vw - 32px)); left: -270px; }
+  .learn-preview { box-shadow: 0 16px 38px rgba(0,0,0,0.24); }
+  .learn-preview img { object-fit: contain; background: #10161d; }
+  .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+  .mobile-menu.active { transform: translateX(0); }
+  .nav-menu { font-size: 0.8rem; }
+</style>
+
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<link rel="stylesheet" href="/shared/cdl-shell.css">
+</head>
+
+<body>
+
+<!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
+
+<!-- MAIN CONTENT -->
+<main style="padding-top: 80px;">
+  <div class="wrap">
+
+    <div class="card"
+      <div class="inner hero">
+        <div>
+          <span class="kicker">📌 Satélite: ¿Qué es el spread?</span>
+          <h1>¿Qué es el spread en trading y por qué importa?</h1>
+          <p class="lead">
+            El spread es un costo silencioso: es la diferencia entre el precio de compra (Ask) y el de venta (Bid).
+            Si no lo entiendes, puedes tener una estrategia buena… y aun así perder por costos.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">Volver a “Qué es el Trading”</a>
+            <a class="btn primary" href="https://www.condinerolibre.com/aprende/">Explorar guías</a>
+          </div>
+
+          <div class="breadcrumbs" aria-label="Breadcrumbs">
+            <a href="https://www.condinerolibre.com/">Inicio</a> ›
+            <a href="https://www.condinerolibre.com/aprende/">Aprende</a> ›
+            <span>¿Qué es el spread?</span>
+          </div>
+        </div>
+
+        <aside class="card" style="background:transparent;border:none;box-shadow:none">
+          <div class="mini card">
+            <div>
+              <h2>Qué vas a lograr</h2>
+              <p class="muted">Entender el costo real de entrar/salir del mercado y cómo controlarlo.</p>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:8px;">Checklist rápido</div>
+              <ul class="bullets">
+                <li>Qué es Bid/Ask y por qué “empiezas negativo”</li>
+                <li>Cómo calcular el spread (pips / puntos / %)</li>
+                <li>Cuándo el spread se dispara (y por qué)</li>
+                <li>Cómo reducir impacto en tu operativa</li>
+              </ul>
+            </div>
+            <div class="box">
+              <div class="muted" style="font-weight:700;margin-bottom:6px;">Nota</div>
+              <p class="muted" style="margin:0">
+                Esto es educación, no recomendación financiera. Costos + riesgo siempre.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="section" id="definicion">
+        <h2>Definición simple: spread = Ask − Bid</h2>
+        <p class="muted">
+          En la mayoría de mercados verás dos precios:
+          <strong>Bid</strong> (precio al que puedes vender) y <strong>Ask</strong> (precio al que puedes comprar).
+          La diferencia entre ambos es el <strong>spread</strong>.
+        </p>
+
+        <div class="callout">
+          <div class="muted" style="font-weight:700;margin-bottom:8px;">Ejemplo rápido</div>
+          <div class="mono">EURUSD: Bid 1.1000 / Ask 1.1002 → Spread = 0.0002 (2 pips)</div>
+          <p class="muted" style="margin:10px 0 0">
+            Si compras en 1.1002 y cierras al instante, venderías al Bid (1.1000).
+            Por eso, al abrir una operación normalmente empiezas “en negativo”.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" id="por-que-existe">
+        <h2>¿Por qué existe el spread?</h2>
+        <ul class="bullets">
+          <li><strong>Liquidez</strong>: cuanto más líquido el mercado, normalmente menor spread.</li>
+          <li><strong>Riesgo/volatilidad</strong>: con noticias fuertes o movimientos rápidos, el spread suele aumentar.</li>
+          <li><strong>Modelo del intermediario</strong>: algunos brokers cobran comisión y dan spread bajo; otros al revés.</li>
+        </ul>
+      </div>
+
+      <div class="section" id="como-se-mide">
+        <h2>¿Cómo se mide el spread? (pips, puntos y %)</h2>
+
+        <div class="grid2">
+          <div class="box">
+            <h3>Forex (pips)</h3>
+            <p class="muted" style="margin:0">
+              En pares como EURUSD, el spread se suele expresar en <strong>pips</strong>.
+              Ejemplo: 2 pips.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Índices (puntos)</h3>
+            <p class="muted" style="margin:0">
+              En índices, muchas veces se expresa en <strong>puntos</strong>.
+              Ejemplo: 1.0 punto.
+            </p>
+          </div>
+          <div class="box">
+            <h3>Cripto (valor / %)</h3>
+            <p class="muted" style="margin:0">
+              Puede verse en valor directo o como porcentaje (dependiendo del exchange/broker y liquidez).
+            </p>
+          </div>
+          <div class="box">
+            <h3>Regla práctica</h3>
+            <p class="muted" style="margin:0">
+              A menor spread, más fácil que tu operación “respire” y llegue a break-even.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="cuando-aumenta">
+        <h2>¿Cuándo sube el spread?</h2>
+        <p class="muted">
+          Esto es clave para no operar donde te “roban” los costos sin darte cuenta:
+        </p>
+        <ul class="bullets">
+          <li><strong>Noticias fuertes</strong> (datos macro, decisiones de tasas, eventos inesperados).</li>
+          <li><strong>Baja liquidez</strong> (horas “muertas”, cambios de sesión, fines de semana en algunos activos).</li>
+          <li><strong>Alta volatilidad</strong> (movimientos rápidos, gaps).</li>
+          <li><strong>Activos poco líquidos</strong> (ciertas acciones/altcoins).</li>
+        </ul>
+
+        <div class="callout">
+          <div class="muted" style="font-weight:700;margin-bottom:8px;">Consejo de supervivencia</div>
+          <p class="muted" style="margin:0">
+            Si haces scalping o entradas muy ajustadas, el spread te puede destruir la estadística.
+            Para estilos más “largos” (swing), suele doler menos, pero igual cuenta.
+          </p>
+        </div>
+      </div>
+
+      <div class="section" id="spread-vs-comision">
+        <h2>Spread vs comisión (no es lo mismo)</h2>
+        <table class="table" aria-label="Comparativa spread vs comisión">
+          <thead>
+            <tr>
+              <th>Spread</th>
+              <th>Comisión</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Costo implícito (Bid/Ask).</td>
+              <td>Costo explícito por operación.</td>
+            </tr>
+            <tr>
+              <td>Se “paga” al entrar/salir por el diferencial.</td>
+              <td>Se cobra como tarifa fija/variable.</td>
+            </tr>
+            <tr>
+              <td>Puede variar mucho con volatilidad/liquidez.</td>
+              <td>Suele ser más estable (según broker).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section" id="como-reducir">
+        <h2>Cómo reducir el impacto del spread</h2>
+        <div class="grid2">
+          <div class="box">
+            <h3>1) Opera horas líquidas</h3>
+            <p class="muted" style="margin:0">
+              Evita sesiones “muertas” o momentos de baja liquidez si tu estrategia es de entradas finas.
+            </p>
+          </div>
+          <div class="box">
+            <h3>2) Elige activos líquidos</h3>
+            <p class="muted" style="margin:0">
+              En cripto, prioriza BTC/ETH para empezar. En acciones, prioriza large caps con volumen.
+            </p>
+          </div>
+          <div class="box">
+            <h3>3) Considera tu estilo</h3>
+            <p class="muted" style="margin:0">
+              Scalping sufre más el spread. Day/swing suelen tolerarlo mejor si el plan es sólido.
+            </p>
+          </div>
+          <div class="box">
+            <h3>4) Mira el costo total</h3>
+            <p class="muted" style="margin:0">
+              No es solo spread: también puede haber comisiones y overnight (swap/financiación).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="enlaces">
+        <h2>Conecta con “Tipos de Mercado”</h2>
+        <p class="muted">
+          El spread cambia según el mercado. Si quieres ver cómo aplica en cada uno:
+        </p>
+
+        <div class="links" aria-label="Enlaces internos recomendados">
+          <a class="chip" href="https://www.condinerolibre.com/aprende/forex/">Forex</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/indices-para-trading/">Índices para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/acciones-para-trading/">Acciones para trading</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/cripto/">Cripto</a>
+          <a class="chip" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">¿Qué es el trading?</a>
+        </div>
+
+        <div class="ctaRow" style="margin-top:14px">
+          <a class="btn primary" href="https://www.condinerolibre.com/cursos/">Ver formación (cuando estés listo)</a>
+          <a class="btn" href="https://www.condinerolibre.com/aprende/">Seguir aprendiendo</a>
+        </div>
+      </div>
+
+      <div class="section" id="faq">
+        <h2>Preguntas frecuentes</h2>
+
+        <details>
+          <summary>¿Qué es el spread en trading?</summary>
+          <p class="muted">
+            Es la diferencia entre el precio de compra (Ask) y el de venta (Bid). Es un costo implícito:
+            al abrir, normalmente comienzas “en negativo” por esa diferencia.
+          </p>
+        </details>
+
+        <details>
+          <summary>¿Spread es lo mismo que comisión?</summary>
+          <p class="muted">
+            No. Comisión es un cargo explícito; el spread es el diferencial Bid/Ask. En la práctica,
+            mira siempre el costo total (spread + comisión + overnight si aplica).
+          </p>
+        </details>
+
+        <details>
+          <summary>¿Cuándo sube el spread?</summary>
+          <p class="muted">
+            En noticias fuertes, baja liquidez, cambios de sesión y alta volatilidad. También en activos poco líquidos.
+          </p>
+        </details>
+        </div>
+</main>
+
+<!-- Footer se carga dinámicamente desde /shared/footer.html -->
+
+<!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
+<script defer src="/shared/cdl-shell.js"></script>
+
+<script>
+function rewriteLocalModuleLinks(){const e=window.location.hostname;if("localhost"===e||"127.0.0.1"===e)return;document.querySelectorAll('a[href^="/"]').forEach(t=>{let l=t.getAttribute("href");l.startsWith("/")||(l="/"+l);const o={"/":"https://www.condinerolibre.com","/aprende/":"https://aprende.condinerolibre.com","/brokers/":"https://brokers.condinerolibre.com","/radar/":"https://radar.condinerolibre.com","/cdl-portal/":"https://portal.condinerolibre.com","/cursos/":"https://cursos.condinerolibre.com"};for(const[e,r]of Object.entries(o))if(l.startsWith(e)){const o=l.substring(e.length);return void t.setAttribute("href",r+(o.startsWith("/")?o:"/"+o))}t.setAttribute("href","https://www.condinerolibre.com"+l)})}document.addEventListener("DOMContentLoaded",()=>{rewriteLocalModuleLinks();const e=document.getElementById("mobile-menu-btn"),t=document.getElementById("mobile-menu-close"),l=document.getElementById("mobile-menu");e&&l&&(e.addEventListener("click",()=>{l.classList.add("active")}),t&&t.addEventListener("click",()=>{l.classList.remove("active")}),document.addEventListener("click",e=>{l.classList.contains("active")&&!l.contains(e.target)&&e.target!==document.getElementById("mobile-menu-btn")&&l.classList.remove("active")}));const o=document.querySelectorAll(".nav-item-dropdown");let r=null;o.forEach(e=>{const t=e.querySelector(".mega-menu");e.addEventListener("mouseenter",()=>{clearTimeout(r),o.forEach(e=>e.classList.remove("is-open")),e.classList.add("is-open")}),e.addEventListener("mouseleave",()=>{r=setTimeout(()=>{e.classList.remove("is-open")},260)}),t&&t.addEventListener("mouseenter",()=>{clearTimeout(r)})}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=this.getAttribute("href");if("#"===t)return;const l=document.querySelector(t);l&&l.scrollIntoView({behavior:"smooth",block:"start"})})})});
+</script>
+</body>
+</html>

@@ -1,7 +1,0 @@
-[[edge_functions]]
-  path = "/api/proxy"
-  function = "proxy"
-
-[build]
-  publish = "dist"
-  command = "npm run build"

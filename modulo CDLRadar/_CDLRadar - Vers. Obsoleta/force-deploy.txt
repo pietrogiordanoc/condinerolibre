@@ -1,1 +1,0 @@
-// Archivo de prueba para forzar commit y asegurar que vercel.json se incluya correctamente

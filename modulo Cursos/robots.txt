@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://cursos.condinerolibre.com/sitemap.xml
