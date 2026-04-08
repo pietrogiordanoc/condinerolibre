@@ -29,33 +29,33 @@
    */
   function initHeaderInteractions() {
     // Mega-menú: delayed close
-    var dropdownButtons = document.querySelectorAll('.nav-item-dropdown button');
-    dropdownButtons.forEach(function (btn) {
-      var parent = btn.parentElement;
-      var megaMenu = parent.querySelector('.mega-menu');
+    var dropdownContainers = document.querySelectorAll('.nav-item-dropdown');
+    dropdownContainers.forEach(function (container) {
+      var btn = container.querySelector('button');
+      var megaMenu = container.querySelector('.mega-menu');
       var timeoutId;
 
-      if (!megaMenu) return; // Skip si no hay mega-menu
+      if (!btn || !megaMenu) return; // Skip si no hay button o mega-menu
 
       btn.addEventListener('mouseenter', function () {
         clearTimeout(timeoutId);
-        btn.classList.add('is-open');
+        container.classList.add('is-open');
       });
 
       btn.addEventListener('mouseleave', function () {
         timeoutId = setTimeout(function () {
-          btn.classList.remove('is-open');
+          container.classList.remove('is-open');
         }, 260);
       });
 
       megaMenu.addEventListener('mouseenter', function () {
         clearTimeout(timeoutId);
-        btn.classList.add('is-open');
+        container.classList.add('is-open');
       });
 
       megaMenu.addEventListener('mouseleave', function () {
         timeoutId = setTimeout(function () {
-          btn.classList.remove('is-open');
+          container.classList.remove('is-open');
         }, 260);
       });
     });
@@ -63,7 +63,7 @@
     // Mobile menu toggle
     var mobileMenuBtn = document.getElementById('mobile-menu-btn');
     var mobileMenu = document.getElementById('mobile-menu');
-    var closeMobileBtn = document.getElementById('close-mobile-menu');
+    var closeMobileBtn = document.getElementById('mobile-menu-close');
 
     if (mobileMenuBtn && mobileMenu) {
       mobileMenuBtn.addEventListener('click', function () {

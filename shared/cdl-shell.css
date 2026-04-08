@@ -145,7 +145,15 @@ body.cdl-shell-enabled {
   z-index: 100;
 }
 
-.nav-item-dropdown button.is-open + .mega-menu {
+.nav-item-dropdown.is-open .mega-menu {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+.nav-item-dropdown:hover > .mega-menu,
+.nav-item-dropdown:focus-within > .mega-menu,
+.mega-menu:hover {
   display: block !important;
   opacity: 1 !important;
   pointer-events: all !important;
