@@ -31,8 +31,11 @@
     // Mega-menú: delayed close
     var dropdownButtons = document.querySelectorAll('.nav-item-dropdown button');
     dropdownButtons.forEach(function (btn) {
-      var megaMenu = btn.nextElementSibling;
+      var parent = btn.parentElement;
+      var megaMenu = parent.querySelector('.mega-menu');
       var timeoutId;
+
+      if (!megaMenu) return; // Skip si no hay mega-menu
 
       btn.addEventListener('mouseenter', function () {
         clearTimeout(timeoutId);
@@ -45,18 +48,16 @@
         }, 260);
       });
 
-      if (megaMenu) {
-        megaMenu.addEventListener('mouseenter', function () {
-          clearTimeout(timeoutId);
-          btn.classList.add('is-open');
-        });
+      megaMenu.addEventListener('mouseenter', function () {
+        clearTimeout(timeoutId);
+        btn.classList.add('is-open');
+      });
 
-        megaMenu.addEventListener('mouseleave', function () {
-          timeoutId = setTimeout(function () {
-            btn.classList.remove('is-open');
-          }, 260);
-        });
-      }
+      megaMenu.addEventListener('mouseleave', function () {
+        timeoutId = setTimeout(function () {
+          btn.classList.remove('is-open');
+        }, 260);
+      });
     });
 
     // Mobile menu toggle
