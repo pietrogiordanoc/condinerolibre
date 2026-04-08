@@ -85,8 +85,8 @@
       color:var(--text);
       line-height:1.55;
     }
-    a{color:var(--text); text-decoration:none}
-    a:hover{opacity:.9}
+    .wrap a{color:var(--text); text-decoration:none}
+    .wrap a:hover{opacity:.9}
     .wrap{max-width:var(--max); margin:0 auto; padding:24px}
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
@@ -168,8 +168,8 @@
       padding:22px;
       border-top: 1px solid var(--line);
     }
-    h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
-    h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
+    .wrap h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
+    .wrap h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
     .muted{color:var(--muted)}
     .bullets{margin:10px 0 0; padding-left:18px}
     .bullets li{margin:7px 0; color: rgba(242,243,245,.9)}
@@ -199,15 +199,15 @@
     .table th{color:rgba(242,243,245,.9); background:rgba(255,255,255,.03)}
     .table td{color:rgba(242,243,245,.86)}
     .table tr:last-child td{border-bottom:none}
-    details{
+    .wrap details{
       border:1px solid var(--line);
       border-radius:14px;
       padding:12px 14px;
       background: rgba(0,0,0,.18);
     }
-    details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
-    footer{
+    .wrap details + details{margin-top:10px}
+    .wrap summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
+    .wrap footer{
       margin:26px 0 10px;
       color: var(--muted);
       font-size:13px;
@@ -250,19 +250,6 @@
     .chip:hover{background: rgba(255,255,255,.06)}
   </style>
 <link rel="stylesheet" href="/shared/cdl-shell.css">
-<style>
-.mega-menu { opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 260ms ease-out, transform 260ms ease-out, visibility 260ms; }
-.nav-item-dropdown.is-open .mega-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-.platform-menu { left: 50%; transform: translateX(-50%); width: 548px; }
-.learn-menu { left: 50%; transform: translateX(-50%); width: 612px; }
-.mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
-.mobile-menu.active { transform: translateX(0); }
-@media (min-width: 1024px) {
-  .nav-item-dropdown.is-open .mega-menu { transform: translateY(0); }
-  .nav-item-dropdown.is-open .platform-menu { transform: translateX(-50%) translateY(0); }
-  .nav-item-dropdown.is-open .learn-menu { transform: translateX(-50%) translateY(0); }
-}
-</style>
 
 <!-- Material Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
