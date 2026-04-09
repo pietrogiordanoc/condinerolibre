@@ -174,6 +174,25 @@
       color: #d7ebf9;
     }
 
+    .legal-tail {
+      margin: 0.6rem auto 0;
+      max-width: 620px;
+      width: 100%;
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .legal-tail summary {
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .legal-tail .disc {
+      font-size: 0.74rem;
+      max-height: 120px;
+      line-height: 1.3;
+    }
+
     .disc {
       margin-top: 0.55rem;
       max-height: 168px;
@@ -197,14 +216,29 @@
       width: 100%;
     }
 
+    .legal-tail .accept {
+      padding: 0.42rem 0.55rem;
+      border-radius: 9px;
+    }
+
     .accept input {
       width: auto;
       margin-top: 0.15rem;
     }
 
+    .legal-tail .accept input {
+      transform: scale(0.9);
+      margin-top: 0.1rem;
+    }
+
     .accept span {
       font-size: 0.9rem;
       color: #d6e9f7;
+    }
+
+    .legal-tail .accept span {
+      font-size: 0.82rem;
+      font-weight: 500;
     }
 
     .actions {
@@ -306,7 +340,7 @@
         <img src="/images/logocdl.avif" alt="ConDineroLibre">
       </div>
       <h1>Inscripción al curso<br>Trading de Precisión Curso Express</h1>
-      <p class="intro">Formulario corto, guiado y por partes. Si no sabes una respuesta, marca No sé.</p>
+      <p class="intro">Si no sabes una respuesta, marca No sé.</p>
 
       <div class="progress-wrap">
         <span class="progress-label" id="progressLabel">Continuamos</span>
@@ -582,9 +616,17 @@
               <option>No sé</option>
             </select>
           </div>
+        </div>
 
-          <details>
-            <summary>Descargo de Responsabilidad (leer)</summary>
+        <div class="actions">
+          <button type="button" class="btn-prev" id="prevBtn" disabled>Atrás</button>
+          <button type="button" class="btn-next" id="nextBtn">Siguiente</button>
+          <button type="submit" class="btn-submit hidden" id="submitBtn">Enviar inscripción</button>
+        </div>
+
+        <div class="legal-tail hidden" id="finalLegal">
+          <details open>
+            <summary>Descargo de Responsabilidad</summary>
             <div class="disc">
               <p><strong>Descargo de Responsabilidad para Transmisión de Mentoría y Análisis de Trading</strong></p>
               <p>El trading en mercados financieros, incluyendo divisas, acciones, criptomonedas y otros instrumentos, conlleva riesgos significativos. Esta información es solo educativa y no constituye asesoramiento financiero.</p>
@@ -600,12 +642,6 @@
             <input id="aceptoDisclaimer" type="checkbox" name="disclaimer_aceptado" value="si" required>
             <span>Acepto el descargo de responsabilidad.</span>
           </label>
-        </div>
-
-        <div class="actions">
-          <button type="button" class="btn-prev" id="prevBtn" disabled>Atrás</button>
-          <button type="button" class="btn-next" id="nextBtn">Siguiente</button>
-          <button type="submit" class="btn-submit hidden" id="submitBtn">Enviar inscripción</button>
         </div>
 
         <p class="status" id="formStatus" aria-live="polite"></p>
@@ -655,6 +691,7 @@
     const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
     const quizScoreInput = document.getElementById("quizScoreInput");
     const quizResultadoInput = document.getElementById("quizResultadoInput");
+    const finalLegal = document.getElementById("finalLegal");
 
     const shareLinkInput = document.getElementById("shareLink");
     const crmEmailInput = document.getElementById("crmEmail");
@@ -741,6 +778,7 @@
       const isLast = currentStepIndex === currentFlow.length - 1;
       nextBtn.classList.toggle("hidden", isLast);
       submitBtn.classList.toggle("hidden", !isLast);
+      finalLegal.classList.toggle("hidden", activeId !== "step-disclaimer");
 
       const pct = ((currentStepIndex + 1) / currentFlow.length) * 100;
       progressBar.style.width = pct + "%";
@@ -758,6 +796,16 @@
           return false;
         }
       }
+
+      if (activeId === "step-disclaimer") {
+        const legalRequired = finalLegal.querySelectorAll("input[required], select[required]");
+        for (const field of legalRequired) {
+          if (!field.reportValidity()) {
+            return false;
+          }
+        }
+      }
+
       return true;
     }
 
