@@ -523,9 +523,13 @@
       const formData = new FormData(surveyForm);
 
       try {
-        const response = await fetch("/", {
+        const submitPath = window.location.pathname;
+        const response = await fetch(submitPath, {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "text/html"
+          },
           body: new URLSearchParams(formData).toString()
         });
 
@@ -538,7 +542,7 @@
         formStatus.textContent = "Lead capturado. En Netlify quedara en Forms (cdl-encuesta-oculta).";
         surveyForm.reset();
       } catch (err) {
-        formStatus.innerHTML = '<span class="warning">En local sin backend real puede fallar el submit. En Netlify funcionara con Forms.</span>';
+        formStatus.innerHTML = '<span class="warning">No se pudo enviar en este intento. Recarga y prueba de nuevo; si persiste, revisamos Netlify Forms.</span>';
       }
     });
 
