@@ -247,6 +247,7 @@
       <form id="surveyForm" name="cdl-encuesta-oculta" method="POST" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="cdl-encuesta-oculta">
         <input type="hidden" name="bot-field">
+        <input type="hidden" name="subject" id="subjectInput" data-remove-prefix value="Nuevo prospecto CDL">
         <input type="hidden" name="fuente_link" id="fuenteLink">
         <input type="hidden" name="nivel_calculado" id="nivelCalculadoInput">
 
@@ -377,8 +378,10 @@
 
   <script>
     const surveyForm = document.getElementById("surveyForm");
+    const nombreInput = document.getElementById("nombre");
     const nivelPercibido = document.getElementById("nivelPercibido");
     const tiempoInteres = document.getElementById("tiempoInteres");
+    const subjectInput = document.getElementById("subjectInput");
     const fuenteLink = document.getElementById("fuenteLink");
     const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
     const nivelResult = document.getElementById("nivelResult");
@@ -400,6 +403,12 @@
       url.searchParams.set("src", ref);
       url.hash = "";
       return url.toString();
+    }
+
+    function buildNotificationSubject(leadLabel) {
+      const source = getSourceFromUrl();
+      const nombre = (nombreInput.value || "Prospecto sin nombre").trim().replace(/\s+/g, " ");
+      return "Nuevo Prospecto: " + nombre + " | " + leadLabel + " | src:" + source;
     }
 
     function classifyLead() {
@@ -504,6 +513,7 @@
       event.preventDefault();
       fuenteLink.value = getSourceFromUrl();
       const lead = renderLevel(false);
+      subjectInput.value = buildNotificationSubject(lead.label);
 
       const formData = new FormData(surveyForm);
 
