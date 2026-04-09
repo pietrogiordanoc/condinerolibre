@@ -261,6 +261,34 @@
       color: #dff0fb;
     }
 
+    .success-screen {
+      text-align: center;
+      padding: 1.2rem 1rem;
+    }
+
+    .success-screen h2 {
+      margin: 0;
+      color: #73f0bc;
+      font-size: clamp(1.25rem, 2.4vw, 1.8rem);
+      line-height: 1.2;
+    }
+
+    .success-screen p {
+      margin: 0.55rem 0;
+      color: #d6ebf8;
+    }
+
+    .success-note {
+      display: inline-block;
+      margin-top: 0.45rem;
+      padding: 0.45rem 0.7rem;
+      border: 1px solid #2f667f;
+      border-radius: 999px;
+      color: #b8d7ea;
+      font-size: 0.86rem;
+      background: rgba(11, 34, 48, 0.5);
+    }
+
     .hidden { display: none !important; }
 
     @media (max-width: 720px) {
@@ -306,7 +334,7 @@
       <p class="status" id="shareStatus" aria-live="polite"></p>
     </section>
 
-    <section class="card">
+    <section class="card" id="surveyCard">
       <form id="surveyForm" name="inscripcion-al-curso-trading-de-precision-curso-express" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="inscripcion-al-curso-trading-de-precision-curso-express">
         <input type="hidden" name="bot-field">
@@ -581,6 +609,15 @@
         <div class="result hidden" id="nivelResult"></div>
       </form>
     </section>
+
+    <section class="card hidden" id="successCard">
+      <div class="success-screen">
+        <h2>Hemos recibido tu inscripción formal</h2>
+        <p>Gracias por dar este paso con ConDineroLibre.</p>
+        <p>Nos vemos en el curso. Te avisaremos muy pronto con los siguientes detalles de acceso.</p>
+        <span class="success-note" id="redirectNotice">Te llevaremos al inicio en unos segundos...</span>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -595,6 +632,9 @@
     const ADV_FLOW = ["step-q6", "step-q7", "step-q8", "step-q9", "step-q10"];
 
     const surveyForm = document.getElementById("surveyForm");
+    const surveyCard = document.getElementById("surveyCard");
+    const successCard = document.getElementById("successCard");
+    const redirectNotice = document.getElementById("redirectNotice");
     const progressBar = document.getElementById("progressBar");
     const progressLabel = document.getElementById("progressLabel");
     const prevBtn = document.getElementById("prevBtn");
@@ -783,7 +823,7 @@
         await navigator.clipboard.writeText(shareLinkInput.value);
         shareStatus.textContent = "Link copiado.";
       } catch (err) {
-        shareStatus.textContent = "No sé pudo copiar automaticamente.";
+        shareStatus.textContent = "No se pudo copiar automáticamente.";
       }
     });
 
@@ -838,14 +878,23 @@
           body: new URLSearchParams(formData).toString()
         });
 
-        nivelResult.classList.remove("hidden");
-        nivelResult.innerHTML = "<strong>Gracias por tu inscripción.</strong><br>Te escribiremos con tu ruta recomendada para empezar el curso.<br><br><strong>Resultado rápido:</strong> " + quizText;
-        formStatus.textContent = "Inscripción enviada con éxito.";
+        surveyCard.classList.add("hidden");
+        successCard.classList.remove("hidden");
+
+        const isBaseTrack = isIgnorantTrack();
+        const resultLabel = isBaseTrack ? "Ruta recomendada desde cero" : quizText;
+        redirectNotice.textContent = "Resultado: " + resultLabel + " · Redirección en 8 segundos...";
+
+        formStatus.textContent = "";
         surveyForm.reset();
 
         currentFlow = computeFlow();
         currentStepIndex = 0;
         showCurrentStep();
+
+        setTimeout(() => {
+          window.location.href = "https://www.condinerolibre.com/";
+        }, 8000);
       } catch (err) {
         formStatus.innerHTML = '<span class="warning">No pudimos validar la respuesta del servidor, pero el envío pudo haberse procesado. Revisa Netlify Forms.</span>';
       }
