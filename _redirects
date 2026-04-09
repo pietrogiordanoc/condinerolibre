@@ -34,4 +34,6 @@
 /brokers/* /brokers/:splat 200
 
 # Home
+/encuesta-proximos-estudiantes-oculta /modulo%20home/encuesta-proximos-estudiantes-oculta/index.html 200
+/encuesta-proximos-estudiantes-oculta/ /modulo%20home/encuesta-proximos-estudiantes-oculta/index.html 200
 / /index.html 200
