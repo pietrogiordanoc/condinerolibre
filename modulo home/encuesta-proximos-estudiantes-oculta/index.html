@@ -212,7 +212,7 @@
       <p class="sub">Duración objetivo: 1-2 minutos. Máximo 8 preguntas base y opción de saltar para subir conversión.</p>
     </section>
 
-    <section class="card">
+    <section class="card" id="adminPanel">
       <h2>Panel de Compartir CRM</h2>
       <p class="sub">Genera un enlace con referencia y abre un email listo para enviar desde tu CRM o correo.</p>
       <div class="grid">
@@ -377,6 +377,11 @@
   </main>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdminView = urlParams.get("admin") === "1";
+    const adminPanel = document.getElementById("adminPanel");
+    adminPanel.hidden = !isAdminView;
+
     const surveyForm = document.getElementById("surveyForm");
     const nombreInput = document.getElementById("nombre");
     const nivelPercibido = document.getElementById("nivelPercibido");
