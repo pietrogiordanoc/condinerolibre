@@ -589,7 +589,8 @@
       q6: "A", q7: "B", q8: "B", q9: "A", q10: "B"
     };
 
-    const BASE_FLOW = ["step-personal", "step-nivel", "step-tiempo", "step-objetivo", "step-q1", "step-q2", "step-q3"];
+    const BASE_FLOW = ["step-personal", "step-nivel", "step-tiempo", "step-objetivo"];
+    const ENTRY_QUIZ_FLOW = ["step-q1", "step-q2", "step-q3"];
     const MID_FLOW = ["step-q4", "step-q5"];
     const ADV_FLOW = ["step-q6", "step-q7", "step-q8", "step-q9", "step-q10"];
 
@@ -671,6 +672,7 @@
       let flow = [...BASE_FLOW];
 
       if (!isIgnorantTrack()) {
+        flow = flow.concat(ENTRY_QUIZ_FLOW);
         flow = flow.concat(MID_FLOW);
         if (shouldEnableAdvanced()) {
           flow = flow.concat(ADV_FLOW);
