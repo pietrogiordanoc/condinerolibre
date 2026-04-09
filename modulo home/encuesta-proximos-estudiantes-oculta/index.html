@@ -404,7 +404,7 @@
 
     function buildShareLink() {
       const ref = (refCodeInput.value || "campana-general").trim().replace(/\s+/g, "-").toLowerCase();
-      const url = new URL(window.location.href);
+      const url = new URL(window.location.origin + window.location.pathname);
       url.searchParams.set("src", ref);
       url.hash = "";
       return url.toString();
