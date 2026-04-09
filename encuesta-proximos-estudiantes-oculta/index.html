@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDL | Encuesta Oculta de Diagnóstico</title>
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <style>
+    :root {
+      --bg: #07121a;
+      --bg-soft: #0d1f2b;
+      --card: #122a38;
+      --line: #1f4154;
+      --text: #e7f3fc;
+      --muted: #8fb0c5;
+      --accent: #29d17a;
+      --accent-2: #ffce4d;
+      --danger: #ff6b6b;
+      --ok: #64e39f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 10% 0%, #113147, var(--bg) 55%), linear-gradient(145deg, #051018, #0a1b26);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      width: min(980px, 94vw);
+      margin: 2rem auto 3rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem;
+      backdrop-filter: blur(6px);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.6rem;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+      color: var(--accent-2);
+    }
+
+    .sub {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .field {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    label {
+      color: #c9e0ee;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      border: 1px solid #2f5469;
+      background: #0b1d28;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.7rem 0.75rem;
+      width: 100%;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid #2ea5ff;
+      border-color: transparent;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.3rem;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 0.7rem 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #03111a;
+      background: var(--accent);
+      transition: transform 0.14s ease, filter 0.14s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .btn-alt {
+      background: #75ccff;
+    }
+
+    .btn-dark {
+      color: #eaf6ff;
+      background: #1b3849;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #325569;
+      color: #a9cbdd;
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.8rem;
+    }
+
+    .status {
+      margin-top: 0.5rem;
+      font-weight: 600;
+      color: var(--ok);
+    }
+
+    .warning {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .result {
+      border: 1px dashed #3a6379;
+      border-radius: 12px;
+      padding: 0.9rem;
+      margin-top: 0.7rem;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .mini-checks {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .check-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #0b1d28;
+      border: 1px solid #25485d;
+      border-radius: 10px;
+      padding: 0.5rem 0.6rem;
+    }
+
+    .check-line input {
+      width: auto;
+      margin: 0;
+    }
+
+    .optional {
+      border-left: 4px solid #f3c95a;
+      padding-left: 0.8rem;
+    }
+
+    @media (max-width: 740px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <span class="pill">Acceso oculto · no indexado</span>
+      <h1>Encuesta rápida de próximos estudiantes</h1>
+      <p class="sub">Duración objetivo: 1-2 minutos. Máximo 8 preguntas base y opción de saltar para subir conversión.</p>
+    </section>
+
+    <section class="card">
+      <h2>Panel de Compartir CRM</h2>
+      <p class="sub">Genera un enlace con referencia y abre un email listo para enviar desde tu CRM o correo.</p>
+      <div class="grid">
+        <div class="field">
+          <label for="crmEmail">Email destino CRM</label>
+          <input id="crmEmail" type="email" placeholder="crm@condinerolibre.com" value="">
+        </div>
+        <div class="field">
+          <label for="refCode">Código de campaña / asesor</label>
+          <input id="refCode" type="text" placeholder="ej: cdl-abril-asesor01">
+        </div>
+      </div>
+      <div class="grid single">
+        <div class="field">
+          <label for="shareLink">Link para compartir</label>
+          <input id="shareLink" type="text" readonly>
+          <span class="hint">El parámetro src te permite rastrear de dónde llegó el lead.</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" id="buildLinkBtn">Generar link</button>
+        <button type="button" class="btn-alt" id="copyLinkBtn">Copiar link</button>
+        <button type="button" class="btn-dark" id="emailBtn">Abrir email listo</button>
+      </div>
+      <p class="status" id="shareStatus" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>Encuesta de Diagnóstico (8 preguntas base)</h2>
+      <p class="sub">Siempre con salida fácil: cada bloque tiene opción de No sé o Saltar.</p>
+
+      <form id="surveyForm" name="cdl-encuesta-oculta" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="cdl-encuesta-oculta">
+        <input type="hidden" name="bot-field">
+        <input type="hidden" name="fuente_link" id="fuenteLink">
+        <input type="hidden" name="nivel_calculado" id="nivelCalculadoInput">
+
+        <div class="grid">
+          <div class="field">
+            <label for="nombre">1) Nombre</label>
+            <input id="nombre" name="nombre" required>
+          </div>
+          <div class="field">
+            <label for="pais">2) País</label>
+            <input id="pais" name="pais" required>
+          </div>
+          <div class="field">
+            <label for="email">3) Email</label>
+            <input id="email" name="email" type="email" required>
+          </div>
+          <div class="field">
+            <label for="whatsapp">4) WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" placeholder="+34..." required>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="nivelPercibido">5) ¿Cómo describirías tu experiencia en trading?</label>
+            <select id="nivelPercibido" name="nivel_percibido" required>
+              <option value="">Selecciona una opción</option>
+              <option>Nunca he hecho trading</option>
+              <option>Estoy aprendiendo</option>
+              <option>He operado algunas veces</option>
+              <option>Opero regularmente</option>
+              <option>No sé nada todavía</option>
+              <option>Prefiero saltar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="tiempoInteres">6) ¿Cuánto tiempo llevas interesado en trading?</label>
+            <select id="tiempoInteres" name="tiempo_interes" required>
+              <option value="">Selecciona una opción</option>
+              <option>Apenas estoy empezando</option>
+              <option>Menos de 3 meses</option>
+              <option>3–12 meses</option>
+              <option>Más de 1 año</option>
+              <option>No recuerdo</option>
+              <option>Prefiero saltar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="perdioDinero">7) ¿Has perdido dinero intentando hacer trading?</label>
+            <select id="perdioDinero" name="perdio_dinero" required>
+              <option value="">Selecciona una opción</option>
+              <option>Nunca he operado</option>
+              <option>Sí, poco</option>
+              <option>Sí, bastante</option>
+              <option>Prefiero no decir</option>
+              <option>Prefiero saltar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="objetivo">8) ¿Qué te gustaría lograr con el trading?</label>
+            <select id="objetivo" name="objetivo" required>
+              <option value="">Selecciona una opción</option>
+              <option>Generar ingresos extra</option>
+              <option>Aprender a invertir</option>
+              <option>Tener independencia financiera</option>
+              <option>Entender los mercados</option>
+              <option>Solo curiosidad</option>
+              <option>No estoy seguro aún</option>
+              <option>Prefiero saltar</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="optional">
+          <h3>Opcional (si quiere responder)</h3>
+          <p class="hint">Este bloque no añade fricción al flujo principal y aporta información de ventas.</p>
+
+          <div class="field">
+            <label>Mini diagnóstico opcional: ¿Qué es lo que MÁS te cuesta entender del trading? (múltiple)</label>
+            <div class="mini-checks">
+              <label class="check-line"><input type="checkbox" name="dificultad" value="Cuándo entrar al mercado"> Cuándo entrar al mercado</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="Cuándo salir"> Cuándo salir</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="Leer gráficos"> Leer gráficos</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="Controlar pérdidas"> Controlar pérdidas</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="No sé por dónde empezar"> No sé por dónde empezar</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="No sé nada todavía"> No sé nada todavía</label>
+              <label class="check-line"><input type="checkbox" name="dificultad" value="Prefiero saltar"> Prefiero saltar</label>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field">
+              <label for="miniTest">Mini test (1 pregunta): si un precio sube muy rápido normalmente...</label>
+              <select id="miniTest" name="mini_test">
+                <option value="">Prefiero saltar</option>
+                <option>Es buen momento para comprar</option>
+                <option>Puede ser peligroso entrar tarde</option>
+                <option>No sé</option>
+                <option>Prefiero saltar</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="tiempoDedicar">Bonus: ¿cuánto tiempo podrías dedicar al aprendizaje?</label>
+              <select id="tiempoDedicar" name="tiempo_dedicar">
+                <option value="">Prefiero saltar</option>
+                <option>15 minutos al día</option>
+                <option>30 minutos al día</option>
+                <option>1 hora al día</option>
+                <option>Solo fines de semana</option>
+                <option>No lo sé aún</option>
+                <option>Prefiero saltar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Enviar encuesta</button>
+          <button type="button" class="btn-dark" id="previewLevelBtn">Previsualizar nivel</button>
+        </div>
+
+        <p class="status" id="formStatus" aria-live="polite"></p>
+        <div class="result" id="nivelResult" hidden></div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const surveyForm = document.getElementById("surveyForm");
+    const nivelPercibido = document.getElementById("nivelPercibido");
+    const tiempoInteres = document.getElementById("tiempoInteres");
+    const fuenteLink = document.getElementById("fuenteLink");
+    const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
+    const nivelResult = document.getElementById("nivelResult");
+    const formStatus = document.getElementById("formStatus");
+
+    const shareLinkInput = document.getElementById("shareLink");
+    const crmEmailInput = document.getElementById("crmEmail");
+    const refCodeInput = document.getElementById("refCode");
+    const shareStatus = document.getElementById("shareStatus");
+
+    function getSourceFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("src") || "directo";
+    }
+
+    function buildShareLink() {
+      const ref = (refCodeInput.value || "campana-general").trim().replace(/\s+/g, "-").toLowerCase();
+      const url = new URL(window.location.href);
+      url.searchParams.set("src", ref);
+      url.hash = "";
+      return url.toString();
+    }
+
+    function classifyLead() {
+      const nivel = (nivelPercibido.value || "").toLowerCase();
+      const tiempo = (tiempoInteres.value || "").toLowerCase();
+
+      if (nivel.includes("opero regularmente")) {
+        return {
+          label: "Nivel 3 - Avanzado",
+          detail: "Seleccionó perfil de operación regular. Candidato para mentoría o propuestas avanzadas."
+        };
+      }
+
+      if (nivel.includes("nunca he hecho") || nivel.includes("no sé nada")) {
+        return {
+          label: "Nivel 0 - Nuevo total",
+          detail: "Ideal para onboarding simple y Curso Express de base."
+        };
+      }
+
+      if ((nivel.includes("he operado") || nivel.includes("algunas veces")) && (tiempo.includes("3–12") || tiempo.includes("más de 1"))) {
+        return {
+          label: "Nivel 2 - Intermedio",
+          detail: "Ha tocado mercado real y ya trae recorrido. Buen candidato para Radar directo."
+        };
+      }
+
+      if (nivel.includes("estoy aprendiendo") || tiempo.includes("menos de 3") || tiempo.includes("apenas")) {
+        return {
+          label: "Nivel 1 - Curioso activo",
+          detail: "Prospecto de alta intención temprana. Funciona muy bien con secuencia educativa corta."
+        };
+      }
+
+      return {
+        label: "Nivel 1 - Curioso activo",
+        detail: "Clasificación por defecto al no tener suficiente señal."
+      };
+    }
+
+    function renderLevel(show = true) {
+      const lead = classifyLead();
+      nivelCalculadoInput.value = lead.label;
+      if (!show) {
+        return lead;
+      }
+
+      nivelResult.hidden = false;
+      nivelResult.innerHTML = "<strong>" + lead.label + "</strong><br>" + lead.detail;
+      return lead;
+    }
+
+    document.getElementById("buildLinkBtn").addEventListener("click", () => {
+      shareLinkInput.value = buildShareLink();
+      shareStatus.textContent = "Link generado.";
+    });
+
+    document.getElementById("copyLinkBtn").addEventListener("click", async () => {
+      if (!shareLinkInput.value) {
+        shareLinkInput.value = buildShareLink();
+      }
+      try {
+        await navigator.clipboard.writeText(shareLinkInput.value);
+        shareStatus.textContent = "Link copiado al portapapeles.";
+      } catch (err) {
+        shareStatus.textContent = "No se pudo copiar automáticamente. Copia manualmente el link.";
+      }
+    });
+
+    document.getElementById("emailBtn").addEventListener("click", () => {
+      const to = (crmEmailInput.value || "").trim();
+      if (!to) {
+        shareStatus.innerHTML = '<span class="warning">Define primero el email destino CRM.</span>';
+        return;
+      }
+
+      if (!shareLinkInput.value) {
+        shareLinkInput.value = buildShareLink();
+      }
+
+      const subject = "Encuesta CDL para proximos estudiantes";
+      const body = [
+        "Hola,",
+        "",
+        "Comparto el enlace de la encuesta de diagnostico:",
+        shareLinkInput.value,
+        "",
+        "Origen/campana: " + ((refCodeInput.value || "campana-general").trim() || "campana-general"),
+        "",
+        "Este enlace incluye referencia para segmentar leads en CRM."
+      ].join("\n");
+
+      window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+
+    document.getElementById("previewLevelBtn").addEventListener("click", () => {
+      renderLevel(true);
+      formStatus.textContent = "Nivel previsualizado (sin enviar).";
+    });
+
+    surveyForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      fuenteLink.value = getSourceFromUrl();
+      const lead = renderLevel(false);
+
+      const formData = new FormData(surveyForm);
+
+      try {
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString()
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudo enviar");
+        }
+
+        nivelResult.hidden = false;
+        nivelResult.innerHTML = "<strong>Enviado con exito.</strong><br>Clasificacion: " + lead.label + "<br>Fuente: " + fuenteLink.value;
+        formStatus.textContent = "Lead capturado. En Netlify quedara en Forms (cdl-encuesta-oculta).";
+        surveyForm.reset();
+      } catch (err) {
+        formStatus.innerHTML = '<span class="warning">En local sin backend real puede fallar el submit. En Netlify funcionara con Forms.</span>';
+      }
+    });
+
+    (function init() {
+      const defaultLink = buildShareLink();
+      shareLinkInput.value = defaultLink;
+      fuenteLink.value = getSourceFromUrl();
+    })();
+  </script>
+</body>
+</html>
