@@ -523,8 +523,7 @@
       const formData = new FormData(surveyForm);
 
       try {
-        const submitPath = window.location.pathname;
-        const response = await fetch(submitPath, {
+        const response = await fetch("/", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

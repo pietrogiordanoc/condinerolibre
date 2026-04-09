@@ -184,6 +184,23 @@
 
 <body class="bg-bg-dark text-text-light antialiased">
 
+  <!-- Netlify form registration: keep hidden in the main entry so form parsing is reliable -->
+  <form name="cdl-encuesta-oculta" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="cdl-encuesta-oculta">
+    <input type="hidden" name="subject" value="Nuevo Prospecto CDL">
+    <input type="text" name="nombre">
+    <input type="text" name="pais">
+    <input type="email" name="email">
+    <input type="text" name="whatsapp">
+    <input type="text" name="nivel_percibido">
+    <input type="text" name="tiempo_interes">
+    <input type="text" name="perdio_dinero">
+    <input type="text" name="objetivo">
+    <input type="text" name="fuente_link">
+    <input type="text" name="nivel_calculado">
+    <input type="text" name="bot-field">
+  </form>
+
   <!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
   
   <!-- HERO SECTION -->
