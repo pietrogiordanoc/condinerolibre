@@ -7,229 +7,264 @@
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
   <style>
     :root {
-      --bg-1: #081a24;
-      --bg-2: #0d2a3a;
-      --card: #102636;
-      --line: #1f4a61;
-      --txt: #e8f4ff;
-      --muted: #9fc0d5;
-      --ok: #22d083;
-      --warn: #ff8080;
-      --cta: #ffd04f;
-      --accent: #37d987;
+      --bg-1: #071821;
+      --bg-2: #0d2b3b;
+      --card: #102a3a;
+      --line: #24536b;
+      --text: #e8f4ff;
+      --muted: #a5c5d7;
+      --ok: #26d489;
+      --warn: #ff8686;
+      --cta: #ffd452;
+      --btn: #3ad88b;
+      --btn-alt: #214b62;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      color: var(--txt);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at 10% 5%, #13344a, var(--bg-1) 55%), linear-gradient(140deg, #07131b, var(--bg-2));
       min-height: 100vh;
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 12% 5%, #163e57, var(--bg-1) 56%), linear-gradient(135deg, #07131b, var(--bg-2));
     }
 
     .wrap {
-      width: min(900px, 94vw);
-      margin: 1.2rem auto 2.5rem;
+      width: min(760px, 94vw);
+      margin: 1.1rem auto 2.3rem;
       display: grid;
-      gap: 1rem;
+      gap: 0.9rem;
     }
 
     .card {
       border: 1px solid var(--line);
       border-radius: 16px;
-      background: linear-gradient(155deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
       padding: 1rem;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
       margin-bottom: 0.5rem;
     }
 
     .brand img {
-      width: 150px;
-      max-width: 42vw;
+      width: 180px;
+      max-width: 52vw;
       height: auto;
     }
 
     h1 {
       margin: 0;
       color: var(--cta);
-      line-height: 1.15;
-      font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+      text-align: center;
+      line-height: 1.16;
+      font-size: clamp(1.2rem, 2.2vw, 1.75rem);
     }
 
-    p { margin: 0.35rem 0; }
-
-    .muted { color: var(--muted); }
+    .intro {
+      color: var(--muted);
+      text-align: center;
+      margin-top: 0.45rem;
+      margin-bottom: 0;
+    }
 
     .progress-wrap {
-      margin-top: 0.6rem;
+      margin-top: 0.65rem;
       display: grid;
-      gap: 0.35rem;
+      gap: 0.3rem;
     }
 
     .progress-label {
-      color: #b4d0e2;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      color: #c2deee;
+      text-align: center;
     }
 
     .progress {
       width: 100%;
       height: 8px;
       border-radius: 999px;
-      background: #173345;
       overflow: hidden;
+      background: #1a3b4f;
     }
 
-    .progress > span {
+    .progress span {
       display: block;
+      width: 12%;
       height: 100%;
-      width: 33.333%;
-      background: linear-gradient(90deg, #1ecf7c, #6de3b0);
+      background: linear-gradient(90deg, #22cf7d, #77e6bb);
       transition: width 0.25s ease;
     }
 
     .step {
       display: none;
-      gap: 0.8rem;
+      min-height: 230px;
+      align-content: start;
+      gap: 0.7rem;
+      max-width: 640px;
+      margin: 0 auto;
     }
 
     .step.active {
       display: grid;
     }
 
-    .step-title {
+    .step h2 {
       margin: 0;
-      font-size: 1.07rem;
-      color: #d7ebf8;
+      color: #d9edf9;
+      font-size: 1.08rem;
+      text-align: center;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
+    .step .small {
+      margin: 0;
+      color: #aac9dc;
+      text-align: center;
+      font-size: 0.85rem;
     }
 
     .field {
       display: grid;
       gap: 0.3rem;
+      max-width: 580px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     label {
-      font-size: 0.93rem;
-      color: #d2e8f6;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #d5eaf8;
     }
 
     input, select {
       width: 100%;
-      border: 1px solid #2a5a73;
+      border: 1px solid #2b617b;
       border-radius: 10px;
-      background: #0a1f2d;
-      color: var(--txt);
-      padding: 0.68rem 0.72rem;
-      font-size: 0.95rem;
+      background: #0a2331;
+      color: var(--text);
+      padding: 0.72rem 0.78rem;
+      font-size: 0.96rem;
     }
 
     input:focus, select:focus {
-      outline: 2px solid #4db7ff;
+      outline: 2px solid #56bfff;
       border-color: transparent;
     }
 
-    .checks {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 0.45rem;
-    }
-
-    .check {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      border: 1px solid #255069;
-      border-radius: 10px;
-      background: #0b202d;
-      padding: 0.45rem 0.55rem;
-      font-size: 0.92rem;
-    }
-
-    .check input { width: auto; margin: 0; }
-
-    .small {
-      font-size: 0.82rem;
-      color: #a6c4d7;
-    }
-
     details {
-      border: 1px solid #255069;
-      background: #0a1f2d;
+      border: 1px solid #2b6078;
       border-radius: 10px;
-      padding: 0.6rem;
+      background: #0a2030;
+      padding: 0.58rem;
+      max-width: 620px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     summary {
       cursor: pointer;
       font-weight: 700;
-      color: #d7ecf8;
-      margin-bottom: 0.45rem;
+      color: #d7ebf9;
     }
 
     .disc {
-      max-height: 160px;
+      margin-top: 0.55rem;
+      max-height: 168px;
       overflow: auto;
-      padding-right: 0.4rem;
-      line-height: 1.35;
       font-size: 0.8rem;
+      line-height: 1.35;
       color: #bdd6e6;
+      padding-right: 0.25rem;
+    }
+
+    .accept {
+      display: flex;
+      align-items: start;
+      gap: 0.45rem;
+      border: 1px solid #2a5b74;
+      background: #0b2231;
+      border-radius: 10px;
+      padding: 0.55rem;
+      max-width: 620px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .accept input {
+      width: auto;
+      margin-top: 0.15rem;
+    }
+
+    .accept span {
+      font-size: 0.9rem;
+      color: #d6e9f7;
     }
 
     .actions {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.55rem;
-      margin-top: 0.1rem;
+      margin-top: 0.25rem;
     }
 
     button {
       border: 0;
       border-radius: 10px;
-      padding: 0.7rem 0.95rem;
+      padding: 0.72rem 1rem;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .btn-next, .btn-submit { background: var(--accent); color: #042116; }
-    .btn-prev { background: #23485c; color: #e7f4ff; }
-    .btn-preview { background: #68bff0; color: #082130; }
-    .btn-alt { background: #1c3f54; color: #e8f4ff; }
+    .btn-prev {
+      background: var(--btn-alt);
+      color: #eaf5ff;
+    }
+
+    .btn-next, .btn-submit {
+      background: var(--btn);
+      color: #062418;
+    }
+
+    .btn-admin {
+      background: #6ebff0;
+      color: #0b2534;
+    }
+
+    .btn-dark {
+      background: #1d445a;
+      color: #e9f5ff;
+    }
 
     .status {
-      margin-top: 0.35rem;
+      margin: 0.45rem 0 0;
       min-height: 1.2rem;
-      color: var(--ok);
       font-weight: 700;
+      color: var(--ok);
+      text-align: center;
     }
 
     .warning { color: var(--warn); }
 
     .result {
       margin-top: 0.35rem;
-      border: 1px dashed #3f6b84;
+      border: 1px dashed #3f6e88;
       border-radius: 12px;
-      padding: 0.8rem;
-      background: rgba(0,0,0,0.2);
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: #dff0fb;
     }
 
     .hidden { display: none !important; }
 
-    @media (max-width: 760px) {
-      .grid { grid-template-columns: 1fr; }
-      .wrap { margin-top: 0.9rem; }
+    @media (max-width: 720px) {
+      .step { min-height: 210px; }
     }
   </style>
 </head>
@@ -240,26 +275,24 @@
         <img src="/images/logocdl.avif" alt="ConDineroLibre">
       </div>
       <h1>Inscripcion al curso<br>Trading de Precision Curso Express</h1>
-      <p class="muted">Te tomara 1-2 minutos. Vamos por partes para que sea facil.</p>
+      <p class="intro">Formulario corto, guiado y por partes. Si no sabes una respuesta, marca No se.</p>
 
       <div class="progress-wrap">
-        <span class="progress-label" id="progressLabel">Paso 1 de 3</span>
+        <span class="progress-label" id="progressLabel">Paso 1</span>
         <div class="progress"><span id="progressBar"></span></div>
       </div>
     </section>
 
     <section class="card hidden" id="adminPanel">
-      <h2 class="step-title">Panel interno CRM</h2>
-      <p class="muted">Crea links de campana para seguimiento de origen.</p>
-      <div class="grid">
-        <div class="field">
-          <label for="crmEmail">Email destino CRM</label>
-          <input id="crmEmail" type="email" placeholder="crm@condinerolibre.com">
-        </div>
-        <div class="field">
-          <label for="refCode">Codigo de campana / asesor</label>
-          <input id="refCode" type="text" placeholder="ej: cdl-abril-asesor01">
-        </div>
+      <h2 style="margin-top:0; text-align:center;">Panel interno CRM</h2>
+      <p class="intro">Solo para generar link de campana.</p>
+      <div class="field">
+        <label for="crmEmail">Email destino CRM</label>
+        <input id="crmEmail" type="email" placeholder="crm@condinerolibre.com">
+      </div>
+      <div class="field">
+        <label for="refCode">Codigo de campana / asesor</label>
+        <input id="refCode" type="text" placeholder="ej: cdl-abril-asesor01">
       </div>
       <div class="field">
         <label for="shareLink">Link para compartir</label>
@@ -267,8 +300,8 @@
       </div>
       <div class="actions">
         <button type="button" id="buildLinkBtn" class="btn-next">Generar link</button>
-        <button type="button" id="copyLinkBtn" class="btn-preview">Copiar link</button>
-        <button type="button" id="emailBtn" class="btn-alt">Abrir email listo</button>
+        <button type="button" id="copyLinkBtn" class="btn-admin">Copiar link</button>
+        <button type="button" id="emailBtn" class="btn-dark">Abrir email listo</button>
       </div>
       <p class="status" id="shareStatus" aria-live="polite"></p>
     </section>
@@ -280,141 +313,261 @@
         <input type="hidden" name="subject" id="subjectInput" data-remove-prefix value="Nueva inscripcion Curso Express">
         <input type="hidden" name="fuente_link" id="fuenteLink">
         <input type="hidden" name="nivel_calculado" id="nivelCalculadoInput">
+        <input type="hidden" name="quiz_score" id="quizScoreInput">
+        <input type="hidden" name="quiz_resultado" id="quizResultadoInput">
 
-        <div class="step active" data-step="1">
-          <h2 class="step-title">Paso 1: Tus datos basicos</h2>
-          <p class="small">Solo lo minimo para enviarte el acceso y orientarte mejor.</p>
-          <div class="grid">
-            <div class="field">
-              <label for="nombre">Nombre</label>
-              <input id="nombre" name="nombre" required>
-            </div>
-            <div class="field">
-              <label for="pais">Pais</label>
-              <input id="pais" name="pais" required>
-            </div>
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required>
-            </div>
-            <div class="field">
-              <label for="whatsapp">WhatsApp</label>
-              <input id="whatsapp" name="whatsapp" placeholder="+34..." required>
-            </div>
-          </div>
-        </div>
-
-        <div class="step" data-step="2">
-          <h2 class="step-title">Paso 2: Tu punto de partida</h2>
-          <p class="small">No pasa nada si no sabes, aqui vale responder sin presion.</p>
-          <div class="grid">
-            <div class="field">
-              <label for="nivelPercibido">Como describirias tu experiencia en trading</label>
-              <select id="nivelPercibido" name="nivel_percibido" required>
-                <option value="">Selecciona una opcion</option>
-                <option>Nunca he hecho trading</option>
-                <option>Estoy aprendiendo</option>
-                <option>He operado algunas veces</option>
-                <option>Opero regularmente</option>
-                <option>No se nada todavia</option>
-                <option>No se</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="tiempoInteres">Cuanto tiempo llevas interesado en trading</label>
-              <select id="tiempoInteres" name="tiempo_interes" required>
-                <option value="">Selecciona una opcion</option>
-                <option>Apenas estoy empezando</option>
-                <option>Menos de 3 meses</option>
-                <option>3 a 12 meses</option>
-                <option>Mas de 1 ano</option>
-                <option>No recuerdo</option>
-                <option>No se</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="perdioDinero">Has perdido dinero intentando hacer trading</label>
-              <select id="perdioDinero" name="perdio_dinero" required>
-                <option value="">Selecciona una opcion</option>
-                <option>Nunca he operado</option>
-                <option>Si, poco</option>
-                <option>Si, bastante</option>
-                <option>Prefiero no decir</option>
-                <option>No se</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="objetivo">Que te gustaria lograr con el trading</label>
-              <select id="objetivo" name="objetivo" required>
-                <option value="">Selecciona una opcion</option>
-                <option>Generar ingresos extra</option>
-                <option>Aprender a invertir</option>
-                <option>Tener independencia financiera</option>
-                <option>Entender los mercados</option>
-                <option>Solo curiosidad</option>
-                <option>No estoy seguro aun</option>
-                <option>No se</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="step" data-step="3">
-          <h2 class="step-title">Paso 3: Ultimos detalles (opcional + legal)</h2>
-          <p class="small">Este bloque nos ayuda a personalizar mejor tu ruta.</p>
+        <div class="step active" id="step-personal">
+          <h2>Paso 1: Tus datos</h2>
+          <p class="small">Rapido y simple.</p>
 
           <div class="field">
-            <label>Que es lo que mas te cuesta entender del trading (opcional, multiple)</label>
-            <div class="checks">
-              <label class="check"><input type="checkbox" name="dificultad" value="Cuando entrar al mercado"> Cuando entrar al mercado</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="Cuando salir"> Cuando salir</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="Leer graficos"> Leer graficos</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="Controlar perdidas"> Controlar perdidas</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="No se por donde empezar"> No se por donde empezar</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="No se nada todavia"> No se nada todavia</label>
-              <label class="check"><input type="checkbox" name="dificultad" value="No se"> No se</label>
-            </div>
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" required>
           </div>
 
-          <div class="grid">
-            <div class="field">
-              <label for="miniTest">Mini test opcional: si un precio sube muy rapido normalmente...</label>
-              <select id="miniTest" name="mini_test">
-                <option value="">No se</option>
-                <option>Es buen momento para comprar</option>
-                <option>Puede ser peligroso entrar tarde</option>
-                <option>No se</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="tiempoDedicar">Cuanto tiempo podrias dedicar al aprendizaje (opcional)</label>
-              <select id="tiempoDedicar" name="tiempo_dedicar">
-                <option value="">No se</option>
-                <option>15 minutos al dia</option>
-                <option>30 minutos al dia</option>
-                <option>1 hora al dia</option>
-                <option>Solo fines de semana</option>
-                <option>No se aun</option>
-              </select>
-            </div>
+          <div class="field">
+            <label for="apellido">Apellido</label>
+            <input id="apellido" name="apellido" required>
+          </div>
+
+          <div class="field">
+            <label for="pais">Pais</label>
+            <input id="pais" name="pais" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required>
+          </div>
+
+          <div class="field">
+            <label for="whatsapp">WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" placeholder="+34..." required>
+          </div>
+        </div>
+
+        <div class="step" id="step-nivel">
+          <h2>Paso 2: Tu experiencia</h2>
+          <p class="small">Nos ayuda a adaptar las siguientes preguntas.</p>
+          <div class="field">
+            <label for="nivelPercibido">Como describirias tu experiencia en trading</label>
+            <select id="nivelPercibido" name="nivel_percibido" required>
+              <option value="">Selecciona una opcion</option>
+              <option>Nunca he hecho trading</option>
+              <option>Estoy aprendiendo</option>
+              <option>He operado algunas veces</option>
+              <option>Opero regularmente</option>
+              <option>No se nada todavia</option>
+              <option>No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-tiempo">
+          <h2>Paso 3</h2>
+          <div class="field">
+            <label for="tiempoInteres">Cuanto tiempo llevas interesado en trading</label>
+            <select id="tiempoInteres" name="tiempo_interes" required>
+              <option value="">Selecciona una opcion</option>
+              <option>Apenas estoy empezando</option>
+              <option>Menos de 3 meses</option>
+              <option>3 a 12 meses</option>
+              <option>Mas de 1 ano</option>
+              <option>No recuerdo</option>
+              <option>No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-objetivo">
+          <h2>Paso 4</h2>
+          <div class="field">
+            <label for="objetivo">Que te gustaria lograr con el trading</label>
+            <select id="objetivo" name="objetivo" required>
+              <option value="">Selecciona una opcion</option>
+              <option>Generar ingresos extra</option>
+              <option>Aprender a invertir</option>
+              <option>Tener independencia financiera</option>
+              <option>Entender los mercados</option>
+              <option>Solo curiosidad</option>
+              <option>No estoy seguro aun</option>
+              <option>No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q1">
+          <h2>Filtro rapido 1/10</h2>
+          <div class="field">
+            <label for="q1">En un grafico, que color suele representar que el precio subio</label>
+            <select id="q1" name="q1" required>
+              <option value="">Selecciona</option>
+              <option value="A">Rojo</option>
+              <option value="B">Verde</option>
+              <option value="C">Azul</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q2">
+          <h2>Filtro rapido 2/10</h2>
+          <div class="field">
+            <label for="q2">Que herramienta usas para cerrar una operacion automaticamente si vas perdiendo</label>
+            <select id="q2" name="q2" required>
+              <option value="">Selecciona</option>
+              <option value="A">Take Profit</option>
+              <option value="B">Stop Loss</option>
+              <option value="C">Boton de panico</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q3">
+          <h2>Filtro rapido 3/10</h2>
+          <div class="field">
+            <label for="q3">Si compras una accion a $100 y la vendes a $110, que tipo de operacion hiciste</label>
+            <select id="q3" name="q3" required>
+              <option value="">Selecciona</option>
+              <option value="A">Operacion en Largo (Compra)</option>
+              <option value="B">Operacion en Corto (Venta)</option>
+              <option value="C">Un prestamo</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q4">
+          <h2>Filtro rapido 4/10</h2>
+          <div class="field">
+            <label for="q4">Como se llama la diferencia de precio entre compra y venta</label>
+            <select id="q4" name="q4" required>
+              <option value="">Selecciona</option>
+              <option value="A">Impuesto</option>
+              <option value="B">Spread</option>
+              <option value="C">Propina</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q5">
+          <h2>Filtro rapido 5/10</h2>
+          <div class="field">
+            <label for="q5">Cual de estos NO es un mercado financiero</label>
+            <select id="q5" name="q5" required>
+              <option value="">Selecciona</option>
+              <option value="A">Forex (Divisas)</option>
+              <option value="B">Criptomonedas</option>
+              <option value="C">Netflix</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q6">
+          <h2>Nivel extra 6/10</h2>
+          <div class="field">
+            <label for="q6">Que significa apalancarse</label>
+            <select id="q6" name="q6" required>
+              <option value="">Selecciona</option>
+              <option value="A">Operar con mas dinero del que tienes</option>
+              <option value="B">Retirar todas tus ganancias al banco</option>
+              <option value="C">Estudiar mucho antes de invertir</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q7">
+          <h2>Nivel extra 7/10</h2>
+          <div class="field">
+            <label for="q7">Que analiza el Analisis Tecnico</label>
+            <select id="q7" name="q7" required>
+              <option value="">Selecciona</option>
+              <option value="A">Noticias y discursos</option>
+              <option value="B">Graficos y movimientos de precio</option>
+              <option value="C">Tecnologia de computadoras</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q8">
+          <h2>Nivel extra 8/10</h2>
+          <div class="field">
+            <label for="q8">Si el mercado esta en tendencia alcista, el precio esta</label>
+            <select id="q8" name="q8" required>
+              <option value="">Selecciona</option>
+              <option value="A">Bajando</option>
+              <option value="B">Subiendo</option>
+              <option value="C">Quieto</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q9">
+          <h2>Nivel extra 9/10</h2>
+          <div class="field">
+            <label for="q9">Que es un Trader Intradia (Day Trader)</label>
+            <select id="q9" name="q9" required>
+              <option value="">Selecciona</option>
+              <option value="A">Abre y cierra operaciones el mismo dia</option>
+              <option value="B">Opera una vez al mes</option>
+              <option value="C">Trabaja solo de noche</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-q10">
+          <h2>Nivel extra 10/10</h2>
+          <div class="field">
+            <label for="q10">Cual es la regla de oro para no perder todo tu dinero</label>
+            <select id="q10" name="q10" required>
+              <option value="">Selecciona</option>
+              <option value="A">Invertir todo en una sola operacion</option>
+              <option value="B">Gestionar el riesgo y no arriesgar todo</option>
+              <option value="C">Esperar a que siempre suba</option>
+              <option value="NS">No se</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step" id="step-disclaimer">
+          <h2>Ultimo paso</h2>
+          <p class="small">Gracias por llegar hasta aqui.</p>
+
+          <div class="field">
+            <label for="perdioDinero">Has perdido dinero intentando hacer trading</label>
+            <select id="perdioDinero" name="perdio_dinero" required>
+              <option value="">Selecciona una opcion</option>
+              <option>Nunca he operado</option>
+              <option>Si, poco</option>
+              <option>Si, bastante</option>
+              <option>Prefiero no decir</option>
+              <option>No se</option>
+            </select>
           </div>
 
           <details>
-            <summary>Descargo de responsabilidad (leer)</summary>
+            <summary>Descargo de Responsabilidad (leer)</summary>
             <div class="disc">
               <p><strong>Descargo de Responsabilidad para Transmision de Mentoria y Analisis de Trading</strong></p>
-              <p>El trading en mercados financieros conlleva riesgos significativos. La informacion compartida por ConDineroLibre y Pietro Giordano es educativa y no constituye asesoramiento financiero.</p>
-              <p>Ni Pietro Giordano ni el canal ConDineroLibre son responsables por decisiones de inversion tomadas por los espectadores. Cada persona invierte bajo su propio riesgo.</p>
-              <p>El analisis presentado es independiente y de buena fe. Resultados pasados no garantizan resultados futuros. Cada espectador debe hacer su propio analisis.</p>
-              <p>Productos como CFD son apalancados y pueden amplificar ganancias y perdidas. Es clave comprender los riesgos antes de operar.</p>
-              <p>Se recomienda buscar asesoramiento financiero profesional antes de invertir. Cada situacion es distinta y requiere evaluacion personalizada.</p>
+              <p>El trading en mercados financieros, incluyendo divisas, acciones, criptomonedas y otros instrumentos, conlleva riesgos significativos. Esta informacion es solo educativa y no constituye asesoramiento financiero.</p>
+              <p>Ni Pietro Giordano ni ConDineroLibre son responsables por decisiones de inversion tomadas por los espectadores. Toda decision se toma bajo riesgo y responsabilidad personal.</p>
+              <p>El analisis presentado se basa en criterio personal e independiente de Pietro Giordano. Resultados pasados no garantizan resultados futuros.</p>
+              <p>Productos como CFD son apalancados y pueden amplificar ganancias y perdidas. Es fundamental comprender totalmente los riesgos.</p>
+              <p>Se recomienda buscar asesoramiento financiero profesional antes de invertir. Cada situacion financiera es unica.</p>
               <p>Al continuar, aceptas estos terminos y reconoces que el trading no garantiza ganancias.</p>
             </div>
           </details>
 
-          <label class="check" for="aceptoDisclaimer">
+          <label class="accept" for="aceptoDisclaimer">
             <input id="aceptoDisclaimer" type="checkbox" name="disclaimer_aceptado" value="si" required>
-            Acepto el descargo de responsabilidad.
+            <span>Acepto el descargo de responsabilidad.</span>
           </label>
         </div>
 
@@ -422,44 +575,54 @@
           <button type="button" class="btn-prev" id="prevBtn" disabled>Atras</button>
           <button type="button" class="btn-next" id="nextBtn">Siguiente</button>
           <button type="submit" class="btn-submit hidden" id="submitBtn">Enviar inscripcion</button>
-          <button type="button" class="btn-preview" id="previewLevelBtn">Ver mi nivel</button>
         </div>
 
         <p class="status" id="formStatus" aria-live="polite"></p>
-        <div class="result" id="nivelResult" hidden></div>
+        <div class="result hidden" id="nivelResult"></div>
       </form>
     </section>
   </main>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdminView = urlParams.get("admin") === "1";
-    const adminPanel = document.getElementById("adminPanel");
-    adminPanel.classList.toggle("hidden", !isAdminView);
+    const CORRECT = {
+      q1: "B", q2: "B", q3: "A", q4: "B", q5: "C",
+      q6: "A", q7: "B", q8: "B", q9: "A", q10: "B"
+    };
+
+    const BASE_FLOW = ["step-personal", "step-nivel", "step-tiempo", "step-objetivo", "step-q1", "step-q2", "step-q3"];
+    const MID_FLOW = ["step-q4", "step-q5"];
+    const ADV_FLOW = ["step-q6", "step-q7", "step-q8", "step-q9", "step-q10"];
 
     const surveyForm = document.getElementById("surveyForm");
-    const nombreInput = document.getElementById("nombre");
-    const nivelPercibido = document.getElementById("nivelPercibido");
-    const tiempoInteres = document.getElementById("tiempoInteres");
-    const fuenteLink = document.getElementById("fuenteLink");
-    const subjectInput = document.getElementById("subjectInput");
-    const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
     const nivelResult = document.getElementById("nivelResult");
     const formStatus = document.getElementById("formStatus");
+
+    const nombreInput = document.getElementById("nombre");
+    const apellidoInput = document.getElementById("apellido");
+    const nivelPercibido = document.getElementById("nivelPercibido");
+    const tiempoInteres = document.getElementById("tiempoInteres");
+    const sourceInput = document.getElementById("fuenteLink");
+    const subjectInput = document.getElementById("subjectInput");
+    const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
+    const quizScoreInput = document.getElementById("quizScoreInput");
+    const quizResultadoInput = document.getElementById("quizResultadoInput");
 
     const shareLinkInput = document.getElementById("shareLink");
     const crmEmailInput = document.getElementById("crmEmail");
     const refCodeInput = document.getElementById("refCode");
     const shareStatus = document.getElementById("shareStatus");
 
-    const steps = Array.from(document.querySelectorAll(".step"));
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const submitBtn = document.getElementById("submitBtn");
-    const progressBar = document.getElementById("progressBar");
-    const progressLabel = document.getElementById("progressLabel");
+    const adminPanel = document.getElementById("adminPanel");
+    const isAdminView = new URLSearchParams(window.location.search).get("admin") === "1";
+    adminPanel.classList.toggle("hidden", !isAdminView);
 
-    let currentStep = 0;
+    let currentFlow = [];
+    let currentStepIndex = 0;
 
     function getSourceFromUrl() {
       const params = new URLSearchParams(window.location.search);
@@ -473,69 +636,72 @@
       return url.toString();
     }
 
-    function buildNotificationSubject(leadLabel) {
-      const source = getSourceFromUrl();
-      const nombre = (nombreInput.value || "Prospecto sin nombre").trim().replace(/\s+/g, " ");
-      return "Nueva inscripcion: " + nombre + " | " + leadLabel + " | src:" + source;
+    function isIgnorantTrack() {
+      const value = (nivelPercibido.value || "").toLowerCase();
+      return value.includes("nunca he hecho") || value.includes("no se nada") || value === "no se";
     }
 
-    function classifyLead() {
-      const nivel = (nivelPercibido.value || "").toLowerCase();
-      const tiempo = (tiempoInteres.value || "").toLowerCase();
-
-      if (nivel.includes("opero regularmente")) {
-        return {
-          label: "Nivel 3 - Avanzado",
-          detail: "Tienes base operativa. Te puede encajar un plan avanzado o mentoria."
-        };
-      }
-
-      if (nivel.includes("nunca he hecho") || nivel.includes("no se nada")) {
-        return {
-          label: "Nivel 0 - Nuevo total",
-          detail: "Perfecto para empezar por una ruta clara desde cero."
-        };
-      }
-
-      if ((nivel.includes("he operado") || nivel.includes("algunas veces")) && (tiempo.includes("3 a 12") || tiempo.includes("mas de 1"))) {
-        return {
-          label: "Nivel 2 - Intermedio",
-          detail: "Ya tienes recorrido. Puedes avanzar con practica guiada y estructura."
-        };
-      }
-
-      return {
-        label: "Nivel 1 - Curioso activo",
-        detail: "Estas en fase de aprendizaje activa. Muy buen momento para consolidar base."
-      };
+    function scoreQuestions(questionIds) {
+      let score = 0;
+      let answered = 0;
+      questionIds.forEach((id) => {
+        const field = document.getElementById(id);
+        if (!field) return;
+        const value = field.value;
+        if (!value) return;
+        answered += 1;
+        if (value === CORRECT[id]) score += 1;
+      });
+      return { score, answered };
     }
 
-    function renderLevel(show = true) {
-      const lead = classifyLead();
-      nivelCalculadoInput.value = lead.label;
-      if (!show) return lead;
-
-      nivelResult.hidden = false;
-      nivelResult.innerHTML = "<strong>Tu nivel estimado: " + lead.label + "</strong><br>" + lead.detail;
-      return lead;
+    function shouldEnableAdvanced() {
+      const first = scoreQuestions(["q1", "q2", "q3", "q4", "q5"]);
+      return first.answered >= 5 && first.score >= 3;
     }
 
-    function updateStepUI() {
-      steps.forEach((step, index) => step.classList.toggle("active", index === currentStep));
+    function computeFlow() {
+      let flow = [...BASE_FLOW];
 
-      prevBtn.disabled = currentStep === 0;
-      const isLastStep = currentStep === steps.length - 1;
-      nextBtn.classList.toggle("hidden", isLastStep);
-      submitBtn.classList.toggle("hidden", !isLastStep);
+      if (!isIgnorantTrack()) {
+        flow = flow.concat(MID_FLOW);
+        if (shouldEnableAdvanced()) {
+          flow = flow.concat(ADV_FLOW);
+        }
+      }
 
-      const pct = ((currentStep + 1) / steps.length) * 100;
+      flow.push("step-disclaimer");
+      return flow;
+    }
+
+    function showCurrentStep() {
+      document.querySelectorAll(".step").forEach((step) => {
+        step.classList.remove("active");
+      });
+
+      const activeId = currentFlow[currentStepIndex];
+      const active = document.getElementById(activeId);
+      if (active) {
+        active.classList.add("active");
+      }
+
+      prevBtn.disabled = currentStepIndex === 0;
+      const isLast = currentStepIndex === currentFlow.length - 1;
+      nextBtn.classList.toggle("hidden", isLast);
+      submitBtn.classList.toggle("hidden", !isLast);
+
+      const pct = ((currentStepIndex + 1) / currentFlow.length) * 100;
       progressBar.style.width = pct + "%";
-      progressLabel.textContent = "Paso " + (currentStep + 1) + " de " + steps.length;
+      progressLabel.textContent = "Paso " + (currentStepIndex + 1) + " de " + currentFlow.length;
     }
 
     function validateCurrentStep() {
-      const fields = steps[currentStep].querySelectorAll("input[required], select[required]");
-      for (const field of fields) {
+      const activeId = currentFlow[currentStepIndex];
+      const activeStep = document.getElementById(activeId);
+      if (!activeStep) return true;
+
+      const requiredFields = activeStep.querySelectorAll("input[required], select[required]");
+      for (const field of requiredFields) {
         if (!field.reportValidity()) {
           return false;
         }
@@ -543,18 +709,55 @@
       return true;
     }
 
+    function classifyLeadByExperience() {
+      const nivel = (nivelPercibido.value || "").toLowerCase();
+      const tiempo = (tiempoInteres.value || "").toLowerCase();
+
+      if (nivel.includes("opero regularmente")) return "Nivel 3 - Avanzado";
+      if (nivel.includes("nunca he hecho") || nivel.includes("no se nada")) return "Nivel 0 - Nuevo total";
+      if ((nivel.includes("he operado") || nivel.includes("algunas veces")) && (tiempo.includes("3 a 12") || tiempo.includes("mas de 1"))) return "Nivel 2 - Intermedio";
+      return "Nivel 1 - Curioso activo";
+    }
+
+    function classifyKnowledge(score, answered) {
+      if (answered >= 8) {
+        if (score >= 8) return "8-10 aciertos: Tiene conocimientos basicos claros.";
+        if (score >= 5) return "5-7 aciertos: Es principiante o ha visto poco contenido.";
+        return "Menos de 5 aciertos: Necesita formacion desde cero.";
+      }
+
+      const ratio = answered > 0 ? score / answered : 0;
+      if (ratio >= 0.7) return "Base clara para avanzar (ruta corta).";
+      if (ratio >= 0.45) return "Base inicial, conviene reforzar fundamentos.";
+      return "Necesita iniciar desde cero con ruta guiada.";
+    }
+
+    function buildNotificationSubject(leadLabel, score, answered) {
+      const source = getSourceFromUrl();
+      const fullName = ((nombreInput.value || "") + " " + (apellidoInput.value || "")).trim() || "Prospecto sin nombre";
+      return "Nueva inscripcion: " + fullName + " | " + leadLabel + " | " + score + "/" + answered + " | src:" + source;
+    }
+
     prevBtn.addEventListener("click", () => {
-      if (currentStep > 0) {
-        currentStep -= 1;
-        updateStepUI();
+      if (currentStepIndex > 0) {
+        currentStepIndex -= 1;
+        showCurrentStep();
       }
     });
 
     nextBtn.addEventListener("click", () => {
       if (!validateCurrentStep()) return;
-      if (currentStep < steps.length - 1) {
-        currentStep += 1;
-        updateStepUI();
+
+      const activeId = currentFlow[currentStepIndex];
+      if (activeId === "step-nivel" || activeId === "step-q5") {
+        const previousId = currentFlow[currentStepIndex];
+        currentFlow = computeFlow();
+        currentStepIndex = Math.max(0, currentFlow.indexOf(previousId));
+      }
+
+      if (currentStepIndex < currentFlow.length - 1) {
+        currentStepIndex += 1;
+        showCurrentStep();
       }
     });
 
@@ -599,19 +802,20 @@
       window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     });
 
-    document.getElementById("previewLevelBtn").addEventListener("click", () => {
-      renderLevel(true);
-      formStatus.textContent = "Listo. Este seria tu nivel actual.";
-    });
-
     surveyForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-
       if (!validateCurrentStep()) return;
 
-      fuenteLink.value = getSourceFromUrl();
-      const lead = renderLevel(false);
-      subjectInput.value = buildNotificationSubject(lead.label);
+      sourceInput.value = getSourceFromUrl();
+
+      const leadLevel = classifyLeadByExperience();
+      const quiz = scoreQuestions(["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"]);
+      const quizText = classifyKnowledge(quiz.score, quiz.answered);
+
+      nivelCalculadoInput.value = leadLevel;
+      quizScoreInput.value = quiz.score + "/" + quiz.answered;
+      quizResultadoInput.value = quizText;
+      subjectInput.value = buildNotificationSubject(leadLevel, quiz.score, quiz.answered);
 
       const formData = new FormData(surveyForm);
 
@@ -625,21 +829,24 @@
           body: new URLSearchParams(formData).toString()
         });
 
-        nivelResult.hidden = false;
-        nivelResult.innerHTML = "<strong>Gracias por inscribirte.</strong><br>Tu clasificacion: " + lead.label + "<br>Te contactaremos pronto para el siguiente paso.";
+        nivelResult.classList.remove("hidden");
+        nivelResult.innerHTML = "<strong>Gracias por tu inscripcion.</strong><br>Te escribiremos con tu ruta recomendada para empezar el curso.<br><br><strong>Resultado rapido:</strong> " + quizText;
         formStatus.textContent = "Inscripcion enviada con exito.";
         surveyForm.reset();
-        currentStep = 0;
-        updateStepUI();
+
+        currentFlow = computeFlow();
+        currentStepIndex = 0;
+        showCurrentStep();
       } catch (err) {
         formStatus.innerHTML = '<span class="warning">No pudimos validar la respuesta del servidor, pero el envio pudo haberse procesado. Revisa Netlify Forms.</span>';
       }
     });
 
     (function init() {
+      sourceInput.value = getSourceFromUrl();
       shareLinkInput.value = buildShareLink();
-      fuenteLink.value = getSourceFromUrl();
-      updateStepUI();
+      currentFlow = computeFlow();
+      showCurrentStep();
     })();
   </script>
 </body>
