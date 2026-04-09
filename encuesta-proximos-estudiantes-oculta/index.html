@@ -3,114 +3,196 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDL | Encuesta Oculta de Diagnóstico</title>
+  <title>Inscripcion al curso | Trading de Precision Curso Express</title>
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
   <style>
     :root {
-      --bg: #07121a;
-      --bg-soft: #0d1f2b;
-      --card: #122a38;
-      --line: #1f4154;
-      --text: #e7f3fc;
-      --muted: #8fb0c5;
-      --accent: #29d17a;
-      --accent-2: #ffce4d;
-      --danger: #ff6b6b;
-      --ok: #64e39f;
+      --bg-1: #081a24;
+      --bg-2: #0d2a3a;
+      --card: #102636;
+      --line: #1f4a61;
+      --txt: #e8f4ff;
+      --muted: #9fc0d5;
+      --ok: #22d083;
+      --warn: #ff8080;
+      --cta: #ffd04f;
+      --accent: #37d987;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      color: var(--txt);
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at 10% 0%, #113147, var(--bg) 55%), linear-gradient(145deg, #051018, #0a1b26);
-      color: var(--text);
+      background: radial-gradient(circle at 10% 5%, #13344a, var(--bg-1) 55%), linear-gradient(140deg, #07131b, var(--bg-2));
       min-height: 100vh;
-      line-height: 1.45;
     }
 
     .wrap {
-      width: min(980px, 94vw);
-      margin: 2rem auto 3rem;
+      width: min(900px, 94vw);
+      margin: 1.2rem auto 2.5rem;
       display: grid;
       gap: 1rem;
     }
 
     .card {
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
       border: 1px solid var(--line);
       border-radius: 16px;
+      background: linear-gradient(155deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
       padding: 1rem;
-      backdrop-filter: blur(6px);
     }
 
-    h1, h2, h3 {
-      margin: 0 0 0.6rem;
-      line-height: 1.2;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand img {
+      width: 150px;
+      max-width: 42vw;
+      height: auto;
     }
 
     h1 {
-      font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-      color: var(--accent-2);
-    }
-
-    .sub {
-      color: var(--muted);
       margin: 0;
+      color: var(--cta);
+      line-height: 1.15;
+      font-size: clamp(1.25rem, 2.2vw, 1.8rem);
     }
 
-    .grid {
-      display: grid;
-      gap: 0.8rem;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    p { margin: 0.35rem 0; }
 
-    .grid.single {
-      grid-template-columns: minmax(0, 1fr);
-    }
+    .muted { color: var(--muted); }
 
-    .field {
+    .progress-wrap {
+      margin-top: 0.6rem;
       display: grid;
       gap: 0.35rem;
     }
 
+    .progress-label {
+      color: #b4d0e2;
+      font-size: 0.9rem;
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #173345;
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 33.333%;
+      background: linear-gradient(90deg, #1ecf7c, #6de3b0);
+      transition: width 0.25s ease;
+    }
+
+    .step {
+      display: none;
+      gap: 0.8rem;
+    }
+
+    .step.active {
+      display: grid;
+    }
+
+    .step-title {
+      margin: 0;
+      font-size: 1.07rem;
+      color: #d7ebf8;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.3rem;
+    }
+
     label {
-      color: #c9e0ee;
-      font-size: 0.95rem;
+      font-size: 0.93rem;
+      color: #d2e8f6;
       font-weight: 600;
     }
 
-    input, select, textarea {
-      border: 1px solid #2f5469;
-      background: #0b1d28;
-      color: var(--text);
-      border-radius: 10px;
-      padding: 0.7rem 0.75rem;
+    input, select {
       width: 100%;
+      border: 1px solid #2a5a73;
+      border-radius: 10px;
+      background: #0a1f2d;
+      color: var(--txt);
+      padding: 0.68rem 0.72rem;
       font-size: 0.95rem;
     }
 
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: 2px solid #2ea5ff;
+    input:focus, select:focus {
+      outline: 2px solid #4db7ff;
       border-color: transparent;
     }
 
-    .hint {
-      color: var(--muted);
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 0.45rem;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 1px solid #255069;
+      border-radius: 10px;
+      background: #0b202d;
+      padding: 0.45rem 0.55rem;
+      font-size: 0.92rem;
+    }
+
+    .check input { width: auto; margin: 0; }
+
+    .small {
       font-size: 0.82rem;
+      color: #a6c4d7;
+    }
+
+    details {
+      border: 1px solid #255069;
+      background: #0a1f2d;
+      border-radius: 10px;
+      padding: 0.6rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #d7ecf8;
+      margin-bottom: 0.45rem;
+    }
+
+    .disc {
+      max-height: 160px;
+      overflow: auto;
+      padding-right: 0.4rem;
+      line-height: 1.35;
+      font-size: 0.8rem;
+      color: #bdd6e6;
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.55rem;
-      margin-top: 0.3rem;
+      margin-top: 0.1rem;
     }
 
     button {
@@ -119,255 +201,228 @@
       padding: 0.7rem 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      color: #03111a;
-      background: var(--accent);
-      transition: transform 0.14s ease, filter 0.14s ease;
     }
 
-    button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
-    }
-
-    .btn-alt {
-      background: #75ccff;
-    }
-
-    .btn-dark {
-      color: #eaf6ff;
-      background: #1b3849;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid #325569;
-      color: #a9cbdd;
-      border-radius: 999px;
-      padding: 0.2rem 0.55rem;
-      font-size: 0.8rem;
-    }
+    .btn-next, .btn-submit { background: var(--accent); color: #042116; }
+    .btn-prev { background: #23485c; color: #e7f4ff; }
+    .btn-preview { background: #68bff0; color: #082130; }
+    .btn-alt { background: #1c3f54; color: #e8f4ff; }
 
     .status {
-      margin-top: 0.5rem;
-      font-weight: 600;
+      margin-top: 0.35rem;
+      min-height: 1.2rem;
       color: var(--ok);
-    }
-
-    .warning {
-      color: var(--danger);
       font-weight: 700;
     }
 
+    .warning { color: var(--warn); }
+
     .result {
-      border: 1px dashed #3a6379;
+      margin-top: 0.35rem;
+      border: 1px dashed #3f6b84;
       border-radius: 12px;
-      padding: 0.9rem;
-      margin-top: 0.7rem;
-      background: rgba(0, 0, 0, 0.18);
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.2);
     }
 
-    .mini-checks {
-      display: grid;
-      gap: 0.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
+    .hidden { display: none !important; }
 
-    .check-line {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #0b1d28;
-      border: 1px solid #25485d;
-      border-radius: 10px;
-      padding: 0.5rem 0.6rem;
-    }
-
-    .check-line input {
-      width: auto;
-      margin: 0;
-    }
-
-    .optional {
-      border-left: 4px solid #f3c95a;
-      padding-left: 0.8rem;
-    }
-
-    @media (max-width: 740px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .wrap {
-        margin-top: 1rem;
-      }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { margin-top: 0.9rem; }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="card">
-      <span class="pill">Acceso oculto · no indexado</span>
-      <h1>Encuesta rápida de próximos estudiantes</h1>
-      <p class="sub">Duración objetivo: 1-2 minutos. Máximo 8 preguntas base y opción de saltar para subir conversión.</p>
+      <div class="brand">
+        <img src="/images/logocdl.avif" alt="ConDineroLibre">
+      </div>
+      <h1>Inscripcion al curso<br>Trading de Precision Curso Express</h1>
+      <p class="muted">Te tomara 1-2 minutos. Vamos por partes para que sea facil.</p>
+
+      <div class="progress-wrap">
+        <span class="progress-label" id="progressLabel">Paso 1 de 3</span>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
     </section>
 
-    <section class="card" id="adminPanel">
-      <h2>Panel de Compartir CRM</h2>
-      <p class="sub">Genera un enlace con referencia y abre un email listo para enviar desde tu CRM o correo.</p>
+    <section class="card hidden" id="adminPanel">
+      <h2 class="step-title">Panel interno CRM</h2>
+      <p class="muted">Crea links de campana para seguimiento de origen.</p>
       <div class="grid">
         <div class="field">
           <label for="crmEmail">Email destino CRM</label>
-          <input id="crmEmail" type="email" placeholder="crm@condinerolibre.com" value="">
+          <input id="crmEmail" type="email" placeholder="crm@condinerolibre.com">
         </div>
         <div class="field">
-          <label for="refCode">Código de campaña / asesor</label>
+          <label for="refCode">Codigo de campana / asesor</label>
           <input id="refCode" type="text" placeholder="ej: cdl-abril-asesor01">
         </div>
       </div>
-      <div class="grid single">
-        <div class="field">
-          <label for="shareLink">Link para compartir</label>
-          <input id="shareLink" type="text" readonly>
-          <span class="hint">El parámetro src te permite rastrear de dónde llegó el lead.</span>
-        </div>
+      <div class="field">
+        <label for="shareLink">Link para compartir</label>
+        <input id="shareLink" type="text" readonly>
       </div>
       <div class="actions">
-        <button type="button" id="buildLinkBtn">Generar link</button>
-        <button type="button" class="btn-alt" id="copyLinkBtn">Copiar link</button>
-        <button type="button" class="btn-dark" id="emailBtn">Abrir email listo</button>
+        <button type="button" id="buildLinkBtn" class="btn-next">Generar link</button>
+        <button type="button" id="copyLinkBtn" class="btn-preview">Copiar link</button>
+        <button type="button" id="emailBtn" class="btn-alt">Abrir email listo</button>
       </div>
       <p class="status" id="shareStatus" aria-live="polite"></p>
     </section>
 
     <section class="card">
-      <h2>Encuesta de Diagnóstico (8 preguntas base)</h2>
-      <p class="sub">Siempre con salida fácil: cada bloque tiene opción de No sé o Saltar.</p>
-
-      <form id="surveyForm" name="cdl-encuesta-oculta" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="cdl-encuesta-oculta">
+      <form id="surveyForm" name="inscripcion-al-curso-trading-de-precision-curso-express" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="inscripcion-al-curso-trading-de-precision-curso-express">
         <input type="hidden" name="bot-field">
-        <input type="hidden" name="subject" id="subjectInput" data-remove-prefix value="Nuevo prospecto CDL">
+        <input type="hidden" name="subject" id="subjectInput" data-remove-prefix value="Nueva inscripcion Curso Express">
         <input type="hidden" name="fuente_link" id="fuenteLink">
         <input type="hidden" name="nivel_calculado" id="nivelCalculadoInput">
 
-        <div class="grid">
-          <div class="field">
-            <label for="nombre">1) Nombre</label>
-            <input id="nombre" name="nombre" required>
-          </div>
-          <div class="field">
-            <label for="pais">2) País</label>
-            <input id="pais" name="pais" required>
-          </div>
-          <div class="field">
-            <label for="email">3) Email</label>
-            <input id="email" name="email" type="email" required>
-          </div>
-          <div class="field">
-            <label for="whatsapp">4) WhatsApp</label>
-            <input id="whatsapp" name="whatsapp" placeholder="+34..." required>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div class="field">
-            <label for="nivelPercibido">5) ¿Cómo describirías tu experiencia en trading?</label>
-            <select id="nivelPercibido" name="nivel_percibido" required>
-              <option value="">Selecciona una opción</option>
-              <option>Nunca he hecho trading</option>
-              <option>Estoy aprendiendo</option>
-              <option>He operado algunas veces</option>
-              <option>Opero regularmente</option>
-              <option>No sé nada todavía</option>
-              <option>Prefiero saltar</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="tiempoInteres">6) ¿Cuánto tiempo llevas interesado en trading?</label>
-            <select id="tiempoInteres" name="tiempo_interes" required>
-              <option value="">Selecciona una opción</option>
-              <option>Apenas estoy empezando</option>
-              <option>Menos de 3 meses</option>
-              <option>3–12 meses</option>
-              <option>Más de 1 año</option>
-              <option>No recuerdo</option>
-              <option>Prefiero saltar</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="perdioDinero">7) ¿Has perdido dinero intentando hacer trading?</label>
-            <select id="perdioDinero" name="perdio_dinero" required>
-              <option value="">Selecciona una opción</option>
-              <option>Nunca he operado</option>
-              <option>Sí, poco</option>
-              <option>Sí, bastante</option>
-              <option>Prefiero no decir</option>
-              <option>Prefiero saltar</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="objetivo">8) ¿Qué te gustaría lograr con el trading?</label>
-            <select id="objetivo" name="objetivo" required>
-              <option value="">Selecciona una opción</option>
-              <option>Generar ingresos extra</option>
-              <option>Aprender a invertir</option>
-              <option>Tener independencia financiera</option>
-              <option>Entender los mercados</option>
-              <option>Solo curiosidad</option>
-              <option>No estoy seguro aún</option>
-              <option>Prefiero saltar</option>
-            </select>
+        <div class="step active" data-step="1">
+          <h2 class="step-title">Paso 1: Tus datos basicos</h2>
+          <p class="small">Solo lo minimo para enviarte el acceso y orientarte mejor.</p>
+          <div class="grid">
+            <div class="field">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" required>
+            </div>
+            <div class="field">
+              <label for="pais">Pais</label>
+              <input id="pais" name="pais" required>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+            </div>
+            <div class="field">
+              <label for="whatsapp">WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" placeholder="+34..." required>
+            </div>
           </div>
         </div>
 
-        <div class="optional">
-          <h3>Opcional (si quiere responder)</h3>
-          <p class="hint">Este bloque no añade fricción al flujo principal y aporta información de ventas.</p>
+        <div class="step" data-step="2">
+          <h2 class="step-title">Paso 2: Tu punto de partida</h2>
+          <p class="small">No pasa nada si no sabes, aqui vale responder sin presion.</p>
+          <div class="grid">
+            <div class="field">
+              <label for="nivelPercibido">Como describirias tu experiencia en trading</label>
+              <select id="nivelPercibido" name="nivel_percibido" required>
+                <option value="">Selecciona una opcion</option>
+                <option>Nunca he hecho trading</option>
+                <option>Estoy aprendiendo</option>
+                <option>He operado algunas veces</option>
+                <option>Opero regularmente</option>
+                <option>No se nada todavia</option>
+                <option>No se</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="tiempoInteres">Cuanto tiempo llevas interesado en trading</label>
+              <select id="tiempoInteres" name="tiempo_interes" required>
+                <option value="">Selecciona una opcion</option>
+                <option>Apenas estoy empezando</option>
+                <option>Menos de 3 meses</option>
+                <option>3 a 12 meses</option>
+                <option>Mas de 1 ano</option>
+                <option>No recuerdo</option>
+                <option>No se</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="perdioDinero">Has perdido dinero intentando hacer trading</label>
+              <select id="perdioDinero" name="perdio_dinero" required>
+                <option value="">Selecciona una opcion</option>
+                <option>Nunca he operado</option>
+                <option>Si, poco</option>
+                <option>Si, bastante</option>
+                <option>Prefiero no decir</option>
+                <option>No se</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="objetivo">Que te gustaria lograr con el trading</label>
+              <select id="objetivo" name="objetivo" required>
+                <option value="">Selecciona una opcion</option>
+                <option>Generar ingresos extra</option>
+                <option>Aprender a invertir</option>
+                <option>Tener independencia financiera</option>
+                <option>Entender los mercados</option>
+                <option>Solo curiosidad</option>
+                <option>No estoy seguro aun</option>
+                <option>No se</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" data-step="3">
+          <h2 class="step-title">Paso 3: Ultimos detalles (opcional + legal)</h2>
+          <p class="small">Este bloque nos ayuda a personalizar mejor tu ruta.</p>
 
           <div class="field">
-            <label>Mini diagnóstico opcional: ¿Qué es lo que MÁS te cuesta entender del trading? (múltiple)</label>
-            <div class="mini-checks">
-              <label class="check-line"><input type="checkbox" name="dificultad" value="Cuándo entrar al mercado"> Cuándo entrar al mercado</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="Cuándo salir"> Cuándo salir</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="Leer gráficos"> Leer gráficos</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="Controlar pérdidas"> Controlar pérdidas</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="No sé por dónde empezar"> No sé por dónde empezar</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="No sé nada todavía"> No sé nada todavía</label>
-              <label class="check-line"><input type="checkbox" name="dificultad" value="Prefiero saltar"> Prefiero saltar</label>
+            <label>Que es lo que mas te cuesta entender del trading (opcional, multiple)</label>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="dificultad" value="Cuando entrar al mercado"> Cuando entrar al mercado</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="Cuando salir"> Cuando salir</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="Leer graficos"> Leer graficos</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="Controlar perdidas"> Controlar perdidas</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="No se por donde empezar"> No se por donde empezar</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="No se nada todavia"> No se nada todavia</label>
+              <label class="check"><input type="checkbox" name="dificultad" value="No se"> No se</label>
             </div>
           </div>
 
           <div class="grid">
             <div class="field">
-              <label for="miniTest">Mini test (1 pregunta): si un precio sube muy rápido normalmente...</label>
+              <label for="miniTest">Mini test opcional: si un precio sube muy rapido normalmente...</label>
               <select id="miniTest" name="mini_test">
-                <option value="">Prefiero saltar</option>
+                <option value="">No se</option>
                 <option>Es buen momento para comprar</option>
                 <option>Puede ser peligroso entrar tarde</option>
-                <option>No sé</option>
-                <option>Prefiero saltar</option>
+                <option>No se</option>
               </select>
             </div>
-
             <div class="field">
-              <label for="tiempoDedicar">Bonus: ¿cuánto tiempo podrías dedicar al aprendizaje?</label>
+              <label for="tiempoDedicar">Cuanto tiempo podrias dedicar al aprendizaje (opcional)</label>
               <select id="tiempoDedicar" name="tiempo_dedicar">
-                <option value="">Prefiero saltar</option>
-                <option>15 minutos al día</option>
-                <option>30 minutos al día</option>
-                <option>1 hora al día</option>
+                <option value="">No se</option>
+                <option>15 minutos al dia</option>
+                <option>30 minutos al dia</option>
+                <option>1 hora al dia</option>
                 <option>Solo fines de semana</option>
-                <option>No lo sé aún</option>
-                <option>Prefiero saltar</option>
+                <option>No se aun</option>
               </select>
             </div>
           </div>
+
+          <details>
+            <summary>Descargo de responsabilidad (leer)</summary>
+            <div class="disc">
+              <p><strong>Descargo de Responsabilidad para Transmision de Mentoria y Analisis de Trading</strong></p>
+              <p>El trading en mercados financieros conlleva riesgos significativos. La informacion compartida por ConDineroLibre y Pietro Giordano es educativa y no constituye asesoramiento financiero.</p>
+              <p>Ni Pietro Giordano ni el canal ConDineroLibre son responsables por decisiones de inversion tomadas por los espectadores. Cada persona invierte bajo su propio riesgo.</p>
+              <p>El analisis presentado es independiente y de buena fe. Resultados pasados no garantizan resultados futuros. Cada espectador debe hacer su propio analisis.</p>
+              <p>Productos como CFD son apalancados y pueden amplificar ganancias y perdidas. Es clave comprender los riesgos antes de operar.</p>
+              <p>Se recomienda buscar asesoramiento financiero profesional antes de invertir. Cada situacion es distinta y requiere evaluacion personalizada.</p>
+              <p>Al continuar, aceptas estos terminos y reconoces que el trading no garantiza ganancias.</p>
+            </div>
+          </details>
+
+          <label class="check" for="aceptoDisclaimer">
+            <input id="aceptoDisclaimer" type="checkbox" name="disclaimer_aceptado" value="si" required>
+            Acepto el descargo de responsabilidad.
+          </label>
         </div>
 
         <div class="actions">
-          <button type="submit">Enviar encuesta</button>
-          <button type="button" class="btn-dark" id="previewLevelBtn">Previsualizar nivel</button>
+          <button type="button" class="btn-prev" id="prevBtn" disabled>Atras</button>
+          <button type="button" class="btn-next" id="nextBtn">Siguiente</button>
+          <button type="submit" class="btn-submit hidden" id="submitBtn">Enviar inscripcion</button>
+          <button type="button" class="btn-preview" id="previewLevelBtn">Ver mi nivel</button>
         </div>
 
         <p class="status" id="formStatus" aria-live="polite"></p>
@@ -380,14 +435,14 @@
     const urlParams = new URLSearchParams(window.location.search);
     const isAdminView = urlParams.get("admin") === "1";
     const adminPanel = document.getElementById("adminPanel");
-    adminPanel.hidden = !isAdminView;
+    adminPanel.classList.toggle("hidden", !isAdminView);
 
     const surveyForm = document.getElementById("surveyForm");
     const nombreInput = document.getElementById("nombre");
     const nivelPercibido = document.getElementById("nivelPercibido");
     const tiempoInteres = document.getElementById("tiempoInteres");
-    const subjectInput = document.getElementById("subjectInput");
     const fuenteLink = document.getElementById("fuenteLink");
+    const subjectInput = document.getElementById("subjectInput");
     const nivelCalculadoInput = document.getElementById("nivelCalculadoInput");
     const nivelResult = document.getElementById("nivelResult");
     const formStatus = document.getElementById("formStatus");
@@ -396,6 +451,15 @@
     const crmEmailInput = document.getElementById("crmEmail");
     const refCodeInput = document.getElementById("refCode");
     const shareStatus = document.getElementById("shareStatus");
+
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+
+    let currentStep = 0;
 
     function getSourceFromUrl() {
       const params = new URLSearchParams(window.location.search);
@@ -406,14 +470,13 @@
       const ref = (refCodeInput.value || "campana-general").trim().replace(/\s+/g, "-").toLowerCase();
       const url = new URL(window.location.origin + window.location.pathname);
       url.searchParams.set("src", ref);
-      url.hash = "";
       return url.toString();
     }
 
     function buildNotificationSubject(leadLabel) {
       const source = getSourceFromUrl();
       const nombre = (nombreInput.value || "Prospecto sin nombre").trim().replace(/\s+/g, " ");
-      return "Nuevo Prospecto: " + nombre + " | " + leadLabel + " | src:" + source;
+      return "Nueva inscripcion: " + nombre + " | " + leadLabel + " | src:" + source;
     }
 
     function classifyLead() {
@@ -423,67 +486,96 @@
       if (nivel.includes("opero regularmente")) {
         return {
           label: "Nivel 3 - Avanzado",
-          detail: "Seleccionó perfil de operación regular. Candidato para mentoría o propuestas avanzadas."
+          detail: "Tienes base operativa. Te puede encajar un plan avanzado o mentoria."
         };
       }
 
-      if (nivel.includes("nunca he hecho") || nivel.includes("no sé nada")) {
+      if (nivel.includes("nunca he hecho") || nivel.includes("no se nada")) {
         return {
           label: "Nivel 0 - Nuevo total",
-          detail: "Ideal para onboarding simple y Curso Express de base."
+          detail: "Perfecto para empezar por una ruta clara desde cero."
         };
       }
 
-      if ((nivel.includes("he operado") || nivel.includes("algunas veces")) && (tiempo.includes("3–12") || tiempo.includes("más de 1"))) {
+      if ((nivel.includes("he operado") || nivel.includes("algunas veces")) && (tiempo.includes("3 a 12") || tiempo.includes("mas de 1"))) {
         return {
           label: "Nivel 2 - Intermedio",
-          detail: "Ha tocado mercado real y ya trae recorrido. Buen candidato para Radar directo."
-        };
-      }
-
-      if (nivel.includes("estoy aprendiendo") || tiempo.includes("menos de 3") || tiempo.includes("apenas")) {
-        return {
-          label: "Nivel 1 - Curioso activo",
-          detail: "Prospecto de alta intención temprana. Funciona muy bien con secuencia educativa corta."
+          detail: "Ya tienes recorrido. Puedes avanzar con practica guiada y estructura."
         };
       }
 
       return {
         label: "Nivel 1 - Curioso activo",
-        detail: "Clasificación por defecto al no tener suficiente señal."
+        detail: "Estas en fase de aprendizaje activa. Muy buen momento para consolidar base."
       };
     }
 
     function renderLevel(show = true) {
       const lead = classifyLead();
       nivelCalculadoInput.value = lead.label;
-      if (!show) {
-        return lead;
-      }
+      if (!show) return lead;
 
       nivelResult.hidden = false;
-      nivelResult.innerHTML = "<strong>" + lead.label + "</strong><br>" + lead.detail;
+      nivelResult.innerHTML = "<strong>Tu nivel estimado: " + lead.label + "</strong><br>" + lead.detail;
       return lead;
     }
 
-    document.getElementById("buildLinkBtn").addEventListener("click", () => {
+    function updateStepUI() {
+      steps.forEach((step, index) => step.classList.toggle("active", index === currentStep));
+
+      prevBtn.disabled = currentStep === 0;
+      const isLastStep = currentStep === steps.length - 1;
+      nextBtn.classList.toggle("hidden", isLastStep);
+      submitBtn.classList.toggle("hidden", !isLastStep);
+
+      const pct = ((currentStep + 1) / steps.length) * 100;
+      progressBar.style.width = pct + "%";
+      progressLabel.textContent = "Paso " + (currentStep + 1) + " de " + steps.length;
+    }
+
+    function validateCurrentStep() {
+      const fields = steps[currentStep].querySelectorAll("input[required], select[required]");
+      for (const field of fields) {
+        if (!field.reportValidity()) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep -= 1;
+        updateStepUI();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!validateCurrentStep()) return;
+      if (currentStep < steps.length - 1) {
+        currentStep += 1;
+        updateStepUI();
+      }
+    });
+
+    document.getElementById("buildLinkBtn")?.addEventListener("click", () => {
       shareLinkInput.value = buildShareLink();
       shareStatus.textContent = "Link generado.";
     });
 
-    document.getElementById("copyLinkBtn").addEventListener("click", async () => {
+    document.getElementById("copyLinkBtn")?.addEventListener("click", async () => {
       if (!shareLinkInput.value) {
         shareLinkInput.value = buildShareLink();
       }
       try {
         await navigator.clipboard.writeText(shareLinkInput.value);
-        shareStatus.textContent = "Link copiado al portapapeles.";
+        shareStatus.textContent = "Link copiado.";
       } catch (err) {
-        shareStatus.textContent = "No se pudo copiar automáticamente. Copia manualmente el link.";
+        shareStatus.textContent = "No se pudo copiar automaticamente.";
       }
     });
 
-    document.getElementById("emailBtn").addEventListener("click", () => {
+    document.getElementById("emailBtn")?.addEventListener("click", () => {
       const to = (crmEmailInput.value || "").trim();
       if (!to) {
         shareStatus.innerHTML = '<span class="warning">Define primero el email destino CRM.</span>';
@@ -494,16 +586,14 @@
         shareLinkInput.value = buildShareLink();
       }
 
-      const subject = "Encuesta CDL para proximos estudiantes";
+      const subject = "Link inscripcion Trading de Precision Curso Express";
       const body = [
         "Hola,",
         "",
-        "Comparto el enlace de la encuesta de diagnostico:",
+        "Comparto el enlace de inscripcion:",
         shareLinkInput.value,
         "",
-        "Origen/campana: " + ((refCodeInput.value || "campana-general").trim() || "campana-general"),
-        "",
-        "Este enlace incluye referencia para segmentar leads en CRM."
+        "Origen/campana: " + ((refCodeInput.value || "campana-general").trim() || "campana-general")
       ].join("\n");
 
       window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
@@ -511,11 +601,14 @@
 
     document.getElementById("previewLevelBtn").addEventListener("click", () => {
       renderLevel(true);
-      formStatus.textContent = "Nivel previsualizado (sin enviar).";
+      formStatus.textContent = "Listo. Este seria tu nivel actual.";
     });
 
     surveyForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      if (!validateCurrentStep()) return;
+
       fuenteLink.value = getSourceFromUrl();
       const lead = renderLevel(false);
       subjectInput.value = buildNotificationSubject(lead.label);
@@ -533,18 +626,20 @@
         });
 
         nivelResult.hidden = false;
-        nivelResult.innerHTML = "<strong>Enviado con exito.</strong><br>Clasificacion: " + lead.label + "<br>Fuente: " + fuenteLink.value;
-        formStatus.textContent = "Lead capturado. En Netlify quedara en Forms (cdl-encuesta-oculta).";
+        nivelResult.innerHTML = "<strong>Gracias por inscribirte.</strong><br>Tu clasificacion: " + lead.label + "<br>Te contactaremos pronto para el siguiente paso.";
+        formStatus.textContent = "Inscripcion enviada con exito.";
         surveyForm.reset();
+        currentStep = 0;
+        updateStepUI();
       } catch (err) {
         formStatus.innerHTML = '<span class="warning">No pudimos validar la respuesta del servidor, pero el envio pudo haberse procesado. Revisa Netlify Forms.</span>';
       }
     });
 
     (function init() {
-      const defaultLink = buildShareLink();
-      shareLinkInput.value = defaultLink;
+      shareLinkInput.value = buildShareLink();
       fuenteLink.value = getSourceFromUrl();
+      updateStepUI();
     })();
   </script>
 </body>
