@@ -278,7 +278,7 @@
       <p class="intro">Formulario corto, guiado y por partes. Si no sabes una respuesta, marca No sé.</p>
 
       <div class="progress-wrap">
-        <span class="progress-label" id="progressLabel">Paso 1</span>
+        <span class="progress-label" id="progressLabel">Continuamos</span>
         <div class="progress"><span id="progressBar"></span></div>
       </div>
     </section>
@@ -317,7 +317,7 @@
         <input type="hidden" name="quiz_resultado" id="quizResultadoInput">
 
         <div class="step active" id="step-personal">
-          <h2>Paso 1: Tus datos</h2>
+          <h2>Tus datos</h2>
           <p class="small">Rápido y simple.</p>
 
           <div class="field">
@@ -347,7 +347,7 @@
         </div>
 
         <div class="step" id="step-nivel">
-          <h2>Paso 2: Tu experiencia</h2>
+          <h2>Tu experiencia</h2>
           <p class="small">Nos ayuda a adaptar las siguientes preguntas.</p>
           <div class="field">
             <label for="nivelPercibido">¿Cómo describirías tu experiencia en trading?</label>
@@ -364,7 +364,7 @@
         </div>
 
         <div class="step" id="step-tiempo">
-          <h2>Paso 3</h2>
+          <h2>Tu contexto</h2>
           <div class="field">
             <label for="tiempoInteres">¿Cuánto tiempo llevas interesado en trading?</label>
             <select id="tiempoInteres" name="tiempo_interes" required>
@@ -380,7 +380,7 @@
         </div>
 
         <div class="step" id="step-objetivo">
-          <h2>Paso 4</h2>
+          <h2>Tu objetivo</h2>
           <div class="field">
             <label for="objetivo">¿Qué te gustaría lograr con el trading?</label>
             <select id="objetivo" name="objetivo" required>
@@ -537,7 +537,7 @@
         </div>
 
         <div class="step" id="step-disclaimer">
-          <h2>Último paso</h2>
+          <h2>Para terminar</h2>
           <p class="small">Gracias por llegar hasta aquí.</p>
 
           <div class="field">
@@ -701,7 +701,7 @@
 
       const pct = ((currentStepIndex + 1) / currentFlow.length) * 100;
       progressBar.style.width = pct + "%";
-      progressLabel.textContent = "Paso " + (currentStepIndex + 1) + " de " + currentFlow.length;
+      progressLabel.textContent = "Continuamos";
     }
 
     function validateCurrentStep() {
