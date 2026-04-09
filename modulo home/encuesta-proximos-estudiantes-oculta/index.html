@@ -244,7 +244,7 @@
       <h2>Encuesta de Diagnóstico (8 preguntas base)</h2>
       <p class="sub">Siempre con salida fácil: cada bloque tiene opción de No sé o Saltar.</p>
 
-      <form id="surveyForm" name="cdl-encuesta-oculta" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <form id="surveyForm" name="cdl-encuesta-oculta" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="cdl-encuesta-oculta">
         <input type="hidden" name="bot-field">
         <input type="hidden" name="subject" id="subjectInput" data-remove-prefix value="Nuevo prospecto CDL">
@@ -523,7 +523,7 @@
       const formData = new FormData(surveyForm);
 
       try {
-        const response = await fetch("/", {
+        await fetch("/", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -532,16 +532,12 @@
           body: new URLSearchParams(formData).toString()
         });
 
-        if (!response.ok) {
-          throw new Error("No se pudo enviar");
-        }
-
         nivelResult.hidden = false;
         nivelResult.innerHTML = "<strong>Enviado con exito.</strong><br>Clasificacion: " + lead.label + "<br>Fuente: " + fuenteLink.value;
         formStatus.textContent = "Lead capturado. En Netlify quedara en Forms (cdl-encuesta-oculta).";
         surveyForm.reset();
       } catch (err) {
-        formStatus.innerHTML = '<span class="warning">No se pudo enviar en este intento. Recarga y prueba de nuevo; si persiste, revisamos Netlify Forms.</span>';
+        formStatus.innerHTML = '<span class="warning">No pudimos validar la respuesta del servidor, pero el envio pudo haberse procesado. Revisa Netlify Forms.</span>';
       }
     });
 
