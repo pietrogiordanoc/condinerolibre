@@ -873,7 +873,8 @@
     function buildNotificationSubject(leadLabel, score, answered) {
       const source = getSourceFromUrl();
       const fullName = ((nombreInput.value || "") + " " + (apellidoInput.value || "")).trim() || "Prospecto sin nombre";
-      return "Nueva inscripción: " + fullName + " | " + leadLabel + " | " + score + "/" + answered + " | src:" + source;
+      const shortLead = leadLabel.startsWith("Nivel") ? leadLabel.split(" - ")[0] : "Lead";
+      return "Est.: " + fullName + " | " + shortLead + " | " + score + "/" + answered + " | " + source;
     }
 
     prevBtn.addEventListener("click", () => {
@@ -929,7 +930,7 @@
         shareLinkInput.value = buildShareLink();
       }
 
-      const subject = "Link inscripción Trading de Precisión Curso Express";
+      const subject = "Link inscripcion CDL";
       const body = [
         "Hola,",
         "",
@@ -960,7 +961,8 @@
       const formData = new FormData(surveyForm);
 
       try {
-        await fetch("/", {
+        const submitPath = window.location.pathname || "/encuesta-proximos-estudiantes-oculta/";
+        const response = await fetch(submitPath, {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -968,6 +970,10 @@
           },
           body: new URLSearchParams(formData).toString()
         });
+
+        if (!response.ok) {
+          throw new Error("Netlify form submit failed with status " + response.status);
+        }
 
         surveyCard.classList.add("hidden");
         successCard.classList.remove("hidden");
@@ -987,7 +993,7 @@
           window.location.href = "https://www.condinerolibre.com/";
         }, 8000);
       } catch (err) {
-        formStatus.innerHTML = '<span class="warning">No pudimos validar la respuesta del servidor, pero el envío pudo haberse procesado. Revisa Netlify Forms.</span>';
+        formStatus.innerHTML = '<span class="warning">No se pudo enviar ahora. Intenta de nuevo en unos segundos.</span>';
       }
     });
 
