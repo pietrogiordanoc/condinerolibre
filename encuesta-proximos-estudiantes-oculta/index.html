@@ -411,6 +411,32 @@
           </div>
         </div>
 
+        <div class="step" id="step-descubrimiento">
+          <h2>¿Cómo nos conociste?</h2>
+          <p class="small">Nos ayuda a saber qué canal funciona mejor.</p>
+          <div class="field">
+            <label for="canalDescubrimiento">Selecciona una opción</label>
+            <select id="canalDescubrimiento" name="canal_descubrimiento" required>
+              <option value="">Selecciona</option>
+              <option>Instagram</option>
+              <option>YouTube</option>
+              <option>Facebook</option>
+              <option>TikTok</option>
+              <option>Google</option>
+              <option>Un amigo</option>
+              <option>WhatsApp</option>
+              <option>Email</option>
+              <option>Otro</option>
+              <option>No sé</option>
+            </select>
+          </div>
+
+          <div class="field hidden" id="otroCanalWrap">
+            <label for="otroCanal">¿Cuál canal?</label>
+            <input id="otroCanal" name="canal_descubrimiento_otro" placeholder="Ej: X, foro, podcast...">
+          </div>
+        </div>
+
         <div class="step" id="step-nivel">
           <h2>Tu experiencia</h2>
           <p class="small">Nos ayuda a adaptar las siguientes preguntas.</p>
@@ -665,7 +691,7 @@
       q6: "A", q7: "B", q8: "B", q9: "A", q10: "B"
     };
 
-    const BASE_FLOW = ["step-personal", "step-nivel", "step-tiempo", "step-objetivo"];
+    const BASE_FLOW = ["step-personal", "step-descubrimiento", "step-nivel", "step-tiempo", "step-objetivo"];
     const ENTRY_QUIZ_FLOW = ["step-q1", "step-q2", "step-q3"];
     const MID_FLOW = ["step-q4", "step-q5"];
     const ADV_FLOW = ["step-q6", "step-q7", "step-q8", "step-q9", "step-q10"];
@@ -692,6 +718,9 @@
     const quizScoreInput = document.getElementById("quizScoreInput");
     const quizResultadoInput = document.getElementById("quizResultadoInput");
     const finalLegal = document.getElementById("finalLegal");
+    const canalDescubrimiento = document.getElementById("canalDescubrimiento");
+    const otroCanalWrap = document.getElementById("otroCanalWrap");
+    const otroCanalInput = document.getElementById("otroCanal");
 
     const shareLinkInput = document.getElementById("shareLink");
     const crmEmailInput = document.getElementById("crmEmail");
@@ -761,6 +790,15 @@
 
       flow.push("step-disclaimer");
       return flow;
+    }
+
+    function updateDiscoveryOtherField() {
+      const showOther = (canalDescubrimiento.value || "") === "Otro";
+      otroCanalWrap.classList.toggle("hidden", !showOther);
+      otroCanalInput.required = showOther;
+      if (!showOther) {
+        otroCanalInput.value = "";
+      }
     }
 
     function showCurrentStep() {
@@ -861,6 +899,8 @@
       }
     });
 
+    canalDescubrimiento.addEventListener("change", updateDiscoveryOtherField);
+
     document.getElementById("buildLinkBtn")?.addEventListener("click", () => {
       shareLinkInput.value = buildShareLink();
       shareStatus.textContent = "Link generado.";
@@ -954,6 +994,7 @@
     (function init() {
       sourceInput.value = getSourceFromUrl();
       shareLinkInput.value = buildShareLink();
+      updateDiscoveryOtherField();
       currentFlow = computeFlow();
       showCurrentStep();
     })();
