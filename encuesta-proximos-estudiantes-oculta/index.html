@@ -143,7 +143,7 @@
       color: #d5eaf8;
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       border: 1px solid #2b617b;
       border-radius: 10px;
@@ -151,9 +151,10 @@
       color: var(--text);
       padding: 0.72rem 0.78rem;
       font-size: 0.96rem;
+      font-family: inherit;
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
       outline: 2px solid #56bfff;
       border-color: transparent;
     }
@@ -493,10 +494,10 @@
             <label for="q1">En un gráfico, ¿qué color suele representar que el precio subió?</label>
             <select id="q1" name="q1" required>
               <option value="">Selecciona</option>
-              <option value="A">Rojo</option>
-              <option value="B">Verde</option>
-              <option value="C">Azul</option>
-              <option value="NS">No sé</option>
+              <option value="Rojo">Rojo</option>
+              <option value="Verde">Verde</option>
+              <option value="Azul">Azul</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -507,10 +508,10 @@
             <label for="q2">¿Qué herramienta usas para cerrar una operación automáticamente si vas perdiendo?</label>
             <select id="q2" name="q2" required>
               <option value="">Selecciona</option>
-              <option value="A">Take Profit</option>
-              <option value="B">Stop Loss</option>
-              <option value="C">Botón de pánico</option>
-              <option value="NS">No sé</option>
+              <option value="Take Profit">Take Profit</option>
+              <option value="Stop Loss">Stop Loss</option>
+              <option value="Botón de pánico">Botón de pánico</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -521,10 +522,10 @@
             <label for="q3">Si compras una acción a $100 y la vendes a $110, ¿qué tipo de operación hiciste?</label>
             <select id="q3" name="q3" required>
               <option value="">Selecciona</option>
-              <option value="A">Operación en Largo (Compra)</option>
-              <option value="B">Operación en Corto (Venta)</option>
-              <option value="C">Un préstamo</option>
-              <option value="NS">No sé</option>
+              <option value="Operación en Largo (Compra)">Operación en Largo (Compra)</option>
+              <option value="Operación en Corto (Venta)">Operación en Corto (Venta)</option>
+              <option value="Un préstamo">Un préstamo</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -535,10 +536,10 @@
             <label for="q4">¿Cómo se llama la diferencia de precio entre compra y venta?</label>
             <select id="q4" name="q4" required>
               <option value="">Selecciona</option>
-              <option value="A">Impuesto</option>
-              <option value="B">Spread</option>
-              <option value="C">Propina</option>
-              <option value="NS">No sé</option>
+              <option value="Impuesto">Impuesto</option>
+              <option value="Spread">Spread</option>
+              <option value="Propina">Propina</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -549,10 +550,10 @@
             <label for="q5">¿Cuál de estos NO es un mercado financiero?</label>
             <select id="q5" name="q5" required>
               <option value="">Selecciona</option>
-              <option value="A">Forex (Divisas)</option>
-              <option value="B">Criptomonedas</option>
-              <option value="C">Netflix</option>
-              <option value="NS">No sé</option>
+              <option value="Forex (Divisas)">Forex (Divisas)</option>
+              <option value="Criptomonedas">Criptomonedas</option>
+              <option value="Netflix">Netflix</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -563,10 +564,10 @@
             <label for="q6">¿Qué significa apalancarse?</label>
             <select id="q6" name="q6" required>
               <option value="">Selecciona</option>
-              <option value="A">Operar con más dinero del que tienes</option>
-              <option value="B">Retirar todas tus ganancias al banco</option>
-              <option value="C">Estudiar mucho antes de invertir</option>
-              <option value="NS">No sé</option>
+              <option value="Operar con más dinero del que tienes">Operar con más dinero del que tienes</option>
+              <option value="Retirar todas tus ganancias al banco">Retirar todas tus ganancias al banco</option>
+              <option value="Estudiar mucho antes de invertir">Estudiar mucho antes de invertir</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -577,10 +578,10 @@
             <label for="q7">¿Qué analiza el Análisis Técnico?</label>
             <select id="q7" name="q7" required>
               <option value="">Selecciona</option>
-              <option value="A">Noticias y discursos</option>
-              <option value="B">Gráficos y movimientos de precio</option>
-              <option value="C">Tecnología de computadoras</option>
-              <option value="NS">No sé</option>
+              <option value="Noticias y discursos">Noticias y discursos</option>
+              <option value="Gráficos y movimientos de precio">Gráficos y movimientos de precio</option>
+              <option value="Tecnología de computadoras">Tecnología de computadoras</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -591,10 +592,10 @@
             <label for="q8">Si el mercado está en tendencia alcista, el precio está</label>
             <select id="q8" name="q8" required>
               <option value="">Selecciona</option>
-              <option value="A">Bajando</option>
-              <option value="B">Subiendo</option>
-              <option value="C">Quieto</option>
-              <option value="NS">No sé</option>
+              <option value="Bajando">Bajando</option>
+              <option value="Subiendo">Subiendo</option>
+              <option value="Quieto">Quieto</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -605,10 +606,10 @@
             <label for="q9">¿Qué es un Trader Intradía (Day Trader)?</label>
             <select id="q9" name="q9" required>
               <option value="">Selecciona</option>
-              <option value="A">Abre y cierra operaciones el mismo día</option>
-              <option value="B">Opera una vez al mes</option>
-              <option value="C">Trabaja solo de noche</option>
-              <option value="NS">No sé</option>
+              <option value="Abre y cierra operaciones el mismo día">Abre y cierra operaciones el mismo día</option>
+              <option value="Opera una vez al mes">Opera una vez al mes</option>
+              <option value="Trabaja solo de noche">Trabaja solo de noche</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -619,10 +620,10 @@
             <label for="q10">¿Cuál es la regla de oro para no perder todo tu dinero?</label>
             <select id="q10" name="q10" required>
               <option value="">Selecciona</option>
-              <option value="A">Invertir todo en una sola operación</option>
-              <option value="B">Gestionar el riesgo y no arriesgar todo</option>
-              <option value="C">Esperar a que siempre suba</option>
-              <option value="NS">No sé</option>
+              <option value="Invertir todo en una sola operación">Invertir todo en una sola operación</option>
+              <option value="Gestionar el riesgo y no arriesgar todo">Gestionar el riesgo y no arriesgar todo</option>
+              <option value="Esperar a que siempre suba">Esperar a que siempre suba</option>
+              <option value="No sé">No sé</option>
             </select>
           </div>
         </div>
@@ -641,6 +642,11 @@
               <option>Prefiero no decir</option>
               <option>No sé</option>
             </select>
+          </div>
+
+          <div class="field">
+            <label for="comentarioFinal">Comentario final (opcional)</label>
+            <textarea id="comentarioFinal" name="comentario_final" rows="4" placeholder="Cuéntanos cualquier detalle adicional..."></textarea>
           </div>
         </div>
 
@@ -687,8 +693,8 @@
 
   <script>
     const CORRECT = {
-      q1: "B", q2: "B", q3: "A", q4: "B", q5: "C",
-      q6: "A", q7: "B", q8: "B", q9: "A", q10: "B"
+      q1: "Verde", q2: "Stop Loss", q3: "Operación en Largo (Compra)", q4: "Spread", q5: "Netflix",
+      q6: "Operar con más dinero del que tienes", q7: "Gráficos y movimientos de precio", q8: "Subiendo", q9: "Abre y cierra operaciones el mismo día", q10: "Gestionar el riesgo y no arriesgar todo"
     };
 
     const BASE_FLOW = ["step-personal", "step-descubrimiento", "step-nivel", "step-tiempo", "step-objetivo"];
