@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "CDL Web - Módulos Portal, Admin, Cursos, Brokers",
   "scripts": {
-    "dev": "npx http-server -p 8080 -c-1",
-    "dev:portal": "npx http-server \"modulo portal/cdl-portal\" -p 8080 -c-1",
-    "dev:dashboard": "npx http-server \"modulo portal/cdl-portal/dashboard\" -p 8080 -c-1",
-    "start": "npx http-server -p 8080"
+    "dev": "npx --yes http-server -p 8080 -c-1",
+    "dev:local": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-local.ps1 -Page home",
+    "dev:local:modhome": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-local.ps1 -Page modhome",
+    "dev:local:portal": "powershell -ExecutionPolicy Bypass -File ./scripts/dev-local.ps1 -Page portal",
+    "dev:portal": "npx --yes http-server \"modulo portal/cdl-portal\" -p 8080 -c-1",
+    "dev:dashboard": "npx --yes http-server \"modulo portal/cdl-portal/dashboard\" -p 8080 -c-1",
+    "start": "npx --yes http-server -p 8080"
   },
   "keywords": ["cdl", "portal", "admin"],
   "author": "",

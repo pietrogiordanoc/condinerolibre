@@ -168,3 +168,116 @@ body.cdl-shell-enabled {
 .mobile-menu.active {
   transform: translateX(0);
 }
+
+/* Cookie Banner */
+.cdl-cookie-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cdl-cookie-banner.is-hiding {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.cdl-cookie-inner {
+  width: min(780px, 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 12, 19, 0.95);
+  backdrop-filter: blur(8px);
+  color: #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.cdl-cookie-text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(229, 231, 235, 0.94);
+}
+
+.cdl-cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cdl-cookie-btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cdl-cookie-btn-primary {
+  background: #39e079;
+  border-color: #39e079;
+  color: #03130a;
+}
+
+.cdl-cookie-btn-muted {
+  background: #1f2937;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #e5e7eb;
+}
+
+.cdl-cookie-btn-ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #d1d5db;
+}
+
+.cdl-cookie-settings {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 8px;
+}
+
+.cdl-cookie-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #d1d5db;
+}
+
+.cdl-cookie-save {
+  margin-top: 4px;
+  justify-self: start;
+}
+
+.cdl-cookie-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .cdl-cookie-inner {
+    padding: 12px;
+  }
+
+  .cdl-cookie-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

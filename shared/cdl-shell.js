@@ -5,6 +5,7 @@
 (function () {
   var host = window.location.hostname;
   var isLocal = host === '127.0.0.1' || host === 'localhost';
+  var CONSENT_KEY = 'cdl_cookie_consent_v1';
 
   function mapPath(path) {
     if (!isLocal) return path;
@@ -22,6 +23,170 @@
     document.querySelectorAll('body > header, body > nav, body > footer').forEach(function (el) {
       el.style.display = 'none';
     });
+  }
+
+  function getConsent() {
+    try {
+      var raw = localStorage.getItem(CONSENT_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setConsent(consent) {
+    try {
+      localStorage.setItem(CONSENT_KEY, JSON.stringify(consent));
+    } catch (e) {
+      // no-op si localStorage no esta disponible
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('cdl:cookie-consent-updated', {
+        detail: consent
+      })
+    );
+  }
+
+  function removeConsentBanner() {
+    var banner = document.getElementById('cdl-cookie-banner');
+    if (!banner) return;
+    banner.classList.add('is-hiding');
+    setTimeout(function () {
+      if (banner && banner.parentNode) banner.parentNode.removeChild(banner);
+    }, 220);
+  }
+
+  function defaultConsent() {
+    return {
+      essential: true,
+      analytics: false,
+      personalization: false,
+      marketing: false,
+      at: new Date().toISOString()
+    };
+  }
+
+  function buildConsentAll() {
+    return {
+      essential: true,
+      analytics: true,
+      personalization: true,
+      marketing: true,
+      at: new Date().toISOString()
+    };
+  }
+
+  function sanitizeConsent(consent) {
+    if (!consent || typeof consent !== 'object') return defaultConsent();
+    return {
+      essential: true,
+      analytics: !!consent.analytics,
+      personalization: !!consent.personalization,
+      marketing: !!consent.marketing,
+      at: consent.at || new Date().toISOString()
+    };
+  }
+
+  function createConsentBanner() {
+    if (document.getElementById('cdl-cookie-banner')) return;
+
+    var wrapper = document.createElement('div');
+    wrapper.id = 'cdl-cookie-banner';
+    wrapper.className = 'cdl-cookie-banner';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-live', 'polite');
+    wrapper.setAttribute('aria-label', 'Aviso de cookies');
+
+    wrapper.innerHTML =
+      '<div class="cdl-cookie-inner">' +
+        '<p class="cdl-cookie-text">Usamos cookies propias y de terceros para mejorar tu experiencia. Puedes aceptar, rechazar o configurar tus preferencias.</p>' +
+        '<div class="cdl-cookie-actions">' +
+          '<button type="button" class="cdl-cookie-btn cdl-cookie-btn-primary" data-action="accept">Aceptar</button>' +
+          '<button type="button" class="cdl-cookie-btn cdl-cookie-btn-muted" data-action="reject">Rechazar</button>' +
+          '<button type="button" class="cdl-cookie-btn cdl-cookie-btn-ghost" data-action="settings">Configurar</button>' +
+        '</div>' +
+        '<div class="cdl-cookie-settings" hidden>' +
+          '<label class="cdl-cookie-option"><input type="checkbox" checked disabled> Necesarias (siempre activas)</label>' +
+          '<label class="cdl-cookie-option"><input type="checkbox" data-pref="analytics"> Analiticas</label>' +
+          '<label class="cdl-cookie-option"><input type="checkbox" data-pref="personalization"> Personalizacion</label>' +
+          '<label class="cdl-cookie-option"><input type="checkbox" data-pref="marketing"> Marketing</label>' +
+          '<button type="button" class="cdl-cookie-btn cdl-cookie-btn-primary cdl-cookie-save" data-action="save">Guardar preferencias</button>' +
+        '</div>' +
+        '<a class="cdl-cookie-link" href="https://portal.condinerolibre.com/politica-cookies">Politica de Cookies</a>' +
+      '</div>';
+
+    document.body.appendChild(wrapper);
+
+    var settings = wrapper.querySelector('.cdl-cookie-settings');
+    var setCheckboxes = function (consent) {
+      var normalized = sanitizeConsent(consent);
+      wrapper.querySelectorAll('input[data-pref]').forEach(function (input) {
+        var key = input.getAttribute('data-pref');
+        input.checked = !!normalized[key];
+      });
+    };
+
+    setCheckboxes(defaultConsent());
+
+    wrapper.addEventListener('click', function (event) {
+      var target = event.target;
+      if (!target || !target.getAttribute) return;
+      var action = target.getAttribute('data-action');
+      if (!action) return;
+
+      if (action === 'accept') {
+        setConsent(buildConsentAll());
+        removeConsentBanner();
+        return;
+      }
+
+      if (action === 'reject') {
+        setConsent(defaultConsent());
+        removeConsentBanner();
+        return;
+      }
+
+      if (action === 'settings') {
+        if (!settings) return;
+        settings.hidden = !settings.hidden;
+        return;
+      }
+
+      if (action === 'save') {
+        var saved = {
+          essential: true,
+          analytics: false,
+          personalization: false,
+          marketing: false,
+          at: new Date().toISOString()
+        };
+
+        wrapper.querySelectorAll('input[data-pref]').forEach(function (input) {
+          var key = input.getAttribute('data-pref');
+          if (key) saved[key] = !!input.checked;
+        });
+
+        setConsent(saved);
+        removeConsentBanner();
+      }
+    });
+  }
+
+  function initCookieConsent() {
+    var existingConsent = getConsent();
+
+    if (!existingConsent) {
+      createConsentBanner();
+      return;
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('cdl:cookie-consent-updated', {
+        detail: existingConsent
+      })
+    );
   }
 
   /**
@@ -109,6 +274,7 @@
     document.body.dataset.cdlShellApplied = '1';
 
     hideLegacyShell();
+    initCookieConsent();
 
     // Cargar header
     fetch('/shared/header.html')
