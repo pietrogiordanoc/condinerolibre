@@ -114,7 +114,7 @@
           '<label class="cdl-cookie-option"><input type="checkbox" data-pref="marketing"> Marketing</label>' +
           '<button type="button" class="cdl-cookie-btn cdl-cookie-btn-primary cdl-cookie-save" data-action="save">Guardar preferencias</button>' +
         '</div>' +
-        '<a class="cdl-cookie-link" href="https://portal.condinerolibre.com/politica-cookies">Politica de Cookies</a>' +
+        '<a class="cdl-cookie-link" href="https://condinerolibre.com/contacto/aviso-legal">Politica de Cookies</a>' +
       '</div>';
 
     document.body.appendChild(wrapper);
