@@ -251,11 +251,14 @@
   </div>
   
 <!-- Netlify hidden form for intent capture -->
-<form name="intencion Compra Curso Master Prime Elite" netlify netlify-honeypot="bot-field" hidden>
+<form name="intencion Compra Curso Master Prime Elite" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="intencion Compra Curso Master Prime Elite">
   <input type="hidden" name="subject" value="Intención Compra - Curso Master Prime Elite">
   <input type="email" name="email" />
   <input type="checkbox" name="consent" />
+  <p class="hidden">
+    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+  </p>
 </form>
 <div class="mx-auto flex w-full max-w-7xl flex-col pt-20 lg:flex-row">
 <aside class="hidden lg:block lg:w-64 lg:shrink-0 lg:px-6 lg:py-8">
