@@ -33,10 +33,12 @@
 
 <body class="dark:bg-background-dark text-gray-900 dark:text-gray-200 min-h-screen flex items-center justify-center p-4 antialiased">
 
-  <form name="solicitud acceso Curso de Trading Master Gratuito" netlify netlify-honeypot="bot-field" hidden>
+  <form name="solicitud acceso Curso de Trading Master Gratuito" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
     <input type="hidden" name="form-name" value="solicitud acceso Curso de Trading Master Gratuito" />
     <input type="hidden" name="subject" value="Solicitud Acceso - Curso Trading Master Gratuito" />
-    <input type="text" name="bot-field" />
+    <p class="hidden">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
     <input type="email" name="email" />
     <input type="text" name="nombre" />
     <input type="tel" name="telefono" />
