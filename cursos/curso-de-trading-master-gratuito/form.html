@@ -72,8 +72,12 @@
       </div>
 
       <div id="step2" class="hidden space-y-6">
-        <form id="formStep2" class="space-y-6">
+        <form id="formStep2" name="solicitud acceso Curso de Trading Master Gratuito" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
           <input type="hidden" name="form-name" value="solicitud acceso Curso de Trading Master Gratuito" />
+          <input type="hidden" name="subject" value="Solicitud Acceso - Curso Trading Master Gratuito" />
+          <p class="hidden">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          </p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="md:col-span-2">
@@ -197,14 +201,23 @@
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData).toString()
       })
-      .then(() => {
+      .then((response) => {
+        if (response.ok) {
+          spin.classList.add('hidden');
+          txt.textContent = "¡Enviado!";
+          document.getElementById('okMsg').classList.remove('hidden');
+          // Opcional: redirigir después de 2 segundos
+          setTimeout(() => {
+            window.location.href = '/cursos/curso-de-trading-master-gratuito/';
+          }, 2000);
+        } else {
+          throw new Error('Error en la respuesta');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
         spin.classList.add('hidden');
         txt.textContent = "Solicitar el curso";
-        document.getElementById('okMsg').classList.remove('hidden');
-      })
-      .catch(() => {
-        spin.classList.add('hidden');
-        txt.textContent = "Error";
         document.getElementById('errMsg').classList.remove('hidden');
         btn.disabled = false;
       });
