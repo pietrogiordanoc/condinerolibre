@@ -1181,6 +1181,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .courses-header-grid {
+        grid-template-columns: 1fr !important;
+      }
+
       .course-card .account-link-actions {
         flex-direction: column;
       }
@@ -1489,9 +1493,27 @@
 
     <!-- VISTA CURSOS -->
     <section id="viewCourses">
-      <div class="accounts-head">
-        <h2>Ver Más Cursos</h2>
-        <p>Selecciona un curso y abre la página completa en nueva pestaña.</p>
+      <div class="courses-header-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
+        <div class="accounts-head" style="margin-bottom: 0;">
+          <h2>Ver Más Cursos</h2>
+          <p>Selecciona un curso y abre la página completa en nueva pestaña.</p>
+        </div>
+
+        <!-- Nota de beneficio CDL Radar -->
+        <div style="background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%); border-radius: 12px; padding: 16px 20px; border: 2px solid rgba(14, 165, 233, 0.3); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); display: flex; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+            <div style="font-size: 24px;">🎓</div>
+            <div style="flex: 1;">
+              <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 800; color: #f0f9ff;">¡Acceso GRATIS a Todos los Cursos!</h3>
+              <p style="margin: 0 0 8px 0; font-size: 12px; color: #bae6fd; line-height: 1.4;">
+                Con el <strong>Plan Anual CDL Radar Pro</strong> obtienes acceso completo gratuito.
+              </p>
+              <a href="#" onclick="(async () => { await showView('upgrade'); setTimeout(() => { const toggle = document.getElementById('planToggle'); toggle.checked = true; toggle.dispatchEvent(new Event('change')); }, 100); })(); return false;" style="display: inline-block; background: #10b981; color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                Ver Planes →
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="accounts-tier">
