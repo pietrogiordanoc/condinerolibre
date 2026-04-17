@@ -479,9 +479,92 @@
       padding-bottom: 0;
     }
     .courses-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-    .courses-grid .account-link-card {
+    .courses-grid .account-link-card.course-card {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: left;
+      min-height: 320px;
+      padding: 0;
+      gap: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(30, 58, 138, 0.4) 0%, rgba(23, 37, 84, 0.4) 100%);
+      border: 1px solid rgba(30, 64, 175, 0.3);
+      transition: all 0.3s ease;
+    }
+    .courses-grid .account-link-card.course-card:hover {
+      transform: scale(1.05);
+      border-color: rgba(37, 99, 235, 0.5);
+    }
+    .courses-grid .account-link-card.course-card:nth-child(4) {
+      background: linear-gradient(180deg, rgba(88, 28, 135, 0.4) 0%, rgba(80, 7, 36, 0.4) 100%);
+      border-color: rgba(126, 34, 206, 0.3);
+    }
+    .courses-grid .account-link-card.course-card:nth-child(4):hover {
+      border-color: rgba(147, 51, 234, 0.5);
+    }
+    .course-image-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+    }
+    .course-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .course-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 24px;
+      flex: 1;
+    }
+    .course-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #60a5fa;
+      margin-bottom: 2px;
+    }
+    .course-card b {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .course-card p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      min-height: auto;
+      flex: 1;
+      margin-bottom: 4px;
+    }
+    .course-card .account-link-actions {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .course-card .btn-primary-link {
+      background: #fde047;
+      color: #000;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-align: center;
+      transition: background 0.2s ease;
+    }
+    .course-card .btn-primary-link:hover {
+      background: #facc15;
+    }
+    .courses-grid .account-link-card:not(.course-card) {
       align-items: center;
       text-align: center;
       min-height: 280px;
@@ -490,12 +573,12 @@
       align-self: center;
       object-position: center;
     }
-    .courses-grid .account-link-card b,
-    .courses-grid .account-link-card p {
+    .courses-grid .account-link-card:not(.course-card) b,
+    .courses-grid .account-link-card:not(.course-card) p {
       text-align: center;
       width: 100%;
     }
-    .courses-grid .account-link-card p {
+    .courses-grid .account-link-card:not(.course-card) p {
       min-height: 74px;
       font-size: 13px;
       line-height: 1.42;
@@ -504,33 +587,51 @@
       grid-template-columns: repeat(6, minmax(0, 1fr));
     }
     .download-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    .download-grid .account-link-card {
-      gap: 14px;
+    .download-grid .account-link-card:not(.course-card) {
+      gap: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .download-grid .course-card {
+      min-height: 400px;
     }
     .download-logo-wrap {
       width: 100%;
-      min-height: 76px;
-      border-radius: 12px;
+      flex: 1;
+      border-radius: 12px 12px 0 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 12px;
+      padding: 0;
       background: #ffffff;
       border: 1px solid rgba(255, 255, 255, .85);
       box-shadow: inset 0 1px 0 rgba(0,0,0,.05);
+      overflow: hidden;
     }
     .download-grid .account-logo {
       width: 100%;
-      height: 72px;
-      object-fit: contain;
+      height: 100%;
+      min-height: 80px;
+      object-fit: cover;
       object-position: center;
       align-self: center;
       filter: none;
     }
     .download-grid .account-logo.mt5-logo {
       filter: none;
+    }
+    .download-grid .account-link-card:not(.course-card) b,
+    .download-grid .account-link-card:not(.course-card) p {
+      padding: 0 16px;
+    }
+    .download-grid .account-link-card:not(.course-card) b {
+      padding-top: 16px;
+    }
+    .download-grid .account-link-card:not(.course-card) .account-link-actions {
+      padding: 0 16px 16px;
     }
     .download-meta-banner {
       display: block;
@@ -1080,6 +1181,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .course-card .account-link-actions {
+        flex-direction: column;
+      }
+
       .download-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -1239,7 +1344,7 @@
       <a id="navDashboard" class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard <span class="status-dot"></span></a>
       <a id="navRadar" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.35); background: rgba(241, 196, 15, 0.08);"><i data-lucide="activity"></i> CDL Radar</a>
       <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
-      <a id="navDownload" class="nav-item"><i data-lucide="download"></i> DOWNLOAD</a>
+      <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
       <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Ver más cursos</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
@@ -1326,7 +1431,7 @@
 
           <article class="account-link-card pin-broker">
             <span class="account-pin broker">BROKER</span>
-            <img class="account-logo" src="../../images/XS.png" alt="XS">
+            <img class="account-logo" src="../../images/xs.png" alt="XS">
             <b>XS</b>
             <p>Tecnología punta. Si tu trading depende de la velocidad de ejecución y quieres operar desde Forex hasta metales con infraestructura de baja latencia, XS es la opción técnica.</p>
             <div class="account-link-actions">
@@ -1336,7 +1441,7 @@
 
           <article class="account-link-card pin-prop">
             <span class="account-pin prop">PROPTRADE</span>
-            <img class="account-logo" src="../../images/FXIFY.png" alt="FXIFY">
+            <img class="account-logo" src="../../images/fxify.png" alt="FXIFY">
             <b>FXIFY</b>
             <p>Ideal para quienes buscan flexibilidad. Con opciones de pago instantáneo y cuentas de hasta $400k, es la opción más agresiva para escalar rápido.</p>
             <div class="account-link-actions">
@@ -1356,7 +1461,7 @@
 
           <article class="account-link-card pin-prop">
             <span class="account-pin prop">PROPTRADE</span>
-            <img class="account-logo" src="../../images/Thetradingpit.png" alt="The Trading Pit">
+            <img class="account-logo" src="../../images/logotradingpit.avif" alt="The Trading Pit">
             <b>THE TRADING PIT</b>
             <p>¿Quieres operar Futuros o CFDs con un enfoque institucional? Aquí no solo te fondean, te ofrecen un plan de carrera real para escalar tu cuenta.</p>
             <div class="account-link-actions">
@@ -1391,85 +1496,117 @@
 
       <div class="accounts-tier">
         <div class="accounts-tier-grid courses-grid">
-          <article class="account-link-card">
-            <img class="account-logo" src="../../images/curso01.avif" alt="Master Pro Academico">
-            <b>MASTER PRO ACADEMICO</b>
-            <p>Formación integral para construir una base sólida: lectura de mercado, gestión de riesgo y ejecución técnica con enfoque profesional desde cero.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://cursos.condinerolibre.com/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Abrir Curso</a>
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/curso01.avif" alt="Master Pro Academico">
+            </div>
+            <div class="course-content">
+              <span class="course-label">CURSO DE TRADING</span>
+              <b>Master Pro Profesional Académico</b>
+              <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">ver</a>
+              </div>
             </div>
           </article>
 
-          <article class="account-link-card">
-            <img class="account-logo" src="../../images/curso02.avif" alt="Trading Prime Elite Profesional">
-            <b>TRADING PRIME ELITE</b>
-            <p>Programa avanzado orientado a rendimiento real: combina metodología de prop firms, operativa en MetaTrader y análisis estratégico en TradingView.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://cursos.condinerolibre.com/Curso-de-Trading-Prime-Elite-Profesional/" target="_blank" rel="noopener noreferrer">Abrir Curso</a>
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/curso02.avif" alt="Trading Prime Elite Profesional">
+            </div>
+            <div class="course-content">
+              <span class="course-label">CURSO DE TRADING</span>
+              <b>Trading Prime Elite Profesional</b>
+              <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">ver</a>
+              </div>
             </div>
           </article>
 
-          <article class="account-link-card">
-            <img class="account-logo" src="../../images/curso03.avif" alt="Velas Japonesas desde Cero">
-            <b>VELAS JAPONESAS</b>
-            <p>Aprende a interpretar velas paso a paso y a leer la acción del precio con claridad para tomar decisiones más precisas en tus entradas y salidas.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://cursos.condinerolibre.com/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Abrir Curso</a>
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/curso03.avif" alt="Velas Japonesas desde Cero">
+            </div>
+            <div class="course-content">
+              <span class="course-label">CURSO DE TRADING</span>
+              <b>Velas Japonesas desde Cero</b>
+              <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">ver</a>
+              </div>
             </div>
           </article>
 
-          <article class="account-link-card">
-            <img class="account-logo" src="../../images/curso04.avif" alt="TradingView Basico">
-            <b>TRADINGVIEW BASICO</b>
-            <p>Curso práctico para dominar TradingView: configura tu espacio, usa indicadores clave y construye análisis visuales claros para planificar cada operación.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://cursos.condinerolibre.com/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Abrir Curso</a>
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/curso04.avif" alt="TradingView Basico">
             </div>
-          </article>
-
-          <article class="account-link-card">
-            <img class="account-logo" src="../../images/logocdlwhite.avif" alt="Introduccion a MetaTrader">
-            <b>INTRODUCCION A METATRADER</b>
-            <p>Playlist guiada para empezar con MetaTrader de forma ordenada: instalación, configuración inicial, herramientas básicas y primeros pasos de ejecución.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://www.youtube.com/playlist?list=PLq1fc9NYc2rldUcHeLyS94jD6a913GvE_" target="_blank" rel="noopener noreferrer">Abrir Curso</a>
+            <div class="course-content">
+              <span class="course-label">CURSO DE TRADING</span>
+              <b>Trading View Básico</b>
+              <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">ver</a>
+              </div>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- VISTA DOWNLOAD -->
+    <!-- VISTA METATRADER -->
     <section id="viewDownload">
+      <div class="accounts-head">
+        <h2>MetaTrader</h2>
+        <p>Descarga las plataformas y aprende a usarlas con nuestro curso dedicado.</p>
+      </div>
+
       <div class="accounts-tier">
         <div class="accounts-tier-grid download-grid">
-          <article class="account-link-card">
-            <div class="download-logo-wrap">
-              <img class="account-logo" src="../../images/MT4.png" alt="MetaTrader 4">
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/MT4base.jpg" alt="MetaTrader 4">
             </div>
-            <b>METATRADER 4</b>
-            <p>Plataforma clásica para operar Forex y CFDs con herramientas de análisis técnico.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://www.metatrader4.com/es/download" target="_blank" rel="noopener noreferrer">Descargar</a>
+            <div class="course-content">
+              <span class="course-label">PLATAFORMA DE TRADING</span>
+              <b>MetaTrader 4</b>
+              <p>Plataforma clásica especializada en Forex con 9 marcos temporales, 30 indicadores técnicos y sistema de órdenes flexible. Ideal para traders que operan divisas con estrategias probadas.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="https://www.metatrader4.com/es/download" target="_blank" rel="noopener noreferrer">Descargar</a>
+              </div>
             </div>
           </article>
 
-          <article class="account-link-card">
-            <div class="download-logo-wrap">
-              <img class="account-logo mt5-logo" src="../../images/MT5.svg" alt="MetaTrader 5">
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/MT5base.jpg" alt="MetaTrader 5">
             </div>
-            <b>METATRADER 5</b>
-            <p>Versión avanzada con más mercados, más marcos de tiempo y funciones ampliadas.</p>
-            <div class="account-link-actions">
-              <a class="btn-primary-link" href="https://www.metatrader5.com/es/download" target="_blank" rel="noopener noreferrer">Descargar</a>
+            <div class="course-content">
+              <span class="course-label">PLATAFORMA DE TRADING</span>
+              <b>MetaTrader 5</b>
+              <p>Versión avanzada multimercado con 21 marcos temporales, 38 indicadores técnicos, profundidad de mercado y acceso a Forex, acciones y futuros. Más potente y completa.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="https://www.metatrader5.com/es/download" target="_blank" rel="noopener noreferrer">Descargar</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="account-link-card course-card">
+            <div class="course-image-wrap">
+              <img src="../../images/MTcursobase.jpg" alt="Introduccion a MetaTrader">
+            </div>
+            <div class="course-content">
+              <span class="course-label">CURSO DE TRADING</span>
+              <b>Introducción a MetaTrader</b>
+              <p>Playlist guiada para empezar con MetaTrader de forma ordenada: instalación, configuración inicial, herramientas básicas y primeros pasos de ejecución.</p>
+              <div class="account-link-actions">
+                <a class="btn-primary-link" href="https://www.youtube.com/playlist?list=PLq1fc9NYc2rldUcHeLyS94jD6a913GvE_" target="_blank" rel="noopener noreferrer">ver</a>
+              </div>
             </div>
           </article>
         </div>
       </div>
-
-      <a class="download-meta-banner" href="https://www.metatrader5.com/es/download" target="_blank" rel="noopener noreferrer" aria-label="Ir a descargas MetaTrader">
-        <img src="../../images/metatrader.jpg" alt="Banner MetaTrader">
-      </a>
     </section>
 
     <!-- VISTA RADAR -->
