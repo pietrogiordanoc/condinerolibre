@@ -175,7 +175,7 @@
         method="POST"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-      action="./"
+        action="/cdl-portal/registro/"
         hidden>
     <input name="bot-field" />
     <input type="hidden" name="form-name" value="cdl_signup_notify" />
@@ -227,7 +227,7 @@
     }
 
     function notify(name,email){
-      fetch("/",{
+      fetch("/cdl-portal/registro/",{
         method:"POST",
         headers:{ "Content-Type":"application/x-www-form-urlencoded" },
         body:encode({
