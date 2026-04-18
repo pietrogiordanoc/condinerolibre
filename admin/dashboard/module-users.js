@@ -43,6 +43,11 @@ function renderUsers() {
   if (statF !== "all") rows = rows.filter(r => (statF === "online" ? r.online : !r.online));
 
   rows.sort((a, b) => {
+    // Primero ordenar por estado online (ONLINE primero)
+    if (a.online !== b.online) {
+      return b.online - a.online; // online=true (1) primero que online=false (0)
+    }
+    // Luego por el sortKey seleccionado
     let valA = a[sortKey], valB = b[sortKey];
     return sortOrder === 'asc' ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
   });
