@@ -57,7 +57,7 @@ document.getElementById("logoutBtn").onclick = async () => {
     }
   } catch(e) { console.log("Audit log:", e); }
   await sp.auth.signOut(); 
-  window.location.href = "/"; 
+  window.location.href = "/admin/cdl-admin/"; 
 };
 
 document.getElementById("q").oninput = renderUsers;
