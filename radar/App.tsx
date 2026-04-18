@@ -334,6 +334,47 @@ const App: React.FC = () => {
     };
   }, [audioReady]);
 
+  // Validar acceso al radar (protección contra acceso directo sin autenticación)
+  useEffect(() => {
+    const validateAccess = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        // Sin sesión → redirigir a login
+        if (!session) {
+          console.log('[Radar] Sin sesión - redirigiendo a login');
+          window.location.href = '/login?next=/radar';
+          return;
+        }
+        
+        // Validar con radar-access
+        const res = await fetch('https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/radar-access', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ action: 'check' })
+        });
+        
+        const data = await res.json();
+        
+        // Sin acceso → redirigir a upgrade
+        if (!data.allowed) {
+          console.log('[Radar] Sin tiempo freemium - redirigiendo a upgrade');
+          window.location.href = '/dashboard#upgrade';
+        } else {
+          console.log('[Radar] Acceso validado ✅');
+        }
+      } catch (error) {
+        console.error('[Radar] Error validando acceso:', error);
+        // En caso de error, permitir acceso (fail-open para no bloquear por errores de red)
+      }
+    };
+    
+    validateAccess();
+  }, []);
+
   const handleRefreshComplete = useCallback(() => {
     setRefreshTrigger(t => t + 1);
     setRefreshJustCompleted(true);
