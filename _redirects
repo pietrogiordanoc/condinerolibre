@@ -15,9 +15,10 @@
 # Cursos - Páginas de cursos
 /cursos /cursos/index.html 200
 
-# Radar - CDLRadar Tool (Build en /radar/dist/)
-/radar /radar/dist/index.html 200
-/radar/* /radar/dist/:splat 200
+# Radar - CDLRadar Tool (Build en /radar/dist/) - FORCE para evitar conflicto con index.html de dev
+/radar/ /radar/dist/index.html 200!
+/radar /radar/dist/index.html 200!
+/radar/* /radar/dist/:splat 200!
 
 # Contacto
 /contacto /contacto/index.html 200
