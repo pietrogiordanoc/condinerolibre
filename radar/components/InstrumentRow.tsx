@@ -3,7 +3,6 @@ import { Bookmark, X } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
-import { telegramService } from '../utils/telegramService';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -233,19 +232,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       if (action === ActionType.ENTRAR_AHORA) {
         console.log(`[Alarma] 🔔 Disparando alarma de ENTRADA para ${instrument.symbol}`);
         playAlertSound('entry');
-        
-        // Enviar alerta a Telegram si está conectado
-        if (telegramService.isConnected()) {
-          const direction = currentAnalysis?.mainSignal === SignalType.SALE ? 'VENTA' : 'COMPRA';
-          telegramService.sendSignal(
-            instrument.symbol,
-            direction,
-            currentAnalysis?.powerScore || 0,
-            instrument.type,
-            tradeSetup?.entry,
-            tradeSetup?.tp
-          );
-        }
       } else if (action === ActionType.SALIR) {
         console.log(`[Alarma] 🔔 Disparando alarma de SALIDA para ${instrument.symbol}`);
         playAlertSound('exit');

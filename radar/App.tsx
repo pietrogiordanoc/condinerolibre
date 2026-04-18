@@ -8,9 +8,7 @@ import TradingViewModal from './components/TradingViewModal';
 import TendencialModal from './components/TendencialModal';
 import Radar from './components/Radar';
 import SessionMonitor from './components/SessionMonitor';
-import TelegramConnect from './components/TelegramConnect';
 import { audioService } from './utils/audioService';
-import { telegramService } from './utils/telegramService';
 import { PriceStore } from './services/twelveDataService';
 import { supabase } from './services/supabaseClient';
 
@@ -278,153 +276,6 @@ const App: React.FC = () => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
-
-  // TELEGRAM TEMPORALMENTE DESACTIVADO
-  /*
-  // Inicializar Telegram service con userId (genera uno único si no hay sesión)
-  useEffect(() => {
-    const isInIframe = window.self !== window.top;
-    
-    const initTelegram = async () => {
-      // Si estamos en iframe, ESPERAR el postMessage del portal (máx 3 segundos)
-      if (isInIframe) {
-        console.log('[Radar] En iframe - esperando autenticación del Portal...');
-        // Esperar 3 segundos para que llegue el postMessage
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Verificar si el postMessage ya autenticó
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          console.log('[Radar] Autenticado via postMessage:', user.id);
-          return; // El postMessage ya manejó la inicialización
-        } else {
-          console.log('[Radar] No se recibió autenticación del Portal, iniciando como anónimo');
-        }
-      }
-      
-      const { data: { user } } = await supabase.auth.getUser();
-      let id: string;
-      let isPaid = false;
-      
-      if (user) {
-        // Usuario autenticado
-        id = user.id;
-        
-        // Obtener plan del usuario
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('plan')
-          .eq('id', user.id)
-          .single();
-        
-        isPaid = profile?.plan === 'paid';
-      } else {
-        // Usuario anónimo: generar ID único persistente
-        const stored = localStorage.getItem('cdl_radar_visitor_id');
-        if (stored) {
-          id = stored;
-        } else {
-          // Generar nuevo ID único
-          id = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substring(7);
-          localStorage.setItem('cdl_radar_visitor_id', id);
-        }
-      }
-      
-      setUserId(id);
-      await telegramService.initialize(id);
-      
-      // DESCONEXIÓN AUTOMÁTICA PARA FREEMIUM AL CERRAR NAVEGADOR
-      const handleBeforeUnload = async () => {
-        if (!isPaid && telegramService.isConnected()) {
-          // Freemium: desconectar sin mensaje (silencioso)
-          await telegramService.disconnectSilent(id);
-        }
-      };
-      
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      
-      // Cleanup
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
-    };
-    initTelegram();
-  }, []);
-  */
-
-  // TELEGRAM TEMPORALMENTE DESACTIVADO - postMessage
-  /*
-  // Recibir token del portal (cuando está embebido en iframe)
-  useEffect(() => {
-    const handleMessage = async (event: MessageEvent) => {
-      // Validar origen (solo del portal)
-      if (!event.data || typeof event.data !== 'object') return;
-      if (event.data.type !== 'PORTAL_SESSION') return;
-      
-      console.log('[Radar] Recibido token del portal');
-      
-      try {
-        const { token, userId } = event.data;
-        if (!token || !userId) return;
-        
-        // Autenticar con el token recibido
-        const { data, error } = await supabase.auth.setSession({
-          access_token: token,
-          refresh_token: '' // El portal maneja el refresh
-        });
-        
-        if (!error && data.user) {
-          console.log('[Radar] Autenticado con token del portal:', data.user.id);
-          
-          // LIMPIAR visitor_id de localStorage (ya no es anónimo)
-          const oldVisitorId = localStorage.getItem('cdl_radar_visitor_id');
-          localStorage.removeItem('cdl_radar_visitor_id');
-          
-          // ELIMINAR conexión antigua de Telegram si había visitor_id
-          if (oldVisitorId) {
-            console.log('[Radar] Limpiando conexión visitor antigua:', oldVisitorId);
-            await supabase
-              .from('telegram_connections')
-              .delete()
-              .eq('user_id', oldVisitorId);
-          }
-          
-          // Actualizar userId con el UUID del portal
-          setUserId(data.user.id);
-          
-          // Reinicializar Telegram con el userId correcto
-          await telegramService.initialize(data.user.id);
-          
-          // Obtener plan para beforeunload
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('plan')
-            .eq('id', data.user.id)
-            .single();
-          
-          const isPaid = profile?.plan === 'paid';
-          
-          // Configurar beforeunload con el plan correcto
-          const handleBeforeUnload = async () => {
-            if (!isPaid && telegramService.isConnected()) {
-              await telegramService.disconnectSilent(data.user.id);
-            }
-          };
-          
-          window.addEventListener('beforeunload', handleBeforeUnload);
-        }
-      } catch (error) {
-        console.error('[Radar] Error procesando token del portal:', error);
-      }
-    };
-    
-    window.addEventListener('message', handleMessage);
-    
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
-  */
 
   // Auto-activar audio en el primer click del usuario (bypass autoplay policy)
   useEffect(() => {
@@ -797,9 +648,6 @@ const App: React.FC = () => {
                   title={audioReady ? 'Audio activado' : 'Haz click para activar audio'}
                 ></div>
               </div>
-              {/* Telegram temporalmente desactivado */}
-              {/* <div className="h-6 w-px bg-white/10"></div> */}
-              {/* {userId && <TelegramConnect userId={userId} />} */}
             </div>
             <div className={`p-1 relative ${showDebugFrames ? 'border-2 border-pink-500' : ''}`}>
               {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-1 text-[9px] text-pink-400 z-50">H3D-Timer</span>}
