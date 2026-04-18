@@ -2,8 +2,9 @@
   publish = "."
   command = "echo 'No build command needed - static site'"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
+# Comentado: Este redirect interfiere con los assets del radar
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
+#   force = false
