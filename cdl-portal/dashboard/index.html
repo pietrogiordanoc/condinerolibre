@@ -1723,9 +1723,9 @@
 
   <script>
     const radarModeParam = new URLSearchParams(window.location.search).get('radar');
-    const radarIframeSrc = radarModeParam === 'local'
-      ? 'http://127.0.0.1:5173'
-      : 'https://radar.condinerolibre.com';
+    const radarIframeSrc = radarModeParam === 'dev'
+      ? 'http://127.0.0.1:3000'
+      : '/radar/';
 
     const CONFIG = {
       supabaseUrl: "https://yhgqmbexjscojlrzguvh.supabase.co",
