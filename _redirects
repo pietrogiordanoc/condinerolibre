@@ -23,6 +23,7 @@
 # Admin - Panel de administración
 /admin /admin/dashboard/index.html 200
 /admin/ /admin/dashboard/index.html 200
+/admin/cdl-admin/ /admin/cdl-admin/index.html 200
 /admin/* /admin/:splat 200
 
 # Contacto
