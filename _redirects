@@ -20,6 +20,11 @@
 /radar /radar/dist/index.html 200!
 /radar/* /radar/dist/:splat 200!
 
+# Admin - Panel de administración
+/admin /admin/dashboard/index.html 200
+/admin/ /admin/dashboard/index.html 200
+/admin/* /admin/:splat 200
+
 # Contacto
 /contacto /contacto/index.html 200
 /contacto/ /contacto/index.html 200
