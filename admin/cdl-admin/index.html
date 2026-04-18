@@ -87,7 +87,7 @@
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        window.location.href = isLocal ? "../dashboard/" : "/dashboard/index.html";
+        window.location.href = isLocal ? "../dashboard/" : "/admin/dashboard/";
       }
     })();
 
@@ -137,7 +137,7 @@
       
       setTimeout(() => {
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        window.location.href = isLocal ? "../dashboard/" : "/dashboard/index.html";
+        window.location.href = isLocal ? "../dashboard/" : "/admin/dashboard/";
       }, 500);
     });
   </script>
