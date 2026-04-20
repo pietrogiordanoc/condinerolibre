@@ -1323,6 +1323,41 @@
       .download-grid {
         grid-template-columns: 1fr;
       }
+      
+      #viewAprende {
+        flex-direction: column !important;
+      }
+      
+      .aprende-sidebar {
+        width: 100% !important;
+        max-height: 50vh;
+      }
+    }
+    
+    /* Aprende Links Styles */
+    .aprende-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      color: #d1d5db;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .aprende-link:hover {
+      background: rgba(42, 255, 138, 0.08);
+      border-color: rgba(42, 255, 138, 0.25);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .aprende-link i {
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -1349,6 +1384,7 @@
       <a id="navRadar" class="nav-item"><i data-lucide="activity"></i> CDL Radar <span class="status-dot"></span></a>
       <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
       <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
+      <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Aprende</a>
       <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Ver más cursos</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
@@ -1491,8 +1527,83 @@
       </div>
     </section>
 
+    <!-- VISTA APRENDE -->
+    <section id="viewAprende" style="display: none; flex-direction: row; gap: 0; padding: 0; height: calc(100vh - 60px); overflow: hidden;">
+      <div class="aprende-sidebar" style="width: 320px; background: #0f1419; border-right: 1px solid #1f2937; overflow-y: auto; padding: 24px; flex-shrink: 0;">
+        <h2 style="margin: 0 0 8px 0; font-size: 1.5rem; font-weight: 700; color: #fff;">Aprende Trading</h2>
+        <p style="margin: 0 0 24px 0; font-size: 0.9rem; color: #9ca3af; line-height: 1.4;">Selecciona un tema para estudiar</p>
+        
+        <div class="aprende-links" style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="/aprende/forex-para-principiantes/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="trending-up" style="width: 18px; height: 18px;"></i>
+            <span>Forex para Principiantes</span>
+          </a>
+          <a href="/aprende/indices-para-trading/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="bar-chart-2" style="width: 18px; height: 18px;"></i>
+            <span>Índices para Trading</span>
+          </a>
+          <a href="/aprende/acciones-para-trading/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i>
+            <span>Acciones para Trading</span>
+          </a>
+          <a href="/aprende/cripto-para-principiantes/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="coins" style="width: 18px; height: 18px;"></i>
+            <span>Cripto para Principiantes</span>
+          </a>
+          <a href="/aprende/que-es-el-spread/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="arrows-up-down" style="width: 18px; height: 18px;"></i>
+            <span>Qué es el Spread</span>
+          </a>
+          <a href="/aprende/que-es-el-slippage/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="move-diagonal" style="width: 18px; height: 18px;"></i>
+            <span>Qué es el Slippage</span>
+          </a>
+          <a href="/aprende/el-swap-overnight/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
+            <span>El Swap Overnight</span>
+          </a>
+          <a href="/aprende/horarios-sesiones-forex/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="clock" style="width: 18px; height: 18px;"></i>
+            <span>Horarios Sesiones Forex</span>
+          </a>
+          <a href="/aprende/que-es-un-pip/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="ruler" style="width: 18px; height: 18px;"></i>
+            <span>Qué es un Pip</span>
+          </a>
+          <a href="/aprende/que-es-un-lote/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+            <span>Qué es un Lote</span>
+          </a>
+          <a href="/aprende/timeframes/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="calendar-clock" style="width: 18px; height: 18px;"></i>
+            <span>Timeframes</span>
+          </a>
+          <a href="/aprende/tipos-de-ordenes/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="list-checks" style="width: 18px; height: 18px;"></i>
+            <span>Tipos de Órdenes</span>
+          </a>
+          <a href="/aprende/liquidez-y-volatilidad/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="waves" style="width: 18px; height: 18px;"></i>
+            <span>Liquidez y Volatilidad</span>
+          </a>
+          <a href="/aprende/tipos-de-mercado/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="globe" style="width: 18px; height: 18px;"></i>
+            <span>Tipos de Mercado</span>
+          </a>
+          <a href="/aprende/que-es-el-trading/" class="aprende-link" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="help-circle" style="width: 18px; height: 18px;"></i>
+            <span>Qué es el Trading</span>
+          </a>
+        </div>
+        
+        <p style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #1f2937; font-size: 0.85rem; color: #6b7280; line-height: 1.4;">
+          💡 <strong>Tip:</strong> Los enlaces abren en nueva pestaña para mejor experiencia de lectura.
+        </p>
+      </div>
+    </section>
+
     <!-- VISTA CURSOS -->
-    <section id="viewCourses">
+    <section id="viewCourses"
       <div class="courses-header-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
         <div class="accounts-head" style="margin-bottom: 0;">
           <h2>Ver Más Cursos</h2>
@@ -2137,6 +2248,7 @@
       document.body.setAttribute('data-view', which);
       document.getElementById("viewDashboard").style.display = (which === "dashboard") ? "grid" : "none";
       document.getElementById("viewAccounts").style.display = (which === "accounts") ? "flex" : "none";
+      document.getElementById("viewAprende").style.display = (which === "aprende") ? "flex" : "none";
       document.getElementById("viewCourses").style.display = (which === "courses") ? "flex" : "none";
       document.getElementById("viewDownload").style.display = (which === "download") ? "flex" : "none";
       document.getElementById("viewRadar").style.display = (which === "radar") ? "flex" : "none";
@@ -2147,6 +2259,7 @@
       document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
       if (which === "dashboard") document.getElementById("navDashboard").classList.add("active");
       if (which === "accounts") document.getElementById("navAccounts").classList.add("active");
+      if (which === "aprende") document.getElementById("navAprende").classList.add("active");
       if (which === "courses") document.getElementById("navCourses").classList.add("active");
       if (which === "download") document.getElementById("navDownload").classList.add("active");
       if (which === "radar") document.getElementById("navRadar").classList.add("active");
@@ -2163,6 +2276,11 @@
       }
       
       if (which === "upgrade") renderPaypalButtons();
+      
+      // Reinicializar iconos de Lucide cuando se muestre la vista Aprende
+      if (which === "aprende" && typeof lucide !== 'undefined') {
+        setTimeout(() => lucide.createIcons(), 100);
+      }
 
       if (isMobileView()) closeMobileMenu();
     }
@@ -2323,6 +2441,7 @@
     document.getElementById("navDashboard").onclick = () => navigateTo("#dashboard");
     document.getElementById("navAccounts").onclick = () => navigateTo("#accounts");
     document.getElementById("navDownload").onclick = () => navigateTo("#download");
+    document.getElementById("navAprende").onclick = () => navigateTo("#aprende");
     document.getElementById("navCourses").onclick = () => navigateTo("#courses");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
