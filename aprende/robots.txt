@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# Indica la ruta exacta de este subdominio
-Sitemap: https://aprende.condinerolibre.com/sitemap.xml
+# Sitemap principal del sitio
+Sitemap: https://www.condinerolibre.com/sitemap.xml

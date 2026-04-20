@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Bloquear páginas privadas y de utilidad
+Disallow: /login
+Disallow: /registro
+Disallow: /dashboard
+Disallow: /cdl-portal/
+Disallow: /admin/
+Disallow: /test/
+Disallow: /encuesta-proximos-estudiantes-oculta/
+Disallow: /modulo home/
+
+# Bloquear páginas de gracias y legales
+Disallow: /contacto/gracias.html
+Disallow: /cursos/gracias.html
+Disallow: /contacto/privacidad.html
+Disallow: /contacto/aviso-legal.html
+Disallow: /contacto/afiliacion.html
+Disallow: /politica-cookies/
+
+# Sitemap principal
+Sitemap: https://www.condinerolibre.com/sitemap.xml
