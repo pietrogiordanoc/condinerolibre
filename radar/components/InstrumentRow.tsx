@@ -97,18 +97,11 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         try {
           const { supabase } = await import('../services/supabaseClient');
           const { data } = await supabase
-            .from('market_cache')
-            .select('time_series_data')
-            .eq('symbol', instrument.symbol)
-            .single();
+            .rpc('get_latest_close', { symbol_param: instrument.symbol });
           
-          if (data?.time_series_data && Array.isArray(data.time_series_data) && data.time_series_data.length > 0) {
-            const latestCandle = data.time_series_data[0]; // Primer elemento es el más reciente
-            const latestPrice = parseFloat(latestCandle.close);
-            if (latestPrice > 0) {
-              setCurrentPrice(latestPrice);
-              PriceStore[instrument.symbol] = latestPrice;
-            }
+          if (data && data > 0) {
+            setCurrentPrice(data);
+            PriceStore[instrument.symbol] = data;
           }
         } catch (error) {
           console.error(`Error fetching live price for ${instrument.symbol}:`, error);
