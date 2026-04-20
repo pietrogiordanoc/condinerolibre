@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquidez y Volatilidad en Trading: Guía Completa 2026 | ConDineroLibre</title>
+    <meta name="description" content="Aprende qué son la liquidez y volatilidad en trading, cómo afectan spreads y ejecuciones, horarios de mayor liquidez, pares más líquidos y estrategias según volatilidad. Guía 100% práctica 2026.">
+    <link rel="canonical" href="https://www.condinerolibre.com/aprende/liquidez-y-volatilidad/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#39E079',
+                        secondary: '#0A0E27'
+                    },
+                    fontFamily: {
+                        display: ['Lexend', 'sans-serif'],
+                        body: ['Noto Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- CDL Shell CSS & JS -->
+    <link rel="stylesheet" href="/shared/cdl-shell.css">
+    <script src="/shared/cdl-shell.js" defer></script>
+    
+    <style>
+        .icon { font-family: 'Material Symbols Outlined'; font-size: 1.5rem; }
+        .toc-link.active { color: #39E079; font-weight: 600; }
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #39E079 0%, #2bc461 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-pattern {
+            background-image: radial-gradient(circle at 20% 50%, rgba(57, 224, 121, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(57, 224, 121, 0.08) 0%, transparent 50%);
+        }
+        
+        summary::-webkit-details-marker { display: none; }
+        details[open] summary .icon { transform: rotate(180deg); }
+        .icon { transition: transform 0.3s ease; }
+    </style>
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Liquidez y Volatilidad en Trading: Guía Completa 2026",
+        "description": "Aprende qué son la liquidez y volatilidad en trading, cómo afectan spreads y ejecuciones, horarios de mayor liquidez, pares más líquidos y estrategias según volatilidad.",
+        "image": "https://www.condinerolibre.com/images/liquidezhero.jpg",
+        "author": {
+            "@type": "Organization",
+            "name": "ConDineroLibre"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "ConDineroLibre",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.condinerolibre.com/images/logocdl.avif"
+            }
+        },
+        "datePublished": "2026-04-20",
+        "dateModified": "2026-04-20"
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Inicio",
+            "item": "https://www.condinerolibre.com/"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Aprende",
+            "item": "https://www.condinerolibre.com/aprende/"
+        },{
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Liquidez y Volatilidad",
+            "item": "https://www.condinerolibre.com/aprende/liquidez-y-volatilidad/"
+        }]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+            "@type": "Question",
+            "name": "¿Qué es la liquidez en trading?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La liquidez es la facilidad con la que puedes comprar o vender un activo sin afectar significativamente su precio. En forex, los pares más líquidos como EUR/USD tienen millones de operaciones diarias, spreads bajos (0.0-0.2 pips) y ejecución instantánea. Mayor liquidez significa mejor precio y menos slippage."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Cuándo hay mayor liquidez en forex?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La mayor liquidez ocurre durante el solapamiento Londres-Nueva York (13:00-17:00 GMT), cuando ambas sesiones están activas simultáneamente. EUR/USD puede registrar el 70% de su volumen diario en estas 4 horas. Durante el solapamiento Tokio-Londres (7:00-9:00 GMT) también hay buena liquidez, especialmente en pares con JPY."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Qué es la volatilidad en trading?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "La volatilidad mide la velocidad y magnitud de los cambios de precio. Un par volátil como GBP/JPY puede moverse 200+ pips en una sesión, mientras EUR/USD típicamente se mueve 50-80 pips. Se mide con ATR (Average True Range), Bandas de Bollinger y desviación estándar. Alta volatilidad = mayores oportunidades pero también mayor riesgo."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Cuáles son los pares más líquidos?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los pares 'majors' son los más líquidos: EUR/USD (28% del volumen forex), USD/JPY (13%), GBP/USD (11%), USD/CHF (5%), AUD/USD (5%), USD/CAD (4%), NZD/USD (2%). Todos tienen spreads <1 pip en brokers ECN y volumen diario multimillonario. Los pares exóticos (TRY, ZAR, MXN) tienen baja liquidez y spreads de 10-50+ pips."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Cómo afecta la liquidez al spread?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A mayor liquidez, menor spread. EUR/USD tiene spread 0.0-0.2 pips porque hay millones de compradores/vendedores. USD/TRY puede tener spread de 30+ pips por baja liquidez. Durante news releases o sesión asiática sin solapamientos, los spreads se amplían porque hay menos participantes en el mercado. Nunca operes cuando el spread es 3x su valor normal."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Qué estrategia usar en alta volatilidad?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "En alta volatilidad (ATR >100 pips): breakouts de rangos consolidados, estrategias de momentum, stops más amplios (50-80 pips), targets 2:1 o 3:1, reducir apalancamiento 50%. Instrumentos: GBP/JPY, GBP/USD durante sesión Londres o news. EVITA scalping en alta volatilidad porque el slippage destroza tu edge."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Qué estrategia usar en baja volatilidad?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "En baja volatilidad (ATR <40 pips): range trading, mean reversion, venta de opciones, scalping, stops ajustados (15-25 pips), targets 1:1. Horarios: sesión asiática (00:00-08:00 GMT), agosto completo, períodos pre-festivos. EVITA breakouts porque son falsos el 80% del tiempo cuando la volatilidad es baja."
+            }
+        },{
+            "@type": "Question",
+            "name": "¿Qué es mejor: alta o baja liquidez?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SIEMPRE opera en alta liquidez. Beneficios: spreads mínimos, ejecución inmediata sin slippage, profundidad de mercado (grandes órdenes sin mover precio), menor manipulación. Los novatos que operan pares exóticos ilíquidos pagan 10x más en costos de transacción. Regla: si el spread es >3 pips en forex, NO operes ese par."
+            }
+        }]
+    }
+    </script>
+</head>
+<body class="font-body bg-white dark:bg-secondary text-gray-900 dark:text-gray-100">
+    
+    <!-- Header inyectado dinámicamente -->
+    <div id="cdl-header"></div>
+    
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-16 px-4 overflow-hidden hero-pattern">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Texto Hero -->
+                <div class="fade-in">
+                    <div class="inline-block mb-4 px-4 py-2 bg-primary/10 rounded-full">
+                        <span class="text-primary font-semibold text-sm">CONCEPTOS CLAVE · LIQUIDEZ Y VOLATILIDAD</span>
+                    </div>
+                    <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Liquidez y Volatilidad: <span class="gradient-text">Los Dos Pilares</span> del Trading
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                        Entiende cómo la liquidez determina tus costos de transacción y cómo la volatilidad define tus oportunidades de ganancia. Aprende cuándo operar, qué pares elegir y qué estrategias usar según las condiciones del mercado.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#definicion" class="inline-flex items-center px-6 py-3 bg-primary text-secondary font-semibold rounded-lg hover:bg-primary/90 transition">
+                            Comenzar a Aprender
+                            <span class="icon ml-2">arrow_forward</span>
+                        </a>
+                        <a href="#faq" class="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary/10 transition">
+                            Ver Preguntas Frecuentes
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Imagen Hero -->
+                <div class="fade-in lg:order-last">
+                    <img src="/images/liquidezhero.jpg" alt="Gráfico mostrando liquidez y volatilidad en trading con volumen y movimiento de precios" class="rounded-2xl shadow-2xl w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Breadcrumbs -->
+    <nav class="max-w-7xl mx-auto px-4 py-4" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-2 text-sm">
+            <li><a href="/" class="text-primary hover:underline">Inicio</a></li>
+            <li class="text-gray-400">/</li>
+            <li><a href="/aprende/" class="text-primary hover:underline">Aprende</a></li>
+            <li class="text-gray-400">/</li>
+            <li class="text-gray-600 dark:text-gray-400">Liquidez y Volatilidad</li>
+        </ol>
+    </nav>
+    
+    <!-- Contenido Principal con TOC -->
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid lg:grid-cols-[1fr_250px] gap-12">
+            
+            <!-- Contenido -->
+            <article class="prose prose-lg dark:prose-invert max-w-none">
+                
+                <!-- 1. Definición -->
+                <section id="definicion" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">info</span>
+                        ¿Qué son la Liquidez y la Volatilidad?
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        La <strong>liquidez</strong> y la <strong>volatilidad</strong> son dos conceptos fundamentales que determinan cómo y cuándo debes operar en los mercados financieros. Aunque están relacionados, representan aspectos completamente diferentes del comportamiento del mercado.
+                    </p>
+                    
+                    <div class="bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary p-6 rounded-lg mb-6">
+                        <h3 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-primary">water_drop</span>
+                            Liquidez
+                        </h3>
+                        <p class="mb-0">
+                            La <strong>liquidez</strong> es la facilidad con la que puedes comprar o vender un activo sin afectar significativamente su precio. En forex, un par líquido como EUR/USD tiene millones de compradores y vendedores en cada momento, permitiéndote ejecutar órdenes de forma instantánea con spreads mínimos de 0.0-0.2 pips.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
+                        <h3 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-blue-500">trending_up</span>
+                            Volatilidad
+                        </h3>
+                        <p class="mb-0">
+                            La <strong>volatilidad</strong> mide la velocidad y magnitud de los cambios de precio. Un par volátil como GBP/JPY puede moverse 200+ pips en una sesión, mientras que EUR/USD típicamente se mueve 50-80 pips. Mayor volatilidad significa mayores oportunidades de ganancia, pero también mayor riesgo.
+                        </p>
+                    </div>
+                    
+                    <p class="text-lg leading-relaxed">
+                        <strong>Relación clave:</strong> La liquidez determina <em>cuánto te cuesta operar</em> (spreads, slippage, ejecución), mientras que la volatilidad determina <em>cuánto puedes ganar</em> (movimiento del precio, oportunidades). Un trader profesional busca alta liquidez para minimizar costos y selecciona volatilidad según su estrategia.
+                    </p>
+                </section>
+                
+                <!-- 2. Liquidez en Profundidad -->
+                <section id="liquidez" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">waves</span>
+                        Liquidez: El Oxígeno del Mercado
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        La liquidez es probablemente el factor más importante para un trader retail. Determina si puedes entrar y salir del mercado cuando quieras, a qué precio, y con qué costos de transacción.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Características de un Mercado Líquido</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-start gap-3">
+                                <span class="icon text-primary mt-1">check_circle</span>
+                                <div>
+                                    <h4 class="font-semibold mb-2">Spreads Bajos</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">EUR/USD: 0.0-0.2 pips en brokers ECN. Costo mínimo de transacción.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-start gap-3">
+                                <span class="icon text-primary mt-1">flash_on</span>
+                                <div>
+                                    <h4 class="font-semibold mb-2">Ejecución Instantánea</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">Órdenes ejecutadas en milisegundos sin recotización (requote).</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-start gap-3">
+                                <span class="icon text-primary mt-1">layers</span>
+                                <div>
+                                    <h4 class="font-semibold mb-2">Profundidad de Mercado</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">Puedes ejecutar 10-100 lotes sin mover el precio un solo pip.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-start gap-3">
+                                <span class="icon text-primary mt-1">security</span>
+                                <div>
+                                    <h4 class="font-semibold mb-2">Menor Slippage</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">Tu orden se ejecuta al precio que ves (o muy cerca) incluso con market orders.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Pares Forex por Nivel de Liquidez</h3>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-800">
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Categoría</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Pares</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Spread Típico</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Volumen Diario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-primary">Majors (Alta)</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>EUR/USD, USD/JPY, GBP/USD, USD/CHF</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">0.0 - 0.5 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Multimillonario</td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800/50">
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-blue-500">Minors (Media)</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>EUR/GBP, EUR/AUD, GBP/JPY, AUD/JPY</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">0.5 - 2 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-red-500">Exóticos (Baja)</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>USD/TRY, USD/ZAR, USD/MXN, EUR/TRY</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">10 - 50+ pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Bajo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                            <span class="icon">warning</span>
+                            Peligro: Baja Liquidez
+                        </h3>
+                        <p class="mb-3">Los novatos que operan pares exóticos ilíquidos enfrentan:</p>
+                        <ul class="list-disc list-inside space-y-2 mb-0">
+                            <li><strong>Spreads masivos:</strong> Pagas 30-50 pips solo por abrir la posición (necesitas 50+ pips de movimiento a tu favor solo para break-even)</li>
+                            <li><strong>Slippage extremo:</strong> Tu stop loss de 50 pips se ejecuta a 80 pips durante eventos de liquidez</li>
+                            <li><strong>Gapping frecuente:</strong> El precio salta de 1.2500 a 1.2560 sin niveles intermedios</li>
+                            <li><strong>Manipulación:</strong> Con poco volumen, grandes jugadores pueden mover el precio a voluntad</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- 3. Horarios de Mayor Liquidez -->
+                <section id="horarios" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">schedule</span>
+                        Cuándo Hay Mayor Liquidez en Forex
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        El mercado forex opera 24 horas, pero la liquidez NO es constante. Entender los horarios de las sesiones y sus solapamientos te permite operar cuando los spreads son más bajos y la ejecución más rápida.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Las 4 Sesiones Principales</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-yellow-500">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-xl">🇯🇵 Sesión de Tokio</h4>
+                                <span class="text-sm bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 px-3 py-1 rounded-full font-mono">00:00 - 09:00 GMT</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">Liquidez moderada. Pares JPY activos (USD/JPY, EUR/JPY, AUD/JPY). Movimientos típicos: 20-40 pips.</p>
+                            <p class="text-sm text-gray-500 mb-0"><strong>Mejor para:</strong> Range trading, estrategias de baja volatilidad, traders asiáticos.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-blue-600">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-xl">🇬🇧 Sesión de Londres</h4>
+                                <span class="text-sm bg-blue-600/20 text-blue-700 dark:text-blue-400 px-3 py-1 rounded-full font-mono">08:00 - 17:00 GMT</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">LA MÁS LÍQUIDA. 35% del volumen forex global. EUR, GBP, CHF muy activos. Movimientos: 60-120 pips.</p>
+                            <p class="text-sm text-gray-500 mb-0"><strong>Mejor para:</strong> Todo tipo de estrategias, especialmente breakouts y tendencias.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-green-600">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-xl">🇺🇸 Sesión de Nueva York</h4>
+                                <span class="text-sm bg-green-600/20 text-green-700 dark:text-green-400 px-3 py-1 rounded-full font-mono">13:00 - 22:00 GMT</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">Alta liquidez. 19% del volumen global. USD, CAD activos. Movimientos: 50-100 pips. News económicas USA.</p>
+                            <p class="text-sm text-gray-500 mb-0"><strong>Mejor para:</strong> Trading de noticias, pares USD, momentum trading.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-orange-500">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-xl">🇦🇺 Sesión de Sídney</h4>
+                                <span class="text-sm bg-orange-500/20 text-orange-700 dark:text-orange-400 px-3 py-1 rounded-full font-mono">22:00 - 07:00 GMT</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">Liquidez baja. Pares AUD/NZD activos. Movimientos: 10-30 pips. Spreads amplios.</p>
+                            <p class="text-sm text-gray-500 mb-0"><strong>Mejor para:</strong> Traders australianos, estrategias de consolidación.</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Solapamientos: Máxima Liquidez</h3>
+                    
+                    <div class="bg-gradient-to-r from-primary/10 to-primary/5 border-l-4 border-primary p-6 rounded-lg mb-6">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-primary">star</span>
+                            Solapamiento Londres-Nueva York (13:00 - 17:00 GMT)
+                        </h4>
+                        <p class="mb-3">
+                            <strong>LA VENTANA DE ORO.</strong> Las dos sesiones más grandes abiertas simultáneamente. EUR/USD puede registrar el 70% de su volumen diario en estas 4 horas.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 mb-3">
+                            <li>Spreads en mínimos absolutos (EUR/USD: 0.0-0.1 pips)</li>
+                            <li>Ejecución instantánea incluso con 100 lotes</li>
+                            <li>Mayor volatilidad por datos económicos USA (14:30-16:00 GMT)</li>
+                            <li>Ideal para scalping, day trading, breakouts</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-0">
+                            <strong>Pares ideales:</strong> EUR/USD, GBP/USD, USD/CHF, EUR/GBP, GBP/JPY
+                        </p>
+                    </div>
+                    
+                    <div class="bg-blue-500/10 border-l-4 border-blue-500 p-6 rounded-lg">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-blue-500">schedule</span>
+                            Solapamiento Tokio-Londres (07:00 - 09:00 GMT)
+                        </h4>
+                        <p class="mb-3">
+                            Liquidez moderada-alta. Especialmente importante para pares con JPY y EUR.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 mb-0">
+                            <li>EUR/JPY, GBP/JPY muy activos</li>
+                            <li>Spreads buenos (0.5-1.5 pips)</li>
+                            <li>Movimientos direccionales por apertura Londres</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- 4. Volatilidad en Profundidad -->
+                <section id="volatilidad" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">show_chart</span>
+                        Volatilidad: Oportunidad y Riesgo
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        La volatilidad es una espada de doble filo. Mayor volatilidad significa mayores movimientos de precio (más pips potenciales), pero también mayor riesgo de que el precio vaya en tu contra violentamente.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Cómo Medir la Volatilidad</h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border-2 border-primary">
+                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                                <span class="icon text-primary">analytics</span>
+                                ATR (Average True Range)
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                El indicador MÁS usado. Mide el rango promedio de movimiento en pips durante un período (típicamente 14 períodos).
+                            </p>
+                            <ul class="text-sm space-y-1 mb-0">
+                                <li>• ATR &lt;40 pips: Baja volatilidad</li>
+                                <li>• ATR 40-80 pips: Volatilidad normal</li>
+                                <li>• ATR &gt;100 pips: Alta volatilidad</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border-2 border-blue-500">
+                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                                <span class="icon text-blue-500">speed</span>
+                                Bandas de Bollinger
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                La distancia entre las bandas superior e inferior muestra la volatilidad actual.
+                            </p>
+                            <ul class="text-sm space-y-1 mb-0">
+                                <li>• Bandas estrechas: Baja volatilidad (próxima expansión)</li>
+                                <li>• Bandas anchas: Alta volatilidad</li>
+                                <li>• Squeeze: Consolidación pre-breakout</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border-2 border-purple-500">
+                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                                <span class="icon text-purple-500">query_stats</span>
+                                Desviación Estándar
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                Mide cuánto se desvía el precio de su promedio. Mayor desviación = mayor volatilidad.
+                            </p>
+                            <ul class="text-sm space-y-1 mb-0">
+                                <li>• σ baja: Precio estable</li>
+                                <li>• σ alta: Movimientos erráticos</li>
+                                <li>• Útil para options trading</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Pares Forex por Volatilidad</h3>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-800">
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Nivel Volatilidad</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Pares</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">ATR Típico (D1)</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Perfil de Trader</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-red-500">Muy Alta</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>GBP/JPY, GBP/NZD, GBP/AUD</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">150-250 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Swing traders experimentados, breakout traders</td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800/50">
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-orange-500">Alta</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>GBP/USD, AUD/JPY, NZD/JPY</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">80-120 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Day traders, momentum traders</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-blue-500">Media</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>EUR/USD, USD/JPY, USD/CAD</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">50-80 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Principiantes, scalpers, day traders</td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800/50">
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3 font-semibold text-green-500">Baja</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>EUR/CHF, AUD/NZD, USD/CNH</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">20-40 pips</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Range traders, carry traders, ultra scalpers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Factores que Aumentan la Volatilidad</h3>
+                    
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start gap-3">
+                            <span class="icon text-primary mt-1">newspaper</span>
+                            <div>
+                                <strong>Publicaciones económicas (News):</strong> NFP (Non-Farm Payrolls), decisiones de tasas de interés, GDP, CPI/inflación. El precio puede moverse 100+ pips en segundos.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="icon text-primary mt-1">crisis_alert</span>
+                            <div>
+                                <strong>Eventos geopolíticos:</strong> Guerras, elecciones, referéndums (Brexit 2016: GBP cayó 1000+ pips en horas), crisis bancarias.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="icon text-primary mt-1">business</span>
+                            <div>
+                                <strong>Intervenciones de bancos centrales:</strong> Anuncios de FED, ECB, BOJ, BOE sobre política monetaria (QE, tapering, forward guidance).
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="icon text-primary mt-1">calendar_month</span>
+                            <div>
+                                <strong>Baja liquidez estacional:</strong> Navidad/Año Nuevo, festivos nacionales, agosto (vacaciones europeas) - paradoja: baja liquidez causa volatilidad errática.
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                
+                <!-- 5. Estrategias según Volatilidad -->
+                <section id="estrategias" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">psychology</span>
+                        Estrategias según Volatilidad
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        No existe "la mejor estrategia" universal. La estrategia correcta depende del nivel de volatilidad actual del mercado. Usar una estrategia de alta volatilidad en baja volatilidad (o viceversa) es la receta perfecta para perder dinero.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">En Alta Volatilidad (ATR &gt;100 pips)</h3>
+                    
+                    <div class="bg-gradient-to-r from-red-500/10 to-red-500/5 border-l-4 border-red-500 p-6 rounded-lg mb-6">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-red-500">rocket_launch</span>
+                            Estrategias Recomendadas
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Breakout Trading</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Opera rupturas de rangos consolidados, triángulos, banderas. La alta volatilidad proporciona el momentum necesario para movimientos direccionales de 100-200 pips.
+                                </p>
+                                <p class="text-sm"><strong>Setup típico:</strong> <code>Precio rompe máximo de 3 días + volumen alto + cierre de vela arriba del nivel → Entry long con target 2R o 3R</code></p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Momentum Trading</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Sigue la tendencia establecida. Usa RSI &gt;60 + precio arriba de EMA 20 + slope positiva como confirmación. Deja correr las ganancias con trailing stops.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ News Trading (Avanzado)</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Opera la reacción inmediata a publicaciones económicas (NFP, tasas de interés). Requiere broker con ejecución ultra-rápida y spreads que no se amplíen 10x.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-lg mt-6 mb-3">Ajustes de Gestión de Riesgo</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• <strong>Stop Loss más amplio:</strong> 50-80 pips (si usas 20 pips, te sacarán por ruido)</li>
+                            <li>• <strong>Position sizing reducido:</strong> 0.5%-1% de cuenta (NO 2% como en volatilidad normal)</li>
+                            <li>• <strong>Targets ambiciosos:</strong> R:R 1:2 o 1:3 (en alta volatilidad es alcanzable)</li>
+                            <li>• <strong>Apalancamiento bajo:</strong> Máximo 10:1 (olvida 50:1 o 100:1)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg mb-6">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                            <span class="icon">block</span>
+                            ❌ EVITA en Alta Volatilidad
+                        </h4>
+                        <ul class="space-y-2 mb-0">
+                            <li>• <strong>Scalping:</strong> El slippage de 5-10 pips destruye tu edge de 3-5 pips</li>
+                            <li>• <strong>Range trading:</strong> Los soportes/resistencias se rompen constantemente</li>
+                            <li>• <strong>Mean reversion:</strong> "El precio está muy alto, debe caer" ← precio sigue subiendo 200 pips más</li>
+                            <li>• <strong>Market orders sin stop:</strong> Liquidación casi garantizada</li>
+                        </ul>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">En Baja Volatilidad (ATR &lt;40 pips)</h3>
+                    
+                    <div class="bg-gradient-to-r from-green-500/10 to-green-500/5 border-l-4 border-green-500 p-6 rounded-lg mb-6">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-green-500">waves</span>
+                            Estrategias Recomendadas
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Range Trading</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Compra en soporte, vende en resistencia. El precio respeta niveles horizontales porque no hay fuerza direccional. Target: mitad del rango.
+                                </p>
+                                <p class="text-sm"><strong>Setup:</strong> <code>RSI &lt;30 en soporte + rechazo → Long | RSI &gt;70 en resistencia + rechazo → Short</code></p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Mean Reversion</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Cuando el precio se aleja 2 desviaciones estándar de su media, tiende a regresar. Usa Bandas de Bollinger: precio toca banda inferior → entry long, target = banda media.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Scalping</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Perfecto porque spreads bajos + poco slippage. Busca 5-10 pips por trade con alta frecuencia. Requiere timeframes bajos (M1, M5) y mucha disciplina.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-semibold mb-2">✅ Venta de Opciones (Avanzado)</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                    Vende opciones OTM aprovechando la baja volatilidad implícita. Baja volatilidad = primas bajas pero decaimiento rápido del tiempo.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-lg mt-6 mb-3">Ajustes de Gestión de Riesgo</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• <strong>Stop Loss ajustado:</strong> 15-25 pips (movimientos pequeños, stop pequeño)</li>
+                            <li>• <strong>Targets realistas:</strong> R:R 1:1 o incluso 1:0.8 (volumen compensa)</li>
+                            <li>• <strong>Mayor frecuencia:</strong> 5-10 trades/día posible (vs 1-2 en alta volatilidad)</li>
+                            <li>• <strong>Horarios específicos:</strong> Sesión asiática, horarios pre-apertura europeos</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                        <h4 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                            <span class="icon">block</span>
+                            ❌ EVITA en Baja Volatilidad
+                        </h4>
+                        <ul class="space-y-2 mb-0">
+                            <li>• <strong>Breakout trading:</strong> El 80% de los breakouts son falsos cuando ATR &lt;40. Te atrapa en bull/bear trap.</li>
+                            <li>• <strong>Swing trading:</strong> No hay suficiente movimiento para targets de 100+ pips</li>
+                            <li>• <strong>Wide stops:</strong> Un stop de 50 pips en un par que se mueve 30 pips/día es absurdo</li>
+                            <li>• <strong>Esperar grandes movimientos:</strong> Perderás oportunidades de 10-15 pips esperando el movimiento de 100 pips que no llega</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- 6. Relación Liquidez-Volatilidad -->
+                <section id="relacion" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">join_inner</span>
+                        Relación entre Liquidez y Volatilidad
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        Aunque liquidez y volatilidad son conceptos independientes, están relacionados de formas contraintuitivas que todo trader debe entender.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Los 4 Escenarios de Mercado</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-2 border-primary">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="text-3xl">🟢</span>
+                                <h4 class="font-semibold text-lg">Alta Liquidez + Alta Volatilidad</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                <strong>ESCENARIO IDEAL.</strong> EUR/USD durante solapamiento Londres-NY + publicación NFP.
+                            </p>
+                            <ul class="text-sm space-y-1">
+                                <li>✅ Grandes movimientos (100+ pips)</li>
+                                <li>✅ Spreads bajos (0.5-1 pip incluso durante news)</li>
+                                <li>✅ Ejecución rápida sin slippage significativo</li>
+                                <li>✅ Puedes escalar tamaño sin afectar el mercado</li>
+                            </ul>
+                            <p class="text-sm font-semibold text-primary mt-3">Mejor para: Breakouts, momentum, news trading</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-2 border-blue-500">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="text-3xl">🔵</span>
+                                <h4 class="font-semibold text-lg">Alta Liquidez + Baja Volatilidad</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                EUR/USD durante sesión asiática (sin datos económicos).
+                            </p>
+                            <ul class="text-sm space-y-1">
+                                <li>✅ Spreads mínimos (0.0-0.2 pips)</li>
+                                <li>✅ Ejecución perfecta</li>
+                                <li>⚠️ Movimientos pequeños (20-40 pips)</li>
+                                <li>⚠️ Pocas oportunidades direccionales</li>
+                            </ul>
+                            <p class="text-sm font-semibold text-blue-500 mt-3">Mejor para: Scalping, range trading, mean reversion</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-2 border-orange-500">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="text-3xl">🟠</span>
+                                <h4 class="font-semibold text-lg">Baja Liquidez + Alta Volatilidad</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                <strong>PELIGRO.</strong> Cualquier par durante festivos + evento geopolítico. Flash crashes.
+                            </p>
+                            <ul class="text-sm space-y-1">
+                                <li>❌ Spreads masivos (5-20+ pips)</li>
+                                <li>❌ Slippage extremo (50-100 pips posible)</li>
+                                <li>❌ Gapping frecuente</li>
+                                <li>❌ Stops ejecutados a precios absurdos</li>
+                            </ul>
+                            <p class="text-sm font-semibold text-red-500 mt-3">EVITA OPERAR. Alto riesgo de liquidación.</p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-2 border-gray-400">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="text-3xl">⚪</span>
+                                <h4 class="font-semibold text-lg">Baja Liquidez + Baja Volatilidad</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                                Pares exóticos durante períodos sin noticias. EUR/TRY sesión NY.
+                            </p>
+                            <ul class="text-sm space-y-1">
+                                <li>⚠️ Spreads amplios (10-30 pips)</li>
+                                <li>⚠️ Movimientos lentos</li>
+                                <li>⚠️ Difícil alcanzar break-even por spread</li>
+                                <li>⚠️ Riesgo de manipulación</li>
+                            </ul>
+                            <p class="text-sm font-semibold text-gray-500 mt-3">Mejor para: Carry trading de largo plazo. Evita day trading.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-500/10 border-l-4 border-blue-500 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl mb-3 flex items-center gap-2">
+                            <span class="icon text-blue-500">science</span>
+                            Paradoja: Baja Liquidez Causa Volatilidad
+                        </h3>
+                        <p class="mb-3">
+                            Contraintuitivamente, <strong>baja liquidez puede generar alta volatilidad</strong>. ¿Por qué? Cuando hay pocos participantes en el mercado, una sola orden grande puede mover el precio 20-50 pips instantáneamente.
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                            <strong>Ejemplo:</strong> Durante Navidad (24-26 diciembre), EUR/USD puede tener spread de 3-5 pips y moverse 100 pips en una hora por una orden institucional, aunque el volumen diario sea 1/10 del normal. Esta volatilidad es PELIGROSA porque es errática e impredecible, no direccional.
+                        </p>
+                    </div>
+                </section>
+                
+                <!-- 7. Impacto en Spreads y Slippage -->
+                <section id="spreads" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">attach_money</span>
+                        Impacto en Spreads y Slippage
+                    </h2>
+                    
+                    <p class="text-lg leading-relaxed mb-6">
+                        La liquidez y volatilidad afectan directamente tus costos de transacción a través de spreads y slippage. Ignorar esto puede hacer que una estrategia rentable en backtest sea perdedora en vivo.
+                    </p>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Spreads según Liquidez</h3>
+                    
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-800">
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Horario / Evento</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Liquidez</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Spread EUR/USD</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left">Spread GBP/JPY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Solapamiento Londres-NY</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><span class="text-green-500 font-semibold">Muy Alta</span></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>0.0 - 0.2 pips</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>0.5 - 1.5 pips</code></td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800/50">
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Sesión Londres (solo)</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><span class="text-green-500 font-semibold">Alta</span></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>0.2 - 0.5 pips</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>1.0 - 2.5 pips</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Sesión Asiática</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><span class="text-blue-500 font-semibold">Media</span></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>0.5 - 1.5 pips</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>2.0 - 4.0 pips</code></td>
+                                </tr>
+                                <tr class="bg-gray-50 dark:bg-gray-800/50">
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Durante NFP / FOMC</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><span class="text-orange-500 font-semibold">Baja temporal</span></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>2.0 - 5.0 pips</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>10 - 20 pips</code></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3">Festivos / Rollover weekend</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><span class="text-red-500 font-semibold">Muy Baja</span></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>3.0 - 10 pips</code></td>
+                                    <td class="border border-gray-300 dark:border-gray-600 px-4 py-3"><code>20 - 50 pips</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg mb-6">
+                        <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                            <span class="icon">warning</span>
+                            Regla de Oro: Nunca Operes con Spread Anormal
+                        </h3>
+                        <p class="mb-3">
+                            Si el spread de EUR/USD es &gt;2 pips o GBP/USD &gt;3 pips, <strong>NO ABRAS POSICIONES</strong>. Espera a que la liquidez se normalice. Un spread de 5 pips significa que necesitas 5 pips de movimiento a tu favor solo para break-even (sin contar comisiones).
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-0">
+                            <strong>Cálculo:</strong> Si haces 10 trades/día con spread 5 pips vs 0.5 pips, estás pagando 45 pips EXTRA por día = 900 pips/mes = potencialmente $4,500 en costos adicionales con 1 lote.
+                        </p>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Slippage según Volatilidad</h3>
+                    
+                    <p class="leading-relaxed mb-4">
+                        El <strong>slippage</strong> ocurre cuando tu orden se ejecuta a un precio diferente del solicitado. Es más probable y severo en alta volatilidad + baja liquidez.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                                <span class="icon text-green-500">check_circle</span>
+                                Slippage Positivo (Raro)
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                Tu orden se ejecuta a MEJOR precio del solicitado.
+                            </p>
+                            <p class="text-sm mb-0">
+                                <strong>Ejemplo:</strong> Pides comprar EUR/USD a 1.1000, ejecutas a 1.0998 (2 pips a tu favor). Solo ocurre en brokers ECN verdaderos con "price improvement".
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-red-300 dark:border-red-700">
+                            <h4 class="font-semibold mb-3 flex items-center gap-2">
+                                <span class="icon text-red-500">cancel</span>
+                                Slippage Negativo (Común)
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                Tu orden se ejecuta a PEOR precio del solicitado. Costo oculto.
+                            </p>
+                            <p class="text-sm mb-0">
+                                <strong>Ejemplo:</strong> Pides comprar EUR/USD a 1.1000, ejecutas a 1.1003 (3 pips en contra). Durante NFP puede ser 10-20 pips. Tu stop de 30 pips se ejecuta a 45 pips.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-500/10 border-l-4 border-blue-500 p-6 rounded-lg">
+                        <h3 class="font-semibold text-xl mb-3">Cómo Minimizar Slippage</h3>
+                        <ul class="space-y-2 mb-0">
+                            <li>• <strong>Usa limit orders en vez de market orders:</strong> Garantizas precio de entrada (pero sacrificas garantía de ejecución)</li>
+                            <li>• <strong>Evita operar durante news releases:</strong> Slippage de 20-50 pips es normal en NFP, FOMC</li>
+                            <li>• <strong>Opera pares majors en horarios de alta liquidez:</strong> EUR/USD en solapamiento Londres-NY tiene slippage &lt;1 pip</li>
+                            <li>• <strong>Elige broker ECN/STP de calidad:</strong> Market makers manipulan slippage; ECN te conecta al mercado real</li>
+                            <li>• <strong>Reduce tamaño en alta volatilidad:</strong> Orden de 10 lotes tiene más slippage que 1 lote</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- 8. Herramientas de Análisis -->
+                <section id="herramientas" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">build</span>
+                        Herramientas para Medir Liquidez y Volatilidad
+                    </h2>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Indicadores de Volatilidad</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-primary">
+                            <h4 class="font-semibold text-xl mb-3">ATR (Average True Range)</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                El indicador MÁS importante para cualquier trader. Mide el rango promedio de movimiento en pips.
+                            </p>
+                            <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded font-mono text-sm mb-3">
+                                ATR(14) en EUR/USD D1:<br>
+                                • 40-60 pips = Volatilidad baja (range trading)<br>
+                                • 60-80 pips = Volatilidad normal (cualquier estrategia)<br>
+                                • 80-120 pips = Volatilidad alta (breakouts, momentum)<br>
+                                • &gt;120 pips = Volatilidad extrema (reducir apalancamiento)
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Uso práctico:</strong> Multiplica ATR × 1.5 para calcular stop loss dinámico. Si ATR = 60 pips, tu SL debería ser ~90 pips para no ser sacado por ruido normal.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-blue-500">
+                            <h4 class="font-semibold text-xl mb-3">Bandas de Bollinger (20, 2)</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                Detecta expansión/contracción de volatilidad visualmente.
+                            </p>
+                            <ul class="space-y-2 text-sm">
+                                <li>• <strong>Bollinger Squeeze:</strong> Bandas muy estrechas → baja volatilidad → próximo breakout inminente (opera la ruptura)</li>
+                                <li>• <strong>Bandas amplias:</strong> Alta volatilidad → usa mean reversion (compra en banda inferior, vende en superior)</li>
+                                <li>• <strong>Walking the bands:</strong> Precio pegado a banda superior/inferior → tendencia fuerte → NO hagas fade</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg border-l-4 border-purple-500">
+                            <h4 class="font-semibold text-xl mb-3">VIX / Índices de Volatilidad</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3">
+                                Aunque el VIX es para S&P 500, existe correlación con forex en eventos de riesgo global.
+                            </p>
+                            <ul class="space-y-2 text-sm mb-0">
+                                <li>• VIX &lt;15 → Mercados tranquilos → forex también tranquilo</li>
+                                <li>• VIX &gt;30 → Risk-off mode → JPY, USD, CHF suben (safe havens), AUD, NZD caen (risk assets)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-semibold text-2xl mb-4">Herramientas para Evaluar Liquidez</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-semibold mb-3">📊 Depth of Market (DOM)</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                Muestra órdenes pendientes en cada nivel de precio. Mayor profundidad = mayor liquidez.
+                            </p>
+                            <p class="text-sm mb-0">
+                                <strong>Disponible en:</strong> Plataformas ECN (MT5, cTrader, TradingView con datos Level 2)
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-semibold mb-3">📈 Volume Indicator</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                En forex spot no hay volumen real (mercado OTC), pero tick volume sirve como proxy.
+                            </p>
+                            <p class="text-sm mb-0">
+                                Alto volumen + movimiento = confirmación de tendencia. Alto volumen + no movimiento = consolidación antes de breakout.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-semibold mb-3">⏰ Forex Market Hours Tool</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                Visualiza qué sesiones están abiertas en tiempo real y sus solapamientos.
+                            </p>
+                            <p class="text-sm mb-0">
+                                <strong>Recomendados:</strong> ForexFactory Session Indicator, TradingView Session Hours, Myfxbook Market Hours
+                            </p>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-semibold mb-3">💹 Spread Monitor</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                Script/EA que registra spread actual vs spread promedio en tiempo real.
+                            </p>
+                            <p class="text-sm mb-0">
+                                Si spread actual &gt; 3× spread promedio, desactiva trading automático. Protección esencial para EAs.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 9. Errores Comunes -->
+                <section id="errores" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">error</span>
+                        Errores Comunes con Liquidez y Volatilidad
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">dangerous</span>
+                                1. Operar Pares Exóticos sin Experiencia
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> "EUR/TRY se movió 500 pips hoy, voy a ganar mucho" → abres posición con 30 pips de spread, slippage de 20 pips, y el swap te cobra $50/día.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Limítate a majors (EUR/USD, GBP/USD, USD/JPY, USD/CHF) hasta que tengas 2+ años de experiencia. Los pares exóticos requieren comprensión de geopolítica, economía emergente, y gestión de riesgo avanzada.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">schedule</span>
+                                2. Ignorar los Horarios de Sesión
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> Operar EUR/USD a las 02:00 GMT (mitad de sesión asiática) con spread de 2 pips y movimiento de 15 pips en 4 horas.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Opera EUR/USD, GBP/USD, EUR/GBP durante sesión Londres (08:00-17:00 GMT), especialmente solapamiento Londres-NY (13:00-17:00 GMT). Programa alarmas para no perder estos horarios.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">sync_problem</span>
+                                3. Usar Estrategia de Alta Volatilidad en Baja Volatilidad (y Viceversa)
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> Intentar breakout trading cuando ATR está en mínimos de 3 meses → 80% de los breakouts son falsos → 10 stop losses consecutivos.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> SIEMPRE verifica ATR antes de seleccionar estrategia. ATR &lt;40 pips → range/scalping. ATR &gt;80 pips → breakouts/momentum. No hay estrategia universal que funcione en todas las condiciones.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">newspaper</span>
+                                4. Operar Durante High-Impact News sin Preparación
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> Tienes posición abierta cuando sale NFP → spread pasa de 0.5 pips a 8 pips → precio gappea 40 pips → tu stop de 30 pips se ejecuta a 55 pips.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Cierra todas las posiciones 15 minutos ANTES de NFP, FOMC, decisiones de tasas de interés. O usa stops MUY amplios (100+ pips) si decides mantener posiciones. Nunca asumas que tu stop de 30 pips te protegerá durante news.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">balance</span>
+                                5. No Ajustar Apalancamiento según Volatilidad
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> Usas apalancamiento 50:1 todo el tiempo → durante evento Brexit-style, 2% de movimiento en contra = liquidación total.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Apalancamiento dinámico: ATR &lt;50 pips → máximo 30:1 | ATR 50-80 pips → máximo 20:1 | ATR &gt;100 pips → máximo 10:1. Tu exposición real debe DISMINUIR cuando la volatilidad aumenta.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">account_balance</span>
+                                6. Confiar en Volatilidad Histórica para Predecir Futuro
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> "EUR/USD siempre se mueve 60 pips/día, así que mi target de 100 pips es realista" → esa semana ATR cae a 30 pips por falta de catalizadores.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Usa ATR ACTUAL, no promedios de hace 3 meses. Ajusta targets según volatilidad presente. Si ATR cayó 50%, reduce targets 50% también. La volatilidad cambia con ciclos de mercado.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-red-500/10 border-l-4 border-red-500 p-6 rounded-lg">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-2 text-red-600 dark:text-red-400">
+                                <span class="icon">price_change</span>
+                                7. Usar Market Orders en Baja Liquidez
+                            </h3>
+                            <p class="mb-2">
+                                <strong>Error:</strong> Market order en GBP/JPY durante sesión asiática → ejecutas 5 pips peor que el precio visto → ese slippage destruye tu edge de scalping.
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-0">
+                                <strong>Solución:</strong> Usa limit orders o stop-limit orders en horarios de baja liquidez. Solo usa market orders durante solapamiento Londres-NY en pares majors. Verifica SIEMPRE el spread antes de ejecutar.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 10. FAQ -->
+                <section id="faq" class="mb-16 scroll-mt-24">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
+                        <span class="icon text-primary">contact_support</span>
+                        Preguntas Frecuentes
+                    </h2>
+                    
+                    <div class="space-y-3">
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Qué es la liquidez en trading?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    La <strong>liquidez</strong> es la facilidad con la que puedes comprar o vender un activo sin afectar significativamente su precio. En forex, los pares más líquidos como EUR/USD tienen millones de operaciones diarias, spreads bajos (0.0-0.2 pips) y ejecución instantánea.
+                                </p>
+                                <p class="mb-0">
+                                    Mayor liquidez significa mejor precio y menos slippage. Los pares majors (EUR/USD, GBP/USD, USD/JPY) son mucho más líquidos que los exóticos (USD/TRY, USD/ZAR), que pueden tener spreads de 30+ pips.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Cuándo hay mayor liquidez en forex?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    La <strong>mayor liquidez</strong> ocurre durante el <strong>solapamiento Londres-Nueva York (13:00-17:00 GMT)</strong>, cuando ambas sesiones están activas simultáneamente. EUR/USD puede registrar el 70% de su volumen diario en estas 4 horas.
+                                </p>
+                                <p class="mb-0">
+                                    Durante el solapamiento Tokio-Londres (7:00-9:00 GMT) también hay buena liquidez, especialmente en pares con JPY. La menor liquidez es durante sesión asiática sin solapamientos (02:00-06:00 GMT) y festivos/fines de semana.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Qué es la volatilidad en trading?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    La <strong>volatilidad</strong> mide la velocidad y magnitud de los cambios de precio. Un par volátil como GBP/JPY puede moverse 200+ pips en una sesión, mientras EUR/USD típicamente se mueve 50-80 pips.
+                                </p>
+                                <p class="mb-0">
+                                    Se mide con ATR (Average True Range), Bandas de Bollinger y desviación estándar. Alta volatilidad = mayores oportunidades de ganancia pero también mayor riesgo. No confundir con liquidez: un mercado puede ser líquido y volátil, o ilíquido y estable.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Cuáles son los pares más líquidos?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    Los pares <strong>"majors"</strong> son los más líquidos:
+                                </p>
+                                <ul class="list-disc list-inside space-y-1 mb-3">
+                                    <li><strong>EUR/USD</strong> - 28% del volumen forex global</li>
+                                    <li><strong>USD/JPY</strong> - 13% del volumen</li>
+                                    <li><strong>GBP/USD</strong> - 11% del volumen</li>
+                                    <li><strong>USD/CHF</strong> - 5% del volumen</li>
+                                    <li><strong>AUD/USD</strong> - 5% del volumen</li>
+                                    <li><strong>USD/CAD</strong> - 4% del volumen</li>
+                                    <li><strong>NZD/USD</strong> - 2% del volumen</li>
+                                </ul>
+                                <p class="mb-0">
+                                    Todos tienen spreads &lt;1 pip en brokers ECN y volumen diario multimillonario. Los pares exóticos (TRY, ZAR, MXN) tienen baja liquidez y spreads de 10-50+ pips.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Cómo afecta la liquidez al spread?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    <strong>A mayor liquidez, menor spread.</strong> EUR/USD tiene spread 0.0-0.2 pips durante solapamiento Londres-NY porque hay millones de compradores/vendedores. USD/TRY puede tener spread de 30+ pips por baja liquidez.
+                                </p>
+                                <p class="mb-0">
+                                    Durante news releases o sesión asiática sin solapamientos, los spreads se amplían porque hay menos participantes en el mercado. Regla de oro: <strong>Nunca operes cuando el spread es 3x su valor normal.</strong> Si EUR/USD normalmente tiene 0.5 pips y ahora tiene 2 pips, espera.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Qué estrategia usar en alta volatilidad?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    En <strong>alta volatilidad (ATR &gt;100 pips)</strong>: breakouts de rangos consolidados, estrategias de momentum, stops más amplios (50-80 pips), targets 2:1 o 3:1, reducir apalancamiento 50%.
+                                </p>
+                                <p class="mb-3">
+                                    <strong>Instrumentos ideales:</strong> GBP/JPY, GBP/USD durante sesión Londres o news. Opera rupturas de triángulos, banderas, rangos con alto volumen.
+                                </p>
+                                <p class="mb-0">
+                                    <strong>EVITA:</strong> Scalping (el slippage destroza tu edge), range trading (soportes/resistencias se rompen), mean reversion (el precio puede seguir subiendo 200 pips más).
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Qué estrategia usar en baja volatilidad?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    En <strong>baja volatilidad (ATR &lt;40 pips)</strong>: range trading, mean reversion, venta de opciones, scalping, stops ajustados (15-25 pips), targets 1:1.
+                                </p>
+                                <p class="mb-3">
+                                    <strong>Horarios ideales:</strong> Sesión asiática (00:00-08:00 GMT), agosto completo, períodos pre-festivos. Instrumentos: EUR/USD, AUD/NZD durante horarios de consolidación.
+                                </p>
+                                <p class="mb-0">
+                                    <strong>EVITA:</strong> Breakouts (falsos el 80% del tiempo), swing trading (no hay movimiento para targets grandes), esperar movimientos de 100+ pips que no llegan.
+                                </p>
+                            </div>
+                        </details>
+                        
+                        <details class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="px-6 py-4 cursor-pointer font-semibold flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <span>¿Qué es mejor: alta o baja liquidez?</span>
+                                <span class="icon text-primary">expand_more</span>
+                            </summary>
+                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                                <p class="mb-3">
+                                    <strong>SIEMPRE opera en alta liquidez.</strong> Beneficios:
+                                </p>
+                                <ul class="list-disc list-inside space-y-1 mb-3">
+                                    <li>Spreads mínimos (costo de transacción bajo)</li>
+                                    <li>Ejecución inmediata sin slippage</li>
+                                    <li>Profundidad de mercado (grandes órdenes sin mover precio)</li>
+                                    <li>Menor manipulación (difícil manipular EUR/USD con billones en volumen)</li>
+                                </ul>
+                                <p class="mb-0">
+                                    Los novatos que operan pares exóticos ilíquidos pagan 10x más en costos de transacción. <strong>Regla absoluta: si el spread es &gt;3 pips en forex, NO operes ese par.</strong>
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </section>
+                
+                <!-- Guías Relacionadas -->
+                <section id="relacionadas" class="mb-16">
+                    <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white">Guías Relacionadas</h2>
+                    
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <a href="/aprende/que-es-el-slippage/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">error</span>
+                            <h3 class="font-semibold text-lg mb-2">Qué es el Slippage</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Entiende el slippage, cuándo ocurre y cómo minimizarlo en tus operaciones.</p>
+                        </a>
+                        
+                        <a href="/aprende/que-es-el-spread/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">compare_arrows</span>
+                            <h3 class="font-semibold text-lg mb-2">Qué es el Spread</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Aprende cómo funciona el spread y cómo afecta tus costos de trading.</p>
+                        </a>
+                        
+                        <a href="/aprende/que-es-un-pip/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">straighten</span>
+                            <h3 class="font-semibold text-lg mb-2">Qué es un Pip</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">La unidad básica de medición en forex. Fundamental para calcular ganancias.</p>
+                        </a>
+                        
+                        <a href="/aprende/que-es-un-lote/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">inventory_2</span>
+                            <h3 class="font-semibold text-lg mb-2">Qué es un Lote</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Entiende los tamaños de posición y gestión de riesgo con lotes.</p>
+                        </a>
+                        
+                        <a href="/aprende/timeframes/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">schedule</span>
+                            <h3 class="font-semibold text-lg mb-2">Timeframes</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Domina los marcos temporales y análisis multi-timeframe profesional.</p>
+                        </a>
+                        
+                        <a href="/aprende/tipos-de-ordenes/" class="block p-6 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition group">
+                            <span class="icon text-primary text-3xl mb-3 block group-hover:scale-110 transition">list_alt</span>
+                            <h3 class="font-semibold text-lg mb-2">Tipos de Órdenes</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Market, limit, stop, trailing stop y órdenes condicionales explicadas.</p>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- CTA Final -->
+                <section class="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 text-center">
+                    <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+                        ¿Listo para Operar con Máxima Liquidez?
+                    </h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                        Domina liquidez y volatilidad para minimizar costos y maximizar oportunidades. Únete a CDL Radar y recibe señales en tiempo real durante los mejores horarios de trading.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <a href="/cdl-portal/cdlradar/" class="inline-flex items-center px-8 py-4 bg-primary text-secondary font-bold rounded-lg hover:bg-primary/90 transition text-lg">
+                            Acceder a CDL Radar
+                            <span class="icon ml-2">arrow_forward</span>
+                        </a>
+                        <a href="/cursos/" class="inline-flex items-center px-8 py-4 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/10 transition text-lg">
+                            Ver Cursos de Trading
+                        </a>
+                    </div>
+                </section>
+                
+            </article>
+            
+            <!-- TOC Sidebar (sticky) -->
+            <aside class="hidden lg:block">
+                <nav class="sticky top-24 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <h3 class="font-semibold text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">En Esta Página</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#definicion" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Definición</a></li>
+                        <li><a href="#liquidez" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Liquidez</a></li>
+                        <li><a href="#horarios" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Horarios de Liquidez</a></li>
+                        <li><a href="#volatilidad" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Volatilidad</a></li>
+                        <li><a href="#estrategias" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Estrategias</a></li>
+                        <li><a href="#relacion" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Relación Liquidez-Volatilidad</a></li>
+                        <li><a href="#spreads" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Spreads y Slippage</a></li>
+                        <li><a href="#herramientas" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Herramientas</a></li>
+                        <li><a href="#errores" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Errores Comunes</a></li>
+                        <li><a href="#faq" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">FAQ</a></li>
+                    </ul>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <a href="/cdl-portal/cdlradar/" class="block w-full px-4 py-3 bg-primary text-secondary text-center font-semibold rounded-lg hover:bg-primary/90 transition text-sm">
+                            Señales en Vivo
+                            <span class="icon text-sm ml-1">notifications_active</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+    
+    <!-- Footer inyectado dinámicamente -->
+    <div id="cdl-footer"></div>
+    
+    <!-- Scripts -->
+    <script>
+        // TOC scroll spy
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
