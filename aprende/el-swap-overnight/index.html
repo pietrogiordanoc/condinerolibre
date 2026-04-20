@@ -1,62 +1,55 @@
-﻿<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html class="dark" lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-  <!-- ✅ SEO básico -->
-  <title>¿Qué es el swap overnight? (Trading) Cómo funciona y cuándo se cobra</title>
-  <meta name="description" content="Aprende qué es el swap/overnight en trading, por qué existe, cuándo se cobra, ejemplos, triple swap y cómo reducir su impacto en Forex, índices y CFDs." />
-  <link rel="canonical" href="https://www.condinerolibre.com/aprende/el-swap-overnight/" />
-  <meta name="robots" content="index,follow" />
-
-  <!-- ✅ Open Graph -->
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="¿Qué es el swap overnight? Cómo funciona y cuándo se cobra" />
-  <meta property="og:description" content="Guía clara del swap/overnight: definición, causas, triple swap y consejos para reducir costos." />
-  <meta property="og:url" content="https://www.condinerolibre.com/aprende/el-swap-overnight/" />
-
-  <meta name="color-scheme" content="dark" />
-
-  <!-- ✅ Datos estructurados: Breadcrumb + Article + FAQ -->
+  <!-- Schema: Breadcrumb + Article + FAQPage -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@graph":[
+    "@context": "https://schema.org",
+    "@graph": [
       {
-        "@type":"BreadcrumbList",
-        "itemListElement":[
-          {"@type":"ListItem","position":1,"name":"Inicio","item":"https://www.condinerolibre.com/"},
-          {"@type":"ListItem","position":2,"name":"Aprende","item":"https://www.condinerolibre.com/aprende/"},
-          {"@type":"ListItem","position":3,"name":"¿Qué es el swap overnight?","item":"https://www.condinerolibre.com/aprende/que-es-el-swap-overnight/"}
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
+          { "@type": "ListItem", "position": 3, "name": "El swap overnight", "item": "https://www.condinerolibre.com/aprende/el-swap-overnight/" }
         ]
       },
       {
-        "@type":"Article",
-        "mainEntityOfPage":{"@type":"WebPage","@id":"https://www.condinerolibre.com/aprende/que-es-el-swap-overnight/"},
-        "headline":"¿Qué es el swap overnight? (Trading) Cómo funciona y cuándo se cobra",
-        "description":"Aprende qué es el swap/overnight en trading, por qué existe, cuándo se cobra, ejemplos, triple swap y cómo reducir su impacto.",
-        "author":{"@type":"Person","name":"ConDineroLibre"},
-        "publisher":{"@type":"Organization","name":"ConDineroLibre"},
-        "inLanguage":"es"
+        "@type": "Article",
+        "@id": "https://www.condinerolibre.com/aprende/el-swap-overnight/#article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://www.condinerolibre.com/aprende/el-swap-overnight/"
+        },
+        "headline": "¿Qué es el swap overnight? Cómo funciona y cuándo se cobra",
+        "description": "Aprende qué es el swap/overnight en trading, por qué existe, cuándo se cobra, ejemplos, triple swap de fin de semana y cómo reducir su impacto en Forex, índices, acciones y CFDs.",
+        "author": {
+          "@type": "Person",
+          "name": "Pietro Giordano"
+        }
       },
       {
-        "@type":"FAQPage",
-        "mainEntity":[
+        "@type": "FAQPage",
+        "@id": "https://www.condinerolibre.com/aprende/el-swap-overnight/#faq",
+        "mainEntity": [
           {
-            "@type":"Question",
-            "name":"¿Qué es el swap (overnight) en trading?",
-            "acceptedAnswer":{"@type":"Answer","text":"El swap overnight es un ajuste/costo (o a veces crédito) que se aplica por mantener una operación abierta de un día para otro. En CFDs y Forex suele reflejar financiación y/o diferenciales de tasas."}
+            "@type": "Question",
+            "name": "¿Qué es el swap overnight en trading?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "El swap overnight es un ajuste/costo (o a veces crédito) que se aplica por mantener una operación abierta de un día para otro. En CFDs y Forex suele reflejar financiación y/o diferenciales de tasas."
+            }
           },
           {
-            "@type":"Question",
-            "name":"¿Cuándo se cobra el swap?",
-            "acceptedAnswer":{"@type":"Answer","text":"Se aplica cuando mantienes la posición abierta al “cierre” diario del broker (rollover). La hora exacta depende del broker y del instrumento."}
-          },
-          {
-            "@type":"Question",
-            "name":"¿Qué es el triple swap?",
-            "acceptedAnswer":{"@type":"Answer","text":"En muchos instrumentos (especialmente Forex), un día específico de la semana se aplica un swap triple para reflejar el fin de semana. El día exacto puede variar según broker e instrumento."}
+            "@type": "Question",
+            "name": "¿Cuándo se cobra el swap?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Se aplica cuando mantienes la posición abierta al cierre diario del broker (rollover). La hora exacta depende del broker y del instrumento."
+            }
           }
         ]
       }
@@ -64,416 +57,809 @@
   }
   </script>
 
+  <meta name="description" content="¿Qué es el swap overnight? Aprende cómo funciona, cuándo se cobra, swap positivo vs negativo, triple swap de fin de semana y cómo reducir su impacto en tu operativa." />
+  <link rel="canonical" href="https://www.condinerolibre.com/aprende/el-swap-overnight/" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Condinerolibre" />
+  <meta property="og:title" content="¿Qué es el swap overnight? Cómo funciona y cuándo se cobra | CDL" />
+  <meta property="og:description" content="Financiación diaria, triple swap y cómo te afecta explicado con claridad." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/el-swap-overnight/" />
+  <meta property="og:image" content="https://www.condinerolibre.com/images/swaphero.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Swap overnight en trading - Financiación diaria - Condinerolibre" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="¿Qué es el swap overnight? Cómo funciona y cuándo se cobra | CDL" />
+  <meta name="twitter:description" content="Financiación diaria, triple swap y cómo te afecta." />
+  <meta name="twitter:image" content="https://www.condinerolibre.com/images/swaphero.jpg" />
+  <meta name="twitter:image:alt" content="Swap overnight en trading - Financiación diaria - Condinerolibre" />
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>¿Qué es el swap overnight? Definición, triple swap y cómo reducirlo | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
   <style>
-    :root{
-      --bg:#0b0b0d;
-      --muted:#9aa0a6;
-      --text:#f2f3f5;
-      --line:rgba(255,255,255,.08);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-      --max: 1080px;
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
+  <style>
+    /* Mega Menu Styles */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+      pointer-events: none;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 20% 0%, rgba(255,255,255,.06), transparent 55%),
-                  radial-gradient(1000px 500px at 80% 10%, rgba(255,255,255,.04), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.55;
+    .nav-item-dropdown.is-open .mega-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: all;
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
     }
-    .wrap a{color:var(--text); text-decoration:none}
-    .wrap a:hover{opacity:.9}
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:10px 0 22px;
+    .platform-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -185px;
     }
-    .brand{
-      display:flex; gap:10px; align-items:center;
-      font-weight:700; letter-spacing:.2px;
+    .platform-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28);
     }
-    .badge{
-      font-size:12px; color:var(--muted);
-      border:1px solid var(--line);
-      padding:6px 10px; border-radius:999px;
-      background: rgba(255,255,255,.03);
+    .platform-preview img {
+      object-fit: contain;
+      background: #10161d;
     }
-    .nav{
-      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
-      justify-content:flex-end;
+    .learn-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -270px;
     }
-    .nav a{
-      font-size:14px; color:var(--muted);
-      border:1px solid transparent; padding:8px 10px; border-radius:10px;
+    .learn-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
     }
-    .nav a:hover{border-color:var(--line); color:var(--text); background:rgba(255,255,255,.03)}
-    .hero{
-      display:grid; grid-template-columns: 1.3fr .7fr;
-      gap:18px; align-items:stretch;
+    .learn-preview img {
+      object-fit: contain;
+      background: #10161d;
     }
-    @media (max-width: 900px){ .hero{grid-template-columns:1fr} }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
     }
-    .card .inner{padding:22px}
-    .kicker{
-      display:inline-flex; gap:8px; align-items:center;
-      font-size:12px; color:var(--muted);
-      border:1px solid var(--line);
-      padding:6px 10px; border-radius:999px;
-      background: rgba(0,0,0,.18);
+    .mobile-menu.active {
+      transform: translateX(0);
     }
-    h1{
-      font-size: clamp(28px, 3.2vw, 44px);
-      margin:14px 0 10px;
-      line-height:1.12;
-      letter-spacing:-.5px;
-    }
-    .lead{
-      margin:0;
-      color: rgba(242,243,245,.85);
-      font-size:16px;
-      max-width: 62ch;
-    }
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      font-weight:600;
-      font-size:14px;
-    }
-    .btn:hover{background: rgba(255,255,255,.07)}
-    .btn.primary{
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.18);
-    }
-    .mini{display:grid; gap:10px; padding:22px}
-    .mini h2{margin:0; font-size:16px}
-    .mini p{margin:0; color:var(--muted); font-size:14px}
-    .section{
-      margin-top:20px;
-      padding:22px;
-      border-top: 1px solid var(--line);
-    }
-    .wrap h2{margin:0 0 10px; font-size:20px; letter-spacing:-.2px}
-    .wrap h3{margin:16px 0 8px; font-size:16px; color: rgba(242,243,245,.92)}
-    .muted{color:var(--muted)}
-    .bullets{margin:10px 0 0; padding-left:18px}
-    .bullets li{margin:7px 0; color: rgba(242,243,245,.9)}
-    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
-    @media (max-width: 900px){ .grid2{grid-template-columns:1fr} }
-    .box{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px;
-      background: rgba(0,0,0,.18);
-    }
-    .wrap details{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 14px;
-      background: rgba(0,0,0,.18);
-    }
-    .wrap details + details{margin-top:10px}
-    .wrap summary{cursor:pointer; font-weight:700; color: rgba(242,243,245,.92)}
-    .wrap footer{
-      margin:26px 0 10px;
-      color: var(--muted);
-      font-size:13px;
-      border-top:1px solid var(--line);
-      padding-top:16px;
-    }
-    .breadcrumbs{
-      font-size:13px;
-      color: var(--muted);
-      margin-top:10px;
-    }
-    .breadcrumbs a{color:var(--muted); text-decoration:underline; text-underline-offset:2px}
-    .callout{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      border-radius:14px;
-      padding:14px;
-      margin-top:12px;
-    }
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 13px;
-      color: rgba(242,243,245,.9);
-      background: rgba(0,0,0,.25);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:10px 12px;
-      overflow:auto;
-    }
-    .pill{
-      display:inline-flex;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: rgba(242,243,245,.9);
-      font-size:12px;
-      margin-right:8px;
+    .nav-menu {
+      font-size: 0.8rem;
     }
   </style>
-<link rel="stylesheet" href="/shared/cdl-shell.css">
 
-<!-- Material Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 
-<body>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
 
-<!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
+  <!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
 
 <!-- MAIN CONTENT -->
-<main style="padding-top: 80px;">
-  <div class="wrap">
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-    <div class="card">
-      <div class="inner hero">
-        <div>
-          <span class="kicker">📌 Satélite: Swap / Overnight</span>
-          <h1>¿Qué es el swap overnight y cuándo se cobra?</h1>
-          <p class="lead">
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 w-fit">
+            <span class="material-symbols-outlined text-purple-300 text-sm">schedule</span>
+            <span class="text-purple-200 text-xs font-bold uppercase tracking-wider">Financiación</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            ¿Qué es el swap overnight?
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-primary">Cómo te afecta</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
             El <strong>swap</strong> (o <strong>overnight</strong>) es un ajuste diario por mantener una operación
             abierta de un día para otro. Puede ser un <strong>costo</strong> o, en algunos casos, un <strong>crédito</strong>.
             Si haces swing trading o dejas posiciones abiertas, esto importa.
           </p>
 
-          <div class="ctaRow">
-            <a class="btn" href="https://www.condinerolibre.com/aprende/que-es-el-trading/">Volver a “Qué es el Trading”</a>
-            <a class="btn primary" href="https://www.condinerolibre.com/aprende/">Explorar guías</a>
-          </div>
-
-          <div class="breadcrumbs" aria-label="Breadcrumbs">
-            <a href="https://www.condinerolibre.com/">Inicio</a> ›
-            <a href="https://www.condinerolibre.com/aprende/">Aprende</a> ›
-            <span>Swap / Overnight</span>
-          </div>
+          <!-- Imagen Hero -->
+          <figure class="bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
+            <img
+              src="/images/swaphero.jpg"
+              alt="Swap overnight en trading - Financiación diaria por mantener posiciones - Roll-over"
+              class="w-full h-auto"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
         </div>
 
-        <aside class="card" style="background:transparent;border:none;box-shadow:none">
-          <div class="mini card">
-            <div>
-              <h2>Qué vas a lograr</h2>
-              <p class="muted">Entender por qué te cobran (o te pagan) y cómo proteger tu estrategia.</p>
-            </div>
-            <div class="box">
-              <div class="muted" style="font-weight:700;margin-bottom:8px;">Checklist rápido</div>
-              <ul class="bullets">
-                <li>Qué es swap/overnight (en una frase)</li>
-                <li>Cuándo se aplica (rollover)</li>
-                <li>Swap positivo vs negativo</li>
-                <li>Triple swap y fin de semana</li>
-              </ul>
-            </div>
-            <div class="box">
-              <div class="muted" style="font-weight:700;margin-bottom:6px;">Nota</div>
-              <p class="muted" style="margin:0">
-                Contenido educativo. Costos y condiciones varían por broker/instrumento.
+        <!-- CTA -->
+        <div class="flex flex-wrap gap-4 pt-2">
+          <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal de ConDineroLibre"
+             class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 text-black text-base font-bold transition-all shadow-[0_0_20px_rgba(19,109,236,0.3)] hover:shadow-[0_0_25px_rgba(19,109,236,0.5)]">
+            Acceder a la plataforma
+          </a>
+        </div>
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Definición: el costo de "mantener" una posición abierta
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El swap overnight es un <strong>ajuste diario</strong> que se aplica cuando tu posición pasa el "corte" del broker (<strong>rollover</strong>).
+              En CFDs y Forex suele reflejar:
+            </p>
+
+            <ul class="space-y-3 text-slate-300 mb-5">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">account_balance</span>
+                <span><strong>Financiación:</strong> estás operando con margen/apalancamiento, y el broker "financia" tu posición.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">currency_exchange</span>
+                <span><strong>Diferenciales de tasas:</strong> en forex, refleja la diferencia entre las tasas de interés de las dos monedas del par.</span>
+              </li>
+            </ul>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
+                Idea rápida
+              </h3>
+              <p class="text-sm text-slate-300">
+                Si haces <strong>intradía</strong> y cierras antes del rollover, normalmente <strong>no te afecta</strong>.
+                Si haces <strong>swing</strong> y dejas posiciones días o semanas, sí te puede comer el rendimiento.
               </p>
             </div>
           </div>
-        </aside>
-      </div>
+        </section>
 
-      <div class="section" id="definicion">
-        <h2>Definición simple: el costo de “mantener” una posición abierta</h2>
-        <p class="muted">
-          El swap overnight es un ajuste diario que se aplica cuando tu posición pasa el “corte” del broker (rollover).
-          En CFDs y Forex suele reflejar <strong>financiación</strong> (porque estás operando con margen/apalancamiento)
-          y/o <strong>diferenciales de tasas</strong> entre monedas.
-        </p>
+        <!-- 2: Cuándo se cobra -->
+        <section class="scroll-mt-24" id="cuando-se-cobra">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            ¿Cuándo se cobra el swap?
+          </h2>
 
-        <div class="callout">
-          <div class="muted" style="font-weight:700;margin-bottom:8px;">Idea rápida</div>
-          <p class="muted" style="margin:0">
-            Si haces intradía y cierras antes del rollover, normalmente no te afecta.
-            Si haces swing y dejas posiciones días, sí te puede comer el rendimiento.
-          </p>
-        </div>
-      </div>
-
-      <div class="section" id="cuando-se-cobra">
-        <h2>¿Cuándo se cobra el swap?</h2>
-        <ul class="bullets">
-          <li>Se aplica si mantienes la operación abierta al <strong>rollover</strong> (cierre diario del broker).</li>
-          <li>La hora exacta depende del broker y del activo (no todos cortan igual).</li>
-          <li>Se calcula y se descuenta/abona una vez al día.</li>
-        </ul>
-
-        <div class="callout">
-          <span class="pill">Tip</span>
-          <span class="muted">Si tu plan es intradía: define una regla “cierro antes del rollover”.</span>
-        </div>
-      </div>
-
-      <div class="section" id="positivo-negativo">
-        <h2>Swap positivo vs swap negativo</h2>
-        <div class="grid2">
-          <div class="box">
-            <h3>Swap negativo (lo común)</h3>
-            <p class="muted" style="margin:0">
-              Pagas por mantener la posición abierta. Suele pasar mucho en CFDs y en entornos de tasas altas.
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El swap se aplica si mantienes la operación abierta al <strong>rollover</strong> (cierre diario del broker):
             </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">schedule</span>
+                <span>La <strong>hora exacta</strong> depende del broker y del activo (común: 23:00-00:00 GMT).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">update</span>
+                <span>Se calcula y se <strong>descuenta/abona una vez al día</strong> automáticamente.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">event</span>
+                <span>Solo se cobra si la posición está abierta <strong>en ese momento de corte</strong>.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-yellow-500 mt-1 text-sm">notifications</span>
+                <span>Lo verás reflejado en tu historial de cuenta como "swap" o "financiación overnight".</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Tip CDL:</strong> si tu plan es intradía, define una regla clara: "cierro todas las posiciones antes del rollover".
+              Así evitas costos inesperados.
+            </div>
           </div>
-          <div class="box">
-            <h3>Swap positivo (a veces)</h3>
-            <p class="muted" style="margin:0">
-              Te pueden abonar un pequeño crédito diario según el instrumento y la dirección de la operación.
-              No lo asumas: verifícalo en la tabla del broker.
+        </section>
+
+        <!-- 3: Positivo vs Negativo -->
+        <section class="scroll-mt-24" id="positivo-negativo">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Swap positivo vs swap negativo
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El swap puede ir en tu favor o en tu contra, dependiendo del instrumento, la dirección y las tasas:
             </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Swap negativo (lo común)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-red-500 text-xs">remove_circle</span>
+                    <strong>Pagas</strong> por mantener la posición abierta.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-orange-500 text-xs">trending_down</span>
+                    Común en CFDs y entornos de tasas altas.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-yellow-500 text-xs">warning</span>
+                    Se acumula día tras día (puede ser significativo en swing largo).
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Swap positivo (a veces)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">add_circle</span>
+                    Te <strong>abonan</strong> un pequeño crédito diario.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-500 text-xs">currency_exchange</span>
+                    Depende del par forex y la dirección (compra/venta).
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-purple-500 text-xs">verified</span>
+                    Verifícalo en la tabla del broker (no lo asumas).
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Advertencia CDL:</strong> no uses swap positivo como "estrategia mágica" de carry trade sin experiencia.
+              El swap cambia con tasas, condiciones del broker, y puede ser mucho menor que el riesgo del movimiento del precio.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Triple swap -->
+        <section class="scroll-mt-24" id="triple-swap">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Qué es el triple swap?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              En muchos instrumentos (especialmente Forex), hay un día en el que se aplica un
+              <strong>swap triple</strong> para reflejar el fin de semana.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-400">event_repeat</span>
+                ¿Por qué triple?
+              </h3>
+              <p class="text-sm text-slate-300 mb-3">
+                El mercado forex no opera sábado/domingo (aunque cripto sí puede). Para reflejar esos 2 días adicionales,
+                el broker aplica <strong>3 días de swap en un solo día</strong> (típicamente miércoles, pero varía).
+              </p>
+              <ul class="text-xs text-slate-300 space-y-1">
+                <li>✅ Un día cuenta por viernes + sábado + domingo = triple</li>
+                <li>⚠️ El día exacto puede variar según broker e instrumento</li>
+                <li>⚠️ En CFDs de índices/acciones la regla puede ser diferente</li>
+              </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400 text-sm">calendar_today</span>
+                  Día típico
+                </h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Miércoles</strong> es el día más común para triple swap en forex (refleja fin de semana adelantado).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400 text-sm">info</span>
+                  Confirma con tu broker
+                </h3>
+                <p class="text-sm text-slate-300">
+                  No todos los brokers/instrumentos usan la misma regla. Revisa la tabla de swaps de tu broker.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Regla práctica:</strong> si haces swing y mantienes posiciones varios días, revisa el día de triple swap
+              en tu broker para evitar sorpresas en tu balance.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Dónde aplica -->
+        <section class="scroll-mt-24" id="donde-aplica">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            ¿En qué mercados lo notarás más?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El swap aplica principalmente en productos apalancados (CFDs, forex, derivados):
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">currency_exchange</span>
+                  Forex (CFDs / margin)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  <strong>Muy relevante</strong> si mantienes posiciones días. El swap depende del par y del broker.
+                </p>
+                <p class="text-xs text-slate-400">
+                  Ejemplo: EUR/USD puede tener swap negativo en compras y positivo en ventas (o viceversa según tasas).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">show_chart</span>
+                  Índices (CFDs)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  Suele haber <strong>financiación overnight</strong> por exposición apalancada.
+                </p>
+                <p class="text-xs text-slate-400">
+                  Ejemplo: S&P 500, Nasdaq, DAX en CFDs tienen swap diario. En futuros es diferente (no swap, pero hay roll de contrato).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">business</span>
+                  Acciones (CFDs / margin)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  Financiación por mantener posición abierta con margen.
+                </p>
+                <p class="text-xs text-slate-400">
+                  En compra de acciones reales (spot sin apalancamiento) no hay swap, pero en CFDs de acciones sí.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">currency_bitcoin</span>
+                  Cripto (según instrumento)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  En <strong>spot</strong> no es swap como tal. En <strong>derivados</strong> (futuros perpetuos) hay "funding rate" (costo similar).
+                </p>
+                <p class="text-xs text-slate-400">
+                  El funding rate en cripto se cobra cada 8 horas típicamente, no diario como el swap tradicional.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Cómo calcular -->
+        <section class="scroll-mt-24" id="como-calcular">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            ¿Cómo se calcula el swap?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              La fórmula exacta varía por broker, pero la idea general es:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Fórmula aproximada:</h3>
+              <div class="font-mono text-sm text-slate-200 bg-slate-900 p-3 rounded border border-slate-700">
+                Swap = (Tamaño posición × Tasa swap) / 365
+              </div>
+              <p class="text-xs text-slate-400 mt-3">
+                <strong>Tasa swap:</strong> porcentaje anualizado que aplica el broker (puede ser positivo o negativo).
+                Luego se prorratea por día.
+              </p>
+            </div>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">info</span>
+                <span>El broker publica una <strong>tabla de swaps</strong> por instrumento (long/short).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">calculate</span>
+                <span>Algunos brokers lo expresan en <strong>puntos</strong> o <strong>pips</strong>, otros en <strong>valor monetario</strong>.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">trending_up</span>
+                <span>El swap cambia con las <strong>tasas de interés</strong> del mercado (no es fijo).</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> antes de mantener una posición días, usa la <strong>calculadora de swaps</strong> del broker
+              (muchos la tienen en la plataforma) para estimar el costo total.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Cómo reducir -->
+        <section class="scroll-mt-24" id="como-reducir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Cómo reducir el impacto del swap
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No puedes eliminarlo si operas con margen, pero sí minimizar su impacto:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400 text-sm">schedule</span>
+                  1. Ajusta tu horizonte temporal
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Si tu ventaja es intradía, no conviertas tu trade en swing "por esperanza".
+                  El swap se acumula día tras día.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400 text-sm">list_alt</span>
+                  2. Revisa la tabla del broker
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Antes de mantener una posición días, mira el swap del instrumento y calcula si lo toleras.
+                  Algunos pares tienen swap muy alto.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400 text-sm">block</span>
+                  3. Evita sostener por capricho
+                </h3>
+                <p class="text-sm text-slate-300">
+                  A veces el swap no mata, pero sí se suma a spread, slippage y comisión.
+                  <strong>Suma costos, no adivines.</strong>
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400 text-sm">calculate</span>
+                  4. Calcula costo total
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Costos típicos: <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">spread</a> +
+                  <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">slippage</a> + swap.
+                  Súmalos antes de decidir.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400 text-sm">event</span>
+                  5. Ten en cuenta triple swap
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Si sabes que vas a mantener la posición hasta el miércoles (día típico de triple swap),
+                  considera si vale la pena o mejor cierras antes.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400 text-sm">priority_high</span>
+                  6. No diseñes "carry trade" sin experiencia
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Buscar pares con swap positivo para "ganar intereses" es arriesgado: el precio puede moverse
+                  mucho más que el swap que ganas.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Advertencia CDL:</strong> el swap puede parecer "poco" por día (0.50-2 USD), pero en 30 días
+              y con múltiples posiciones se acumula. Si tu winrate es ajustado, el swap puede convertir ganancia en pérdida.
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Para entender mejor los costos completos de operar:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                <p class="text-sm text-slate-400 mt-1">Diferencia Bid/Ask (costo de entrada).</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
+                <p class="text-sm text-slate-400 mt-1">Ejecución diferente al precio esperado.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Swap en pares de divisas explicado.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Swap en CFDs de índices.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Financiación en CFDs de acciones.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cripto-para-principiantes/">Cripto para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Funding rate en derivados cripto.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el swap overnight?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es un ajuste diario (costo o crédito) por mantener una operación abierta al rollover del broker.
+                Refleja financiación y/o diferenciales de tasas.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuándo se cobra?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Cuando tu operación pasa el "corte" diario del broker (rollover, típicamente 23:00-00:00 GMT).
+                La hora exacta depende del broker y del instrumento.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el triple swap?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Un día específico de la semana (típicamente miércoles en forex) se aplica swap triple para reflejar el fin de semana
+                (viernes + sábado + domingo). La regla exacta varía según broker/instrumento.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿El swap siempre es negativo (pago)?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. Puede ser positivo (te abonan) o negativo (pagas), dependiendo del instrumento, dirección y tasas de interés.
+                Verifica la tabla de swaps del broker.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo puedo evitar el swap?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Si haces trading intradía y cierras todas las posiciones antes del rollover, no te afecta.
+                Si haces swing, no puedes evitarlo, pero sí minimizar su impacto calculando el costo antes de mantener posiciones días.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿En cripto existe el swap?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                En spot no. En derivados (futuros perpetuos) existe el "funding rate", que es similar al swap pero se cobra cada 8 horas típicamente,
+                no diario como en forex/CFDs tradicionales.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-purple-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es el swap y cuándo se cobra. El siguiente paso es calcular el
+                <strong>costo total por operación</strong> (spread + slippage + comisión + swap) para diseñar
+                estrategias con margen realista.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            <div class="flex-shrink-0">
+              <a class="inline-flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-purple-600 text-black text-base font-bold transition-colors"
+                 href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal">
+                 Acceder a la plataforma
+              </a>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#cuando-se-cobra">
+                <span>2.</span> Cuándo se cobra
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#positivo-negativo">
+                <span>3.</span> Positivo vs Negativo
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#triple-swap">
+                <span>4.</span> Triple swap
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#donde-aplica">
+                <span>5.</span> Dónde aplica
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-calcular">
+                <span>6.</span> Cómo se calcula
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-reducir">
+                <span>7.</span> Cómo reducir
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>8.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>9.</span> FAQ
+              </a>
+            </nav>
           </div>
         </div>
+      </aside>
+    </div>
+  </main>
 
-        <div class="callout">
-          <div class="muted" style="font-weight:700;margin-bottom:8px;">Importante</div>
-          <p class="muted" style="margin:0">
-            No uses swap positivo como “estrategia mágica”. Cambia con tasas, condiciones y puede ser menor que el riesgo del precio.
-          </p>
-        </div>
-      </div>
+  <!-- Footer se carga dinámicamente desde /shared/footer.html -->
 
-      <div class="section" id="triple-swap">
-        <h2>¿Qué es el triple swap?</h2>
-        <p class="muted">
-          En muchos instrumentos (especialmente Forex), hay un día en el que se aplica un
-          <strong>swap triple</strong> para reflejar el fin de semana.
-          El día exacto y la regla pueden variar según broker e instrumento.
-        </p>
+<script>
+  function rewriteLocalModuleLinks() {
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    if (!isLocal) return;
+    const rules = [
+      { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+      { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+      { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
+      { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
+    ];
+    document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+      const href = anchor.getAttribute('href');
+      const rule = rules.find((item) => href.startsWith(item.prefix));
+      if (!rule) return;
+      anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
+    });
+  }
+  rewriteLocalModuleLinks();
 
-        <div class="callout">
-          <div class="muted" style="font-weight:700;margin-bottom:8px;">Regla práctica</div>
-          <p class="muted" style="margin:0">
-            Si haces swing, revisa el día de triple swap en tu broker para evitar sorpresas.
-          </p>
-        </div>
-      </div>
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.add('active');
+  });
+  
+  mobileMenuClose?.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+  });
 
-      <div class="section" id="donde-aplica">
-        <h2>¿En qué mercados lo notarás más?</h2>
-        <div class="grid2">
-          <div class="box">
-            <h3>Forex (CFDs / margin)</h3>
-            <p class="muted" style="margin:0">
-              Muy relevante si mantienes posiciones días. Depende del par y del broker.
-            </p>
-          </div>
-          <div class="box">
-            <h3>Índices (CFDs)</h3>
-            <p class="muted" style="margin:0">
-              Suele haber financiación overnight por exposición apalancada.
-            </p>
-          </div>
-          <div class="box">
-            <h3>Acciones (CFDs / margin)</h3>
-            <p class="muted" style="margin:0">
-              Financiación por mantener posición abierta con margen.
-            </p>
-          </div>
-          <div class="box">
-            <h3>Cripto (según instrumento)</h3>
-            <p class="muted" style="margin:0">
-              En spot no es swap como tal, pero en derivados puede haber costos similares (funding/financiación).
-            </p>
-          </div>
-        </div>
-      </div>
+  // Desktop mega menus with delayed close
+  const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+  desktopDropdowns.forEach((dropdown) => {
+    let closeTimer;
+    const openMenu = () => {
+      clearTimeout(closeTimer);
+      desktopDropdowns.forEach((item) => {
+        if (item !== dropdown) item.classList.remove('is-open');
+      });
+      dropdown.classList.add('is-open');
+    };
+    const closeMenu = () => {
+      closeTimer = setTimeout(() => {
+        dropdown.classList.remove('is-open');
+      }, 260);
+    };
+    dropdown.addEventListener('mouseenter', openMenu);
+    dropdown.addEventListener('mouseleave', closeMenu);
+  });
 
-      <div class="section" id="como-reducir">
-        <h2>Cómo reducir el impacto del swap</h2>
-        <div class="grid2">
-          <div class="box">
-            <h3>1) Ajusta tu horizonte</h3>
-            <p class="muted" style="margin:0">
-              Si tu ventaja es intradía, no conviertas tu trade en swing “por esperanza”.
-            </p>
-          </div>
-          <div class="box">
-            <h3>2) Revisa la tabla del broker</h3>
-            <p class="muted" style="margin:0">
-              Antes de mantener una posición días, mira el swap del instrumento y calcula si lo toleras.
-            </p>
-          </div>
-          <div class="box">
-            <h3>3) Evita sostener por capricho</h3>
-            <p class="muted" style="margin:0">
-              A veces el swap no mata, pero sí se suma a spread y slippage. Suma costos, no adivines.
-            </p>
-          </div>
-          <div class="box">
-            <h3>4) Aprende costos completos</h3>
-            <p class="muted" style="margin:0">
-              Costos típicos: <a href="https://www.condinerolibre.com/aprende/que-es-el-spread/">spread</a> +
-              <a href="https://www.condinerolibre.com/aprende/que-es-el-slippage/">slippage</a> + overnight.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="section" id="enlaces">
-        <h2>Guías relacionadas (costos)</h2>
-        <div class="links" aria-label="Enlaces internos recomendados" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px">
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/que-es-el-spread/">¿Qué es el spread?</a>
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/forex/">Forex</a>
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/indices-para-trading/">Índices</a>
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/acciones-para-trading/">Acciones</a>
-          <a class="btn" style="padding:10px 12px" href="https://www.condinerolibre.com/aprende/cripto/">Cripto</a>
-        </div>
-
-        <div class="ctaRow" style="margin-top:14px">
-          <a class="btn primary" href="https://www.condinerolibre.com/cursos/">Ver formación (cuando estés listo)</a>
-          <a class="btn" href="https://www.condinerolibre.com/aprende/">Seguir aprendiendo</a>
-        </div>
-      </div>
-
-      <div class="section" id="faq">
-        <h2>Preguntas frecuentes</h2>
-
-        <details>
-          <summary>¿Qué es el swap overnight?</summary>
-          <p class="muted">
-            Es un ajuste diario por mantener una operación abierta al rollover del broker. Puede ser costo o crédito.
-          </p>
-        </details>
-
-        <details>
-          <summary>¿Cuándo se cobra?</summary>
-          <p class="muted">
-            Cuando tu operación pasa el “corte” diario del broker. La hora exacta depende del broker y del instrumento.
-          </p>
-        </details>
-
-        <details>
-          <summary>¿Qué es el triple swap?</summary>
-          <p class="muted">
-            Un día específico se aplica swap triple para reflejar el fin de semana. La regla exacta varía según broker/instrumento.
-          </p>
-        </details>
-        </div>
-</main>
-
-<!-- Footer se carga dinámicamente desde /shared/footer.html -->
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+      mobileMenu.classList.remove('active');
+    }
+  });
+</script>
 
 <!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
 <script defer src="/shared/cdl-shell.js"></script>
