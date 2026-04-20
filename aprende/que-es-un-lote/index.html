@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Schema: Breadcrumb + Article + FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
+          { "@type": "ListItem", "position": 3, "name": "¿Qué es un lote?", "item": "https://www.condinerolibre.com/aprende/que-es-un-lote/" }
+        ]
+      },
+      {
+        "@type": "Article",
+        "@id": "https://www.condinerolibre.com/aprende/que-es-un-lote/#article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://www.condinerolibre.com/aprende/que-es-un-lote/"
+        },
+        "headline": "¿Qué es un lote en trading? Tipos, tamaños y cálculo de posición",
+        "description": "Aprende qué es un lote en forex (estándar, mini, micro, nano), cómo calcular el tamaño correcto según tu capital y riesgo, y por qué es fundamental para gestionar tu exposición.",
+        "author": {
+          "@type": "Person",
+          "name": "Pietro Giordano"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.condinerolibre.com/aprende/que-es-un-lote/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Qué es un lote en trading?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Un lote es la unidad estándar de medida para el tamaño de una posición en forex. Un lote estándar equivale a 100,000 unidades de la divisa base."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuántos tipos de lotes existen?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Existen 4 tipos principales: lote estándar (100k), mini lote (10k), micro lote (1k) y nano lote (100 unidades)."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <meta name="description" content="¿Qué es un lote en forex? Aprende los tipos (estándar, mini, micro, nano), cómo calcular tamaño de posición según tu riesgo, y qué lote usar según tu capital." />
+  <link rel="canonical" href="https://www.condinerolibre.com/aprende/que-es-un-lote/" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Condinerolibre" />
+  <meta property="og:title" content="¿Qué es un lote en trading? Tipos, tamaños y cálculo de posición | CDL" />
+  <meta property="og:description" content="Unidad estándar para medir tamaño de posición en forex explicada con ejemplos prácticos." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/que-es-un-lote/" />
+  <meta property="og:image" content="https://www.condinerolibre.com/images/lotehero.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Qué es un lote en trading - Tamaño de posición - Condinerolibre" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="¿Qué es un lote en trading? Tipos, tamaños y cálculo de posición | CDL" />
+  <meta name="twitter:description" content="Unidad estándar para medir tamaño de posición en forex." />
+  <meta name="twitter:image" content="https://www.condinerolibre.com/images/lotehero.jpg" />
+  <meta name="twitter:image:alt" content="Qué es un lote en trading - Tamaño de posición - Condinerolibre" />
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>¿Qué es un lote en trading? Tipos, cálculo y gestión de posición | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
+  <style>
+    /* Mega Menu Styles */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+      pointer-events: none;
+    }
+    .nav-item-dropdown.is-open .mega-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: all;
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
+    }
+    .platform-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -185px;
+    }
+    .platform-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28);
+    }
+    .platform-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .learn-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -270px;
+    }
+    .learn-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
+    }
+    .learn-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    .nav-menu {
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+  <!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
+
+<!-- MAIN CONTENT -->
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit">
+            <span class="material-symbols-outlined text-blue-300 text-sm">scale</span>
+            <span class="text-blue-200 text-xs font-bold uppercase tracking-wider">Tamaño de Posición</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            ¿Qué es un lote?
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">Unidad de volumen en trading</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Un <strong>lote</strong> es la unidad estándar que mide el <strong>tamaño de tu posición</strong> en forex.
+            Entender lotes es esencial para calcular cuánto arriesgas realmente en cada operación y gestionar tu capital correctamente.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
+            <img
+              src="/images/lotehero.jpg"
+              alt="Qué es un lote en trading - Unidad de tamaño de posición en forex"
+              class="w-full h-auto"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
+        </div>
+
+        <!-- CTA -->
+        <div class="flex flex-wrap gap-4 pt-2">
+          <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal de ConDineroLibre"
+             class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 text-black text-base font-bold transition-all shadow-[0_0_20px_rgba(19,109,236,0.3)] hover:shadow-[0_0_25px_rgba(19,109,236,0.5)]">
+            Acceder a la plataforma
+          </a>
+        </div>
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Definición: unidad estándar de tamaño de posición
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Un <strong>lote</strong> (lot en inglés) es la <strong>unidad de medida</strong> que expresa el volumen o tamaño de una posición en forex.
+              Es como cuando compras huevos: no compras "unidades sueltas", compras por "docena". En forex, no operas "unidades sueltas" de divisa, operas por lotes.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">info</span>
+                Regla básica
+              </h3>
+              <div class="text-slate-300 space-y-2">
+                <p class="text-lg font-bold text-white">
+                  1 lote estándar = 100,000 unidades de la divisa base
+                </p>
+                <p class="text-sm">
+                  Por ejemplo: si abres 1 lote estándar en EUR/USD, estás operando con 100,000 euros.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3">¿Por qué existen lotes?</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400 mt-1">✓</span>
+                    <span><strong>Estandarización:</strong> facilita la cotización y comparación de precios.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400 mt-1">✓</span>
+                    <span><strong>Liquidez:</strong> los mercados funcionan mejor con unidades estándar.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400 mt-1">✓</span>
+                    <span><strong>Claridad:</strong> todos hablan el mismo idioma de volumen.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3">Divisa base vs cotizada</h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <p>
+                    En un par como <span class="font-mono text-white">EUR/USD = 1.1000</span>:
+                  </p>
+                  <ul class="space-y-1 ml-4">
+                    <li>• <strong>EUR</strong> = divisa base (la que compras/vendes)</li>
+                    <li>• <strong>USD</strong> = divisa cotizada (con la que pagas/cobras)</li>
+                  </ul>
+                  <p class="mt-3 text-white">
+                    El lote se mide en la <strong>divisa base</strong> (EUR en este caso).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Tipos de lotes -->
+        <section class="scroll-mt-24" id="tipos-lotes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Tipos de lotes: estándar, mini, micro y nano
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No todos los traders operan con las mismas cantidades. Los brokers ofrecen <strong>diferentes tamaños de lote</strong> para adaptarse a distintos niveles de capital:
+            </p>
+
+            <div class="space-y-4">
+              <!-- Lote Estándar -->
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex items-center justify-center size-10 rounded-full bg-blue-500/20">
+                    <span class="material-symbols-outlined text-blue-400">trending_up</span>
+                  </div>
+                  <h3 class="text-white font-bold text-lg">Lote Estándar (Standard Lot)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Tamaño</div>
+                    <div class="text-white font-bold">100,000 unidades</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Valor por pip (EUR/USD)</div>
+                    <div class="text-green-400 font-bold">$10</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Recomendado para</div>
+                    <div class="text-white font-semibold">Cuentas &gt; $10,000</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  El tamaño "profesional". Movimientos pequeños tienen impacto significativo. No recomendado para principiantes.
+                </p>
+              </div>
+
+              <!-- Mini Lote -->
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex items-center justify-center size-10 rounded-full bg-purple-500/20">
+                    <span class="material-symbols-outlined text-purple-400">show_chart</span>
+                  </div>
+                  <h3 class="text-white font-bold text-lg">Mini Lote (Mini Lot)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Tamaño</div>
+                    <div class="text-white font-bold">10,000 unidades</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Valor por pip (EUR/USD)</div>
+                    <div class="text-green-400 font-bold">$1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Recomendado para</div>
+                    <div class="text-white font-semibold">Cuentas $1,000 - $10,000</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  El tamaño intermedio. Permite operar con riesgo controlado sin necesitar capital masivo. Ideal para traders en desarrollo.
+                </p>
+              </div>
+
+              <!-- Micro Lote -->
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex items-center justify-center size-10 rounded-full bg-green-500/20">
+                    <span class="material-symbols-outlined text-green-400">moving</span>
+                  </div>
+                  <h3 class="text-white font-bold text-lg">Micro Lote (Micro Lot)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Tamaño</div>
+                    <div class="text-white font-bold">1,000 unidades</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Valor por pip (EUR/USD)</div>
+                    <div class="text-green-400 font-bold">$0.10</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Recomendado para</div>
+                    <div class="text-white font-semibold">Cuentas &lt; $1,000</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  Perfecto para principiantes. Permite practicar gestión de riesgo con capital pequeño. Riesgo mínimo por pip.
+                </p>
+              </div>
+
+              <!-- Nano Lote -->
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="flex items-center justify-center size-10 rounded-full bg-orange-500/20">
+                    <span class="material-symbols-outlined text-orange-400">grain</span>
+                  </div>
+                  <h3 class="text-white font-bold text-lg">Nano Lote (Nano Lot)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Tamaño</div>
+                    <div class="text-white font-bold">100 unidades</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Valor por pip (EUR/USD)</div>
+                    <div class="text-green-400 font-bold">$0.01</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-slate-400 text-xs mb-1">Disponibilidad</div>
+                    <div class="text-white font-semibold">Pocos brokers</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  El tamaño más pequeño. Solo disponible con algunos brokers. Útil para cuentas muy pequeñas o testing extremo.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Comparación rápida:</strong> Con un movimiento de 50 pips, un lote estándar genera $500, un mini lote $50, y un micro lote $5. 
+              <strong>El tipo de lote determina directamente tu exposición al riesgo.</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Relación lotes-pips -->
+        <section class="scroll-mt-24" id="lotes-pips">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Relación entre lotes y pips
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Ya sabes qué son los <a href="/aprende/que-es-un-pip/" class="underline hover:text-primary">pips</a>. Ahora necesitas entender que <strong>el valor de cada pip depende del tamaño del lote</strong>. Son dos caras de la misma moneda:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Fórmula del valor del pip:</h3>
+              <div class="font-mono text-sm bg-slate-900 p-4 rounded border border-slate-700 text-center">
+                Valor pip = (Tamaño pip) × (Tamaño lote) / Tipo de cambio
+              </div>
+              <p class="text-xs text-slate-400 mt-3">
+                Para EUR/USD (donde 1 pip = 0.0001): <span class="text-white">(0.0001 × 100,000) / 1.10 = ~$9.09 por pip</span>
+              </p>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-slate-700">
+                    <th class="text-left py-3 text-white font-bold">Tipo de lote</th>
+                    <th class="text-left py-3 text-white font-bold">Unidades</th>
+                    <th class="text-left py-3 text-white font-bold">Valor 1 pip (EUR/USD)</th>
+                    <th class="text-left py-3 text-white font-bold">Valor 10 pips</th>
+                    <th class="text-left py-3 text-white font-bold">Valor 50 pips</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-300">
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">Nano</td>
+                    <td class="py-3 font-mono">100</td>
+                    <td class="py-3 text-green-400 font-bold">$0.01</td>
+                    <td class="py-3">$0.10</td>
+                    <td class="py-3">$0.50</td>
+                  </tr>
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">Micro</td>
+                    <td class="py-3 font-mono">1,000</td>
+                    <td class="py-3 text-green-400 font-bold">$0.10</td>
+                    <td class="py-3">$1</td>
+                    <td class="py-3">$5</td>
+                  </tr>
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">Mini</td>
+                    <td class="py-3 font-mono">10,000</td>
+                    <td class="py-3 text-green-400 font-bold">$1</td>
+                    <td class="py-3">$10</td>
+                    <td class="py-3">$50</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold">Estándar</td>
+                    <td class="py-3 font-mono">100,000</td>
+                    <td class="py-3 text-green-400 font-bold">$10</td>
+                    <td class="py-3">$100</td>
+                    <td class="py-3">$500</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-500/20 text-slate-200 text-sm">
+              <strong>Insight clave:</strong> un principiante que captura 50 pips con micro lote gana $5. Un profesional que pierde 10 pips con lote estándar pierde $100.
+              <strong>El tamaño del lote importa más que la cantidad de pips.</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Cálculo de tamaño -->
+        <section class="scroll-mt-24" id="calculo-tamano">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Cómo calcular el tamaño de lote correcto
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Este es el cálculo <strong>más importante</strong> que harás como trader. Determina cuántos lotes operar según tu <strong>capital</strong> y el <strong>riesgo que aceptas</strong>:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-orange-400">calculate</span>
+                Fórmula del position sizing
+              </h3>
+              <div class="space-y-4">
+                <div class="font-mono text-sm bg-slate-900 p-4 rounded border border-slate-700">
+                  Lotes = (Capital × % Riesgo) / (Stop Loss en pips × Valor pip por lote)
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-300">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <strong>Capital:</strong> saldo disponible en tu cuenta
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <strong>% Riesgo:</strong> cuánto aceptas perder (típicamente 1-2%)
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <strong>Stop Loss:</strong> cuántos pips arriesgas
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <strong>Valor pip:</strong> depende del tipo de lote
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-sm">Ejemplo 1</span>
+                  Cuenta pequeña
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="text-sm text-slate-300 space-y-2">
+                    <div>💰 <strong>Capital:</strong> $1,000</div>
+                    <div>📊 <strong>Riesgo:</strong> 2% = $20</div>
+                    <div>🛑 <strong>Stop Loss:</strong> 20 pips</div>
+                    <div>📦 <strong>Par:</strong> EUR/USD</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-xs text-slate-400 mb-2">Cálculo:</div>
+                    <div class="text-sm text-slate-300 space-y-1 font-mono">
+                      <div>$20 / (20 pips × $1) = 1 mini lote</div>
+                      <div class="text-green-400 font-bold mt-2 text-base">
+                        → Operar con 1 mini lote (0.1 lotes)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">Ejemplo 2</span>
+                  Cuenta media
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="text-sm text-slate-300 space-y-2">
+                    <div>💰 <strong>Capital:</strong> $5,000</div>
+                    <div>📊 <strong>Riesgo:</strong> 1.5% = $75</div>
+                    <div>🛑 <strong>Stop Loss:</strong> 30 pips</div>
+                    <div>📦 <strong>Par:</strong> EUR/USD</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-xs text-slate-400 mb-2">Cálculo:</div>
+                    <div class="text-sm text-slate-300 space-y-1 font-mono">
+                      <div>$75 / (30 pips × $1) = 2.5 mini lotes</div>
+                      <div class="text-blue-400 font-bold mt-2 text-base">
+                        → Operar con 2.5 mini lotes (0.25 lotes)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-sm">Ejemplo 3</span>
+                  Cuenta profesional
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="text-sm text-slate-300 space-y-2">
+                    <div>💰 <strong>Capital:</strong> $50,000</div>
+                    <div>📊 <strong>Riesgo:</strong> 1% = $500</div>
+                    <div>🛑 <strong>Stop Loss:</strong> 25 pips</div>
+                    <div>📦 <strong>Par:</strong> EUR/USD</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-xs text-slate-400 mb-2">Cálculo:</div>
+                    <div class="text-sm text-slate-300 space-y-1 font-mono">
+                      <div>$500 / (25 pips × $10) = 2 lotes estándar</div>
+                      <div class="text-purple-400 font-bold mt-2 text-base">
+                        → Operar con 2 lotes estándar (2.0 lotes)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Error mortal:</strong> calcular el tamaño de lote "a ojo" o usar siempre el mismo tamaño sin considerar el stop loss.
+              Cada operación requiere un cálculo específico según tu riesgo y stop.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Margen y apalancamiento -->
+        <section class="scroll-mt-24" id="margen-apalancamiento">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Lotes, margen y apalancamiento
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No necesitas tener $100,000 en tu cuenta para operar 1 lote estándar. Gracias al <strong>apalancamiento</strong>, solo necesitas una fracción llamada <strong>margen</strong>:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">¿Qué es el margen?</h3>
+              <p class="text-sm text-slate-300 mb-3">
+                Es el <strong>depósito</strong> que el broker retiene como garantía para mantener tu posición abierta.
+                Con apalancamiento 1:100, por ejemplo, solo necesitas $1,000 de margen para controlar 1 lote estándar ($100,000).
+              </p>
+              <div class="font-mono text-sm bg-slate-900 p-4 rounded border border-slate-700">
+                Margen requerido = Tamaño posición / Apalancamiento
+              </div>
+            </div>
+
+            <div class="overflow-x-auto mb-5">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-slate-700">
+                    <th class="text-left py-3 text-white font-bold">Apalancamiento</th>
+                    <th class="text-left py-3 text-white font-bold">Lote Estándar</th>
+                    <th class="text-left py-3 text-white font-bold">Mini Lote</th>
+                    <th class="text-left py-3 text-white font-bold">Micro Lote</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-300">
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">1:50</td>
+                    <td class="py-3">$2,000</td>
+                    <td class="py-3">$200</td>
+                    <td class="py-3">$20</td>
+                  </tr>
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">1:100</td>
+                    <td class="py-3">$1,000</td>
+                    <td class="py-3">$100</td>
+                    <td class="py-3">$10</td>
+                  </tr>
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">1:200</td>
+                    <td class="py-3">$500</td>
+                    <td class="py-3">$50</td>
+                    <td class="py-3">$5</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold">1:500</td>
+                    <td class="py-3">$200</td>
+                    <td class="py-3">$20</td>
+                    <td class="py-3">$2</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="text-xs text-slate-400 mt-2">
+                *Margen requerido para EUR/USD = 1.10. Los valores son aproximados.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">check_circle</span>
+                  Ventaja del apalancamiento
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Permite operar posiciones grandes con capital pequeño. Un trader con $1,000 puede controlar posiciones de $100,000 con apalancamiento 1:100.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">warning</span>
+                  Riesgo del apalancamiento
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Las ganancias se amplifican... pero también las pérdidas. Un movimiento de 100 pips contra ti con 1 lote puede eliminar $1,000 de tu cuenta.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Regla de oro:</strong> no confundas apalancamiento disponible con tamaño de posición recomendado.
+              Que puedas operar 10 lotes con tu cuenta de $5,000 no significa que <strong>debas</strong> hacerlo. Respeta tu gestión de riesgo.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Notación -->
+        <section class="scroll-mt-24" id="notacion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Notación de lotes en plataformas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Las plataformas de trading usan una notación decimal para expresar fracciones de lote. Es importante que entiendas cómo leerlo:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Sistema de notación:</h3>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded">
+                  <span class="text-slate-300 font-mono">1.00 lotes</span>
+                  <span class="text-white">= 1 lote estándar (100,000 unidades)</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded">
+                  <span class="text-slate-300 font-mono">0.10 lotes</span>
+                  <span class="text-white">= 1 mini lote (10,000 unidades)</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded">
+                  <span class="text-slate-300 font-mono">0.01 lotes</span>
+                  <span class="text-white">= 1 micro lote (1,000 unidades)</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded">
+                  <span class="text-slate-300 font-mono">0.50 lotes</span>
+                  <span class="text-white">= 5 mini lotes o 50,000 unidades</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded">
+                  <span class="text-slate-300 font-mono">2.50 lotes</span>
+                  <span class="text-white">= 2 estándar + 5 mini o 250,000 unidades</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3">En MetaTrader 4/5:</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400">→</span>
+                    <span>Campo "Volume" usa notación decimal</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400">→</span>
+                    <span>Mínimo típico: 0.01 (micro lote)</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-400">→</span>
+                    <span>Incrementos: de 0.01 en 0.01</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3">En cTrader/TradingView:</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-purple-400">→</span>
+                    <span>Misma notación decimal</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-purple-400">→</span>
+                    <span>Algunos permiten unidades directas (1000, 10000, 100000)</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-purple-400">→</span>
+                    <span>Verificar límite mínimo del broker</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo:</strong> familiarízate con la notación de tu plataforma en una cuenta demo antes de operar en real.
+              Un error al introducir el tamaño puede costarte caro.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Errores comunes -->
+        <section class="scroll-mt-24" id="errores-comunes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Errores comunes con tamaño de lote
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Gestionar lotes es una de las áreas donde los traders cometen <strong>errores críticos</strong> que destruyen cuentas:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  1. Operar siempre el mismo tamaño
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Siempre opero 0.1 lotes" → Error. Si tu stop es 20 pips en un trade y 50 pips en otro, tu riesgo monetario es diferente.
+                  Debes ajustar el tamaño según el stop de cada operación.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  2. Usar el apalancamiento máximo disponible
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Tengo apalancamiento 1:500, voy a usar todo" → Error mortal. Alto apalancamiento = más exposición = margin call más rápido.
+                  Usa solo el apalancamiento necesario para tu estrategia.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  3. No considerar el valor del pip por lote
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Arriesgo 30 pips" → Insuficiente. ¿30 pips con qué tamaño de lote? 30 pips con 1 lote estándar = $300 de riesgo.
+                  30 pips con 1 micro lote = $3 de riesgo. Siempre calcula el <strong>valor monetario real</strong>.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  4. Aumentar lotes después de pérdidas (revenge trading)
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Perdí $100, voy a operar el doble para recuperar" → Receta para destruir la cuenta. Después de una pérdida, mantén o reduce tu tamaño, nunca aumentes.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  5. Operar lotes grandes con cuenta pequeña
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Tengo $500 y voy a operar 1 mini lote" → Sobreexposición. Con $500, incluso 1 mini lote (0.1) puede ser demasiado si tu stop es amplio.
+                  Empieza con micro lotes.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-green-900/20 rounded border border-green-500/20 text-slate-200 text-sm">
+              <strong>Enfoque correcto:</strong> calcula el tamaño de lote específicamente para cada trade basándote en: (1) tu capital actual, (2) tu % de riesgo aceptado, (3) tu stop loss en pips.
+              Nunca uses "el mismo tamaño siempre".
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Qué lote usar -->
+        <section class="scroll-mt-24" id="que-lote-usar">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            ¿Qué tamaño de lote debo usar?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Depende de tu <strong>capital</strong>, tu <strong>experiencia</strong> y tu <strong>tolerancia al riesgo</strong>. Aquí tienes recomendaciones generales:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-green-500/20 px-2 py-1 rounded text-sm">Principiantes</span>
+                  Capital &lt; $1,000
+                </h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold">✓</span>
+                    <span><strong>Usa micro lotes (0.01):</strong> riesgo mínimo por pip ($0.10).</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold">✓</span>
+                    <span><strong>Arriesga máximo 1% por trade:</strong> con $500, eso es $5 por operación.</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-green-400 font-bold">✓</span>
+                    <span><strong>Prioriza aprendizaje sobre ganancias:</strong> objetivo es durar, no hacerte rico rápido.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-blue-500/20 px-2 py-1 rounded text-sm">Intermedios</span>
+                  Capital $1,000 - $10,000
+                </h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-start gap-2">
+                    <span class="text-blue-400 font-bold">✓</span>
+                    <span><strong>Usa mini lotes (0.1):</strong> balance entre control y escalabilidad.</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-blue-400 font-bold">✓</span>
+                    <span><strong>Arriesga 1-2% por trade:</strong> con $5,000, eso es $50-$100 por operación.</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-blue-400 font-bold">✓</span>
+                    <span><strong>Combina micro y mini según stop:</strong> flexibilidad para ajustar tamaño preciso.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-purple-500/20 px-2 py-1 rounded text-sm">Avanzados</span>
+                  Capital &gt; $10,000
+                </h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                  <div class="flex items-start gap-2">
+                    <span class="text-purple-400 font-bold">✓</span>
+                    <span><strong>Usa lotes estándar o combinaciones:</strong> puedes operar 0.5, 1.0, 1.5, etc.</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-purple-400 font-bold">✓</span>
+                    <span><strong>Arriesga 0.5-1% por trade:</strong> cuentas grandes requieren menor % riesgo.</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <span class="text-purple-400 font-bold">✓</span>
+                    <span><strong>Usa calculadoras de position sizing:</strong> automatiza el cálculo preciso.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-orange-900/20 rounded border border-orange-500/20 text-slate-200 text-sm">
+              <strong>Regla universal:</strong> si no estás seguro, opera <strong>más pequeño</strong>. Es mejor capturar 50 pips con micro lote y ganar $5 que perder 20 pips con lote estándar y perder $200.
+              El tamaño se aumenta con experiencia y resultados probados, no con ambición.
+            </div>
+          </div>
+        </section>
+
+        <!-- 9: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Complementa tu conocimiento sobre lotes con:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-un-pip/">¿Qué es un pip?</a>
+                <p class="text-sm text-slate-400 mt-1">Unidad de medida complementaria a lotes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Fundamentos de pares de divisas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                <p class="text-sm text-slate-400 mt-1">Costo por operación que impacta tu tamaño.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
+                <p class="text-sm text-slate-400 mt-1">Diferencia de ejecución en órdenes grandes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/el-swap-overnight/">Swap overnight</a>
+                <p class="text-sm text-slate-400 mt-1">Costo diario que se multiplica por lotes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Dónde más se usan lotes como medida.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es un lote en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Un lote es la unidad estándar de medida para el tamaño de una posición en forex. Un lote estándar equivale a 100,000 unidades de la divisa base del par que operas.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuántos tipos de lotes existen?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Existen 4 tipos principales: lote estándar (100,000 unidades), mini lote (10,000), micro lote (1,000) y nano lote (100 unidades). No todos los brokers ofrecen nano lotes.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuánto vale 1 pip en cada tipo de lote?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                En EUR/USD típicamente: lote estándar = $10/pip, mini lote = $1/pip, micro lote = $0.10/pip, nano lote = $0.01/pip.
+                Estos valores varían ligeramente según el tipo de cambio actual.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué tamaño de lote debo usar como principiante?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Como principiante con menos de $1,000, usa micro lotes (0.01). Esto te da riesgo mínimo por pip ($0.10) y te permite aprender sin destruir tu cuenta.
+                Solo incrementa tamaño cuando tengas consistencia probada.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo calculo cuántos lotes operar?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Fórmula: Lotes = (Capital × % Riesgo) / (Stop Loss en pips × Valor pip por lote).
+                Ejemplo: con $1,000, riesgo 2% ($20), stop 20 pips → $20 / (20 × $1) = 1 mini lote (0.1).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el margen requerido por lote?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es el depósito que el broker retiene como garantía. Con apalancamiento 1:100, necesitas $1,000 de margen para 1 lote estándar ($100,000 de exposición).
+                Con 1:500, solo $200. Pero no confundas margen disponible con tamaño recomendado.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Puedo operar fracciones de lote?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí. Las plataformas usan notación decimal: 0.01 = 1 micro lote, 0.1 = 1 mini lote, 0.5 = 50,000 unidades, 1.0 = 1 lote estándar.
+                Puedes operar cualquier fracción que tu broker permita (típicamente desde 0.01).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Debo usar el mismo tamaño de lote siempre?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. Es un error común. El tamaño debe ajustarse según tu stop loss en cada operación. Si tu stop es 20 pips en un trade y 50 pips en otro,
+                necesitas calcular el tamaño específico para mantener el mismo riesgo monetario.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-green-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué son los lotes y cómo calcular el tamaño correcto. El siguiente paso es entender
+                <strong>apalancamiento y margen</strong> en profundidad, y practicar el cálculo de position sizing con diferentes escenarios.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-un-pip/">Qué es un pip</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            <div class="flex-shrink-0">
+              <a class="inline-flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-green-600 text-black text-base font-bold transition-colors"
+                 href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal">
+                 Acceder a la plataforma
+              </a>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#tipos-lotes">
+                <span>2.</span> Tipos de lotes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#lotes-pips">
+                <span>3.</span> Lotes y pips
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#calculo-tamano">
+                <span>4.</span> Cálculo de tamaño
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#margen-apalancamiento">
+                <span>5.</span> Margen y apalancamiento
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#notacion">
+                <span>6.</span> Notación
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores-comunes">
+                <span>7.</span> Errores comunes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-lote-usar">
+                <span>8.</span> Qué lote usar
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>9.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>10.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer se carga dinámicamente desde /shared/footer.html -->
+
+<script>
+  function rewriteLocalModuleLinks() {
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    if (!isLocal) return;
+    const rules = [
+      { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+      { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+      { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
+      { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
+    ];
+    document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+      const href = anchor.getAttribute('href');
+      const rule = rules.find((item) => href.startsWith(item.prefix));
+      if (!rule) return;
+      anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
+    });
+  }
+  rewriteLocalModuleLinks();
+
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.add('active');
+  });
+  
+  mobileMenuClose?.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+  });
+
+  // Desktop mega menus with delayed close
+  const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+  desktopDropdowns.forEach((dropdown) => {
+    let closeTimer;
+    const openMenu = () => {
+      clearTimeout(closeTimer);
+      desktopDropdowns.forEach((item) => {
+        if (item !== dropdown) item.classList.remove('is-open');
+      });
+      dropdown.classList.add('is-open');
+    };
+    const closeMenu = () => {
+      closeTimer = setTimeout(() => {
+        dropdown.classList.remove('is-open');
+      }, 260);
+    };
+    dropdown.addEventListener('mouseenter', openMenu);
+    dropdown.addEventListener('mouseleave', closeMenu);
+  });
+
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
+      mobileMenu.classList.remove('active');
+    }
+  });
+</script>
+
+<!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
+<script defer src="/shared/cdl-shell.js"></script>
+</body>
+</html>
