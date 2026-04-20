@@ -1,0 +1,922 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>¿Qué es un pip en trading? Definición, cálculo y ejemplos prácticos | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-400/20 w-fit">
+            <span class="material-symbols-outlined text-green-300 text-sm">straighten</span>
+            <span class="text-green-200 text-xs font-bold uppercase tracking-wider">Medición</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            ¿Qué es un pip?
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-primary">Unidad básica en trading</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Un <strong>pip</strong> es la unidad más pequeña de medida para el <strong>movimiento del precio</strong> en forex.
+            Si no entiendes pips, no puedes calcular ganancias, pérdidas ni gestionar riesgo correctamente.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/piphero.jpg" alt="Qué es un pip en trading - Unidad de medida de movimientos de precio en forex" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/piphero.jpg" alt="Qué es un pip en trading - Unidad de medida de movimientos de precio en forex" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Definición simple -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Definición: la unidad más pequeña de cambio de precio
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              <strong>PIP</strong> significa "Percentage In Point" o "Price Interest Point".
+              Es la <strong>unidad estándar</strong> para medir cuánto se mueve el precio de un par de divisas.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">calculate</span>
+                Regla general
+              </h3>
+              <ul class="space-y-2 text-slate-300 text-sm">
+                <li class="flex items-center gap-2">
+                  <span class="text-green-400 font-bold">✓</span>
+                  Para la mayoría de pares: <strong>1 pip = 0.0001</strong> (cuarto decimal)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-green-400 font-bold">✓</span>
+                  Para pares con <strong>JPY</strong>: <strong>1 pip = 0.01</strong> (segundo decimal)
+                </li>
+              </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3">Ejemplo: EUR/USD</h3>
+                <div class="font-mono text-sm bg-slate-900 p-3 rounded border border-slate-700 mb-2">
+                  <div class="text-slate-400">Antes: <span class="text-white">1.1050</span></div>
+                  <div class="text-slate-400">Después: <span class="text-white">1.1051</span></div>
+                  <div class="text-green-400 mt-2">Cambio: <strong>+1 pip</strong></div>
+                </div>
+                <p class="text-xs text-slate-400">
+                  El precio subió 0.0001 = 1 pip de movimiento alcista
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3">Ejemplo: USD/JPY</h3>
+                <div class="font-mono text-sm bg-slate-900 p-3 rounded border border-slate-700 mb-2">
+                  <div class="text-slate-400">Antes: <span class="text-white">112.50</span></div>
+                  <div class="text-slate-400">Después: <span class="text-white">112.51</span></div>
+                  <div class="text-green-400 mt-2">Cambio: <strong>+1 pip</strong></div>
+                </div>
+                <p class="text-xs text-slate-400">
+                  El precio subió 0.01 = 1 pip (JPY solo usa 2 decimales)
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Pip vs Pipette -->
+        <section class="scroll-mt-24" id="pip-pipette">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Pip vs Pipette (pip fraccionario)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Algunos brokers muestran un <strong>quinto decimal</strong> (o tercero en JPY). Eso se llama <strong>pipette</strong> o <strong>pip fraccionario</strong>.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Diferencia clave:</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-slate-700">
+                      <th class="text-left py-2 text-white font-bold">Término</th>
+                      <th class="text-left py-2 text-white font-bold">Valor</th>
+                      <th class="text-left py-2 text-white font-bold">Ejemplo EUR/USD</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-slate-300">
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2"><strong>Pip</strong></td>
+                      <td class="py-2">0.0001</td>
+                      <td class="py-2 font-mono">1.1050 → 1.1051 = 1 pip</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2"><strong>Pipette</strong></td>
+                      <td class="py-2">0.00001 (1/10 de pip)</td>
+                      <td class="py-2 font-mono">1.10<span class="text-green-400">50</span>0 → 1.10<span class="text-green-400">50</span>1 = 1 pipette</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-yellow-400">visibility</span>
+                Cómo se ve en la plataforma
+              </h3>
+              <p class="text-sm text-slate-300 mb-3">
+                Si tu broker usa pipettes, verás algo como:
+              </p>
+              <div class="font-mono text-2xl bg-slate-900 p-4 rounded border border-slate-700 text-center">
+                <span class="text-white">1.1050</span><span class="text-green-400 text-lg">3</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-3">
+                Los 4 primeros dígitos después del punto son el precio estándar.
+                El quinto (más pequeño) es la pipette.
+              </p>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> no te compliques. Céntrate en pips completos para cálculos de riesgo.
+              Las pipettes solo añaden precisión, pero no cambian tu estrategia.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Cómo leer pips -->
+        <section class="scroll-mt-24" id="como-leer">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Cómo leer pips en diferentes pares
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No todos los pares se leen igual. Aquí está el "mapa" de decimales:
+            </p>
+
+            <div class="grid grid-cols-1 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">euro</span>
+                  Pares estándar (4 decimales)
+                </h3>
+                <p class="text-sm text-slate-300 mb-3">
+                  EUR/USD, GBP/USD, AUD/USD, USD/CHF, USD/CAD, etc.
+                </p>
+                <div class="font-mono text-lg bg-slate-900 p-3 rounded border border-slate-700">
+                  1.<span class="text-blue-400">1234</span> ← El 4º decimal es el pip
+                </div>
+                <p class="text-xs text-slate-400 mt-2">
+                  Si el precio se mueve de 1.1234 a 1.1235 = <strong>+1 pip</strong>
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">currency_yen</span>
+                  Pares con JPY (2 decimales)
+                </h3>
+                <p class="text-sm text-slate-300 mb-3">
+                  USD/JPY, EUR/JPY, GBP/JPY, AUD/JPY, etc.
+                </p>
+                <div class="font-mono text-lg bg-slate-900 p-3 rounded border border-slate-700">
+                  112.<span class="text-orange-400">34</span> ← El 2º decimal es el pip
+                </div>
+                <p class="text-xs text-slate-400 mt-2">
+                  Si el precio se mueve de 112.34 a 112.35 = <strong>+1 pip</strong>
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">add</span>
+                  Con pipettes (5 decimales / 3 decimales)
+                </h3>
+                <p class="text-sm text-slate-300 mb-3">
+                  Algunos brokers añaden un decimal extra:
+                </p>
+                <div class="space-y-2">
+                  <div class="font-mono text-lg bg-slate-900 p-3 rounded border border-slate-700">
+                    EUR/USD: 1.1234<span class="text-green-400">5</span> ← 5º decimal = pipette
+                  </div>
+                  <div class="font-mono text-lg bg-slate-900 p-3 rounded border border-slate-700">
+                    USD/JPY: 112.34<span class="text-green-400">5</span> ← 3º decimal = pipette
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-500/20 text-slate-200 text-sm">
+              <strong>Regla práctica:</strong> mira los últimos 2 dígitos grandes (no el pequeño si hay pipette).
+              Cuando esos cambian, es el movimiento de pips que te importa.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Valor del pip -->
+        <section class="scroll-mt-24" id="valor-pip">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Cuánto vale un pip?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El <strong>valor del pip</strong> depende de 3 cosas:
+            </p>
+
+            <ul class="space-y-3 text-slate-300 mb-5">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">currency_exchange</span>
+                <span><strong>El par que operas:</strong> EUR/USD vs USD/JPY tienen valores diferentes.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">percent</span>
+                <span><strong>El tamaño de tu posición:</strong> lote estándar (100k), mini (10k), micro (1k).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">account_balance_wallet</span>
+                <span><strong>Tu divisa de cuenta:</strong> si tu cuenta es en USD, EUR, GBP, etc.</span>
+              </li>
+            </ul>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Valores típicos (lote estándar = 100,000 unidades):</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-slate-700">
+                      <th class="text-left py-2 text-white font-bold">Par</th>
+                      <th class="text-left py-2 text-white font-bold">1 pip</th>
+                      <th class="text-left py-2 text-white font-bold">Valor (lote estándar)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-slate-300">
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2">EUR/USD</td>
+                      <td class="py-2 font-mono">0.0001</td>
+                      <td class="py-2 font-bold text-green-400">$10 USD</td>
+                    </tr>
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2">GBP/USD</td>
+                      <td class="py-2 font-mono">0.0001</td>
+                      <td class="py-2 font-bold text-green-400">$10 USD</td>
+                    </tr>
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2">USD/JPY</td>
+                      <td class="py-2 font-mono">0.01</td>
+                      <td class="py-2 font-bold text-green-400">~$8-9 USD</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2">USD/CAD</td>
+                      <td class="py-2 font-mono">0.0001</td>
+                      <td class="py-2 font-bold text-green-400">~$7-8 USD</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-xs text-slate-400 mt-3">
+                <strong>Nota:</strong> estos valores cambian ligeramente según el tipo de cambio actual.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 text-center">
+                <div class="text-2xl font-bold text-blue-400 mb-2">Lote estándar</div>
+                <div class="text-sm text-slate-300 mb-2">100,000 unidades</div>
+                <div class="text-lg font-bold text-white">$10 por pip</div>
+                <p class="text-xs text-slate-400 mt-2">(EUR/USD típico)</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 text-center">
+                <div class="text-2xl font-bold text-purple-400 mb-2">Mini lote</div>
+                <div class="text-sm text-slate-300 mb-2">10,000 unidades</div>
+                <div class="text-lg font-bold text-white">$1 por pip</div>
+                <p class="text-xs text-slate-400 mt-2">(EUR/USD típico)</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 text-center">
+                <div class="text-2xl font-bold text-green-400 mb-2">Micro lote</div>
+                <div class="text-sm text-slate-300 mb-2">1,000 unidades</div>
+                <div class="text-lg font-bold text-white">{{MAIN_CONTENT}}.10 por pip</div>
+                <p class="text-xs text-slate-400 mt-2">(EUR/USD típico)</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Cómo calcular -->
+        <section class="scroll-mt-24" id="como-calcular">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Cómo calcular el valor del pip
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No necesitas memorizar fórmulas complejas (tu broker lo calcula automáticamente), pero es útil entender la lógica:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Fórmula básica:</h3>
+              <div class="font-mono text-sm bg-slate-900 p-4 rounded border border-slate-700 mb-3">
+                Valor pip = (Tamaño pip × Tamaño posición) / Tipo de cambio
+              </div>
+
+              <h4 class="text-white font-bold mb-2 mt-4">Ejemplo 1: EUR/USD</h4>
+              <div class="text-sm text-slate-300 space-y-1">
+                <div>• Par: EUR/USD = 1.1000</div>
+                <div>• Tamaño posición: 100,000 EUR (lote estándar)</div>
+                <div>• 1 pip = 0.0001</div>
+                <div class="text-green-400 font-bold mt-2">
+                  → (0.0001 × 100,000) = 10 USD por pip
+                </div>
+              </div>
+
+              <h4 class="text-white font-bold mb-2 mt-4">Ejemplo 2: USD/JPY</h4>
+              <div class="text-sm text-slate-300 space-y-1">
+                <div>• Par: USD/JPY = 112.00</div>
+                <div>• Tamaño posición: 100,000 USD (lote estándar)</div>
+                <div>• 1 pip = 0.01 JPY</div>
+                <div class="text-green-400 font-bold mt-2">
+                  → (0.01 × 100,000) / 112 = ~8.93 USD por pip
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>La buena noticia:</strong> no tienes que calcular esto manualmente. Tu plataforma de trading
+              muestra el valor del pip automáticamente. Pero entender la lógica te ayuda a verificar y entender mejor tus operaciones.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Por qué importan -->
+        <section class="scroll-mt-24" id="por-que-importan">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            ¿Por qué importan los pips?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Los pips son <strong>fundamentales</strong> para todo trader porque:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">attach_money</span>
+                  1. Medir ganancias y pérdidas
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Gané 50 pips" es la forma estándar de comunicar resultados. Sin pips, no puedes cuantificar tu operativa.
+                </p>
+                <div class="mt-3 p-2 bg-slate-900 rounded text-xs text-slate-300 font-mono">
+                  Entrada: 1.1000<br/>
+                  Salida: 1.1050<br/>
+                  <span class="text-green-400">Ganancia: 50 pips</span>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">shield</span>
+                  2. Calcular stop-loss y take-profit
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Tu riesgo y objetivo se definen en pips. Ejemplo: "arriesgo 20 pips para ganar 40 pips" = ratio 1:2.
+                </p>
+                <div class="mt-3 p-2 bg-slate-900 rounded text-xs text-slate-300 font-mono">
+                  Entrada: 1.1000<br/>
+                  Stop: 1.0980 (-20 pips)<br/>
+                  Target: 1.1040 (+40 pips)
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">calculate</span>
+                  3. Determinar tamaño de posición
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Si sabes cuánto vale 1 pip, puedes calcular el tamaño exacto de posición para arriesgar solo X% de tu cuenta.
+                </p>
+                <div class="mt-3 text-xs text-slate-300">
+                  Fórmula: <span class="text-purple-400">Tamaño = (Riesgo en $) / (Pips stop × Valor pip)</span>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">compare_arrows</span>
+                  4. Comparar estrategias
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Estrategia A captura 100 pips/mes, Estrategia B 150 pips/mes" → forma objetiva de comparar rendimiento.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Error común:</strong> no confundas "muchos pips" con "mucha ganancia". Un trader que gana 10 pips con lote estándar
+              puede ganar más que uno que hace 50 pips con micro lotes. El <strong>valor en dinero</strong> depende del tamaño de posición.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Ejemplos prácticos -->
+        <section class="scroll-mt-24" id="ejemplos">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Ejemplos prácticos de cálculo
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Veamos situaciones reales de trading:
+            </p>
+
+            <div class="space-y-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-sm">Ejemplo 1</span>
+                  Trade ganador en EUR/USD
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <div class="text-sm text-slate-300 space-y-2">
+                      <div>📊 <strong>Par:</strong> EUR/USD</div>
+                      <div>📥 <strong>Entrada:</strong> 1.1000</div>
+                      <div>📤 <strong>Salida:</strong> 1.1035</div>
+                      <div>📦 <strong>Tamaño:</strong> Mini lote (10,000 unidades)</div>
+                    </div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-sm text-slate-300 space-y-1">
+                      <div>Movimiento: 1.1035 - 1.1000 = 0.0035</div>
+                      <div>En pips: 35 pips</div>
+                      <div>Valor por pip: $1</div>
+                      <div class="text-green-400 font-bold text-lg mt-2">
+                        Ganancia: 35 pips × $1 = $35
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-sm">Ejemplo 2</span>
+                  Trade perdedor en GBP/USD
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <div class="text-sm text-slate-300 space-y-2">
+                      <div>📊 <strong>Par:</strong> GBP/USD</div>
+                      <div>📥 <strong>Entrada:</strong> 1.3050</div>
+                      <div>🛑 <strong>Stop:</strong> 1.3030 (alcanzado)</div>
+                      <div>📦 <strong>Tamaño:</strong> Lote estándar (100,000 unidades)</div>
+                    </div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-sm text-slate-300 space-y-1">
+                      <div>Movimiento: 1.3030 - 1.3050 = -0.0020</div>
+                      <div>En pips: -20 pips</div>
+                      <div>Valor por pip: $10</div>
+                      <div class="text-red-400 font-bold text-lg mt-2">
+                        Pérdida: 20 pips × $10 = -$200
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-sm">Ejemplo 3</span>
+                  Trade en USD/JPY
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <div class="text-sm text-slate-300 space-y-2">
+                      <div>📊 <strong>Par:</strong> USD/JPY</div>
+                      <div>📥 <strong>Entrada:</strong> 112.00</div>
+                      <div>📤 <strong>Salida:</strong> 112.50</div>
+                      <div>📦 <strong>Tamaño:</strong> Lote estándar (100,000 unidades)</div>
+                    </div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-sm text-slate-300 space-y-1">
+                      <div>Movimiento: 112.50 - 112.00 = 0.50</div>
+                      <div>En pips: 50 pips</div>
+                      <div>Valor por pip: ~$8.93</div>
+                      <div class="text-green-400 font-bold text-lg mt-2">
+                        Ganancia: 50 pips × $8.93 = ~$446
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Nota importante:</strong> estos ejemplos usan valores simplificados. En la realidad, también debes considerar
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">spread</a>,
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">slippage</a> y
+              <a class="underline hover:text-primary" href="/aprende/el-swap-overnight/">swap overnight</a> si mantienes posiciones.
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Relación con tamaño de posición -->
+        <section class="scroll-mt-24" id="tamano-posicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Pips y tamaño de posición: la clave del riesgo
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Entender pips sin entender <strong>tamaño de posición</strong> es inútil. Lo que importa no es "cuántos pips ganas",
+              sino <strong>cuánto dinero representan esos pips</strong>.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Comparación: mismo trade, diferente tamaño</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-slate-700">
+                      <th class="text-left py-2 text-white font-bold">Tamaño</th>
+                      <th class="text-left py-2 text-white font-bold">Pips ganados</th>
+                      <th class="text-left py-2 text-white font-bold">Valor por pip</th>
+                      <th class="text-left py-2 text-white font-bold">Ganancia total</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-slate-300">
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2">Micro lote (1k)</td>
+                      <td class="py-2 font-bold">50 pips</td>
+                      <td class="py-2">{{MAIN_CONTENT}}.10</td>
+                      <td class="py-2 text-green-400">$5</td>
+                    </tr>
+                    <tr class="border-b border-slate-700">
+                      <td class="py-2">Mini lote (10k)</td>
+                      <td class="py-2 font-bold">50 pips</td>
+                      <td class="py-2">$1</td>
+                      <td class="py-2 text-green-400">$50</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2">Lote estándar (100k)</td>
+                      <td class="py-2 font-bold">50 pips</td>
+                      <td class="py-2">$10</td>
+                      <td class="py-2 text-green-400">$500</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-orange-400">warning</span>
+                Cálculo de riesgo basado en pips
+              </h3>
+              <p class="text-sm text-slate-300 mb-3">
+                Si quieres arriesgar <strong>máximo 2%</strong> de tu cuenta por trade:
+              </p>
+              <div class="space-y-3 text-sm">
+                <div class="bg-slate-900 p-3 rounded">
+                  <div class="text-slate-400 mb-1">Cuenta: $10,000</div>
+                  <div class="text-slate-400 mb-1">Riesgo máximo: 2% = $200</div>
+                  <div class="text-slate-400 mb-1">Stop-loss: 20 pips</div>
+                  <div class="text-green-400 font-bold mt-2">
+                    Tamaño máximo = $200 / 20 pips = $10 por pip = 1 lote estándar
+                  </div>
+                </div>
+
+                <div class="bg-slate-900 p-3 rounded">
+                  <div class="text-slate-400 mb-1">Cuenta: $1,000</div>
+                  <div class="text-slate-400 mb-1">Riesgo máximo: 2% = $20</div>
+                  <div class="text-slate-400 mb-1">Stop-loss: 20 pips</div>
+                  <div class="text-green-400 font-bold mt-2">
+                    Tamaño máximo = $20 / 20 pips = $1 por pip = 1 mini lote
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Error mortal:</strong> operar "por pips" sin calcular el valor monetario real.
+              Muchos traders novatos sobreoperar porque "solo arriesgo 20 pips", sin darse cuenta que 20 pips con
+              10 lotes = $2,000 de riesgo.
+            </div>
+          </div>
+        </section>
+
+        <!-- 9: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Ahora que entiendes pips, completa tu formación con:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                <p class="text-sm text-slate-400 mt-1">Diferencia Bid/Ask medida en pips.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
+                <p class="text-sm text-slate-400 mt-1">Diferencia en pips entre precio esperado y ejecutado.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Cómo funcionan los pares de divisas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/horarios-sesiones-forex/">Horarios y sesiones Forex</a>
+                <p class="text-sm text-slate-400 mt-1">Cuándo hay más movimiento en pips.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/el-swap-overnight/">Swap overnight</a>
+                <p class="text-sm text-slate-400 mt-1">Costo diario que afecta tus pips netos.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Dónde más se usan pips (CFDs, índices).</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es un pip en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Un pip es la unidad más pequeña de medida para el movimiento del precio en forex.
+                Para la mayoría de pares es 0.0001 (cuarto decimal), y para pares con JPY es 0.01 (segundo decimal).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuánto vale un pip?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Depende del par, el tamaño de la posición y tu divisa de cuenta. Por ejemplo, en EUR/USD con un lote estándar
+                (100,000 unidades), 1 pip = $10 USD. Con un mini lote (10,000), 1 pip = $1 USD.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una pipette?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Una pipette (o pip fraccionario) es 1/10 de un pip. Algunos brokers muestran un quinto decimal (o tercero en JPY)
+                para mayor precisión. Por ejemplo: 1.1050<span class="text-green-400">3</span> donde el 3 es la pipette.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Por qué el JPY solo usa 2 decimales?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Porque el yen es una divisa de menor valor nominal. Si EUR/USD cotiza a 1.10, USD/JPY cotiza a ~112.
+                Usar 2 decimales mantiene la proporción de valor de pip consistente con otros pares.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo calculo cuántos pips gané o perdí?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Resta el precio de entrada del precio de salida y cuenta los decimales relevantes.
+                Ejemplo EUR/USD: salida 1.1050 - entrada 1.1000 = 0.0050 = 50 pips.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Mi broker calcula automáticamente el valor del pip?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí, todos los brokers modernos calculan automáticamente el valor del pip según tu par, tamaño de posición
+                y divisa de cuenta. Lo verás en tiempo real en tu plataforma antes de abrir el trade.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Es mejor estrategia capturar muchos pips o pocos?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No hay respuesta universal. Scalpers capturan 5-10 pips con alta frecuencia. Swing traders capturan 100-300 pips
+                con baja frecuencia. Lo que importa es tu <strong>expectativa matemática</strong> (winrate × ganancia media - pérdida media),
+                no solo la cantidad de pips.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Los pips se usan solo en forex?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Principalmente en forex, pero también en CFDs de índices y materias primas se habla de "puntos" (equivalente a pips).
+                En acciones se usa el valor nominal. En cripto spot se usan decimales directos sin referencia a pips.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-green-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es un pip y cómo calcularlo. El siguiente paso es entender
+                <strong>costos completos</strong> (spread, slippage, swap) y cómo diseñar un plan de riesgo
+                basado en pips y valor monetario real.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#pip-pipette">
+                <span>2.</span> Pip vs Pipette
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-leer">
+                <span>3.</span> Cómo leer pips
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#valor-pip">
+                <span>4.</span> Valor del pip
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-calcular">
+                <span>5.</span> Cómo calcular
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#por-que-importan">
+                <span>6.</span> Por qué importan
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ejemplos">
+                <span>7.</span> Ejemplos prácticos
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#tamano-posicion">
+                <span>8.</span> Tamaño de posición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>9.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>10.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

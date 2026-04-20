@@ -1,0 +1,692 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Acciones para trading: qué son y cómo operarlas | Guía CDL | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-400/20 w-fit">
+            <span class="material-symbols-outlined text-violet-300 text-sm">show_chart</span>
+            <span class="text-violet-200 text-xs font-bold uppercase tracking-wider">Acciones</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Acciones para trading:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-primary">qué son y cómo operarlas</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Las acciones pueden moverse fuerte por resultados, noticias y expectativas. Aquí entiendes
+            <strong>qué es una acción, cómo se hace trading con ellas</strong>, qué riesgos existen y cómo elegir acciones "operables" sin complicarte.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/heroacciones.jpg" alt="Trading de acciones - Dashboard con cotizaciones en tiempo real de empresas tecnológicas" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105" aria-label="Ampliar imagen"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter: blur(20px);"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/heroacciones.jpg" alt="Trading de acciones - Dashboard con cotizaciones en tiempo real de empresas tecnológicas" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110" aria-label="Cerrar"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Qué son -->
+        <section class="scroll-mt-24" id="que-es">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué es una acción?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Una <strong>acción</strong> representa una parte de propiedad de una empresa. Su precio cambia por
+              <strong>oferta y demanda</strong>, resultados financieros (earnings), noticias, expectativas del mercado y condiciones macroeconómicas.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-emerald-400 mb-2">
+                  <span class="material-symbols-outlined">lightbulb</span>
+                  <span class="font-bold">La idea simple</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  Si el mercado cree que la empresa va mejor, el precio tiende a subir. Si decepciona o empeora, tiende a bajar.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-yellow-400 mb-2">
+                  <span class="material-symbols-outlined">bolt</span>
+                  <span class="font-bold">Por qué se mueven "más"</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  Una sola noticia (resultados, guía, regulación, demanda) puede cambiar la valoración rápidamente.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Por qué operarlas -->
+        <section class="scroll-mt-24" id="por-que">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            ¿Por qué hacer trading con acciones?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">trending_up</span>
+                <span><strong>Movimientos fuertes:</strong> en eventos como earnings, noticias, upgrades/downgrades analistas.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">widgets</span>
+                <span><strong>Muchas oportunidades:</strong> hay miles de acciones listadas (aunque hay que filtrar las "operables").</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">timeline</span>
+                <span><strong>Lectura de tendencia clara:</strong> especialmente en acciones líderes y large caps.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">category</span>
+                <span><strong>Especialización sectorial:</strong> puedes operar sectores que entiendas (tech, energía, salud, etc.).</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 3: Acciones vs índices -->
+        <section class="scroll-mt-24" id="vs-indices">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Acciones vs índices para trading
+          </h2>
+
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-6">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Esta comparación te ayuda a elegir mercado según tu nivel y estilo:
+            </p>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-700">
+              <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-surface-dark text-slate-200 uppercase font-bold text-xs">
+                  <tr>
+                    <th class="px-6 py-4">Acciones</th>
+                    <th class="px-6 py-4">Índices</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700 bg-background-dark">
+                  <tr>
+                    <td class="px-6 py-4">Más volatilidad por empresa (oportunidad + riesgo).</td>
+                    <td class="px-6 py-4">Más diversificación (menos impacto de una sola empresa).</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Más ruido por noticias, gaps y eventos corporativos.</td>
+                    <td class="px-6 py-4">Movimientos más macro y generalmente más "limpios".</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Necesitas filtrar y elegir "las buenas" acciones.</td>
+                    <td class="px-6 py-4">Operas un mercado completo con menos selección previa.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Ideal si quieres especialización sectorial.</td>
+                    <td class="px-6 py-4">Ideal para aprender estructura de mercado.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Comparación completa:</strong>
+              <a class="underline hover:text-primary" href="/aprende/indices-para-trading/">Índices para trading</a> ·
+              <a class="underline hover:text-primary" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Cómo se operan -->
+        <section class="scroll-mt-24" id="como-operarlas">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Cómo se operan las acciones?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Puedes hacer trading de acciones de dos maneras comunes (según tu broker y país):
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-blue-400 mb-3">
+                  <span class="material-symbols-outlined">shopping_bag</span>
+                  <span class="font-bold text-lg">Acción real (spot)</span>
+                </div>
+                <ul class="text-sm text-slate-300 space-y-2">
+                  <li>✅ Compras/vendes el activo real (según plataforma).</li>
+                  <li>✅ Enfoque más de inversión o swing trading.</li>
+                  <li>✅ Normalmente pagas comisiones (depende del broker).</li>
+                  <li>⚠️ No apalancamiento (más conservador).</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-purple-400 mb-3">
+                  <span class="material-symbols-outlined">candlestick_chart</span>
+                  <span class="font-bold text-lg">CFDs sobre acciones</span>
+                </div>
+                <ul class="text-sm text-slate-300 space-y-2">
+                  <li>✅ Operas el movimiento sin comprar la acción "real".</li>
+                  <li>✅ Permite operar al alza y a la baja.</li>
+                  <li>⚠️ Importante entender spread y overnight.</li>
+                  <li>⚠️ Apalancamiento amplifica riesgo.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-emerald-900/20 rounded border border-emerald-400/20 text-slate-200 text-sm">
+              <strong>Lectura recomendada:</strong>
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> ·
+              <a class="underline hover:text-primary" href="/aprende/el-swap-overnight/">El swap overnight</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Cómo elegir -->
+        <section class="scroll-mt-24" id="como-elegir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Cómo elegir acciones "operables" (filtro simple)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No necesitas 40 indicadores. Necesitas <strong>operabilidad</strong>: liquidez, movimiento controlable y contexto.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">water_drop</span>
+                  1) Liquidez
+                </h3>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• Prefiere acciones con buen volumen diario.</li>
+                  <li>• Más liquidez = spreads más razonables.</li>
+                  <li>• Evita microcaps si estás empezando.</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400">speed</span>
+                  2) Volatilidad controlable
+                </h3>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• Que se mueva, pero no sea "locura" para tu stop.</li>
+                  <li>• Verifica ATR o rango promedio.</li>
+                  <li>• Ajusta tamaño de posición al riesgo.</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-400">event</span>
+                  3) Catalizador / contexto
+                </h3>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• Earnings, noticia, sector fuerte, mercado en tendencia.</li>
+                  <li>• Sin contexto, el precio suele ser más errático.</li>
+                  <li>• Identifica "por qué" puede moverse.</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">insights</span>
+                  4) Técnica simple
+                </h3>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• Tendencia, niveles, estructura clara.</li>
+                  <li>• Si no lo ves claro, no fuerces trades.</li>
+                  <li>• Prioriza calidad sobre cantidad.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Costes -->
+        <section class="scroll-mt-24" id="costes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Costes típicos al hacer trading con acciones
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Comisiones</h3>
+                <p class="text-sm text-slate-300">
+                  En acciones reales suele haber comisión por operación (depende del broker y mercado).
+                  Puede ser fija o porcentaje.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Spread</h3>
+                <p class="text-sm text-slate-300">
+                  En CFDs, el spread es clave. Diferencia entre precio compra/venta.
+                  <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Overnight / swap</h3>
+                <p class="text-sm text-slate-300">
+                  Si mantienes posiciones abiertas de un día a otro, puede haber costo diario (especialmente en CFDs).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Slippage</h3>
+                <p class="text-sm text-slate-300">
+                  En noticias fuertes o baja liquidez, tu ejecución puede variar. Gestión de riesgo es crítica.
+                  <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Earnings -->
+        <section class="scroll-mt-24" id="earnings">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Trading en Earnings (resultados trimestrales)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Los <strong>earnings</strong> son los resultados financieros trimestrales que publican las empresas.
+              Suelen generar <strong>volatilidad extrema</strong> porque el mercado compara resultados reales vs expectativas.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Oportunidades</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Movimientos grandes en poco tiempo.
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Claridad temporal (evento definido).
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Potencial para swing post-earnings.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Riesgos</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    Spreads muy anchos en el anuncio.
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    Gaps que saltan stops.
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    Reacción contraria a lo esperado.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Regla CDL:</strong> si eres principiante, <em>evita operar justo en el momento del anuncio</em>.
+              Mejor espera 15-30 min post-earnings para ver dirección y liquidez.
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Para quién -->
+        <section class="scroll-mt-24" id="para-quien">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            ¿Para quién es el trading con acciones?
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Recomendado si…</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Te interesa análisis de empresas y sectores.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Quieres especialización (tech, energía, salud).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Toleras volatilidad por empresa.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Haces swing trading con catalizadores.
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">No es la mejor opción si…</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  No tienes control de riesgo (stops, tamaño).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  Buscas movimientos "limpios" sin ruido.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  No entiendes costes (spread/comisiones).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  Prefieres diversificación automática (índices).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Para construir conocimiento sólido, explora estos temas complementarios:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">S&P 500, Nasdaq, DAX: horarios y estrategias.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Qué operar, sesiones y errores típicos.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cripto-para-principiantes/">Cripto para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Rutina 24/7, volatilidad y reglas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Comparativa completa: Forex, índices, acciones, cripto.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">Qué es el spread</a>
+                <p class="text-sm text-slate-400 mt-1">Coste real en tu operativa.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+                <p class="text-sm text-slate-400 mt-1">Deslizamiento de precio en volatilidad.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una acción?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Una acción representa una parte de una empresa. Su precio se mueve por expectativas, resultados financieros (earnings),
+                noticias y el mercado en general.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Acciones o índices para empezar?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Índices suelen ser más "estables" por diversificación. Acciones pueden dar movimientos más grandes,
+                pero con más riesgo y ruido por empresa individual.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué debo mirar para elegir acciones para trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Liquidez (volumen diario), volatilidad controlable, contexto/catalizador (earnings, noticias) y estructura técnica simple
+                (tendencia, niveles claros).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué costos existen al hacer trading con acciones?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Depende del instrumento y broker: comisiones (en spot), spread (en CFDs), swaps/financiación overnight si mantienes posiciones.
+                También puede haber slippage en baja liquidez.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Es peligroso operar en earnings?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí, si no tienes experiencia. Los spreads se amplían mucho, hay gaps que saltan stops y reacciones impredecibles.
+                Mejor esperar 15-30 min post-anuncio si eres principiante.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Puedo hacer day trading con acciones?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí, pero necesitas liquidez alta (large caps) y entender horarios de apertura/cierre.
+                En USA, ten en cuenta la regla PDT (Pattern Day Trader) si operas con cuenta menor a $25k.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, rutina y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-violet-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué son las acciones, cómo se operan y cómo elegirlas. El siguiente paso es dominar
+                <strong>riesgo, tamaño de posición y ejecución</strong>.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-es">
+                <span>1.</span> Qué es una acción
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#por-que">
+                <span>2.</span> Por qué operarlas
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#vs-indices">
+                <span>3.</span> Acciones vs índices
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-operarlas">
+                <span>4.</span> Cómo operarlas
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-elegir">
+                <span>5.</span> Cómo elegir
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#costes">
+                <span>6.</span> Costes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#earnings">
+                <span>7.</span> Earnings
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#para-quien">
+                <span>8.</span> Para quién
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>9.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>10.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

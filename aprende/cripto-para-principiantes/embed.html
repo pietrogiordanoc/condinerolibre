@@ -1,0 +1,667 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Cripto para principiantes: qué es y cómo se opera | Guía CDL | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-400/20 w-fit">
+            <span class="material-symbols-outlined text-orange-300 text-sm">currency_bitcoin</span>
+            <span class="text-orange-200 text-xs font-bold uppercase tracking-wider">Criptomonedas</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Cripto para principiantes:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-primary">qué es y cómo se opera</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Cripto es un mercado rápido, <strong>24 horas los 7 días</strong> y con alta volatilidad. Aquí entiendes
+            qué es, cómo se opera (spot vs futuros vs CFDs), qué riesgos existen y cómo empezar con orden, sin humo.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/herocripto.jpg" alt="Criptomonedas - Trading 24/7 con Bitcoin, Ethereum - Dashboard de mercado cripto" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105" aria-label="Ampliar"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/herocripto.jpg" alt="Criptomonedas - Trading 24/7 con Bitcoin, Ethereum - Dashboard de mercado cripto" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Qué es -->
+        <section class="scroll-mt-24" id="que-es">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué es una criptomoneda?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Una <strong>criptomoneda</strong> (o cripto) es un activo digital que se registra en una
+              <strong>blockchain</strong> (base de datos distribuida). En trading, lo importante es entender que su precio
+              se mueve por <strong>oferta y demanda</strong>, liquidez, noticias, sentimiento del mercado y especulación.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-orange-400 mb-2">
+                  <span class="material-symbols-outlined">lightbulb</span>
+                  <span class="font-bold">La idea simple</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  Cripto funciona como un mercado global descentralizado: compradores y vendedores determinan el precio en tiempo real, 24/7.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-yellow-400 mb-2">
+                  <span class="material-symbols-outlined">priority_high</span>
+                  <span class="font-bold">Lo que debes priorizar</span>
+                </div>
+                <p class="text-sm text-slate-300">
+                  <strong>Volatilidad + gestión de riesgo + costos</strong> (spread/financiación) antes que "la mejor coin".
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: 24/7 -->
+        <section class="scroll-mt-24" id="operacion-24-7">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Cripto opera 24/7: ¿qué significa para el trader?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              A diferencia de acciones o índices, el mercado cripto <strong>nunca cierra</strong>.
+              Opera las 24 horas del día, los 7 días de la semana, incluyendo fines de semana y festivos.
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">schedule</span>
+                <span><strong>Siempre abierto:</strong> hay movimiento cualquier día, cualquier hora (incluso domingos).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">add_circle</span>
+                <span><strong>Más oportunidades:</strong> puedes operar cuando mejor te convenga según tu horario.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-yellow-500 mt-1 text-sm">warning</span>
+                <span><strong>Más tentación:</strong> el riesgo de sobre-operar aumenta si no tienes disciplina.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">notification_important</span>
+                <span><strong>Riesgo de eventos:</strong> noticias y liquidaciones pueden mover el precio muy rápido fuera de "horario normal".</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Regla CDL:</strong> aunque el mercado no cierre, <em>tú necesitas horarios fijos y reglas</em>.
+              La disciplina es crítica en mercados 24/7.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Cómo se opera -->
+        <section class="scroll-mt-24" id="como-operarlas">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            ¿Cómo se hace trading con cripto?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Hay tres formas comunes de operar cripto (la elección cambia tu riesgo y costos):
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-emerald-400 mb-3">
+                  <span class="material-symbols-outlined">shopping_bag</span>
+                  <span class="font-bold text-lg">Spot</span>
+                </div>
+                <p class="text-sm text-slate-300 mb-3">Compra/venta directa del activo (BTC, ETH, etc.).</p>
+                <ul class="text-xs text-slate-300 space-y-1">
+                  <li>✅ Sin apalancamiento por defecto</li>
+                  <li>✅ Más simple para principiantes</li>
+                  <li>✅ Útil para swing o inversión</li>
+                  <li>⚠️ Solo puedes "comprar y subir"</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-blue-400 mb-3">
+                  <span class="material-symbols-outlined">candlestick_chart</span>
+                  <span class="font-bold text-lg">Futuros</span>
+                </div>
+                <p class="text-sm text-slate-300 mb-3">Derivados con apalancamiento variable.</p>
+                <ul class="text-xs text-slate-300 space-y-1">
+                  <li>✅ Puedes operar al alza y a la baja</li>
+                  <li>✅ Ideal para day trading</li>
+                  <li>⚠️ Apalancamiento amplifica riesgo</li>
+                  <li>⚠️ Liquidaciones automáticas</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-purple-400 mb-3">
+                  <span class="material-symbols-outlined">swap_horiz</span>
+                  <span class="font-bold text-lg">CFDs</span>
+                </div>
+                <p class="text-sm text-slate-300 mb-3">Según broker tradicional.</p>
+                <ul class="text-xs text-slate-300 space-y-1">
+                  <li>✅ Movimiento sin comprar cripto "real"</li>
+                  <li>✅ Familiar para traders de forex/índices</li>
+                  <li>⚠️ Spread y overnight críticos</li>
+                  <li>⚠️ Menor liquidez que exchanges nativos</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Regla práctica:</strong> Si estás empezando, usa spot o muy poco apalancamiento (2x-3x máximo).
+              Primero aprende estructura, riesgo y costos antes de subir leverage.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Qué operar -->
+        <section class="scroll-mt-24" id="que-operar">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Qué criptomonedas se suelen operar?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              En trading, normalmente se prioriza <strong>liquidez</strong> y <strong>spreads razonables</strong>.
+              Por eso muchos empiezan con:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">currency_bitcoin</span>
+                  BTC (Bitcoin)
+                </h3>
+                <p class="text-sm text-slate-300">
+                  El más líquido y el "termómetro" del mercado cripto. Movimientos más estables que altcoins.
+                  Ideal para empezar.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">toll</span>
+                  ETH (Ethereum)
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Alta liquidez y movimientos claros. Segunda cripto más operada. Buena opción después de dominar BTC.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">stars</span>
+                  Altcoins
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Más riesgo: pueden moverse mucho más, pero también tienen spreads anchos y liquidaciones agresivas.
+                  No recomendado para principiantes.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-400">check_circle</span>
+                  Consejo de orden
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Primero domina BTC/ETH en spot. Luego, si quieres, amplías a altcoins o derivados con criterio y capital controlado.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Volatilidad y liquidaciones -->
+        <section class="scroll-mt-24" id="volatilidad">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Volatilidad y liquidaciones en cripto
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Cripto puede moverse <strong>5-10% en horas</strong> (o más en altcoins). Esto crea oportunidades,
+              pero también riesgo extremo si usas apalancamiento sin control.
+            </p>
+
+            <h3 class="text-xl font-bold text-white mb-4">¿Qué es una liquidación?</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Cuando operas con apalancamiento (futuros), si el precio va en tu contra y tu margen se agota,
+              el exchange <strong>cierra automáticamente tu posición</strong> (liquidación). Pierdes todo el capital de esa operación.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Cómo evitar liquidaciones</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Usa apalancamiento bajo (2x-5x máximo si empiezas).
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Siempre define stop loss antes de entrar.
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+                    Tamaño de posición micro (1-2% de cuenta).
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Errores comunes</h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    Usar 10x-20x+ sin experiencia.
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    No poner stop loss (confiar en "monitorear").
+                  </li>
+                  <li class="flex items-center gap-3 text-slate-300">
+                    <span class="material-symbols-outlined text-red-500 text-sm">cancel</span>
+                    Arriesgar más del 5% de cuenta por trade.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Advertencia CDL:</strong> las liquidaciones en cripto son brutales. El precio puede moverse 10% en minutos
+              por noticias o cascadas de liquidaciones. <em>No uses apalancamiento alto hasta dominar gestión de riesgo</em>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Errores comunes -->
+        <section class="scroll-mt-24" id="errores">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Errores comunes del principiante en cripto
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>Sobre-operar por el 24/7:</strong> el mercado no duerme, pero tú sí debes hacerlo. Define horarios fijos.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>Usar apalancamiento alto sin experiencia:</strong> 10x+ es suicidio para principiantes. Empieza con spot o 2x-3x.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>Operar "la coin del momento":</strong> sin liquidez real, los spreads te comen vivo.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>No considerar costos:</strong> spread, comisiones y financiación overnight (funding rate) se acumulan.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>No tener plan:</strong> entrada, stop, objetivo y tamaño de posición definidos ANTES de abrir.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">cancel</span>
+                <span><strong>FOMO (Fear Of Missing Out):</strong> entrar porque "está subiendo" sin análisis ni plan.</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Lectura complementaria:</strong>
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> ·
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Para quién -->
+        <section class="scroll-mt-24" id="para-quien">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            ¿Para quién es el trading con cripto?
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Recomendado si…</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Toleras alta volatilidad y movimientos rápidos.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Quieres horarios flexibles (24/7).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Tienes disciplina férrea (mercado sin cierre).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  Entiendes gestión de riesgo y stops.
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">No es la mejor opción si…</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  No tienes control de riesgo (stops, tamaño).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  Buscas "quick money" con apalancamiento.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  No entiendes costes (spread/funding).
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  Prefieres mercados más "estables" (índices/forex).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Para construir conocimiento sólido, explora estos temas complementarios:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Comparativa completa: Forex, índices, acciones, cripto.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Qué operar, sesiones y errores típicos.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">S&P 500, Nasdaq, DAX: horarios y estrategias.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Earnings, gaps y selección de empresas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">Qué es el spread</a>
+                <p class="text-sm text-slate-400 mt-1">Coste real en tu operativa.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+                <p class="text-sm text-slate-400 mt-1">Deslizamiento de precio en volatilidad.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una criptomoneda?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es un activo digital registrado en blockchain. Su precio se mueve por oferta y demanda, noticias y sentimiento del mercado.
+                Puede ser altamente volátil.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cripto se opera 24/7?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí. El mercado cripto opera 24 horas al día, 7 días a la semana, incluyendo fines de semana.
+                Eso da oportunidades, pero también exige disciplina para no sobre-operar.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es mejor para empezar: spot o derivados?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Spot suele ser más simple porque no usa apalancamiento. Derivados (futuros/CFDs) amplifican ganancias y pérdidas,
+                y requieren más gestión de riesgo. Empieza con spot.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una liquidación en futuros?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Cuando usas apalancamiento y el precio va en tu contra agotando tu margen, el exchange cierra automáticamente tu posición.
+                Pierdes todo el capital de esa operación. Se evita con stops y apalancamiento bajo.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Bitcoin o Ethereum para empezar?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Bitcoin (BTC) es el más líquido y "estable" (relativamente). Ethereum (ETH) también es buena opción.
+                Evita altcoins hasta dominar BTC/ETH.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuánto apalancamiento usar en cripto?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Si eres principiante, 0x (spot) o máximo 2x-3x. Apalancamiento 10x+ es extremadamente peligroso en cripto
+                por la volatilidad. Muchos principiantes se liquidan en minutos con leverage alto.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, rutina y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-orange-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es cripto, cómo se opera y qué riesgos tiene. El siguiente paso es dominar
+                <strong>riesgo, tamaño de posición y ejecución</strong> en demo antes de arriesgar capital real.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-es">
+                <span>1.</span> Qué es cripto
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#operacion-24-7">
+                <span>2.</span> Operación 24/7
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-operarlas">
+                <span>3.</span> Cómo operarlas
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-operar">
+                <span>4.</span> Qué operar
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#volatilidad">
+                <span>5.</span> Volatilidad/Liquidaciones
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores">
+                <span>6.</span> Errores comunes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#para-quien">
+                <span>7.</span> Para quién
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>8.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>9.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

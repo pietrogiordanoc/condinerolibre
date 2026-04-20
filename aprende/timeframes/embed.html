@@ -1,0 +1,1089 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Timeframes en trading: qué son, tipos (M1, H1, D1) y análisis multi-temporal | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 w-fit">
+            <span class="material-symbols-outlined text-purple-300 text-sm">schedule</span>
+            <span class="text-purple-200 text-xs font-bold uppercase tracking-wider">Análisis Temporal</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Timeframes en trading
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-primary">Períodos de tiempo en gráficos</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Un <strong>timeframe</strong> es el período de tiempo que representa cada vela en tu gráfico.
+            Elegir el timeframe correcto determina tu estilo de trading, frecuencia de operaciones y nivel de estrés. Comprender análisis multi-temporal es esencial para operar con contexto.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/timehero.jpg" alt="Timeframes en trading - Períodos de tiempo en gráficos de velas" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/timehero.jpg" alt="Timeframes en trading - Períodos de tiempo en gráficos de velas" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué es un timeframe?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Un <strong>timeframe</strong> (marco temporal o temporalidad) es el <strong>período de tiempo que representa cada vela o barra</strong> en tu gráfico de trading.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-400">info</span>
+                Concepto fundamental
+              </h3>
+              <ul class="space-y-3 text-slate-300 text-sm">
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">→</span>
+                  <span>En un gráfico <strong>M1</strong> (1 minuto), cada vela = 1 minuto de acción de precio.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">→</span>
+                  <span>En un gráfico <strong>H1</strong> (1 hora), cada vela = 1 hora de acción de precio.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-purple-400 mt-1">→</span>
+                  <span>En un gráfico <strong>D1</strong> (diario), cada vela = 1 día completo de trading.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3">¿Por qué importa?</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Define tu <strong>estilo de trading</strong> (scalping, day trading, swing).</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Determina <strong>cuánto tiempo</strong> dedicas al monitor.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Influye en la <strong>calidad de señales</strong> (ruido vs tendencia).</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3">Perspectiva cambia</h3>
+                <p class="text-sm text-slate-300">
+                  El mismo movimiento de precio se ve diferente en cada timeframe.
+                  Una "tendencia alcista" en H1 puede ser solo una <strong>corrección</strong> dentro de una tendencia bajista en D1.
+                  Por eso el análisis multi-temporal es crucial.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Tipos principales -->
+        <section class="scroll-mt-24" id="tipos-timeframes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Tipos de timeframes principales
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Existen múltiples timeframes, pero estos son los <strong>más utilizados</strong> en forex y CFDs:
+            </p>
+
+            <div class="space-y-4">
+              <!-- Timeframes ultra-cortos -->
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">bolt</span>
+                  Timeframes ultra-cortos (Scalping)
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-red-400 font-bold text-lg">M1</div>
+                    <div class="text-slate-400 text-xs">1 minuto</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-red-400 font-bold text-lg">M5</div>
+                    <div class="text-slate-400 text-xs">5 minutos</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-red-400 font-bold text-lg">M15</div>
+                    <div class="text-slate-400 text-xs">15 minutos</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-red-400 font-bold text-lg">M30</div>
+                    <div class="text-slate-400 text-xs">30 minutos</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  <strong>Uso:</strong> Scalpers que buscan capturas de 5-15 pips en minutos. <strong>Alta frecuencia, alto estrés, mucho ruido.</strong> Requiere dedicación full-time.
+                </p>
+              </div>
+
+              <!-- Timeframes cortos -->
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">trending_up</span>
+                  Timeframes cortos (Day Trading)
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-orange-400 font-bold text-lg">H1</div>
+                    <div class="text-slate-400 text-xs">1 hora</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-orange-400 font-bold text-lg">H2</div>
+                    <div class="text-slate-400 text-xs">2 horas</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-orange-400 font-bold text-lg">H4</div>
+                    <div class="text-slate-400 text-xs">4 horas</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  <strong>Uso:</strong> Day traders que cierran posiciones el mismo día. <strong>Balance entre señales y ruido.</strong> Típicamente 1-5 operaciones/día.
+                </p>
+              </div>
+
+              <!-- Timeframes medios -->
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">show_chart</span>
+                  Timeframes medios (Swing Trading)
+                </h3>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-blue-400 font-bold text-lg">D1</div>
+                    <div class="text-slate-400 text-xs">Diario (1 día)</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-blue-400 font-bold text-lg">W1</div>
+                    <div class="text-slate-400 text-xs">Semanal</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  <strong>Uso:</strong> Swing traders que mantienen posiciones días o semanas. <strong>Menos ruido, señales más claras.</strong> Requiere paciencia. Ideal para traders con trabajo full-time.
+                </p>
+              </div>
+
+              <!-- Timeframes largos -->
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">calendar_month</span>
+                  Timeframes largos (Position Trading)
+                </h3>
+                <div class="grid grid-cols-1 gap-3 text-sm">
+                  <div class="bg-slate-900 p-3 rounded text-center">
+                    <div class="text-green-400 font-bold text-lg">MN</div>
+                    <div class="text-slate-400 text-xs">Mensual (1 mes)</div>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3">
+                  <strong>Uso:</strong> Position traders o inversores a largo plazo. Mantienen posiciones meses o años. <strong>Fundamentos > técnico.</strong> Muy bajo estrés, alta paciencia requerida.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-500/20 text-slate-200 text-sm">
+              <strong>Regla práctica:</strong> cuanto menor el timeframe, más <strong>ruido</strong> (movimientos falsos) y más tiempo dedicado.
+              Cuanto mayor el timeframe, más <strong>señales confiables</strong> pero menos oportunidades.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Análisis multi-timeframe -->
+        <section class="scroll-mt-24" id="analisis-multi-timeframe">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Análisis multi-timeframe (Top-Down Analysis)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El <strong>análisis multi-timeframe</strong> consiste en revisar el mismo par en <strong>3 timeframes diferentes</strong> para obtener contexto completo antes de ejecutar:
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">layers</span>
+                Metodología: Regla del 4
+              </h3>
+              <div class="space-y-4 text-slate-300 text-sm">
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-bold mb-2">1. Timeframe Largo (Contexto)</div>
+                  <p>
+                    Define la <strong>tendencia principal</strong>. Si operas H1, tu timeframe largo es H4 o D1.
+                    Debe ser <strong>al menos 4x mayor</strong> que tu timeframe de ejecución.
+                  </p>
+                </div>
+
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-bold mb-2">2. Timeframe Medio (Ejecución)</div>
+                  <p>
+                    Es tu timeframe <strong>de trabajo principal</strong>. Aquí identificas setups y planeas entradas.
+                    Define cuánto tiempo mantienes posiciones en promedio.
+                  </p>
+                </div>
+
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-bold mb-2">3. Timeframe Corto (Timing)</div>
+                  <p>
+                    Refinado de entrada. Debe ser <strong>al menos 4x menor</strong> que el medio.
+                    Permite buscar el punto exacto de entrada con mejor risk/reward.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Ejemplo práctico: Day Trader</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-slate-700">
+                      <th class="text-left py-3 text-white font-bold">Función</th>
+                      <th class="text-left py-3 text-white font-bold">Timeframe</th>
+                      <th class="text-left py-3 text-white font-bold">Propósito</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-slate-300">
+                    <tr class="border-b border-slate-700">
+                      <td class="py-3 font-semibold text-blue-400">Largo</td>
+                      <td class="py-3 font-mono">H4 o D1</td>
+                      <td class="py-3">Identificar tendencia principal (alcista/bajista/lateral)</td>
+                    </tr>
+                    <tr class="border-b border-slate-700">
+                      <td class="py-3 font-semibold text-purple-400">Medio</td>
+                      <td class="py-3 font-mono">H1</td>
+                      <td class="py-3">Buscar setup (ruptura, rebote, patrón)</td>
+                    </tr>
+                    <tr>
+                      <td class="py-3 font-semibold text-green-400">Corto</td>
+                      <td class="py-3 font-mono">M15</td>
+                      <td class="py-3">Ejecutar en punto exacto (trigger de entrada)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">check_circle</span>
+                  Ventajas
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Evitas operar contra la tendencia principal.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Identificas soportes/resistencias clave más fácilmente.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Mejoras entrada/salida, reduces stops innecesarios.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Aumenta la probabilidad de éxito significativamente.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">psychology</span>
+                  Mentalidad correcta
+                </h3>
+                <p class="text-sm text-slate-300 mb-3">
+                  <strong>La tendencia es tu amiga</strong> (en el timeframe largo).
+                </p>
+                <p class="text-sm text-slate-300">
+                  Puedes operar contra la tendencia principal, pero:
+                  • Menor probabilidad de éxito<br/>
+                  • Target más conservador<br/>
+                  • Stop más ajustado<br/>
+                  La mayoría de traders rentables operan <strong>a favor</strong> del timeframe superior.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Qué timeframe usar -->
+        <section class="scroll-mt-24" id="que-timeframe-usar">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Qué timeframe debo usar?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No hay un timeframe "mejor". Depende de tu <strong>estilo de vida</strong>, <strong>personalidad</strong> y <strong>disponibilidad</strong>:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-red-500/20 px-3 py-1 rounded text-sm">Scalping</span>
+                  M1 - M15
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                  <div>
+                    <div class="text-white font-semibold mb-2">✓ Ideal para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Traders full-time</li>
+                      <li>• Alta tolerancia al estrés</li>
+                      <li>• Decisiones rápidas</li>
+                      <li>• Enfoque extremo</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="text-white font-semibold mb-2">✗ No apto para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Traders con trabajo</li>
+                      <li>• Personas impacientes</li>
+                      <li>• Capital pequeño (&lt;$1,000)</li>
+                      <li>• Principiantes absolutos</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3 p-3 bg-slate-900 rounded">
+                  <strong>Tiempo dedicado:</strong> 4-8 horas/día monitoreando pantallas.
+                  <strong>Frecuencia:</strong> 10-50 operaciones/día.
+                  <strong>Costos:</strong> spread/comisión impacta mucho.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-orange-500/20 px-3 py-1 rounded text-sm">Day Trading</span>
+                  M30 - H4
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                  <div>
+                    <div class="text-white font-semibold mb-2">✓ Ideal para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Traders part-time o full-time</li>
+                      <li>• Balance trabajo/vida</li>
+                      <li>• Tolerancia media al estrés</li>
+                      <li>• Capital $1,000+</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="text-white font-semibold mb-2">✗ No apto para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• No puedes revisar gráficos durante día</li>
+                      <li>• Buscas "trading pasivo"</li>
+                      <li>• Muy impaciente</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3 p-3 bg-slate-900 rounded">
+                  <strong>Tiempo dedicado:</strong> 2-4 horas/día.
+                  <strong>Frecuencia:</strong> 1-5 operaciones/día.
+                  <strong>Recomendado:</strong> el más balanceado para mayoría.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-blue-500/20 px-3 py-1 rounded text-sm">Swing Trading</span>
+                  H4 - D1
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                  <div>
+                    <div class="text-white font-semibold mb-2">✓ Ideal para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Traders con trabajo full-time</li>
+                      <li>• Personas pacientes</li>
+                      <li>• Bajo estrés diario</li>
+                      <li>• Capital $5,000+</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="text-white font-semibold mb-2">✗ No apto para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Muy impaciente</li>
+                      <li>• Necesitas acción constante</li>
+                      <li>• No toleras drawdowns varios días</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3 p-3 bg-slate-900 rounded">
+                  <strong>Tiempo dedicado:</strong> 30 min - 1 hora/día.
+                  <strong>Frecuencia:</strong> 2-10 operaciones/semana.
+                  <strong>Costos swap:</strong> importantes (posiciones varios días).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="bg-green-500/20 px-3 py-1 rounded text-sm">Position Trading</span>
+                  D1 - W1 - MN
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                  <div>
+                    <div class="text-white font-semibold mb-2">✓ Ideal para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Inversores a largo plazo</li>
+                      <li>• Muy pacientes</li>
+                      <li>• Enfoque fundamental+técnico</li>
+                      <li>• Capital $10,000+</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="text-white font-semibold mb-2">✗ No apto para:</div>
+                    <ul class="space-y-1 ml-4">
+                      <li>• Necesitas ingresos mensuales</li>
+                      <li>• Capital pequeño</li>
+                      <li>• No entiendes macroeconomía</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="text-slate-300 text-sm mt-3 p-3 bg-slate-900 rounded">
+                  <strong>Tiempo dedicado:</strong> 1-2 horas/semana.
+                  <strong>Frecuencia:</strong> 1-5 operaciones/mes.
+                  <strong>Enfoque:</strong> análisis fundamental predomina.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> la mayoría de traders rentables están en <strong>day trading (H1)</strong> o <strong>swing trading (H4-D1)</strong>.
+              Estos timeframes ofrecen el mejor balance entre oportunidades, estrés y señales confiables.
+              Scalping es extremadamente difícil y position trading requiere capital significativo.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Ventajas y desventajas -->
+        <section class="scroll-mt-24" id="ventajas-desventajas">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Ventajas y desventajas por timeframe
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Cada timeframe tiene trade-offs específicos:
+            </p>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-slate-700">
+                    <th class="text-left py-3 text-white font-bold">Timeframe</th>
+                    <th class="text-left py-3 text-white font-bold">Ventajas</th>
+                    <th class="text-left py-3 text-white font-bold">Desventajas</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-300">
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">Cortos<br/>(M1-M15)</td>
+                    <td class="py-3">
+                      • Muchas oportunidades<br/>
+                      • Riesgo limitado por trade<br/>
+                      • Rápida exposición
+                    </td>
+                    <td class="py-3 text-red-300">
+                      • Mucho ruido/falsos<br/>
+                      • Alto estrés<br/>
+                      • Costos acumulados<br/>
+                      • Requiere dedicación full
+                    </td>
+                  </tr>
+                  <tr class="border-b border-slate-700">
+                    <td class="py-3 font-semibold">Medios<br/>(H1-H4)</td>
+                    <td class="py-3">
+                      • Balance señal/ruido<br/>
+                      • Flexibilidad horaria<br/>
+                      • Más oportunidades que swing<br/>
+                      • Mejor para backtesting
+                    </td>
+                    <td class="py-3 text-orange-300">
+                      • Requiere disponibilidad diaria<br/>
+                      • Decisiones bajo presión<br/>
+                      • Afectado por noticias intradía
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold">Largos<br/>(D1-W1-MN)</td>
+                    <td class="py-3">
+                      • Señales muy confiables<br/>
+                      • Bajo estrés<br/>
+                      • Poco tiempo requerido<br/>
+                      • Tendencias claras
+                    </td>
+                    <td class="py-3 text-blue-300">
+                      • Pocas oportunidades<br/>
+                      • Requiere capital grande<br/>
+                      • Drawdowns prolongados<br/>
+                      • Costos swap acumulados
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-500/20 text-slate-200 text-sm">
+              <strong>Ley universal:</strong> no hay almuerzo gratis. Más oportunidades = más ruido. Más confiabilidad = menos oportunidades.
+              El timeframe "perfecto" no existe, solo el que mejor se adapta a <strong>tu vida y personalidad</strong>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Errores comunes -->
+        <section class="scroll-mt-24" id="errores-comunes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Errores comunes con timeframes
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Los traders cometen errores críticos relacionados con timeframes:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  1. Operar timeframes incompatibles con su vida
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Ejemplo: trader con trabajo full-time intenta hacer scalping en M5. Resultado: trades perdidos, estrés extremo, pérdidas.
+                  <strong>Solución:</strong> elige timeframes que puedas monitorear consistentemente.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  2. No hacer análisis multi-timeframe
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Ver solo H1 sin revisar D1. Resultado: entras largo en H1 sin saber que D1 está en tendencia bajista.
+                  <strong>Solución:</strong> siempre revisa al menos un timeframe superior para contexto.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  3. Cambiar constantemente de timeframe
+                </h3>
+                <p class="text-sm text-slate-300">
+                  "Voy a probar M5... no funciona, cambio a H1... tampoco, ahora D1...". Resultado: nunca desarrollas expertise en ninguno.
+                  <strong>Solución:</strong> elige uno, domínalo por 6+ meses antes de cambiar.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  4. Timeframe-hopping para justificar trades
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Ver setup alcista en H1, pero D1 es bajista. Bajas a M15 buscando confirmación que justifique tu sesgo.
+                  Resultado: cherry-picking = pérdidas. <strong>Solución:</strong> respeta la jerarquía de timeframes.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  5. Usar stops de timeframe equivocado
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Operas H1 pero pones stop basado en volatilidad de M5. Resultado: te sacan por ruido normal.
+                  <strong>Solución:</strong> stop y target deben ser consistentes con tu timeframe de ejecución.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-green-900/20 rounded border border-green-500/20 text-slate-200 text-sm">
+              <strong>Enfoque correcto:</strong> (1) elige timeframe compatible con tu vida, (2) domínalo por meses, (3) úsalo consistentemente con análisis multi-temporal, (4) respeta la jerarquía.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Combinaciones recomendadas -->
+        <section class="scroll-mt-24" id="combinaciones">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Combinaciones de timeframes recomendadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Aquí están las <strong>combinaciones probadas</strong> para análisis multi-timeframe según tu estilo:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3">Scalper</h3>
+                <div class="grid grid-cols-3 gap-3 text-sm text-center">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-blue-400 font-bold">Largo</div>
+                    <div class="text-white text-lg font-mono">H1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-purple-400 font-bold">Medio</div>
+                    <div class="text-white text-lg font-mono">M15</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-green-400 font-bold">Corto</div>
+                    <div class="text-white text-lg font-mono">M5</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3">Day Trader (Recomendado)</h3>
+                <div class="grid grid-cols-3 gap-3 text-sm text-center">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-blue-400 font-bold">Largo</div>
+                    <div class="text-white text-lg font-mono">H4 / D1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-purple-400 font-bold">Medio</div>
+                    <div class="text-white text-lg font-mono">H1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-green-400 font-bold">Corto</div>
+                    <div class="text-white text-lg font-mono">M15</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3">Swing Trader</h3>
+                <div class="grid grid-cols-3 gap-3 text-sm text-center">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-blue-400 font-bold">Largo</div>
+                    <div class="text-white text-lg font-mono">W1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-purple-400 font-bold">Medio</div>
+                    <div class="text-white text-lg font-mono">D1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-green-400 font-bold">Corto</div>
+                    <div class="text-white text-lg font-mono">H4</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3">Position Trader</h3>
+                <div class="grid grid-cols-3 gap-3 text-sm text-center">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-blue-400 font-bold">Largo</div>
+                    <div class="text-white text-lg font-mono">MN</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-purple-400 font-bold">Medio</div>
+                    <div class="text-white text-lg font-mono">W1</div>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-green-400 font-bold">Corto</div>
+                    <div class="text-white text-lg font-mono">D1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Regla de oro:</strong> mantén la proporción 4:1 entre timeframes (largo 4x mayor que medio, medio 4x mayor que corto).
+              Esto da suficiente zoom out/zoom in sin perder coherencia.
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Cómo elegir -->
+        <section class="scroll-mt-24" id="como-elegir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Cómo elegir tu timeframe ideal
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Responde estas preguntas para identificar tu timeframe óptimo:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">schedule</span>
+                  1. ¿Cuánto tiempo puedes dedicar diariamente?
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong>6+ horas monitoreando activamente:</strong> M1-M15 (scalping)</li>
+                  <li>• <strong>2-4 horas:</strong> M30-H1 (day trading)</li>
+                  <li>• <strong>30 min - 1 hora:</strong> H4-D1 (swing trading)</li>
+                  <li>• <strong>Menos de 30 min:</strong> D1-W1 (position trading)</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">psychology</span>
+                  2. ¿Cuál es tu tolerancia al estrés?
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong>Alta (puedo manejar 20+ decisiones/día):</strong> M1-M15</li>
+                  <li>• <strong>Media (5-10 decisiones/día):</strong> M30-H1</li>
+                  <li>• <strong>Baja (2-5 decisiones/semana):</strong> H4-D1</li>
+                  <li>• <strong>Muy baja (1-2 decisiones/mes):</strong> W1-MN</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">account_balance</span>
+                  3. ¿Cuánto capital tienes?
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong>&lt; $500:</strong> empieza con H1-H4 (micro lotes, menos trades, gestión simple)</li>
+                  <li>• <strong>$500 - $2,000:</strong> M30-H1 o H4-D1</li>
+                  <li>• <strong>$2,000 - $10,000:</strong> cualquier timeframe según preferencia</li>
+                  <li>• <strong>&gt; $10,000:</strong> D1-W1 permite aprovechar tendencias largas</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">timer</span>
+                  4. ¿Qué tan paciente eres?
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li>• <strong>Muy impaciente (necesito acción constante):</strong> M5-M15</li>
+                  <li>• <strong>Moderadamente paciente:</strong> M30-H1</li>
+                  <li>• <strong>Paciente (puedo esperar días):</strong> H4-D1</li>
+                  <li>• <strong>Muy paciente (puedo esperar semanas/meses):</strong> W1-MN</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Recomendación final:</strong> si eres principiante, empieza con <strong>H1 o H4</strong>. Son los más equilibrados:
+              suficientes oportunidades, señales relativamente limpias, compatible con trabajo, y buen campo de entrenamiento antes de escalar o bajar.
+            </div>
+          </div>
+        </section>
+
+        <!-- 9: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Complementa tu conocimiento sobre timeframes con:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-un-pip/">¿Qué es un pip?</a>
+                <p class="text-sm text-slate-400 mt-1">Medición de movimientos en cada timeframe.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-un-lote/">¿Qué es un lote?</a>
+                <p class="text-sm text-slate-400 mt-1">Tamaño de posición según tu timeframe.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Fundamentos antes de elegir timeframe.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-trading/">¿Qué es el trading?</a>
+                <p class="text-sm text-slate-400 mt-1">Contexto general de estilos de trading.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/horarios-sesiones-forex/">Horarios sesiones forex</a>
+                <p class="text-sm text-slate-400 mt-1">Volatilidad por sesión afecta cada timeframe.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/el-swap-overnight/">Swap overnight</a>
+                <p class="text-sm text-slate-400 mt-1">Costo crítico en timeframes largos.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es un timeframe en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Un timeframe es el período de tiempo que representa cada vela o barra en tu gráfico. Por ejemplo, en un gráfico H1 (1 hora), cada vela muestra
+                la acción de precio durante 1 hora completa (apertura, cierre, máximo, mínimo).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuál es el mejor timeframe para trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No hay un "mejor" timeframe universal. Depende de tu estilo de vida y personalidad. Para principiantes, H1 o H4 son los más recomendados por su
+                balance entre oportunidades, señales confiables y compatibilidad con trabajo. Scalpers usan M1-M5, day traders M30-H1, swing traders H4-D1.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el análisis multi-timeframe?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es la técnica de analizar el mismo par en 3 timeframes diferentes (largo, medio, corto) antes de ejecutar. El timeframe largo da contexto/tendencia,
+                el medio identifica el setup, y el corto refina la entrada. Aumenta significativamente la probabilidad de éxito.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Puedo cambiar de timeframe constantemente?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No es recomendable. Cambiar constantemente de timeframe impide que desarrolles expertise. Elige uno, domínalo por al menos 6 meses antes de considerar
+                cambiar. La consistencia es clave en trading.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué timeframe es mejor para principiantes?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                H1 (1 hora) o H4 (4 horas) son ideales para principiantes. Ofrecen suficientes oportunidades sin el ruido extremo de timeframes menores,
+                son compatibles con trabajo full-time, y permiten aprender sin estrés excesivo. Evita M1-M5 hasta que tengas experiencia sólida.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Los timeframes largos son más rentables?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No necesariamente. Timeframes largos (D1, W1) tienen señales más confiables pero menos oportunidades y requieren más capital.
+                La rentabilidad depende de tu habilidad para ejecutar tu estrategia consistentemente, no del timeframe en sí. Cada uno tiene ventajas/desventajas.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo sé si elegí el timeframe correcto?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es correcto si: (1) puedes monitorearlo consistentemente según tu horario, (2) no te genera estrés extremo ni aburrimiento,
+                (3) ves oportunidades suficientes pero no excesivas, (4) puedes ejecutar tu plan sin presión. Si falla alguno, reconsidera.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Debo usar diferentes timeframes para diferentes pares?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No es recomendable, especialmente para principiantes. Usa los mismos timeframes para todos tus pares. Esto simplifica tu proceso,
+                facilita la comparación, y te permite desarrollar consistencia. Solo traders muy experimentados operan diferentes pares con diferentes timeframes.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-green-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué son los timeframes y cómo elegir el correcto. El siguiente paso es practicar
+                <strong>análisis multi-timeframe</strong> en demo hasta que se vuelva automático. No hay atajos: dominar timeframes toma meses de práctica.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#tipos-timeframes">
+                <span>2.</span> Tipos principales
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#analisis-multi-timeframe">
+                <span>3.</span> Análisis multi-timeframe
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-timeframe-usar">
+                <span>4.</span> Qué timeframe usar
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ventajas-desventajas">
+                <span>5.</span> Ventajas y desventajas
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores-comunes">
+                <span>6.</span> Errores comunes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#combinaciones">
+                <span>7.</span> Combinaciones
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-elegir">
+                <span>8.</span> Cómo elegir
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>9.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>10.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

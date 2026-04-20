@@ -1,0 +1,733 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>¿Qué es el slippage en trading? Definición, ejemplos y cómo reducirlo | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-400/20 w-fit">
+            <span class="material-symbols-outlined text-red-300 text-sm">error</span>
+            <span class="text-red-200 text-xs font-bold uppercase tracking-wider">Costos ocultos</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            ¿Qué es el slippage en trading?
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-primary">Cuándo te afecta</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Slippage es cuando tu orden se ejecuta a un <strong>precio diferente al que esperabas</strong>.
+            Pasa más en noticias, baja liquidez y movimientos rápidos. Si no lo controlas,
+            puede romper tu estadística, especialmente en scalping.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/sliphero.jpg" alt="Slippage en trading - Ejecución de órdenes diferente al precio esperado - Volatilidad y liquidez" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/sliphero.jpg" alt="Slippage en trading - Ejecución de órdenes diferente al precio esperado - Volatilidad y liquidez" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Definición simple: slippage = ejecución diferente
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El slippage es la diferencia entre el precio que <strong>esperabas</strong> (o solicitaste)
+              y el precio al que tu orden se <strong>ejecuta realmente</strong>.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-red-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-red-400">arrow_upward</span>
+                Ejemplo: Slippage negativo (peor precio)
+              </h3>
+              <div class="font-mono text-sm text-slate-200 bg-slate-900 p-3 rounded border border-slate-700 mb-3">
+                Quiero comprar en 100.00 → se ejecuta en 100.15 → Slippage = +0.15 (peor precio)
+              </div>
+              <p class="text-sm text-slate-300">
+                En compras, un precio más alto es peor. En ventas, un precio más bajo es peor.
+                Es el tipo de slippage que más duele y el que más se nota.
+              </p>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-green-400">arrow_downward</span>
+                Ejemplo: Slippage positivo (mejor precio)
+              </h3>
+              <div class="font-mono text-sm text-slate-200 bg-slate-900 p-3 rounded border border-slate-700 mb-3">
+                Quiero comprar en 100.00 → se ejecuta en 99.95 → Slippage = -0.05 (mejor precio)
+              </div>
+              <p class="text-sm text-slate-300">
+                Sí, a veces también te beneficia. Pero suele notarse menos porque "no duele" y muchos ni se dan cuenta.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Por qué ocurre -->
+        <section class="scroll-mt-24" id="por-que-ocurre">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            ¿Por qué ocurre el slippage?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El slippage no es "culpa del broker" (aunque a veces empeora con brokers malos).
+              Las causas principales son:
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">speed</span>
+                <span><strong>Mercado rápido:</strong> el precio cambia entre el momento que haces clic y cuando se ejecuta la orden.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">water_drop</span>
+                <span><strong>Liquidez limitada:</strong> no hay suficiente volumen al precio exacto que quieres, entonces "salta" al siguiente nivel.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-yellow-500 mt-1 text-sm">shopping_cart</span>
+                <span><strong>Órdenes de mercado:</strong> se ejecutan al "mejor precio disponible", no al precio exacto que ves en pantalla.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">trending_up</span>
+                <span><strong>Volatilidad:</strong> en movimientos bruscos (noticias, gaps), el precio puede "saltar" varios niveles de golpe.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">network_node</span>
+                <span><strong>Latencia:</strong> demora de conexión entre tu terminal y el servidor de ejecución (más común en VPS lentos o mala conexión).</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Nota CDL:</strong> el slippage es parte del trading real. Incluso con el mejor broker, existe.
+              La clave es entenderlo y no diseñar estrategias que dependan de "ejecución perfecta".
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Cuándo se dispara -->
+        <section class="scroll-mt-24" id="cuando-se-dispara">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            ¿Cuándo se dispara? (momentos típicos)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Hay momentos donde el slippage es casi inevitable:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">campaign</span>
+                  Noticias y eventos
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Datos macro (NFP, CPI), earnings, anuncios inesperados. El precio puede "saltar" 10-20 pips instantáneamente.
+                  El slippage en estos momentos puede ser brutal.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">nightlight</span>
+                  Baja liquidez
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Horas muertas (madrugada), cambios de sesión (roll-over), activos poco operados (microcaps, altcoins exóticas).
+                  Menos volumen = más slippage.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400">open_in_new</span>
+                  Aperturas / gaps
+                </h3>
+                <p class="text-sm text-slate-300">
+                  En acciones e índices, las aperturas pueden traer gaps (salto de precio). Si tu stop está en el gap,
+                  se ejecutará al siguiente precio disponible (slippage fuerte).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">emergency</span>
+                  Stops en pánico
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Si muchos stops se activan a la vez (liquidaciones en cascada), el mercado "barrerá" niveles y ejecutará peor.
+                  Común en cripto con apalancamiento.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">currency_exchange</span>
+                  Roll-over de sesión
+                </h3>
+                <p class="text-sm text-slate-300">
+                  En forex, el cambio de día (23:00 GMT típicamente) puede traer spread amplio y slippage temporal.
+                  Evita operar en ese momento.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">stars</span>
+                  Activos exóticos
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Pares menores de forex, small caps con bajo volumen, altcoins de baja liquidez.
+                  El spread ya es alto, y encima el slippage empeora todo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Slippage vs Spread -->
+        <section class="scroll-mt-24" id="slippage-vs-spread">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Slippage vs spread: no son lo mismo
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Muchos traders confunden estos dos conceptos. Son costos diferentes:
+            </p>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-slate-300 border-collapse">
+                <thead>
+                  <tr class="bg-background-dark border-b border-slate-700">
+                    <th class="text-left p-4 font-bold text-white">Spread</th>
+                    <th class="text-left p-4 font-bold text-white">Slippage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Diferencia <strong>Bid/Ask</strong> (siempre existe).</td>
+                    <td class="p-4">Diferencia entre <strong>precio esperado y ejecutado</strong>.</td>
+                  </tr>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Costo <strong>fijo/variable</strong> del mercado.</td>
+                    <td class="p-4">Depende de <strong>velocidad y liquidez</strong> en ese momento.</td>
+                  </tr>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Lo "pagas" en cada entrada/salida.</td>
+                    <td class="p-4">A veces no existe, otras veces te mata.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4">Puedes verlo antes de operar.</td>
+                    <td class="p-4">Solo lo sabes <strong>después</strong> de ejecutar.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Ejemplo real:</strong> puedes tener spread bajo (2 pips en EURUSD) y aun así sufrir 5 pips de slippage en NFP.
+              Y puedes tener poco slippage en calma, pero spread alto (20 pips) en un par exótico. Son problemas distintos.
+            </div>
+
+            <div class="mt-4 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Lectura complementaria:</strong>
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Tipos de órdenes -->
+        <section class="scroll-mt-24" id="tipos-ordenes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Tipos de órdenes y su relación con slippage
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El tipo de orden que uses afecta directamente el slippage:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Orden de mercado (Market)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">check_circle</span>
+                    Se ejecuta <strong>inmediatamente</strong>.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">check_circle</span>
+                    Garantiza que entras al mercado.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-red-500 text-xs">cancel</span>
+                    <strong>Mayor riesgo de slippage</strong> (acepta cualquier precio disponible).
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-yellow-500 text-xs">warning</span>
+                    En noticias puede ejecutarse muy lejos del precio esperado.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Orden límite (Limit)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">check_circle</span>
+                    Se ejecuta a tu precio <strong>o mejor</strong>.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">check_circle</span>
+                    <strong>Controla el slippage</strong> (no aceptas peor precio).
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-red-500 text-xs">cancel</span>
+                    Puede <strong>no ejecutarse</strong> si el precio no llega.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-yellow-500 text-xs">warning</span>
+                    En mercados rápidos te puedes quedar fuera.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Stop loss (Stop Market)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-500 text-xs">notifications</span>
+                    Se activa al alcanzar tu precio stop.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-red-500 text-xs">cancel</span>
+                    Se ejecuta como orden de mercado → <strong>alto riesgo de slippage</strong>.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-yellow-500 text-xs">warning</span>
+                    En gaps puede ejecutarse muy lejos del stop.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Stop limit</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-500 text-xs">check_circle</span>
+                    Controla slippage (límite de precio).
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-red-500 text-xs">cancel</span>
+                    Riesgo: puede <strong>no ejecutarse</strong> en mercado rápido.
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-yellow-500 text-xs">warning</span>
+                    Tu stop se "salta" y quedas sin protección.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Regla CDL:</strong> para stops, usa <strong>stop market</strong> (acepta slippage pero garantiza salida).
+              Para entradas discrecionales en mercados calmados, puedes usar limit para controlar precio.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Cómo reducir -->
+        <section class="scroll-mt-24" id="como-reducir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Cómo reducir el slippage (estrategias prácticas)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No puedes eliminarlo, pero sí minimizar su impacto:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400 text-sm">block</span>
+                  1. Evita noticias fuertes
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Si no eres trader de noticias, no operes 5-10 min antes/después de NFP, CPI, tasas, earnings.
+                  El slippage puede ser 10x lo normal.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400 text-sm">water_drop</span>
+                  2. Prioriza liquidez
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Acciones grandes (large caps), índices líquidos (S&P, Nasdaq), BTC/ETH en cripto, majors en forex.
+                  Evita activos "raros" al inicio.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400 text-sm">schedule</span>
+                  3. Opera horas líquidas
+                </h3>
+                <p class="text-sm text-slate-300">
+                  En forex: sesiones europea/americana superpuestas (13:00-17:00 GMT).
+                  En acciones: primeras 2 horas y última hora de sesión (más volumen).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400 text-sm">filter_list</span>
+                  4. Usa límit cuando aplique
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Para entradas discrecionales en mercados calmados, órdenes limit intentan ejecutarte a tu precio o mejor
+                  (pero pueden no ejecutarse).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400 text-sm">straighten</span>
+                  5. No uses stops ridículamente ajustados
+                </h3>
+                <p class="text-sm text-slate-300">
+                  En mercados rápidos, un stop de 5 pips puede ejecutarse a 10-15 pips por slippage.
+                  Da margen realista o cambia de activo.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400 text-sm">speed</span>
+                  6. Mejora tu conexión/VPS
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Latencia alta empeora slippage. Si haces scalping o day trading agresivo, considera VPS cerca del servidor del broker.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-teal-400 text-sm">style</span>
+                  7. Ajusta tu estilo de trading
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Scalping sufre mucho más el slippage que swing. Si tu winrate se desmorona por slippage,
+                  considera pasar a objetivos más amplios.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-pink-400 text-sm">compare</span>
+                  8. Compara brokers
+                </h3>
+                <p class="text-sm text-slate-300">
+                  El slippage varía entre brokers (calidad de ejecución, liquidez agregada). Prueba en demo antes de operar real.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Advertencia CDL:</strong> si tu estrategia depende de "2-3 ticks" de precisión,
+              slippage + spread te van a matar. Ajusta tu estilo o cambia a activos/horarios más líquidos.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Para entender mejor los costos reales de operar:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                <p class="text-sm text-slate-400 mt-1">Diferencia Bid/Ask explicada.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/el-swap-overnight/">El swap overnight</a>
+                <p class="text-sm text-slate-400 mt-1">Costo de mantener posiciones abiertas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Slippage típico en pares mayores.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cripto-para-principiantes/">Cripto para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Slippage en exchanges y liquidaciones.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Slippage en aperturas y cierres.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Gaps y slippage en earnings.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el slippage en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Es la diferencia entre el precio que esperabas (o solicitaste) y el precio real al que se ejecuta tu orden.
+                Suele ocurrir cuando el mercado se mueve rápido o hay poca liquidez.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿El slippage siempre es negativo?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. Puede ser negativo (peor precio) o positivo (mejor precio). En la práctica, el trader suele notarlo más cuando es negativo porque "duele".
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuándo se dispara el slippage?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Suele aumentar en noticias fuertes (NFP, CPI, earnings), baja liquidez (madrugada, roll-over), alta volatilidad,
+                aperturas/cierres con gaps, y en activos poco líquidos (small caps, altcoins exóticas).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo puedo reducirlo?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Operando activos y horarios líquidos, evitando noticias fuertes si no es tu estilo, usando órdenes limit cuando aplique,
+                dando margen realista a tus stops, y mejorando tu conexión/VPS si haces scalping.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿El slippage es culpa del broker?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No siempre. Existe por naturaleza del mercado (velocidad, liquidez). Pero brokers con mala ejecución o "requotes"
+                excesivos sí empeoran el problema. Compara en demo antes de operar real.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Spread y slippage son lo mismo?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. El spread es la diferencia Bid/Ask (costo fijo/variable del mercado). El slippage es la diferencia entre precio esperado y ejecutado
+                (depende de velocidad y liquidez en ese momento). Puedes tener ambos problemas a la vez.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-red-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es el slippage y cuándo te puede afectar. El siguiente paso es calcular el
+                <strong>costo total por operación</strong> (spread + slippage + comisión + overnight) y diseñar tu estrategia
+                con margen realista.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#por-que-ocurre">
+                <span>2.</span> Por qué ocurre
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#cuando-se-dispara">
+                <span>3.</span> Cuándo se dispara
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#slippage-vs-spread">
+                <span>4.</span> Slippage vs Spread
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#tipos-ordenes">
+                <span>5.</span> Tipos de órdenes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-reducir">
+                <span>6.</span> Cómo reducir
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>7.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>8.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

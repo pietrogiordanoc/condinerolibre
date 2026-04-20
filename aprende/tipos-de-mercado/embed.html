@@ -1,0 +1,717 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Tipos de mercado en trading: Forex, índices y cripto | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 w-fit">
+            <span class="material-symbols-outlined text-emerald-300 text-sm">map</span>
+            <span class="text-emerald-200 text-xs font-bold uppercase tracking-wider">Mapa de mercados</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Tipos de mercado en trading:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">Forex, índices, acciones y cripto</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Elegir mercado es elegir <strong>horario, costes, volatilidad y rutina</strong>.
+            En vez de “probarlo todo”, aquí entiendes las diferencias reales para elegir uno con criterio y evitar errores típicos de principiante.
+          </p>
+
+          <!-- ✅ Imagen 1 (Hero / refuerza topic + OG). NO quita nada -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img
+              src="tipos-de-mercado.png"
+              alt="Mapa visual de mercados para trading: Forex, índices, acciones, criptomonedas y materias primas"
+              class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              id="hero-image"
+            />
+            <!-- Botón de zoom -->
+            <button 
+              id="zoom-btn" 
+              class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Ampliar imagen"
+            >
+              <span class="material-symbols-outlined text-xl">zoom_in</span>
+              <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+            </button>
+          </figure>
+
+          <!-- Modal de zoom fullscreen -->
+          <div 
+            id="image-modal" 
+            class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"
+            style="backdrop-filter: blur(0px);"
+          >
+            <!-- Backdrop -->
+            <div 
+              id="modal-backdrop" 
+              class="absolute inset-0 bg-black/95"
+              style="backdrop-filter: blur(20px);"
+            ></div>
+            
+            <!-- Contenedor de imagen -->
+            <div class="relative z-10 w-full h-full flex items-center justify-center">
+              <img
+                id="modal-image"
+                src="tipos-de-mercado.png"
+                alt="Mapa visual de mercados para trading: Forex, índices, acciones, criptomonedas y materias primas"
+                class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"
+                style="transform-origin: center center;"
+              />
+              
+              <!-- Botón cerrar -->
+              <button 
+                id="close-modal-btn" 
+                class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+                aria-label="Cerrar"
+              >
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+              
+              <!-- Indicador de zoom -->
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base">touch_app</span>
+                  Click para cerrar
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1 -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Qué significa “mercado” en trading
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Un <strong>mercado</strong> es el entorno donde se negocia un tipo de activo (divisas, índices, acciones, cripto, materias primas).
+              Aunque “todo se ve como un gráfico”, cada mercado tiene <strong>reglas de movimiento</strong>, horarios y costes distintos.
+            </p>
+            <p class="text-slate-300 leading-relaxed">
+              Si estás empezando, tu objetivo no es “el mercado que más sube o baja”, sino el que te permite construir un proceso:
+              <strong>rutina, repetición y gestión del riesgo</strong>.
+            </p>
+          </div>
+        </section>
+
+        <!-- 2 -->
+        <section class="scroll-mt-24" id="comparativa">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Comparativa rápida de mercados
+          </h2>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-700">
+            <table class="w-full text-left text-sm text-slate-400">
+              <thead class="bg-surface-dark text-slate-200 uppercase font-bold text-xs">
+                <tr>
+                  <th class="px-6 py-4">Mercado</th>
+                  <th class="px-6 py-4">Horario</th>
+                  <th class="px-6 py-4">Volatilidad</th>
+                  <th class="px-6 py-4">Mejor si…</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700 bg-background-dark">
+                <tr>
+                  <td class="px-6 py-4 font-medium text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-400">attach_money</span> Forex
+                  </td>
+                  <td class="px-6 py-4">24/5 (sesiones Asia–Londres–NY)</td>
+                  <td class="px-6 py-4 text-yellow-400">Media</td>
+                  <td class="px-6 py-4">Buscas liquidez y repetición</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-medium text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-400">candlestick_chart</span> Índices
+                  </td>
+                  <td class="px-6 py-4">Sesiones (Europa/USA)</td>
+                  <td class="px-6 py-4 text-yellow-400">Media–Alta</td>
+                  <td class="px-6 py-4">Quieres horario “tipo trabajo”</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-medium text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-gray-300">apartment</span> Acciones
+                  </td>
+                  <td class="px-6 py-4">Sesión del país (ej. USA)</td>
+                  <td class="px-6 py-4 text-yellow-400">Variable</td>
+                  <td class="px-6 py-4">Te interesa análisis por empresa</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-medium text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-orange-400">currency_bitcoin</span> Criptomonedas
+                  </td>
+                  <td class="px-6 py-4">24/7</td>
+                  <td class="px-6 py-4 text-red-500 font-bold">Alta / Extrema</td>
+                  <td class="px-6 py-4">Ya dominas riesgo y psicología</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-medium text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-gray-400">propane_tank</span> Materias primas
+                  </td>
+                  <td class="px-6 py-4">Depende (oro/petróleo muy activos en USA)</td>
+                  <td class="px-6 py-4 text-yellow-400">Variable</td>
+                  <td class="px-6 py-4">Te encaja contexto macro</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="text-slate-300 leading-relaxed mt-6">
+            En CDL, para principiantes, priorizamos mercados con <strong>estructura y liquidez</strong>.
+            No porque “se gane más”, sino porque facilitan aprender proceso: entradas, invalidaciones y gestión de riesgo.
+          </p>
+        </section>
+
+        <!-- 3: Sesiones -->
+        <section class="scroll-mt-24" id="horarios">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Horarios y sesiones: el detalle que la gente ignora
+          </h2>
+
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-6">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Muchos pierden dinero no por “mala estrategia”, sino por operar cuando el mercado está lento o cuando hay ruido.
+              Las <strong>sesiones</strong> te ayudan a elegir horas con más liquidez y movimiento.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-slate-200 mb-2">
+                  <span class="material-symbols-outlined text-emerald-300">public</span>
+                  <span class="font-bold">Asia</span>
+                </div>
+                <p class="text-sm text-slate-400">Suele ser más lenta en muchos pares. Útil para ciertos activos/pares específicos.</p>
+              </div>
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-slate-200 mb-2">
+                  <span class="material-symbols-outlined text-blue-300">language</span>
+                  <span class="font-bold">Londres</span>
+                </div>
+                <p class="text-sm text-slate-400">Alta liquidez. Suele ser la sesión más “productiva” en Forex.</p>
+              </div>
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-slate-200 mb-2">
+                  <span class="material-symbols-outlined text-orange-300">rocket_launch</span>
+                  <span class="font-bold">Nueva York</span>
+                </div>
+                <p class="text-sm text-slate-400">Movimiento fuerte, sobre todo en aperturas y datos macro.</p>
+              </div>
+            </div>
+
+            <!-- ✅ Imagen 2 (infografía sesiones). NO quita nada -->
+            <figure class="mt-6 rounded-xl overflow-hidden border border-slate-700 bg-background-dark">
+              <img
+                src="sesiones-forex-trading.png"
+                alt="Infografía de sesiones de trading: Asia, Londres y Nueva York con horas de mayor liquidez"
+                class="w-full h-auto"
+                width="1200"
+                height="675"
+                loading="lazy"
+              />
+              <figcaption class="text-xs text-slate-500 px-4 py-3">
+                Consejo CDL: elige 1–2 ventanas fijas al día y crea estadística, no “pantalla infinita”.
+              </figcaption>
+            </figure>
+
+            <div class="mt-6 p-4 bg-emerald-900/20 rounded border border-emerald-400/20 text-slate-200 text-sm">
+              <strong>Idea CDL:</strong> no necesitas “operar todo el día”. Necesitas 1–2 ventanas claras donde tu mercado se comporta mejor.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Costes reales -->
+        <section class="scroll-mt-24" id="costes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Costes reales: lo que pagas aunque no lo notes
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Un mercado no solo se elige por “movimiento”. Se elige por <strong>costes</strong> y <strong>calidad de ejecución</strong>.
+              Aquí está lo que debes entender:
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">payments</span>
+                <span><strong>Spread:</strong> diferencia entre compra y venta. En activos líquidos suele ser menor.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">receipt_long</span>
+                <span><strong>Comisión:</strong> algunos brokers la cobran aparte del spread (común en cuentas “raw”).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">schedule</span>
+                <span><strong>Swap (overnight):</strong> coste/beneficio por mantener posiciones abiertas de un día a otro.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">swap_horiz</span>
+                <span><strong>Slippage:</strong> cuando tu orden entra peor por volatilidad o falta de liquidez (muy relevante en noticias).</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              Si quieres entenderlo bien, enlaza con el pilar: <a class="underline hover:text-primary" href="/aprende/como-funciona-un-broker/">Cómo funciona un broker</a>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Mercados -->
+        <section class="scroll-mt-24" id="mercados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Qué esperar de cada mercado (sin fantasías)
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-green-400">attach_money</span>
+                <h3 class="text-white font-bold text-lg">Forex</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">Liquidez alta y sesiones claras. Muy bueno para construir rutina.</p>
+              <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+                <li>Ideal: pares mayores (EUR/USD, GBP/USD…)</li>
+                <li>Peligro típico: noticias sin plan</li>
+                <li>Clave: riesgo + repetición</li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-blue-400">candlestick_chart</span>
+                <h3 class="text-white font-bold text-lg">Índices</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">Movimientos fuertes por sesión. Encaja si quieres horarios fijos.</p>
+              <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+                <li>Ideal: aperturas/cierres y ventanas definidas</li>
+                <li>Peligro típico: sobreoperar en rangos</li>
+                <li>Clave: paciencia + timing</li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-gray-300">apartment</span>
+                <h3 class="text-white font-bold text-lg">Acciones</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">Cada empresa es un mundo. Calendario y noticias importan mucho.</p>
+              <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+                <li>Ideal: si te gusta analizar “historias” de empresas</li>
+                <li>Peligro típico: earnings y gaps</li>
+                <li>Clave: selección + contexto</li>
+              </ul>
+            </div>
+
+            <div class="bg-orange-500/5 border border-orange-500/20 rounded-xl p-6">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-orange-400">currency_bitcoin</span>
+                <h3 class="text-white font-bold text-lg">Criptomonedas (cuidado)</h3>
+              </div>
+              <p class="text-slate-300 text-sm mb-4">
+                24/7, volatilidad alta. Buen mercado… cuando ya dominas riesgo y cabeza fría.
+              </p>
+              <ul class="text-sm text-slate-300 list-disc pl-5 space-y-1">
+                <li>Ideal: reglas estrictas y riesgo bajo</li>
+                <li>Peligro típico: FOMO y apalancamiento</li>
+                <li>Clave: disciplina brutal</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ✅ ENLAZADO (Pilar → satélites). NO quita nada -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5B</span>
+            Lecturas relacionadas (para profundizar sin canibalizar)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Si estás empezando, no intentes dominar 10 cosas a la vez. Elige un subtema y construye rutina.
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Qué operar, sesiones y errores típicos.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Ventanas “tipo trabajo” y estructura.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Earnings, gaps y selección.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cripto-para-principiantes/">Cripto para principiantes (sin FOMO)</a>
+                <p class="text-sm text-slate-400 mt-1">Rutina 24/7, volatilidad y reglas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">Qué es el spread (y por qué importa)</a>
+                <p class="text-sm text-slate-400 mt-1">Coste real en tu operativa.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+                <p class="text-sm text-slate-400 mt-1">El “coste invisible” en volatilidad.</p>
+              </li>
+            </ul>
+
+            <p class="text-xs text-slate-500 mt-4">
+              Nota: si aún no existen esas URLs, déjalas para después o crea páginas satélite cortas (sin competir con esta pilar).
+            </p>
+          </div>
+        </section>
+
+        <!-- 6: Elegir mercado -->
+        <section class="scroll-mt-24" id="elegir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Cómo elegir mercado (criterio profesional)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              La mejor elección es la que te permite <strong>cumplir un plan</strong> sin destruir tu psicología.
+              Tres criterios simples:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-primary mb-2">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <span class="font-bold">Horario</span>
+                </div>
+                <p class="text-sm text-slate-400">El mercado debe encajar con tu vida, no al revés.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-primary mb-2">
+                  <span class="material-symbols-outlined">shield</span>
+                  <span class="font-bold">Riesgo</span>
+                </div>
+                <p class="text-sm text-slate-400">Si aún no dominas riesgo, elige el mercado más “estable” para aprender.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-primary mb-2">
+                  <span class="material-symbols-outlined">repeat</span>
+                  <span class="font-bold">Repetición</span>
+                </div>
+                <p class="text-sm text-slate-400">Un mercado “simple” repetido 100 veces enseña más que 10 mercados a la vez.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-emerald-900/20 rounded border border-emerald-400/20 text-slate-200 text-sm">
+              Si quieres profundizar el punto clave, enlaza con el pilar: <a class="underline hover:text-primary" href="/aprende/riesgo-y-apalancamiento/">Riesgo y apalancamiento</a>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Errores -->
+        <section class="scroll-mt-24" id="errores">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Errores típicos por mercado (para evitarte meses de dolor)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-400 mt-1 text-sm">close</span>
+                <span><strong>Forex:</strong> operar noticias sin plan y aumentar lotaje “porque se mueve más”.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-400 mt-1 text-sm">close</span>
+                <span><strong>Índices:</strong> entrar en apertura sin esperar estructura y sobreoperar rangos.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-400 mt-1 text-sm">close</span>
+                <span><strong>Acciones:</strong> ignorar calendario (earnings) y comerse gaps sin control.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-400 mt-1 text-sm">close</span>
+                <span><strong>Cripto:</strong> FOMO, operar por impulso y usar apalancamiento como si fuera “normal”.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ✅ Enlaces externos editoriales (EEAT). NO quita nada -->
+        <section class="scroll-mt-24" id="fuentes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7B</span>
+            Fuentes y definiciones útiles (sin afiliados)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Si quieres definiciones claras de conceptos como <strong>spread</strong> o <strong>slippage</strong>, aquí tienes referencias externas para contrastar.
+            </p>
+
+            <ul class="space-y-2 text-slate-300">
+              <li>• <a class="underline hover:text-primary" href="https://capital.com/es-int/ways-to-trade/pricing" target="_blank" rel="noopener">Qué es el spread y cómo se cobra</a></li>
+              <li>• <a class="underline hover:text-primary" href="https://admiralmarkets.com/es/education/articles/forex-basics/slippage-trading" target="_blank" rel="noopener">Qué es el slippage (deslizamiento)</a></li>
+              <li>• <a class="underline hover:text-primary" href="https://www.ig.com/es/estrategias-de-trading/trading--todo-lo-que-debes-saber-para-comenzar--o-mejorar--como--250404" target="_blank" rel="noopener">Mercados principales para operar (visión general)</a></li>
+              <li>• <a class="underline hover:text-primary" href="https://www.avatrade.es/educacion/trading-para-principiantes/como-elegir-un-mercado-de-trading" target="_blank" rel="noopener">Cómo elegir un mercado (criterios)</a></li>
+            </ul>
+
+            <p class="text-xs text-slate-500 mt-4">
+              Nota: enlaces externos editoriales = mejor credibilidad. Evita meter afiliados aquí.
+            </p>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué mercado es mejor para empezar?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Normalmente, mercados líquidos y estructurados (pares mayores Forex o índices principales) facilitan construir rutina y controlar riesgo.
+                Cripto suele ser más exigente por volatilidad y operativa 24/7.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Forex o índices: cuál elegir?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Si quieres liquidez constante y sesiones claras, Forex. Si prefieres ventanas “tipo trabajo” con movimiento fuerte por sesión, índices.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué costes mirar además del spread?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Comisión (si aplica), swap (overnight) y slippage en ejecuciones, sobre todo en volatilidad/noticias.
+                Para entenderlo, revisa <a class="underline hover:text-primary" href="/aprende/como-funciona-un-broker/">cómo funciona un broker</a>.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Puedo operar varios mercados?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Se puede, pero al inicio suele ser ineficiente. Mejor dominar uno (activos, horarios y reglas) y luego diversificar.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Por qué cripto quema a tantos principiantes?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Por FOMO, exceso de apalancamiento y operar sin rutina. Si aún no dominas riesgo, cripto amplifica errores.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ✅ Autor / Bio visible (EEAT). NO quita nada -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre el autor (Condinerolibre)</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  Condinerolibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas: prioriza estructura, rutina y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/about" target="_blank" rel="noopener">Sobre nosotros</a> ·
+                  <a class="underline hover:text-primary" href="https://portal.condinerolibre.com/contacto/" target="_parent">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-blue-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya tienes el mapa. El siguiente paso es entender <strong>broker + ejecución + riesgo</strong> para no aprender a golpes.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/como-funciona-un-broker/">Cómo funciona un broker</a> →
+                <a class="underline hover:text-primary" href="/aprende/riesgo-y-apalancamiento/">Riesgo y apalancamiento</a>.
+              </p>
+            </div>
+            <div class="flex-shrink-0 flex flex-col gap-4">
+              <a class="inline-flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-blue-600 text-black text-base font-bold transition-colors w-full md:w-auto"
+                 href="https://portal.condinerolibre.com/cdl-portal/" target="_parent" rel="noopener">
+                 Acceder a la plataforma
+              </a>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="flex flex-col gap-6">
+
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Qué es “mercado”
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#comparativa">
+                <span>2.</span> Comparativa
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#horarios">
+                <span>3.</span> Horarios/sesiones
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#costes">
+                <span>4.</span> Costes reales
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#mercados">
+                <span>5.</span> Cada mercado
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>5B.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#elegir">
+                <span>6.</span> Cómo elegir
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores">
+                <span>7.</span> Errores típicos
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#fuentes">
+                <span>7B.</span> Fuentes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>8.</span> FAQ
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#autor">
+                <span>8B.</span> Autor
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#siguiente-paso">
+                <span>9.</span> Siguiente paso
+              </a>
+            </nav>
+          </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

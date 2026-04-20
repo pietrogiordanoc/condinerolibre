@@ -1,0 +1,1278 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Tipos de órdenes en trading: market, limit, stop loss, take profit, trailing | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 w-fit">
+            <span class="material-symbols-outlined text-blue-300 text-sm">receipt_long</span>
+            <span class="text-blue-200 text-xs font-bold uppercase tracking-wider">Ejecución de Trades</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Tipos de órdenes en trading
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary">Market, Limit, Stop Loss y más</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Una <strong>orden</strong> es la instrucción que envías a tu broker para abrir o cerrar una operación bajo condiciones específicas.
+            Dominar los tipos de órdenes es fundamental: la diferencia entre una ejecución perfecta y perder dinero por slippage o falta de control.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/ordeneshero.jpg" alt="Tipos de órdenes en trading - Market, limit, stop loss, take profit" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/ordeneshero.jpg" alt="Tipos de órdenes en trading - Market, limit, stop loss, take profit" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué es una orden en trading?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Una <strong>orden</strong> (order) es una <strong>instrucción específica</strong> que le das a tu broker o plataforma de trading
+              para ejecutar una operación bajo ciertas condiciones.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400">info</span>
+                Concepto clave
+              </h3>
+              <p class="text-slate-300 text-sm mb-3">
+                Piensa en una orden como una <strong>instrucción detallada</strong>:
+              </p>
+              <ul class="space-y-2 text-slate-300 text-sm">
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">→</span>
+                  <span>"Compra EUR/USD <strong>ahora mismo</strong> al mejor precio disponible" (market order)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">→</span>
+                  <span>"Compra EUR/USD solo si baja a 1.0800 o menos" (buy limit)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-400 mt-1">→</span>
+                  <span>"Si mi posición pierde 30 pips, cierra automáticamente" (stop loss)</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3">¿Por qué importan?</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Controlan el <strong>precio de ejecución</strong>.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Permiten <strong>automatización</strong> (no monitorear 24/7).</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Protegen tu capital con stops automáticos.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-green-400">✓</span>
+                    <span>Ejecutan estrategias mientras duermes.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3">Peligro real</h3>
+                <p class="text-sm text-slate-300">
+                  Usar el tipo de orden <strong>equivocado</strong> puede costarte cientos de pips.
+                  Ejemplo: usar market order en noticia = ejecutar con slippage brutal de 20+ pips.
+                  Usar stop loss mal colocado = salir antes de que el precio rebote a tu favor.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Dominar órdenes = control total.</strong> No hay excusas para no saber usar cada tipo correctamente antes de operar con dinero real.
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Órdenes básicas -->
+        <section class="scroll-mt-24" id="ordenes-basicas">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Órdenes básicas: Market y Limit
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Todas las órdenes se dividen en <strong>dos categorías</strong>:
+            </p>
+
+            <div class="space-y-5">
+              <!-- Market Order -->
+              <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">flash_on</span>
+                  Market Order (Orden de mercado)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> Compra o vende <strong>inmediatamente</strong> al mejor precio disponible en ese momento.
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">¿Cuándo usar?</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>Necesitas entrar/salir <strong>YA</strong> (urgencia).</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>El precio está en tu zona ideal y no quieres perder la oportunidad.</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-orange-400">•</span>
+                        <span>Mercado líquido con spread bajo (EUR/USD, GBP/USD en horarios principales).</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-900/20 border border-green-700/50 p-3 rounded">
+                      <div class="text-green-400 font-bold mb-2 text-xs">✓ Ventajas</div>
+                      <ul class="space-y-1 text-xs">
+                        <li>• Ejecución instantánea garantizada</li>
+                        <li>• Simple y directo</li>
+                        <li>• Ideal para salidas de emergencia</li>
+                      </ul>
+                    </div>
+                    <div class="bg-red-900/20 border border-red-700/50 p-3 rounded">
+                      <div class="text-red-400 font-bold mb-2 text-xs">✗ Desventajas</div>
+                      <ul class="space-y-1 text-xs">
+                        <li>• <strong>Sin control de precio</strong></li>
+                        <li>• Slippage en mercados volátiles</li>
+                        <li>• Puede ejecutar a precio muy desfavorable</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-red-900/20 border border-red-500/30 rounded text-xs">
+                    <strong>⚠️ Peligro:</strong> NUNCA uses market order durante noticias de alto impacto (NFP, tasas de interés).
+                    El slippage puede ser de 20-50+ pips. Ejemplo: EUR/USD bid 1.0800, haces market sell, ejecuta en 1.0770 = -30 pips instantáneos.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Limit Order -->
+              <div class="bg-background-dark p-5 rounded-lg border border-blue-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">price_check</span>
+                  Limit Order (Orden límite)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> Compra o vende <strong>solo si el precio alcanza (o mejora)</strong> el nivel especificado.
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Funcionamiento:</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-blue-400">•</span>
+                        <span><strong>Buy Limit:</strong> compra solo si el precio <strong>baja</strong> a tu nivel o menos.</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-blue-400">•</span>
+                        <span><strong>Sell Limit:</strong> vende solo si el precio <strong>sube</strong> a tu nivel o más.</span>
+                      </li>
+                    </ul>
+                    <p class="mt-3 text-slate-400 text-xs">
+                      <strong>Regla:</strong> limit order solo se ejecuta cuando el precio se mueve <strong>a tu favor</strong> (más barato para comprar, más caro para vender).
+                    </p>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Ejemplo práctico:</div>
+                    <p class="mb-2">EUR/USD está en 1.0850. Crees que bajará a 1.0800 antes de subir.</p>
+                    <p class="font-mono text-xs bg-slate-800 p-2 rounded">
+                      Colocas <strong>Buy Limit en 1.0800</strong><br/>
+                      → Si el precio baja a 1.0800, tu orden se ejecuta automáticamente<br/>
+                      → Si solo baja a 1.0810 y luego sube, tu orden NO se ejecuta
+                    </p>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-900/20 border border-green-700/50 p-3 rounded">
+                      <div class="text-green-400 font-bold mb-2 text-xs">✓ Ventajas</div>
+                      <ul class="space-y-1 text-xs">
+                        <li>• <strong>Control de precio garantizado</strong></li>
+                        <li>• Ejecuta a tu precio o mejor</li>
+                        <li>• Sin slippage negativo</li>
+                        <li>• Automatización total</li>
+                      </ul>
+                    </div>
+                    <div class="bg-orange-900/20 border border-orange-700/50 p-3 rounded">
+                      <div class="text-orange-400 font-bold mb-2 text-xs">✗ Desventajas</div>
+                      <ul class="space-y-1 text-xs">
+                        <li>• Puede <strong>no ejecutarse nunca</strong></li>
+                        <li>• Pierdes oportunidades si precio no llega</li>
+                        <li>• Requiere paciencia</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-green-900/20 border border-green-500/30 rounded text-xs">
+                    <strong>💡 Consejo CDL:</strong> Limit orders son tu mejor amigo para <strong>entradas planificadas</strong>.
+                    Identificas zona de soporte en 1.0800, colocas buy limit, y olvidas. Si ejecuta, entras en zona ideal. Si no, evitas perseguir precio.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-500/20 text-slate-200 text-sm">
+              <strong>Resumen visual:</strong> Market = "compra/vende AHORA al precio que sea". Limit = "compra/vende SOLO si llega a mi precio o mejor".
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Stop Orders -->
+        <section class="scroll-mt-24" id="stop-orders">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Stop Orders: Buy Stop y Sell Stop
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Las <strong>stop orders</strong> (órdenes stop de entrada) se ejecutan cuando el precio <strong>alcanza o supera</strong> un nivel específico.
+              Son lo opuesto a limit orders: se activan cuando el precio se mueve <strong>en tu contra inicialmente</strong> (pero a favor de tu hipótesis).
+            </p>
+
+            <div class="space-y-5">
+              <!-- Buy Stop -->
+              <div class="bg-background-dark p-5 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">trending_up</span>
+                  Buy Stop (Compra por encima del precio actual)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> Orden de compra que se activa cuando el precio <strong>sube</strong> hasta alcanzar tu nivel especificado.
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">¿Cuándo usar?</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-green-400">•</span>
+                        <span><strong>Estrategia de ruptura (breakout):</strong> Esperas que el precio rompa una resistencia y continúe subiendo.</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-green-400">•</span>
+                        <span>Confirmar momentum alcista antes de entrar.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Ejemplo:</div>
+                    <p class="mb-2">EUR/USD está en 1.0800. Hay resistencia en 1.0850. Crees que si rompe, subirá a 1.0950.</p>
+                    <p class="font-mono text-xs bg-slate-800 p-2 rounded">
+                      Colocas <strong>Buy Stop en 1.0855</strong> (5 pips sobre resistencia)<br/>
+                      → Si el precio sube a 1.0855, tu compra se ejecuta automáticamente<br/>
+                      → Si se queda en 1.0840 y baja, tu orden NO se ejecuta (evitaste falsa ruptura)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sell Stop -->
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">trending_down</span>
+                  Sell Stop (Venta por debajo del precio actual)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> Orden de venta que se activa cuando el precio <strong>baja</strong> hasta alcanzar tu nivel especificado.
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">¿Cuándo usar?</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span><strong>Estrategia de ruptura bajista:</strong> Esperas que el precio rompa un soporte y continúe bajando.</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span>Confirmar momentum bajista antes de shortear.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Ejemplo:</div>
+                    <p class="mb-2">GBP/USD está en 1.2600. Hay soporte en 1.2550. Crees que si rompe, bajará a 1.2450.</p>
+                    <p class="font-mono text-xs bg-slate-800 p-2 rounded">
+                      Colocas <strong>Sell Stop en 1.2545</strong> (5 pips bajo soporte)<br/>
+                      → Si el precio baja a 1.2545, tu venta se ejecuta automáticamente<br/>
+                      → Si rebota en 1.2555, tu orden NO se ejecuta (evitaste falso breakout)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>Concepto clave:</strong> Stop orders de entrada (buy/sell stop) son para <strong>perseguir momentum</strong> después de confirmación.
+              Limit orders son para <strong>comprar barato/vender caro</strong> en reversiones. Estrategias opuestas.
+            </div>
+
+            <div class="mt-4 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>⚠️ Advertencia:</strong> Stop orders (de entrada) NO garantizan precio exacto. En mercados volátiles pueden ejecutarse con slippage.
+              Ejemplo: tu buy stop es 1.0850, pero ejecuta en 1.0858 si el precio "salta" la zona.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Stop Loss -->
+        <section class="scroll-mt-24" id="stop-loss">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Stop Loss: la orden más importante
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El <strong>stop loss</strong> es una orden de <strong>cierre automático</strong> diseñada para <strong>limitar pérdidas</strong>
+              si el mercado se mueve en tu contra.
+            </p>
+
+            <div class="bg-red-900/30 border-2 border-red-500 p-5 rounded-lg mb-5">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2 text-lg">
+                <span class="material-symbols-outlined text-red-400">shield</span>
+                REGLA DE ORO: Nunca operes sin stop loss
+              </h3>
+              <p class="text-slate-200 text-sm">
+                Operar sin stop loss es como conducir sin frenos. <strong>Una sola operación sin SL puede destruir tu cuenta completa.</strong>
+                No importa cuán "seguro" te parezca el trade. SIEMPRE coloca stop loss antes de ejecutar.
+              </p>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Funcionamiento</h3>
+              <div class="space-y-3 text-slate-300 text-sm">
+                <p>
+                  Si estás <strong>largo (comprado):</strong> tu stop loss es una <strong>orden de venta</strong> por debajo de tu precio de entrada.<br/>
+                  Si estás <strong>corto (vendido):</strong> tu stop loss es una <strong>orden de compra</strong> por encima de tu precio de entrada.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div class="bg-slate-900 p-4 rounded">
+                    <div class="text-green-400 font-bold mb-2">Posición Long (compra)</div>
+                    <p class="font-mono text-xs">
+                      Entrada: 1.0800 (BUY)<br/>
+                      Stop Loss: 1.0770 (SELL)<br/>
+                      <span class="text-green-400">→ Riesgo: 30 pips</span>
+                    </p>
+                    <p class="mt-2 text-xs text-slate-400">
+                      Si el precio baja a 1.0770, tu posición se cierra automáticamente con -30 pips de pérdida.
+                    </p>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded">
+                    <div class="text-red-400 font-bold mb-2">Posición Short (venta)</div>
+                    <p class="font-mono text-xs">
+                      Entrada: 1.2600 (SELL)<br/>
+                      Stop Loss: 1.2640 (BUY)<br/>
+                      <span class="text-red-400">→ Riesgo: 40 pips</span>
+                    </p>
+                    <p class="mt-2 text-xs text-slate-400">
+                      Si el precio sube a 1.2640, tu posición se cierra automáticamente con -40 pips de pérdida.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">¿Dónde colocar el stop loss?</h3>
+              <div class="space-y-3 text-sm text-slate-300">
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-semibold mb-2">1. Basado en estructura técnica ✓ (Recomendado)</div>
+                  <ul class="space-y-2 ml-4">
+                    <li>• <strong>Posición long:</strong> SL bajo el soporte más reciente (con buffer de 5-10 pips)</li>
+                    <li>• <strong>Posición short:</strong> SL sobre la resistencia más reciente (con buffer de 5-10 pips)</li>
+                    <li>• <strong>Lógica:</strong> si rompe tu zona clave, tu hipótesis es inválida</li>
+                  </ul>
+                </div>
+
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-semibold mb-2">2. Basado en % de capital ✓ (Gestión de riesgo)</div>
+                  <ul class="space-y-2 ml-4">
+                    <li>• Nunca arriesgues más del <strong>1-2% de tu capital</strong> por operación</li>
+                    <li>• Ejemplo: capital $10,000 → riesgo máximo $100-200/trade</li>
+                    <li>• Ajusta tu tamaño de posición (lote) según distancia al SL</li>
+                  </ul>
+                </div>
+
+                <div class="bg-red-900/20 border border-red-700/50 p-4 rounded">
+                  <div class="text-red-400 font-semibold mb-2">3. Stop loss "psicológico" ✗ (EVITAR)</div>
+                  <ul class="space-y-2 ml-4 text-slate-400">
+                    <li>• ❌ "Pondré SL de 50 pips porque me siento cómodo con eso"</li>
+                    <li>• ❌ Números redondos sin lógica técnica (1.0800, 1.2000)</li>
+                    <li>• <strong>Problema:</strong> ignora estructura del mercado = te sacan antes de reversión</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-green-900/20 border border-green-700/50 p-4 rounded">
+                <h3 class="text-green-400 font-bold mb-3 text-sm">✓ Buenas prácticas</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• Colocar SL <strong>antes</strong> de abrir posición</li>
+                  <li>• Nunca mover SL más lejos (aumentar riesgo)</li>
+                  <li>• SL debe tener lógica técnica clara</li>
+                  <li>• Aceptar la pérdida si se activa (no re-entrar inmediatamente)</li>
+                </ul>
+              </div>
+
+              <div class="bg-red-900/20 border border-red-700/50 p-4 rounded">
+                <h3 class="text-red-400 font-bold mb-3 text-sm">✗ Errores mortales</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• Operar sin SL ("solo monitoreo")</li>
+                  <li>• Mover SL más lejos cuando estás en pérdidas</li>
+                  <li>• Cancelar SL cuando el precio se acerca</li>
+                  <li>• SL demasiado ajustado (ruido normal te saca)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Advertencia crítica:</strong> Stop loss NO garantiza precio exacto en mercados volátiles o con gaps.
+              En eventos extremos (gaps de fin de semana, flash crashes) puede ejecutarse a precio peor (slippage).
+              Ejemplo: tu SL es 1.0770, pero ejecuta en 1.0755 por gap = -15 pips extra de pérdida.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Take Profit -->
+        <section class="scroll-mt-24" id="take-profit">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Take Profit: asegura tus ganancias
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El <strong>take profit</strong> (TP) es una orden de <strong>cierre automático</strong> que asegura tus ganancias
+              cuando el precio alcanza tu objetivo.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">Funcionamiento</h3>
+              <div class="space-y-3 text-slate-300 text-sm">
+                <p>
+                  Si estás <strong>largo (comprado):</strong> tu take profit es una <strong>orden de venta</strong> por encima de tu precio de entrada.<br/>
+                  Si estás <strong>corto (vendido):</strong> tu take profit es una <strong>orden de compra</strong> por debajo de tu precio de entrada.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div class="bg-slate-900 p-4 rounded">
+                    <div class="text-green-400 font-bold mb-2">Posición Long (compra)</div>
+                    <p class="font-mono text-xs">
+                      Entrada: 1.0800 (BUY)<br/>
+                      Take Profit: 1.0860 (SELL)<br/>
+                      Stop Loss: 1.0770<br/>
+                      <span class="text-green-400">→ Potencial: +60 pips</span><br/>
+                      <span class="text-red-400">→ Riesgo: -30 pips</span><br/>
+                      <span class="text-blue-400">→ R:R = 1:2 ✓</span>
+                    </p>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded">
+                    <div class="text-red-400 font-bold mb-2">Posición Short (venta)</div>
+                    <p class="font-mono text-xs">
+                      Entrada: 1.2600 (SELL)<br/>
+                      Take Profit: 1.2520 (BUY)<br/>
+                      Stop Loss: 1.2640<br/>
+                      <span class="text-green-400">→ Potencial: +80 pips</span><br/>
+                      <span class="text-red-400">→ Riesgo: -40 pips</span><br/>
+                      <span class="text-blue-400">→ R:R = 1:2 ✓</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">¿Dónde colocar take profit?</h3>
+              <div class="space-y-3 text-sm text-slate-300">
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-semibold mb-2">1. Basado en niveles técnicos ✓ (Recomendado)</div>
+                  <ul class="space-y-2 ml-4">
+                    <li>• <strong>Posición long:</strong> TP en resistencia previa (máximo reciente, Fibonacci, etc.)</li>
+                    <li>• <strong>Posición short:</strong> TP en soporte previo (mínimo reciente, zona de demanda)</li>
+                    <li>• <strong>Lógica:</strong> salir antes de zonas donde el precio probablemente revertirá</li>
+                  </ul>
+                </div>
+
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-semibold mb-2">2. Basado en Risk:Reward ✓ (Gestión probabilística)</div>
+                  <ul class="space-y-2 ml-4">
+                    <li>• Mínimo recomendado: <strong>1:2</strong> (arriesgas 30 pips, buscas 60 pips)</li>
+                    <li>• Óptimo: <strong>1:3</strong> (arriesgas 30 pips, buscas 90 pips)</li>
+                    <li>• <strong>Lógica:</strong> puedes perder 60% de trades y aún ser rentable con R:R 1:2+</li>
+                  </ul>
+                  <div class="mt-3 p-3 bg-slate-800 rounded text-xs">
+                    <strong>Ejemplo:</strong> 10 trades, 4 ganan (+60 pips cada), 6 pierden (-30 pips cada):<br/>
+                    Ganancias: 4 × 60 = +240 pips<br/>
+                    Pérdidas: 6 × 30 = -180 pips<br/>
+                    <span class="text-green-400">Resultado neto: +60 pips (rentable con 40% winrate)</span>
+                  </div>
+                </div>
+
+                <div class="bg-slate-900 p-4 rounded">
+                  <div class="text-white font-semibold mb-2">3. Take profit parcial ✓ (Avanzado)</div>
+                  <ul class="space-y-2 ml-4">
+                    <li>• Cierra 50% de posición en TP1 (1:1 o 1:1.5)</li>
+                    <li>• Mueve SL a breakeven (precio de entrada)</li>
+                    <li>• Deja correr 50% restante a TP2 (1:3 o más)</li>
+                    <li>• <strong>Beneficio:</strong> aseguras ganancia mientras dejas correr potencial</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-green-900/20 border border-green-700/50 p-4 rounded">
+                <h3 class="text-green-400 font-bold mb-3 text-sm">✓ Ventajas del take profit</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• <strong>Automatización:</strong> asegura ganancias mientras duermes</li>
+                  <li>• Elimina la codicia ("espero que suba más...")</li>
+                  <li>• Define tu R:R antes de operar</li>
+                  <li>• Evita reversiones que borran tus ganancias</li>
+                </ul>
+              </div>
+
+              <div class="bg-orange-900/20 border border-orange-700/50 p-4 rounded">
+                <h3 class="text-orange-400 font-bold mb-3 text-sm">✗ Desventajas</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• Limitas tu ganancia potencial</li>
+                  <li>• El precio puede continuar mucho más allá de tu TP</li>
+                  <li>• En tendencias fuertes, dejas dinero en la mesa</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> El debate "TP fijo vs trailing stop" es eterno. Para principiantes, recomendamos <strong>TP fijo con R:R 1:2 mínimo</strong>.
+              Una vez domines eso (6+ meses), experimenta con trailing stops o gestión manual.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Trailing Stop -->
+        <section class="scroll-mt-24" id="trailing-stop">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Trailing Stop: el stop que se mueve
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El <strong>trailing stop</strong> es un tipo especial de stop loss que <strong>se mueve automáticamente</strong>
+              a favor tuyo a medida que el precio avanza en tu dirección.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">¿Cómo funciona?</h3>
+              <div class="space-y-3 text-slate-300 text-sm">
+                <p class="font-semibold text-white">
+                  Configuras una <strong>distancia fija</strong> (en pips o %) y el stop loss se mueve automáticamente manteniendo esa distancia,
+                  pero <strong>solo hacia tu favor, nunca en contra</strong>.
+                </p>
+
+                <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                  <div class="text-white font-bold mb-3">Ejemplo paso a paso (Posición Long):</div>
+                  <div class="space-y-2 text-xs font-mono">
+                    <div class="p-2 bg-slate-800 rounded">
+                      <strong>1. Entrada:</strong> Compras EUR/USD en 1.0800<br/>
+                      <strong>Trailing Stop:</strong> 30 pips<br/>
+                      <strong>Stop Loss inicial:</strong> 1.0770 (30 pips abajo)
+                    </div>
+
+                    <div class="p-2 bg-slate-800 rounded">
+                      <strong>2. Precio sube a 1.0820:</strong><br/>
+                      <span class="text-green-400">→ Trailing Stop se mueve a 1.0790</span> (mantiene 30 pips de distancia)<br/>
+                      <span class="text-blue-400">→ Ya aseguraste +20 pips de ganancia</span>
+                    </div>
+
+                    <div class="p-2 bg-slate-800 rounded">
+                      <strong>3. Precio sube a 1.0850:</strong><br/>
+                      <span class="text-green-400">→ Trailing Stop se mueve a 1.0820</span> (breakeven)<br/>
+                      <span class="text-blue-400">→ Trade sin riesgo (worst case: +20 pips)</span>
+                    </div>
+
+                    <div class="p-2 bg-slate-800 rounded">
+                      <strong>4. Precio sube a 1.0900:</strong><br/>
+                      <span class="text-green-400">→ Trailing Stop se mueve a 1.0870</span><br/>
+                      <span class="text-blue-400">→ Ganancia asegurada: +70 pips mínimo</span>
+                    </div>
+
+                    <div class="p-2 bg-red-900/30 rounded border border-red-700">
+                      <strong>5. Precio baja a 1.0870:</strong><br/>
+                      <span class="text-red-400">→ Trailing Stop se ejecuta</span><br/>
+                      <span class="text-green-400">→ Cierras con +70 pips de ganancia</span>
+                    </div>
+                  </div>
+
+                  <p class="mt-3 text-slate-400 text-xs">
+                    <strong>Clave:</strong> el trailing stop NUNCA retrocede. Si el precio sube, el stop sube. Si el precio baja, el stop se queda donde está.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+              <div class="bg-green-900/20 border border-green-700/50 p-4 rounded">
+                <h3 class="text-green-400 font-bold mb-3 text-sm">✓ Ventajas</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• <strong>Maximiza ganancias</strong> en tendencias fuertes</li>
+                  <li>• Asegura ganancias progresivamente</li>
+                  <li>• Mueve stop a breakeven automáticamente</li>
+                  <li>• Ideal para "dejar correr ganadores"</li>
+                  <li>• No necesitas monitorear constantemente</li>
+                </ul>
+              </div>
+
+              <div class="bg-red-900/20 border border-red-700/50 p-4 rounded">
+                <h3 class="text-red-400 font-bold mb-3 text-sm">✗ Desventajas</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                  <li>• <strong>Te saca en correcciones normales</strong></li>
+                  <li>• Si trailing muy ajustado, te saca prematuramente</li>
+                  <li>• No funciona bien en mercados laterales (choppy)</li>
+                  <li>• Puede dejar menos ganancia que TP fijo bien colocado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-5">
+              <h3 class="text-white font-bold mb-3">¿Qué distancia usar?</h3>
+              <div class="space-y-3 text-sm text-slate-300">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-red-400 font-bold mb-2 text-xs">Muy ajustado (10-20 pips)</div>
+                    <p class="text-xs">
+                      <strong>Pro:</strong> Aseguras ganancias rápido<br/>
+                      <strong>Con:</strong> Te sacan fácilmente en correcciones
+                    </p>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded border border-green-500">
+                    <div class="text-green-400 font-bold mb-2 text-xs">Moderado (30-50 pips) ✓</div>
+                    <p class="text-xs">
+                      <strong>Pro:</strong> Balance entre seguridad y captura<br/>
+                      <strong>Con:</strong> Tolera retrocesos normales
+                    </p>
+                  </div>
+                  <div class="bg-slate-900 p-3 rounded">
+                    <div class="text-orange-400 font-bold mb-2 text-xs">Amplio (60-100 pips)</div>
+                    <p class="text-xs">
+                      <strong>Pro:</strong> Captura tendencias completas<br/>
+                      <strong>Con:</strong> Puede devolver mucha ganancia flotante
+                    </p>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">
+                  <strong>Recomendación:</strong> usa distancia basada en ATR (Average True Range) del par. Ejemplo: ATR de 80 pips → trailing stop de 40-60 pips.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Cuándo usar trailing stop:</strong> Tendencias fuertes y claras (H4/D1 en momentum alcista/bajista definido).
+              <strong>Cuándo NO usar:</strong> mercados laterales o choppyranges donde el precio zigzaguea sin dirección clara.
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Órdenes condicionales -->
+        <section class="scroll-mt-24" id="ordenes-condicionales">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Órdenes condicionales: OCO y OTO
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Las <strong>órdenes condicionales</strong> son órdenes vinculadas que se activan o cancelan según condiciones específicas.
+              Permiten automatización avanzada de estrategias.
+            </p>
+
+            <div class="space-y-5">
+              <!-- OCO -->
+              <div class="bg-background-dark p-5 rounded-lg border border-purple-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">join</span>
+                  OCO: One-Cancels-the-Other (Una cancela la otra)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> Dos órdenes vinculadas. Si una se ejecuta, la otra se <strong>cancela automáticamente</strong>.
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">¿Cuándo usar?</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-purple-400">•</span>
+                        <span>Operar rupturas bidireccionales (no sabes si romperá arriba o abajo)</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-purple-400">•</span>
+                        <span>Gestión de riesgo: colocar SL y TP simultáneamente</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Ejemplo: Estrategia de ruptura bidireccional</div>
+                    <p class="mb-2">EUR/USD está en 1.0850, moviéndose lateral entre 1.0800 (soporte) y 1.0900 (resistencia).</p>
+                    <div class="font-mono text-xs bg-slate-800 p-3 rounded space-y-1">
+                      <div><strong>Orden 1 (OCO):</strong> Buy Stop en 1.0910 (si rompe resistencia)</div>
+                      <div><strong>Orden 2 (OCO):</strong> Sell Stop en 1.0790 (si rompe soporte)</div>
+                      <div class="text-green-400 mt-2">→ Si ejecuta Buy Stop en 1.0910, el Sell Stop se cancela automáticamente</div>
+                      <div class="text-green-400">→ Si ejecuta Sell Stop en 1.0790, el Buy Stop se cancela automáticamente</div>
+                    </div>
+                    <p class="mt-3 text-slate-400 text-xs">
+                      <strong>Beneficio:</strong> No necesitas estar monitoreando. Capturas el movimiento en cualquier dirección sin riesgo de abrir posiciones contrarias.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- OTO -->
+              <div class="bg-background-dark p-5 rounded-lg border border-cyan-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-cyan-400">device_hub</span>
+                  OTO: One-Triggers-the-Other (Una dispara la otra)
+                </h3>
+                <div class="space-y-3 text-slate-300 text-sm">
+                  <p class="font-semibold text-white">
+                    <strong>Definición:</strong> La ejecución de una orden <strong>activa</strong> automáticamente otra(s) orden(es) vinculada(s).
+                  </p>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">¿Cuándo usar?</div>
+                    <ul class="space-y-2">
+                      <li class="flex items-start gap-2">
+                        <span class="text-cyan-400">•</span>
+                        <span>Colocar SL y TP <strong>antes</strong> de que tu entrada se ejecute</span>
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span class="text-cyan-400">•</span>
+                        <span>Trading automatizado completo (entrada + gestión de riesgo)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="bg-slate-900 p-4 rounded border border-slate-700">
+                    <div class="text-white font-bold mb-2">Ejemplo: Entrada programada con protección</div>
+                    <p class="mb-2">USD/CHF está en 0.9200. Crees que subirá a 0.9300, pero solo si primero rompe 0.9250.</p>
+                    <div class="font-mono text-xs bg-slate-800 p-3 rounded space-y-1">
+                      <div><strong>Orden principal:</strong> Buy Stop en 0.9255 (entrada cuando confirme ruptura)</div>
+                      <div class="mt-2 text-cyan-400"><strong>Órdenes disparadas automáticamente si ejecuta buy stop:</strong></div>
+                      <div class="ml-4">→ Stop Loss en 0.9210 (-45 pips riesgo)</div>
+                      <div class="ml-4">→ Take Profit en 0.9345 (+90 pips objetivo, R:R 1:2)</div>
+                    </div>
+                    <p class="mt-3 text-slate-400 text-xs">
+                      <strong>Beneficio:</strong> Configuras toda tu operación de antemano. Si la entrada se ejecuta mientras duermes,
+                      tu SL y TP ya están activos automáticamente. Cero intervención manual requerida.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-yellow-900/20 rounded border border-yellow-500/20 text-slate-200 text-sm">
+              <strong>⚠️ Disponibilidad:</strong> No todos los brokers ofrecen OCO y OTO. Verifica con tu broker si estas órdenes están disponibles
+              en tu plataforma (MetaTrader, cTrader, etc.). Algunos solo permiten órdenes básicas.
+            </div>
+
+            <div class="mt-4 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> OCO y OTO son herramientas avanzadas. Domina primero las órdenes básicas (market, limit, SL, TP)
+              durante 3-6 meses antes de usar condicionales. La complejidad añadida puede generar errores costosos si no entiendes bien el funcionamiento.
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Time-in-Force -->
+        <section class="scroll-mt-24" id="time-in-force">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Time-in-Force: duración de órdenes
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              <strong>Time-in-Force (TIF)</strong> son instrucciones que especifican <strong>cuánto tiempo</strong> una orden pendiente
+              permanece activa antes de cancelarse automáticamente.
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 text-sm">GFD: Good for the Day (Válida hasta fin del día)</h3>
+                <p class="text-slate-300 text-sm">
+                  Orden activa hasta el cierre del día de trading (típicamente 5:00 PM EST en forex).
+                  Si no se ejecuta, se cancela automáticamente. <strong>Es el TIF por defecto en la mayoría de plataformas.</strong>
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-green-700/50">
+                <h3 class="text-white font-bold mb-2 text-sm">GTC: Good 'Til Cancelled (Válida hasta cancelar) ✓ Más usado</h3>
+                <p class="text-slate-300 text-sm">
+                  Orden permanece activa indefinidamente hasta que se ejecute o la canceles manualmente.
+                  <strong>Ideal para swing traders.</strong> Algunos brokers limitan GTC a 90 días máximo.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 text-sm">IOC: Immediate or Cancel (Inmediato o cancelar)</h3>
+                <p class="text-slate-300 text-sm">
+                  Orden debe ejecutarse inmediatamente (total o parcialmente). Cualquier porción no ejecutada se cancela al instante.
+                  <strong>Uso:</strong> scalping de alta frecuencia, mercados muy líquidos.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 text-sm">FOK: Fill or Kill (Llenar o matar)</h3>
+                <p class="text-slate-300 text-sm">
+                  Orden debe ejecutarse <strong>completa e inmediatamente</strong>, o se cancela totalmente. No acepta ejecuciones parciales.
+                  <strong>Uso:</strong> institucionales, órdenes grandes que requieren llenado completo garantizado.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 text-sm">GTD: Good 'Til Date (Válida hasta fecha específica)</h3>
+                <p class="text-slate-300 text-sm">
+                  Orden activa hasta una fecha/hora específica que defines. Si no ejecuta antes de esa fecha, se cancela automáticamente.
+                  <strong>Uso:</strong> eventos específicos (reunión del BCE el 15/05, NFP el primer viernes del mes).
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Recomendación general:</strong> Para traders retail, <strong>GTC</strong> es el más útil.
+              Colocas tus órdenes limit/stop y permanecen activas hasta ejecutar o cancelar.
+              GFD puede ser problemático si olvidas recolocar la orden al día siguiente.
+            </div>
+          </div>
+        </section>
+
+        <!-- 9: Errores comunes -->
+        <section class="scroll-mt-24" id="errores-comunes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Errores comunes con órdenes
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Errores en la gestión de órdenes pueden destruir cuentas. Estos son los más frecuentes:
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-red-900/30 border-2 border-red-500 p-5 rounded-lg">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">dangerous</span>
+                  1. Operar sin stop loss (FATAL)
+                </h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> "Solo voy a monitorear manualmente, no necesito SL".<br/>
+                  <strong>Resultado:</strong> Una operación en contra puede borrar semanas/meses de ganancias en minutos.
+                  Flash crashes, gaps, noticias inesperadas = pérdida total.<br/>
+                  <strong>Solución:</strong> SIEMPRE coloca SL antes de ejecutar. Sin excepciones.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400">close</span>
+                  2. Usar market order durante noticias
+                </h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> Ejecutar market order durante NFP, tasas de interés, decisiones del BCE.<br/>
+                  <strong>Resultado:</strong> Slippage masivo de 20-100+ pips. Ejecutas a precio brutal.<br/>
+                  <strong>Solución:</strong> Usa limit orders o espera 5-10 minutos después de la noticia para que el mercado se estabilice.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2">3. Confundir buy limit con buy stop</h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> Precio está en 1.0800, quieres comprar en 1.0750, pero colocas <strong>buy stop</strong> en vez de <strong>buy limit</strong>.<br/>
+                  <strong>Resultado:</strong> Tu orden nunca se ejecuta (buy stop solo ejecuta si precio sube).<br/>
+                  <strong>Solución:</strong> Memoriza: <strong>Limit = precio mejor</strong> (compras más barato, vendes más caro). <strong>Stop = perseguir momentum</strong> (compras más caro, vendes más barato).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2">4. Mover stop loss más lejos en pérdidas</h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> Precio se acerca a tu SL de -30 pips, lo mueves a -50 pips "dándole más espacio".<br/>
+                  <strong>Resultado:</strong> Aumentas pérdida innecesariamente. Muchas veces el precio continúa contra ti y pierdes -50 en vez de -30.<br/>
+                  <strong>Solución:</strong> El SL se coloca UNA VEZ basado en análisis técnico. Si se activa, aceptas la pérdida. No negocies con el mercado.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2">5. Take profit demasiado cercano (R:R pobre)</h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> SL de 30 pips, TP de 20 pips (R:R 1:0.66). Necesitas 65%+ winrate para ser rentable.<br/>
+                  <strong>Resultado:</strong> Ganas muchos trades pequeños, pierdes pocos grandes = pérdida neta.<br/>
+                  <strong>Solución:</strong> Mínimo R:R 1:1.5, ideal 1:2 o mayor. Esto permite ser rentable con 50% winrate o menos.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2">6. Cancelar órdenes por impaciencia</h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> Colocas buy limit en 1.0750, precio llega a 1.0760 y cancelas porque "está tardando demasiado".<br/>
+                  <strong>Resultado:</strong> Entras con market order en 1.0760, precio baja a 1.0750 y rebota. Perdiste 10 pips de entrada óptima.<br/>
+                  <strong>Solución:</strong> Si tu análisis es sólido, respeta tus órdenes. La paciencia es una ventaja competitiva.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+                <h3 class="text-white font-bold mb-2">7. No verificar tipo de ejecución de tu broker</h3>
+                <p class="text-sm text-slate-300">
+                  <strong>Error:</strong> Asumir que tu broker ejecuta órdenes sin slippage o con re-quote.<br/>
+                  <strong>Resultado:</strong> Ejecuciones a precios peores de lo esperado, especialmente en brokers con dealing desk.<br/>
+                  <strong>Solución:</strong> Verifica si tu broker es ECN/STP (ejecución directa) o Market Maker (pueden haber conflictos de interés). Lee sus políticas de slippage y re-quote.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Estadística brutal:</strong> Se estima que 70%+ de traders retail quiebran por errores de gestión de órdenes
+              (no usar SL, mover SL en pérdidas, R:R pobre) más que por mal análisis. Dominar órdenes es tan importante como el análisis técnico.
+            </div>
+          </div>
+        </section>
+
+        <!-- 10: Guías relacionadas -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Complementa tu conocimiento sobre órdenes con:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">¿Qué es el slippage?</a>
+                <p class="text-sm text-slate-400 mt-1">Cómo afecta slippage tus órdenes market.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">¿Qué es el spread?</a>
+                <p class="text-sm text-slate-400 mt-1">Costo oculto en cada orden que ejecutas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-un-pip/">¿Qué es un pip?</a>
+                <p class="text-sm text-slate-400 mt-1">Unidad de medida para SL y TP.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-un-lote/">¿Qué es un lote?</a>
+                <p class="text-sm text-slate-400 mt-1">Tamaño de posición al ejecutar órdenes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/timeframes/">Timeframes</a>
+                <p class="text-sm text-slate-400 mt-1">Horizonte temporal para colocar órdenes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/el-swap-overnight/">Swap overnight</a>
+                <p class="text-sm text-slate-400 mt-1">Costo de mantener órdenes abiertas días/semanas.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">FAQ</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una orden de mercado (market order)?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Una orden de mercado es una instrucción para comprar o vender inmediatamente al mejor precio disponible en ese momento.
+                Se ejecuta instantáneamente sin garantía de precio exacto. Ideal cuando necesitas entrar/salir urgentemente,
+                pero puede sufrir slippage en mercados volátiles.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuál es la diferencia entre limit order y stop order?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                <strong>Limit order</strong> garantiza precio igual o mejor al especificado (es tu precio máximo a pagar o mínimo a recibir).
+                Solo ejecuta si el precio se mueve a tu favor. <strong>Stop order</strong> se activa cuando el precio alcanza el nivel stop,
+                pero puede ejecutarse a cualquier precio según condiciones de mercado (slippage posible).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Siempre debo usar stop loss?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                <strong>Sí, SIEMPRE.</strong> Operar sin stop loss es la forma más rápida de destruir tu cuenta. Un solo evento (noticia inesperada,
+                flash crash, gap de fin de semana) puede generar pérdidas masivas. El SL limita tu riesgo máximo por operación.
+                Traders profesionales NUNCA operan sin stop loss, sin excepciones.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es mejor: take profit fijo o trailing stop?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Depende del contexto. <strong>Take profit fijo</strong> es mejor en mercados que respetan niveles técnicos claros (soportes/resistencias).
+                <strong>Trailing stop</strong> es mejor en tendencias fuertes donde quieres maximizar ganancias. Para principiantes,
+                recomendamos TP fijo con R:R 1:2 mínimo hasta dominar análisis (6+ meses).
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Puedo usar market order durante noticias importantes?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                <strong>NO recomendado.</strong> Durante noticias de alto impacto (NFP, tasas de interés, PIB) el slippage puede ser brutal (20-100+ pips).
+                Tu market order ejecutará a precio muy desfavorable. Si quieres operar noticias, usa limit orders lejos del precio actual
+                o espera 5-10 minutos después del anuncio para que el mercado se estabilice.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es una orden OCO?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                OCO (One-Cancels-the-Other) son dos órdenes vinculadas: si una se ejecuta, la otra se cancela automáticamente.
+                Útil para estrategias de ruptura bidireccional (buy stop arriba, sell stop abajo) o para gestión de riesgo
+                (colocar SL y TP simultáneamente en posición abierta). No todos los brokers ofrecen OCO.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuándo usar buy stop vs buy limit?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                <strong>Buy stop:</strong> cuando quieres comprar si el precio sube (estrategia de ruptura alcista, confirmar momentum).
+                Precio actual 1.0800, buy stop en 1.0850 ejecuta si rompe resistencia.<br/>
+                <strong>Buy limit:</strong> cuando quieres comprar si el precio baja (comprar barato en retroceso).
+                Precio actual 1.0800, buy limit en 1.0750 ejecuta si retrocede a soporte.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es GTC (Good 'Til Cancelled)?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                GTC es una instrucción Time-in-Force que mantiene tu orden activa indefinidamente hasta que se ejecute o la canceles manualmente.
+                Es el TIF más útil para swing traders y position traders. Algunos brokers limitan GTC a 90 días máximo.
+                Alternativa: GFD (Good for the Day) cancela la orden al cierre del día de trading si no ejecuta.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-green-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya conoces todos los tipos de órdenes. El siguiente paso es <strong>practicar en demo</strong>
+                hasta que colocar órdenes sea automático. Dedica 2-4 semanas practicando cada tipo antes de operar con dinero real.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ordenes-basicas">
+                <span>2.</span> Market y Limit
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#stop-orders">
+                <span>3.</span> Buy/Sell Stop
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#stop-loss">
+                <span>4.</span> Stop Loss
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#take-profit">
+                <span>5.</span> Take Profit
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#trailing-stop">
+                <span>6.</span> Trailing Stop
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ordenes-condicionales">
+                <span>7.</span> OCO y OTO
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#time-in-force">
+                <span>8.</span> Time-in-Force
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores-comunes">
+                <span>9.</span> Errores comunes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>10.</span> Relacionados
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

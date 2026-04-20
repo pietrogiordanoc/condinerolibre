@@ -1,0 +1,678 @@
+﻿<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>¿Qué es el spread en trading? Definición, cálculo y cómo reducirlo | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-400/20 w-fit">
+            <span class="material-symbols-outlined text-yellow-300 text-sm">payments</span>
+            <span class="text-yellow-200 text-xs font-bold uppercase tracking-wider">Costos</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            ¿Qué es el spread en trading?
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-primary">Cómo te afecta</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            El spread es un <strong>costo silencioso</strong>: la diferencia entre el precio de compra (Ask) y el de venta (Bid).
+            Si no lo entiendes, puedes tener una estrategia buena… y aun así perder por costos.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/spreadhero.jpg" alt="Spread en trading - Diferencia Bid/Ask - Panel de precios mostrando spread en mercados financieros" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
+          </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/spreadhero.jpg" alt="Spread en trading - Diferencia Bid/Ask - Panel de precios mostrando spread en mercados financieros" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- 1: Definición -->
+        <section class="scroll-mt-24" id="definicion">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Definición simple: Spread = Ask − Bid
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              En la mayoría de mercados verás <strong>dos precios</strong>:
+            </p>
+
+            <ul class="space-y-3 text-slate-300 mb-5">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">arrow_downward</span>
+                <span><strong>Bid (precio de venta):</strong> precio al que puedes vender al mercado.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-green-500 mt-1 text-sm">arrow_upward</span>
+                <span><strong>Ask (precio de compra):</strong> precio al que puedes comprar del mercado.</span>
+              </li>
+            </ul>
+
+            <p class="text-slate-300 leading-relaxed mb-4">
+              La diferencia entre ambos es el <strong>spread</strong>. Es un costo implícito.
+            </p>
+
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+              <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-yellow-400">calculate</span>
+                Ejemplo rápido
+              </h3>
+              <div class="font-mono text-sm text-slate-200 bg-slate-900 p-3 rounded border border-slate-700 mb-3">
+                EURUSD: Bid 1.1000 / Ask 1.1002 → Spread = 0.0002 (2 pips)
+              </div>
+              <p class="text-sm text-slate-300">
+                Si compras en 1.1002 y cierras al instante, venderías al Bid (1.1000).
+                Por eso, al abrir una operación <strong>normalmente empiezas "en negativo"</strong> por esa diferencia.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Por qué existe -->
+        <section class="scroll-mt-24" id="por-que-existe">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            ¿Por qué existe el spread?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El spread no es un "castigo": es el mecanismo que permite que haya mercado. Los motivos principales:
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">water_drop</span>
+                <span><strong>Liquidez:</strong> cuanto más líquido el mercado (más compradores/vendedores), normalmente menor spread.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">speed</span>
+                <span><strong>Riesgo/volatilidad:</strong> con noticias fuertes o movimientos rápidos, el spread suele aumentar.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">storefront</span>
+                <span><strong>Modelo del intermediario:</strong> algunos brokers cobran comisión y dan spread bajo; otros al revés (spread + cero comisión).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-yellow-500 mt-1 text-sm">shield</span>
+                <span><strong>Cobertura de riesgo:</strong> los market makers ajustan el spread para protegerse de movimientos adversos.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 3: Cómo se mide -->
+        <section class="scroll-mt-24" id="como-se-mide">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            ¿Cómo se mide el spread? (pips, puntos, %)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              La forma de expresar el spread varía según el mercado:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400">attach_money</span>
+                  Forex (pips)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  En pares como EURUSD, el spread se suele expresar en <strong>pips</strong>.
+                </p>
+                <div class="font-mono text-xs text-slate-200 bg-slate-900 p-2 rounded border border-slate-700">
+                  Ejemplo: 2 pips (0.0002)
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400">show_chart</span>
+                  Índices (puntos)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  En índices, muchas veces se expresa en <strong>puntos</strong>.
+                </p>
+                <div class="font-mono text-xs text-slate-200 bg-slate-900 p-2 rounded border border-slate-700">
+                  Ejemplo: 1.0 punto
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400">currency_bitcoin</span>
+                  Cripto (valor / %)
+                </h3>
+                <p class="text-sm text-slate-300 mb-2">
+                  Puede verse en valor directo o como porcentaje (depende del exchange/broker y liquidez).
+                </p>
+                <div class="font-mono text-xs text-slate-200 bg-slate-900 p-2 rounded border border-slate-700">
+                  Ejemplo: $5 o 0.05%
+                </div>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400">check_circle</span>
+                  Regla práctica
+                </h3>
+                <p class="text-sm text-slate-300">
+                  A menor spread, más fácil que tu operación "respire" y llegue a break-even sin necesitar gran movimiento.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Cuándo aumenta -->
+        <section class="scroll-mt-24" id="cuando-aumenta">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            ¿Cuándo sube el spread?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Esto es clave para no operar donde te "roban" los costos sin darte cuenta:
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">campaign</span>
+                <span><strong>Noticias fuertes:</strong> datos macro (NFP, CPI), decisiones de tasas de interés, eventos geopolíticos inesperados.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-orange-500 mt-1 text-sm">nightlight</span>
+                <span><strong>Baja liquidez:</strong> horas "muertas" (madrugada), cambios de sesión (roll-over), fines de semana en algunos activos.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-yellow-500 mt-1 text-sm">trending_up</span>
+                <span><strong>Alta volatilidad:</strong> movimientos rápidos, gaps de apertura, liquidaciones en cascada.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-purple-500 mt-1 text-sm">arrow_circle_down</span>
+                <span><strong>Activos poco líquidos:</strong> ciertas acciones de baja capitalización, altcoins exóticas, pares menores de forex.</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Consejo de supervivencia:</strong> si haces scalping o entradas muy ajustadas, el spread te puede destruir la estadística.
+              Para estilos más "largos" (swing), suele doler menos, pero igual cuenta.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Spread vs Comisión -->
+        <section class="scroll-mt-24" id="spread-vs-comision">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            Spread vs comisión: no es lo mismo
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Muchos principiantes confunden spread con comisión. Son dos costos diferentes:
+            </p>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-slate-300 border-collapse">
+                <thead>
+                  <tr class="bg-background-dark border-b border-slate-700">
+                    <th class="text-left p-4 font-bold text-white">Spread</th>
+                    <th class="text-left p-4 font-bold text-white">Comisión</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Costo <strong>implícito</strong> (diferencia Bid/Ask).</td>
+                    <td class="p-4">Costo <strong>explícito</strong> por operación.</td>
+                  </tr>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Se "paga" al entrar/salir por el diferencial.</td>
+                    <td class="p-4">Se cobra como tarifa fija o variable.</td>
+                  </tr>
+                  <tr class="border-b border-slate-700/50">
+                    <td class="p-4">Puede <strong>variar mucho</strong> con volatilidad/liquidez.</td>
+                    <td class="p-4">Suele ser más <strong>estable</strong> (según broker).</td>
+                  </tr>
+                  <tr>
+                    <td class="p-4">Invisible en el ticket (afecta precio de entrada).</td>
+                    <td class="p-4">Visible en el ticket (cargo separado).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Regla CDL:</strong> no mires solo spread o solo comisión. Calcula el <strong>costo total</strong> por operación
+              (spread + comisión + overnight/swap si aplica) para comparar brokers.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6: Ejemplos por mercado -->
+        <section class="scroll-mt-24" id="ejemplos">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Ejemplos de spread por mercado
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              El spread varía considerablemente según el activo y el momento:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Forex (majors)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong>EURUSD:</strong> 0.5-2 pips (normal)</li>
+                  <li><strong>GBPUSD:</strong> 1-3 pips (normal)</li>
+                  <li><strong>USDJPY:</strong> 0.5-2 pips (normal)</li>
+                  <li class="text-xs text-slate-400">En noticias: puede x2 o x3</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Índices (CFDs)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong>S&P 500:</strong> 0.4-1 punto</li>
+                  <li><strong>Nasdaq:</strong> 1-2 puntos</li>
+                  <li><strong>DAX:</strong> 1-3 puntos</li>
+                  <li class="text-xs text-slate-400">Varía por horario/sesión</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Cripto (exchanges)</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong>BTC/USDT:</strong> $1-5 típico</li>
+                  <li><strong>ETH/USDT:</strong> {{MAIN_CONTENT}}.10-1 típico</li>
+                  <li><strong>Altcoins:</strong> muy variable</li>
+                  <li class="text-xs text-slate-400">24/7 pero spread sube en baja liquidez</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-3 border-b border-slate-700 pb-2">Acciones</h3>
+                <ul class="space-y-2 text-sm text-slate-300">
+                  <li><strong>Large caps:</strong> {{MAIN_CONTENT}}.01-0.05</li>
+                  <li><strong>Small caps:</strong> puede ser mucho mayor</li>
+                  <li><strong>Pre/post market:</strong> spread se amplía</li>
+                  <li class="text-xs text-slate-400">Depende mucho del volumen</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7: Cómo reducir impacto -->
+        <section class="scroll-mt-24" id="como-reducir">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Cómo reducir el impacto del spread
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              No puedes eliminar el spread, pero sí puedes minimizar su impacto:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-400 text-sm">schedule</span>
+                  1. Opera horas líquidas
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Evita sesiones "muertas" o momentos de baja liquidez si tu estrategia es de entradas finas.
+                  En forex: sesiones europea/americana superpuestas. En acciones: primeras horas de sesión.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-400 text-sm">trending_up</span>
+                  2. Elige activos líquidos
+                </h3>
+                <p class="text-sm text-slate-300">
+                  En cripto, prioriza BTC/ETH para empezar. En acciones, large caps con volumen.
+                  En forex, majors (EURUSD, GBPUSD, USDJPY).
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-orange-400 text-sm">style</span>
+                  3. Considera tu estilo
+                </h3>
+                <p class="text-sm text-slate-300">
+                  Scalping sufre mucho más el spread. Day/swing suelen tolerarlo mejor si el plan es sólido
+                  y los objetivos son mayores al spread.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-yellow-400 text-sm">calculate</span>
+                  4. Mira el costo total
+                </h3>
+                <p class="text-sm text-slate-300">
+                  No es solo spread: también puede haber comisiones, overnight (swap/financiación) y slippage.
+                  Suma todo antes de decidir si un setup vale la pena.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-green-400 text-sm">compare</span>
+                  5. Compara brokers
+                </h3>
+                <p class="text-sm text-slate-300">
+                  El spread varía entre brokers para el mismo activo. Investiga antes de elegir,
+                  especialmente si haces scalping o day trading.
+                </p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-red-400 text-sm">block</span>
+                  6. Evita operar noticias
+                </h3>
+                <p class="text-sm text-slate-300">
+                  El spread se dispara en datos económicos importantes. Si no tienes experiencia,
+                  evita operar 5-10 min antes/después de NFP, CPI, tasas, etc.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Lectura complementaria:</strong>
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">Qué es el slippage</a> ·
+              <a class="underline hover:text-primary" href="/aprende/el-swap-overnight/">El swap overnight</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8: Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              El spread cambia según el mercado. Si quieres ver cómo aplica en cada uno:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/forex-para-principiantes/">Forex para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Spread típico 0.5-3 pips en majors.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Spread en puntos: S&P, Nasdaq, DAX.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Spread en céntimos: large vs small caps.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cripto-para-principiantes/">Cripto para principiantes</a>
+                <p class="text-sm text-slate-400 mt-1">Spread variable 24/7, cuidado con altcoins.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+                <p class="text-sm text-slate-400 mt-1">Otro costo oculto en ejecuciones.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Comparativa completa de costos.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el spread en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                El spread es la diferencia entre el precio de compra (Ask) y el precio de venta (Bid).
+                Es un costo implícito: cuando abres una operación, normalmente empiezas "en negativo" por esa diferencia.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Spread es lo mismo que comisión?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. La comisión es un cargo explícito por operación. El spread es un costo implícito (la diferencia Bid/Ask).
+                Algunos brokers ofrecen spread bajo y cobran comisión, otros spread más alto y cero comisión. Calcula el costo total.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuándo sube el spread?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Suele subir en noticias fuertes, baja liquidez (madrugada, cambios de sesión), sesiones "muertas",
+                alta volatilidad y en activos poco líquidos. También puede variar entre brokers.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿El scalping sufre más el spread?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Sí. Como busca movimientos pequeños con muchas operaciones, el spread se "come" una mayor proporción del beneficio.
+                Swing trading tolera mejor el spread porque los objetivos son mayores.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo puedo comparar spreads entre brokers?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Abre una cuenta demo en varios brokers y observa el spread en tiempo real durante tus horarios de operativa,
+                especialmente en noticias o baja liquidez. No mires solo el spread "típico" anunciado.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿El spread es el único costo oculto?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. También existe slippage (diferencia entre precio esperado y ejecutado), swap/overnight (costo de financiación por mantener posiciones),
+                y comisiones explícitas. Suma todos para calcular costo real por operación.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, costos reales y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-yellow-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es el spread y cómo te afecta. El siguiente paso es aprender a calcular el
+                <strong>costo total por operación</strong> (spread + comisión + overnight) y elegir activos/horarios que no te penalicen.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-slippage/">Qué es el slippage</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
+                <span>1.</span> Definición (Ask/Bid)
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#por-que-existe">
+                <span>2.</span> Por qué existe
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-se-mide">
+                <span>3.</span> Cómo se mide
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#cuando-aumenta">
+                <span>4.</span> Cuándo aumenta
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#spread-vs-comision">
+                <span>5.</span> Spread vs Comisión
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ejemplos">
+                <span>6.</span> Ejemplos por mercado
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-reducir">
+                <span>7.</span> Cómo reducir impacto
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>8.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>9.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+// Image modal zoom functionality
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>
