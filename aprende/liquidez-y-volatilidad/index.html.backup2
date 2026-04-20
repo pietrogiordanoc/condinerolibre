@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700" rel="stylesheet">
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -22,13 +22,10 @@
                 extend: {
                     colors: {
                         primary: '#39E079',
-                        'background-light': '#f6f8f7',
-                        'background-dark': '#122017',
-                        'surface-dark': '#1c2633',
-                        'surface-darker': '#111822'
+                        secondary: '#0A0E27'
                     },
                     fontFamily: {
-                        display: 'Lexend',
+                        display: ['Lexend', 'sans-serif'],
                         body: ['Noto Sans', 'sans-serif']
                     }
                 }
@@ -36,13 +33,31 @@
         }
     </script>
     
-    <!-- CDL Shell CSS -->
+    <!-- CDL Shell CSS & JS -->
     <link rel="stylesheet" href="/shared/cdl-shell.css">
+    <script src="/shared/cdl-shell.js" defer></script>
     
     <style>
-        html { scroll-behavior: smooth; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .icon { font-family: 'Material Symbols Outlined'; font-size: 1.5rem; }
+        .toc-link.active { color: #39E079; font-weight: 600; }
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #39E079 0%, #2bc461 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-pattern {
+            background-image: radial-gradient(circle at 20% 50%, rgba(57, 224, 121, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(57, 224, 121, 0.08) 0%, transparent 50%);
+        }
+        
+        summary::-webkit-details-marker { display: none; }
+        details[open] summary .icon { transform: rotate(180deg); }
+        .icon { transition: transform 0.3s ease; }
     </style>
     
     <!-- Schema.org structured data -->
@@ -157,56 +172,64 @@
     }
     </script>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
-
-  <!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
-
-<!-- MAIN CONTENT -->
-<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
-      <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+<body class="font-body bg-white dark:bg-secondary text-gray-900 dark:text-gray-100">
     
-        <!-- ARTICLE CONTENT -->
-        <article class="lg:col-span-8 flex flex-col gap-8">
+    <!-- Header inyectado dinámicamente -->
+    <div id="cdl-header"></div>
     
-          <!-- HERO SECTION -->
-          <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
-                <span class="material-symbols-outlined text-primary text-sm">insights</span>
-                <span class="text-primary text-xs font-bold uppercase tracking-wider">Conceptos Clave</span>
-              </div>
-    
-              <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
-                Liquidez y Volatilidad
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-primary">Los Dos Pilares del Trading</span>
-              </h1>
-    
-              <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
-                Entiende cómo la <strong>liquidez</strong> determina tus costos de transacción y cómo la <strong>volatilidad</strong> define tus oportunidades de ganancia. Aprende cuándo operar, qué pares elegir y qué estrategias usar según las condiciones del mercado.
-              </p>
-    
-              <!-- Imagen Hero -->
-              <figure class="bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
-                <img
-                  src="/images/liquidezhero.jpg"
-                  alt="Liquidez y Volatilidad en Trading - Gráfico mostrando volumen y movimiento de precios"
-                  class="w-full h-auto"
-                  width="1200"
-                  height="630"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-              </figure>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-16 px-4 overflow-hidden hero-pattern">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Texto Hero -->
+                <div class="fade-in">
+                    <div class="inline-block mb-4 px-4 py-2 bg-primary/10 rounded-full">
+                        <span class="text-primary font-semibold text-sm">CONCEPTOS CLAVE · LIQUIDEZ Y VOLATILIDAD</span>
+                    </div>
+                    <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Liquidez y Volatilidad: <span class="gradient-text">Los Dos Pilares</span> del Trading
+                    </h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                        Entiende cómo la liquidez determina tus costos de transacción y cómo la volatilidad define tus oportunidades de ganancia. Aprende cuándo operar, qué pares elegir y qué estrategias usar según las condiciones del mercado.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#definicion" class="inline-flex items-center px-6 py-3 bg-primary text-secondary font-semibold rounded-lg hover:bg-primary/90 transition">
+                            Comenzar a Aprender
+                            <span class="icon ml-2">arrow_forward</span>
+                        </a>
+                        <a href="#faq" class="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary/10 transition">
+                            Ver Preguntas Frecuentes
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Imagen Hero -->
+                <div class="fade-in lg:order-last">
+                    <img src="/images/liquidezhero.jpg" alt="Gráfico mostrando liquidez y volatilidad en trading con volumen y movimiento de precios" class="rounded-2xl shadow-2xl w-full">
+                </div>
             </div>
+        </div>
+    </section>
     
-            <!-- CTA -->
-            <div class="flex flex-wrap gap-4 pt-2">
-              <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal de ConDineroLibre"
-                 class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 text-black text-base font-bold transition-all shadow-[0_0_20px_rgba(57,224,121,0.3)] hover:shadow-[0_0_25px_rgba(57,224,121,0.5)]">
-                Acceder a la plataforma
-              </a>
-            </div>
+    <!-- Breadcrumbs -->
+    <nav class="max-w-7xl mx-auto px-4 py-4" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-2 text-sm">
+            <li><a href="/" class="text-primary hover:underline">Inicio</a></li>
+            <li class="text-gray-400">/</li>
+            <li><a href="/aprende/" class="text-primary hover:underline">Aprende</a></li>
+            <li class="text-gray-400">/</li>
+            <li class="text-gray-600 dark:text-gray-400">Liquidez y Volatilidad</li>
+        </ol>
+    </nav>
     
-            <!-- 1. Definición -->
+    <!-- Contenido Principal con TOC -->
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid lg:grid-cols-[1fr_250px] gap-12">
+            
+            <!-- Contenido -->
+            <article class="prose prose-lg dark:prose-invert max-w-none">
+                
+                <!-- 1. Definición -->
                 <section id="definicion" class="mb-16 scroll-mt-24">
                     <h2 class="font-display text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-3">
                         <span class="icon text-primary">info</span>
@@ -1317,78 +1340,75 @@
                     </div>
                 </section>
                 
-      </article>
-
-      <!-- Aside TOC -->
-      <aside class="hidden lg:block col-span-4 relative">
-        <div class="sticky top-24">
-          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
-            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
-              Contenido
-            </h4>
-
-            <nav class="flex flex-col space-y-1 text-sm">
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#definicion">
-                <span>1.</span> Definición
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#liquidez">
-                <span>2.</span> Liquidez
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#horarios">
-                <span>3.</span> Horarios
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#volatilidad">
-                <span>4.</span> Volatilidad
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#estrategias">
-                <span>5.</span> Estrategias
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacion">
-                <span>6.</span> Relación Liq-Vol
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#spreads">
-                <span>7.</span> Spreads
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#herramientas">
-                <span>8.</span> Herramientas
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#errores">
-                <span>9.</span> Errores
-              </a>
-              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
-                <span>10.</span> FAQ
-              </a>
-            </nav>
-          </div>
+            </article>
+            
+            <!-- TOC Sidebar (sticky) -->
+            <aside class="hidden lg:block">
+                <nav class="sticky top-24 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <h3 class="font-semibold text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">En Esta Página</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#definicion" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Definición</a></li>
+                        <li><a href="#liquidez" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Liquidez</a></li>
+                        <li><a href="#horarios" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Horarios de Liquidez</a></li>
+                        <li><a href="#volatilidad" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Volatilidad</a></li>
+                        <li><a href="#estrategias" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Estrategias</a></li>
+                        <li><a href="#relacion" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Relación Liquidez-Volatilidad</a></li>
+                        <li><a href="#spreads" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Spreads y Slippage</a></li>
+                        <li><a href="#herramientas" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Herramientas</a></li>
+                        <li><a href="#errores" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">Errores Comunes</a></li>
+                        <li><a href="#faq" class="toc-link block text-gray-600 dark:text-gray-400 hover:text-primary transition">FAQ</a></li>
+                    </ul>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <a href="/cdl-portal/cdlradar/" class="block w-full px-4 py-3 bg-primary text-secondary text-center font-semibold rounded-lg hover:bg-primary/90 transition text-sm">
+                            Señales en Vivo
+                            <span class="icon text-sm ml-1">notifications_active</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+            
         </div>
-      </aside>
     </div>
-  </main>
-
-  <!-- Footer se carga dinámicamente desde /shared/footer.html -->
-
-<script>
-  function rewriteLocalModuleLinks() {
-    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-    if (!isLocal) return;
-    const rules = [
-      { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
-      { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
-      { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
-      { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
-    ];
-    document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
-      const href = anchor.getAttribute('href');
-      const rule = rules.find((item) => href.startsWith(item.prefix));
-      if (!rule) return;
-      anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
-    });
-  }
-  rewriteLocalModuleLinks();
-</script>
-
-<!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
-<script defer src="/shared/cdl-shell.js"></script>
+    
+    <!-- Footer inyectado dinámicamente -->
+    <div id="cdl-footer"></div>
+    
+    <!-- Scripts -->
+    <script>
+        // TOC scroll spy
+        const sections = document.querySelectorAll('section[id]');
+        const tocLinks = document.querySelectorAll('.toc-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+    
 </body>
 </html>
