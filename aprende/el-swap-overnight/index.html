@@ -199,17 +199,11 @@
           </p>
 
           <!-- Imagen Hero -->
-          <figure class="bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
-            <img
-              src="/images/swaphero.jpg"
-              alt="Swap overnight en trading - Financiación diaria por mantener posiciones - Roll-over"
-              class="w-full h-auto"
-              width="1200"
-              height="630"
-              loading="eager"
-              fetchpriority="high"
-            />
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img src="/images/swaphero.jpg" alt="Swap overnight en trading - Financiación diaria por mantener posiciones - Roll-over" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+            <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"><span class="material-symbols-outlined text-xl">zoom_in</span><span class="text-sm font-semibold hidden sm:inline">Ampliar</span></button>
           </figure>
+          <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"><div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter:blur(20px)"></div><div class="relative z-10 w-full h-full flex items-center justify-center"><img id="modal-image" src="/images/swaphero.jpg" alt="Swap overnight en trading - Financiación diaria por mantener posiciones - Roll-over" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"/><button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"><span class="material-symbols-outlined text-2xl">close</span></button><div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg"><span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span></div></div></div>
         </div>
 
         <!-- CTA -->
@@ -860,7 +854,7 @@
     }
   });
 </script>
-
+<script>(function(){const a=document.getElementById('zoom-btn'),b=document.getElementById('hero-image-container'),c=document.getElementById('image-modal'),d=document.getElementById('modal-image'),e=document.getElementById('close-modal-btn'),f=document.getElementById('modal-backdrop');if(!a||!c||!d)return;function g(h){h.stopPropagation();const i=document.getElementById('hero-image'),j=i.getBoundingClientRect();d.style.transformOrigin=`${j.left+j.width/2}px ${j.top+j.height/2}px`;c.classList.remove('pointer-events-none');document.body.style.overflow='hidden';requestAnimationFrame(()=>{c.style.opacity='1';d.style.transition='transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';d.style.transform='scale(1) rotate(0deg)';setTimeout(()=>d.style.transform='scale(1.02) rotate(0.5deg)',100);setTimeout(()=>d.style.transform='scale(1) rotate(0deg)',300)})}function k(h){if(h)h.stopPropagation();d.style.transition='transform 0.5s cubic-bezier(0.68,-0.55,0.265,1.55)';d.style.transform='scale(0) rotate(-2deg)';c.style.opacity='0';setTimeout(()=>{c.classList.add('pointer-events-none');document.body.style.overflow='';d.style.transform='scale(0)'},500)}a.addEventListener('click',g);b.addEventListener('click',h=>{if(h.target===b||h.target.id==='hero-image')g(h)});e.addEventListener('click',k);f.addEventListener('click',k);document.addEventListener('keydown',h=>{if(h.key==='Escape'&&!c.classList.contains('pointer-events-none'))k()});c.addEventListener('wheel',h=>h.preventDefault(),{passive:!1})})();</script>
 <!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
 <script defer src="/shared/cdl-shell.js"></script>
 </body>
