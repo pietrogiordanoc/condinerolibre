@@ -1,821 +1,837 @@
-﻿<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html class="dark" lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-  <!-- SEO core -->
-  <title>Forex para Principiantes: Qué es y Cómo Funciona</title>
-  <meta name="description" content="Guía clara de Forex para principiantes: qué es, cómo funciona, pares de divisas, horarios, ventajas y riesgos. Empieza con una base sólida." />
+  <!-- Schema: Breadcrumb + Article + FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
+          { "@type": "ListItem", "position": 3, "name": "Forex para principiantes", "item": "https://www.condinerolibre.com/aprende/forex-para-principiantes/" }
+        ]
+      },
+      {
+        "@type": "Article",
+        "@id": "https://www.condinerolibre.com/aprende/forex-para-principiantes/#article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://www.condinerolibre.com/aprende/forex-para-principiantes/"
+        },
+        "headline": "Forex para Principiantes: Qué es el mercado de divisas y cómo funciona",
+        "description": "Guía completa de Forex para principiantes: qué es, cómo funcionan los pares de divisas, horarios, ventajas, riesgos y primeros pasos sin humo.",
+        "author": {
+          "@type": "Person",
+          "name": "Pietro Giordano"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.condinerolibre.com/aprende/forex-para-principiantes/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Qué es Forex en palabras simples?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Forex es el mercado donde se intercambian divisas (monedas) como EUR, USD o JPY. En trading, normalmente se opera con pares como EUR/USD."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Forex es lo mismo que trading?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Trading es la actividad de operar en distintos mercados (acciones, índices, criptomonedas, etc.). Forex es un mercado específico: el de divisas."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <meta name="description" content="Forex para principiantes: qué es el mercado de divisas, cómo funcionan los pares (EUR/USD), horarios, ventajas, riesgos y primeros pasos sin fantasías." />
   <link rel="canonical" href="https://www.condinerolibre.com/aprende/forex-para-principiantes/" />
   <meta name="robots" content="index,follow,max-image-preview:large" />
 
-  <!-- Open Graph / Social -->
+  <!-- Open Graph -->
   <meta property="og:type" content="article" />
-  <meta property="og:locale" content="es_ES" />
-  <meta property="og:site_name" content="ConDineroLibre" />
-  <meta property="og:title" content="Forex para Principiantes: Qué es y Cómo Funciona" />
-  <meta property="og:description" content="Aprende Forex desde cero: qué es, cómo funciona, pares de divisas, horarios, ventajas y riesgos, explicado fácil." />
+  <meta property="og:site_name" content="Condinerolibre" />
+  <meta property="og:title" content="Forex para Principiantes: Qué es y Cómo Funciona | CDL" />
+  <meta property="og:description" content="Guía clara de Forex: pares de divisas, horarios, ventajas y riesgos explicados sin humo." />
   <meta property="og:url" content="https://www.condinerolibre.com/aprende/forex-para-principiantes/" />
-  <meta property="og:image" content="https://www.condinerolibre.com/assets/img/aprende/forex/forex-para-principiantes.webp" />
+  <meta property="og:image" content="https://www.condinerolibre.com/images/forexhero.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Mercado Forex - Trading de divisas - Condinerolibre" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Forex para Principiantes: Qué es y Cómo Funciona | CDL" />
+  <meta name="twitter:description" content="Pares de divisas, horarios, ventajas y riesgos del mercado Forex explicados con claridad." />
+  <meta name="twitter:image" content="https://www.condinerolibre.com/images/forexhero.jpg" />
+  <meta name="twitter:image:alt" content="Mercado Forex - Trading de divisas - Condinerolibre" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Forex para Principiantes: Qué es y Cómo Funciona | Guía CDL</title>
 
-  <!-- Performance: preconnect fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS CDN -->
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
   <style>
-    :root{
-      --bg:#0b0b0c;
-      --card:#141416;
-      --text:#f1f1f1;
-      --muted:#b8b8b8;
-      --line:#2a2a2e;
-      --brand:#6BFF57;
-      --brand2:#39d98a;
-      --shadow: 0 8px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-      --max: 1200px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-size: 0.8em;
-      background: radial-gradient(900px 500px at 15% 0%, rgba(107,255,87,.10), transparent 60%),
-          radial-gradient(900px 500px at 85% 10%, rgba(57,217,138,.10), transparent 60%),
-          var(--bg);
-      color:var(--text);
-      line-height:1.65;
-    }
-    a{color:var(--brand); text-decoration:none}
-    a:hover{text-decoration:underline}
-    header, main, footer{width:100%}
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-      padding:14px 0;
-    }
-    .logo{
-      display:flex; align-items:center; gap:10px; color:var(--text); font-weight:800;
-      letter-spacing:.2px;
-    }
-    .logo-badge{
-      width:34px; height:34px; border-radius:10px;
-      background: linear-gradient(135deg, rgba(107,255,87,.95), rgba(57,217,138,.95));
-      box-shadow: var(--shadow);
-    }
-    .navlinks{display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end}
-    .navlinks a{color:var(--muted)}
-    .navlinks a:hover{color:var(--text)}
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 
-    .breadcrumbs{
-      margin-top:10px; color:var(--muted); font-size:.95rem;
+  <style>
+    /* Mega Menu Styles */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+      pointer-events: none;
     }
-    .breadcrumbs a{color:var(--muted)}
-    .breadcrumbs span{opacity:.85}
-
-    .hero{
-      margin-top:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hero-inner{
-      display:grid; gap:16px;
-      grid-template-columns: 1.3fr .9fr;
-      padding:22px;
-      align-items:center;
-    }
-    .kicker{
-      color:var(--brand2); font-weight:700; text-transform:uppercase; letter-spacing:.12em;
-      font-size:.78rem;
-    }
-    h1{
-      margin:8px 0 10px;
-      font-size: clamp(1.7rem, 2.4vw, 2.35rem);
-      line-height:1.15;
-    }
-    .lede{color:var(--muted); margin:0 0 14px; font-size:1.02rem}
-    .meta{
-      display:flex; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:.92rem
-    }
-    .pill{
-      border:1px solid rgba(255,255,255,.10);
-      padding:6px 10px; border-radius:999px;
-      background: rgba(255,255,255,.02);
-    }
-    .hero-media{
-      border-radius: calc(var(--radius) - 4px);
-      border:1px solid rgba(255,255,255,.08);
-      overflow:hidden;
-      background: rgba(0,0,0,.18);
-      min-height: 220px;
-    }
-    .hero-media img{width:100%; height:auto; display:block}
-    .cta-row{
-      display:flex; gap:12px; flex-wrap:wrap;
-      margin-top:14px;
-    }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px; padding:12px 14px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      font-weight:700;
-      cursor:pointer;
-    }
-    .btn-primary{
-        text-decoration: none !important;
-      background: #045621;
-      border-color: transparent;
-      color:#fff;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-    }
-    .btn-primary:hover {
-        text-decoration: none !important;
-      background: #23d160 !important;
-      color: #fff !important;
-      filter: none !important;
-    }
-    .grid{
-      margin-top:22px;
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap:18px;
-      align-items:start;
-    }
-    .card{
-      background: rgba(255,255,255,.02);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .content{padding:18px 18px}
-    .content h2{
-      margin:26px 0 8px;
-      font-size: 1.35rem;
-      line-height:1.2;
-    }
-    .content h3{
-      margin:18px 0 6px;
-      font-size: 1.08rem;
-      line-height:1.25;
-      color: #eaeaea;
-    }
-    .content p{margin:10px 0; color:#e7e7e7}
-    .content ul{margin:10px 0 10px 18px; color:#e7e7e7}
-    .callout{
-      margin:16px 0;
-      padding:14px 14px;
-      border-radius: 14px;
-      border:1px solid rgba(107,255,87,.25);
-      background: rgba(107,255,87,.06);
-      color:#eaffea;
-    }
-    .mini{
-      font-size:.95rem; color:var(--muted);
-    }
-    .side{padding:16px}
-    .side h3{margin:0 0 10px; font-size:1.05rem}
-    .side a{display:block; padding:10px 10px; border-radius:12px; color:var(--text)}
-    .side a:hover{background: rgba(255,255,255,.04); text-decoration:none}
-    .toc{
-      border-top:1px solid rgba(255,255,255,.08);
-      margin-top:12px; padding-top:12px;
-    }
-    .img{
-      margin:14px 0;
-      border-radius: 14px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.02);
-    }
-    .img img{width:100%; height:auto; display:block}
-    .img figcaption{padding:10px 12px; color:var(--muted); font-size:.8rem}
-    .faq details{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 14px;
-      padding:12px 14px;
-      background: rgba(255,255,255,.02);
-      margin:10px 0;
-    }
-    .faq summary{cursor:pointer; font-weight:700}
-    .author{
-      display:flex; gap:14px; align-items:flex-start;
-      padding:16px; border-top:1px solid rgba(255,255,255,.08);
-    }
-    .avatar{
-      width:46px; height:46px; border-radius: 14px;
-      background: linear-gradient(135deg, rgba(107,255,87,.35), rgba(57,217,138,.35));
-      border:1px solid rgba(255,255,255,.08);
-    }
-    footer{
-      margin-top:24px; border-top:1px solid rgba(255,255,255,.08);
-      color:var(--muted);
-    }
-    footer .wrap{padding:18px 24px}
-    .fineprint{font-size:.9rem}
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
-    }
-
-    /* ---------- TOOLTIP para Commodities ---------- */
-    .term{
-      position: relative;
-      display:inline-block;
-      color: var(--brand);
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
-      cursor: help;
-      font-weight: 700;
-    }
-    .term .tooltip{
-      position:absolute;
-      left:0;
-      top: calc(100% + 10px);
-      width: min(520px, calc(100vw - 48px));
-      background: rgba(20,20,22,.98);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: var(--text);
-      box-shadow: var(--shadow);
-      z-index: 999;
-
-      opacity:0;
-      visibility:hidden;
-      transform: translateY(-6px);
-      transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
-      pointer-events:none;
-      font-size:.92rem;
-      line-height:1.45;
-    }
-    .term .tooltip::before{
-      content:"";
-      position:absolute;
-      top:-8px;
-      left: 18px;
-      border-width: 0 8px 8px 8px;
-      border-style: solid;
-      border-color: transparent transparent rgba(20,20,22,.98) transparent;
-    }
-    /* Hover y focus (PC + teclado) */
-    .term:hover .tooltip,
-    .term:focus .tooltip,
-    .term:focus-within .tooltip{
-      opacity:1;
-      visibility:visible;
+    .nav-item-dropdown.is-open .mega-menu {
+      opacity: 1;
+      visibility: visible;
       transform: translateY(0);
-      pointer-events:auto;
+      pointer-events: all;
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
     }
-    /* Tap en móvil (JS añade .open) */
-    .term.open .tooltip{
-      opacity:1;
-      visibility:visible;
-      transform: translateY(0);
-      pointer-events:auto;
+    .platform-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -185px;
     }
-
-    /* Mobile */
-    @media (max-width: 920px){
-      .hero-inner{grid-template-columns:1fr}
-      .grid{grid-template-columns:1fr}
-      .navlinks{justify-content:flex-start}
-      .term .tooltip{left:0; right:0;}
+    .platform-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28);
+    }
+    .platform-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .learn-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -270px;
+    }
+    .learn-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
+    }
+    .learn-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    .nav-menu {
+      font-size: 0.8rem;
     }
   </style>
 
-  <!-- Structured data: Breadcrumbs -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
-      { "@type": "ListItem", "position": 3, "name": "Forex para principiantes", "item": "https://www.condinerolibre.com/aprende/forex-para-principiantes/" }
-    ]
-  }
-  </script>
-
-  <!-- Structured data: Article -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.condinerolibre.com/aprende/forex-para-principiantes/"
-    },
-    "headline": "Forex para Principiantes: Qué es y Cómo Funciona",
-    "description": "Guía clara de Forex para principiantes: qué es, cómo funciona, pares de divisas, horarios, ventajas y riesgos.",
-    "image": [
-      "https://www.condinerolibre.com/assets/img/aprende/forex/forex-para-principiantes.webp"
-    ],
-    "author": {
-      "@type": "Person",
-      "name": "Equipo ConDineroLibre",
-      "url": "https://www.condinerolibre.com/sobre-nosotros/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ConDineroLibre",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.condinerolibre.com/assets/img/brand/logo-cdl.png"
-      }
-    },
-    "datePublished": "2026-01-04",
-    "dateModified": "2026-01-04"
-  }
-  </script>
-
-  <!-- Structured data: FAQPage -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"¿Qué es Forex en palabras simples?",
-        "acceptedAnswer":{
-          "@type":"Answer",
-          "text":"Forex es el mercado donde se intercambian divisas (monedas) como EUR, USD o JPY. En trading, normalmente se opera con pares como EUR/USD."
-        }
-      },
-      {
-        "@type":"Question",
-        "name":"¿Forex es lo mismo que trading?",
-        "acceptedAnswer":{
-          "@type":"Answer",
-          "text":"No. Trading es la actividad de operar en distintos mercados (acciones, índices, criptomonedas, etc.). Forex es un mercado específico: el de divisas."
-        }
-      },
-      {
-        "@type":"Question",
-        "name":"¿Por qué Forex es riesgoso para principiantes?",
-        "acceptedAnswer":{
-          "@type":"Answer",
-          "text":"Principalmente por el apalancamiento y la volatilidad. Con poca formación, es fácil arriesgar de más o entrar sin un plan."
-        }
-      },
-      {
-        "@type":"Question",
-        "name":"¿Cuándo abre el mercado Forex?",
-        "acceptedAnswer":{
-          "@type":"Answer",
-          "text":"Forex opera 24 horas de lunes a viernes, siguiendo las sesiones asiática, europea y americana."
-        }
-      }
-    ]
-  }
-  </script>
-<style>
-  /* Mega Menu Styles */
-  .mega-menu {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
-    pointer-events: none;
-  }
-  .nav-item-dropdown.is-open .mega-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: all;
-    transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
-  }
-  .platform-menu {
-    width: min(1035px, calc(100vw - 32px));
-    left: -185px;
-  }
-  .platform-preview {
-    box-shadow: 0 16px 38px rgba(0,0,0,0.28);
-  }
-  .platform-preview img {
-    object-fit: contain;
-    background: #10161d;
-  }
-  .learn-menu {
-    width: min(1035px, calc(100vw - 32px));
-    left: -270px;
-  }
-  .learn-preview {
-    box-shadow: 0 16px 38px rgba(0,0,0,0.24);
-  }
-  .learn-preview img {
-    object-fit: contain;
-    background: #10161d;
-  }
-  .mobile-menu {
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-  }
-  .mobile-menu.active {
-    transform: translateX(0);
-  }
-  .nav-menu {
-    font-size: 0.8rem;
-  }
-</style>
-<link rel="stylesheet" href="/shared/cdl-shell.css">
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 
-<body>
-  
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
   <!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
 
 <!-- MAIN CONTENT -->
-<main style="padding-top: 80px;">
-  <div class="wrap">
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-    <nav class="breadcrumbs" aria-label="Breadcrumbs">
-      <a href="/que-es-el-trading/">¿Qué es el trading?</a> <span>›</span>
-      <a href="https://www.condinerolibre.com/#cursos" target="_parent">Cursos</a> <span>›</span>
-      <span>Forex para principiantes</span>
-    </nav>
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
 
-    <section class="hero" aria-label="Encabezado principal">
-      <div class="hero-inner">
-        <div>
-          <div class="kicker">Guía informacional</div>
-          <h1>Forex para Principiantes: qué es y cómo funciona</h1>
-
-          <p class="lede">
-            Esta guía de <strong>forex para principiantes</strong> te explica desde cero qué es el mercado de divisas,
-            cómo se operan los pares (como EUR/USD), cuáles son los horarios más activos y qué riesgos debes entender antes de empezar.
-          </p>
-
-          <div class="meta">
-            <span class="pill">Intención: Informacional</span>
-            <span class="pill">Nivel: Inicial</span>
-            <span class="pill">Lectura: 8–10 min</span>
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 w-fit">
+            <span class="material-symbols-outlined text-emerald-300 text-sm">currency_exchange</span>
+            <span class="text-emerald-200 text-xs font-bold uppercase tracking-wider">Mercado de divisas</span>
           </div>
 
-          <div class="cta-row">
-            <a class="btn btn-primary" href="#empezar">Empezar por lo esencial</a>
-            <a class="btn btn-primary" href="/tipos-de-mercado/">Ver tipos de mercado financiero</a>
-          </div>
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Forex para principiantes:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-primary">qué es y cómo funciona</span>
+          </h1>
 
-          <p class="mini" style="margin-top:10px">
-            Nota: Si aún no tienes claro cómo se organizan los mercados (acciones, índices, cripto, etc.),
-            primero revisa nuestra guía de <a href="/tipos-de-mercado/">tipos de mercado</a>.
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Forex (Foreign Exchange) es el mercado donde se intercambian divisas. Aquí entiendes
+            <strong>qué son los pares de divisas, cuáles son los horarios más activos</strong> y qué riesgos debes conocer antes de empezar, sin humo.
           </p>
+
+          <!-- Imagen Hero -->
+          <figure class="bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
+            <img
+              src="/images/forexhero.jpg"
+              alt="Mercado Forex - Trading de divisas con pares EUR/USD, GBP/USD - Pantalla de cotizaciones en tiempo real"
+              class="w-full h-auto"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
         </div>
 
-        <figure class="hero-media" aria-label="Imagen principal">
-          <img
-            src="forex-para-principiantes.webp"
-            alt="Ilustración del mercado Forex con pares de divisas"
-            width="900"
-            height="560"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-    </section>
-
-    <div class="grid">
-      <article class="card content" aria-label="Contenido principal">
-        <div id="empezar" class="sr-only">Inicio del contenido</div>
-
-        <p class="callout">
-          <strong>Objetivo:</strong> Que entiendas Forex con claridad (sin humo) y puedas decidir si este mercado encaja contigo. Aquí aprenderás qué es el mercado de divisas, cómo funcionan los pares y cuáles son los riesgos básicos antes de empezar.
-          👉 Si primero necesitas una visión general de los mercados financieros (acciones, índices, cripto, Materias Primas o también conocidos como 
-          <span class="term" tabindex="0" aria-describedby="tip-commodities">
-            Commodities
-            <span class="tooltip" id="tip-commodities" role="tooltip">
-              Los commodities (materias primas) son bienes básicos, homogéneos y estandarizados, como el oro, petróleo, café o trigo, que se negocian en mercados financieros y son esenciales para producir otros bienes. Su precio varía por oferta, demanda, clima y geopolítica, y se invierten a través de futuros o ETFs para diversificar o cubrir riesgos. Se clasifican en energéticos, metales (duros) y productos agrícolas (blandos).
-            </span>
-          </span>
-        </p>
-
-        <h2 id="que-es-forex">¿Qué es el mercado Forex?</h2>
-        <p>
-          Forex (Foreign Exchange) es el <strong>mercado de divisas</strong>: un espacio global donde se intercambian monedas.
-          A diferencia de otros mercados, <strong>no tiene una única bolsa central</strong>; funciona de forma descentralizada,
-          conectando bancos, instituciones y participantes en distintas regiones.
-        </p>
-
-        <figure class="img">
-          <img
-            src="pares-divisas-forex.webp"
-            alt="Ejemplo de pares de divisas en Forex como EUR/USD y USD/JPY"
-            width="980"
-            height="560"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>Pares de divisas: en Forex casi siempre operas “una moneda contra otra”.</figcaption>
-        </figure>
-
-        <h2 id="como-funciona">¿Cómo funciona el trading en Forex?</h2>
-        <p>
-          En Forex se opera con <strong>pares de divisas</strong>. Un par indica cuánto vale una moneda frente a otra.
-          Por ejemplo, <strong>EUR/USD</strong> relaciona el euro (EUR) con el dólar estadounidense (USD).
-        </p>
-
-        <figcaption style="font-size:0.6rem; color:#6b7280; padding:12px 16px;">Pares de divisas: en Forex casi siempre operas “una moneda contra otra”.</figcaption>
-        <ul>
-          <li><strong>Divisa base:</strong> la primera del par (EUR en EUR/USD).</li>
-          <figcaption class="text-xs text-slate-500 px-4 py-3">Pares de divisas: en Forex casi siempre operas “una moneda contra otra”.</figcaption>
-        </ul>
-
-        <h3 id="compra-venta">2) Comprar vs vender (idea simple)</h3>
-        <p>
-          Si “compras” EUR/USD, estás apostando a que el euro se fortalecerá frente al dólar.
-          Si “vendes” EUR/USD, estás apostando a lo contrario.
-        </p>
-
-        <div class="callout">
-          <strong>Tip de principiante:</strong> no necesitas memorizar jerga. Solo entiende esto:
-          <em>en Forex siempre comparas dos monedas</em>.
+        <!-- CTA -->
+        <div class="flex flex-wrap gap-4 pt-2">
+          <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal de ConDineroLibre"
+             class="flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 text-black text-base font-bold transition-all shadow-[0_0_20px_rgba(19,109,236,0.3)] hover:shadow-[0_0_25px_rgba(19,109,236,0.5)]">
+            Acceder a la plataforma
+          </a>
         </div>
 
-        <h2 id="participantes">¿Quiénes participan en Forex?</h2>
-        <p>Estos son los participantes más comunes (a nivel general):</p>
-        <ul>
-          <li><strong>Bancos centrales</strong> (política monetaria e intervención).</li>
-          <li><strong>Bancos comerciales</strong> y proveedores de liquidez.</li>
-          <li><strong>Fondos</strong> e instituciones.</li>
-          <li><strong>Traders minoristas</strong> (personas como tú, vía brokers).</li>
-        </ul>
+        <!-- 1: Qué es -->
+        <section class="scroll-mt-24" id="que-es">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué es el mercado Forex?
+          </h2>
 
-        <h2 id="horarios">Horarios del mercado Forex</h2>
-        <p>
-          Forex opera <strong>24 horas, de lunes a viernes</strong>, siguiendo el ciclo de sesiones globales.
-          Normalmente se habla de sesiones <strong>asiática</strong>, <strong>europea</strong> y <strong>americana</strong>.
-        </p>
-
-        <figure class="img">
-          <img
-            src="./horarios-sesiones-forex.webp"
-            alt="Mapa de sesiones del mercado Forex: Asia, Europa y América"
-            width="980"
-            height="560"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption class="text-[0.rem] text-slate-500 px-4 py-3">Las superposiciones de sesiones suelen traer más movimiento (y más riesgo).</figcaption>
-        </figure>
-
-        <h2 id="ventajas-riesgos">Ventajas y riesgos del Forex para principiantes</h2>
-
-        <h3>Ventajas</h3>
-        <ul>
-          <li><strong>Alta liquidez:</strong> suele haber mucho volumen.</li>
-          <li><strong>Accesible:</strong> puedes empezar con cuentas pequeñas (ojo con el riesgo).</li>
-          <li><strong>Horarios flexibles:</strong> se adapta a distintas rutinas.</li>
-        </ul>
-
-        <h3>Riesgos</h3>
-        <ul>
-          <li><strong>Apalancamiento:</strong> amplifica ganancias y pérdidas.</li>
-          <li><strong>Volatilidad:</strong> puede moverse rápido, especialmente en noticias.</li>
-          <li><strong>Falta de plan:</strong> el error #1 del principiante es operar sin reglas.</li>
-        </ul>
-
-        <div class="callout">
-          <strong>Regla CDL:</strong> antes de “buscar ganar”, aprende a <em>no perder por errores básicos</em>:
-          riesgo por operación, stop y disciplina.
-        </div>
-
-        <h2 id="mejor-para-empezar">¿Forex es el mejor mercado para empezar?</h2>
-        <p>
-          Depende de tu perfil. Forex es popular por su liquidez y horarios, pero no es “mejor” automáticamente.
-          Hay personas que se adaptan mejor a <strong>acciones</strong> (movimientos más lentos) o a <strong>índices</strong>.
-        </p>
-        <p>
-          Si quieres comparar Forex con otros mercados sin confundirte, usa la guía pilar:
-          <a href="/tipos-de-mercado/">Tipos de mercado financiero</a>.
-        </p>
-
-        <h2 id="primeros-pasos">Primeros pasos recomendados (sin humo)</h2>
-        <ol style="margin:10px 0 10px 18px; color:#e7e7e7">
-          <li>Entiende pares y sesiones (ya lo tienes aquí).</li>
-          <li>Define un riesgo fijo por operación (micro, constante).</li>
-          <li>Practica en demo con un plan simple, no con “señales mágicas”.</li>
-          <li>Cuando pases a real, baja el tamaño y prioriza consistencia.</li>
-        </ol>
-
-        
-
-        <h2 id="fuentes">Fuentes recomendadas (editoriales)</h2>
-        <p class="mini">
-          Para ampliar con información institucional (sin afiliados), puedes consultar:
-        </p>
-        <ul>
-          <li>
-            <a href="https://www.bis.org/" target="_blank" rel="nofollow noopener noreferrer">
-              BIS (Bank for International Settlements)
-            </a>
-          </li>
-          <li>
-            <a href="https://www.ecb.europa.eu/" target="_blank" rel="nofollow noopener noreferrer">
-              Banco Central Europeo (ECB)
-            </a>
-          </li>
-        </ul>
-
-        <h2 id="faqs">Preguntas frecuentes sobre Forex</h2>
-        <section class="faq" aria-label="FAQs">
-          <details>
-            <summary>¿Qué es Forex en palabras simples?</summary>
-            <p>Forex es el mercado donde se intercambian monedas. En trading, lo habitual es operar pares como EUR/USD.</p>
-          </details>
-          <details>
-            <summary>¿Forex es lo mismo que trading?</summary>
-            <p>No. Trading es operar mercados (acciones, índices, cripto, etc.). Forex es un mercado: el de divisas.</p>
-          </details>
-          <details>
-            <summary>¿Por qué Forex es riesgoso para principiantes?</summary>
-            <p>Por el apalancamiento y la volatilidad. Sin plan y control de riesgo, es fácil perder por errores básicos.</p>
-          </details>
-          <details>
-            <summary>¿Cuándo abre el mercado Forex?</summary>
-            <p>Opera 24 horas de lunes a viernes, siguiendo sesiones asiática, europea y americana.</p>
-          </details>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              <strong>Forex</strong> (Foreign Exchange) es el <strong>mercado global de divisas</strong>: un espacio descentralizado
+              donde se intercambian monedas como EUR, USD, JPY, GBP, etc.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              A diferencia de otros mercados, <strong>no tiene una bolsa central única</strong>. Funciona mediante una red global
+              que conecta bancos, instituciones financieras y participantes individuales en distintas zonas horarias.
+            </p>
+            <p class="text-slate-300 leading-relaxed">
+              En trading, Forex significa operar con <strong>pares de divisas</strong> (ej: EUR/USD), especulando sobre
+              si una moneda se fortalecerá o debilitará frente a otra.
+            </p>
+          </div>
         </section>
 
-        <section class="author" aria-label="Autor">
-          
-          <div>
-            <strong>Autor: Equipo ConDineroLibre</strong>
-            <p class="mini" style="margin:6px 0 0">
-              Contenido educativo basado en práctica y metodología de análisis. Conoce más en
-              <a href="/sobre-nosotros/">Sobre nosotros</a> o escríbenos en <a href="https://portal.condinerolibre.com/contacto/" target="_parent">Contacto</a>.
+        <!-- 2: Cómo funciona -->
+        <section class="scroll-mt-24" id="como-funciona">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            ¿Cómo funciona el trading en Forex?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <h3 class="text-xl font-bold text-white mb-4">Pares de divisas</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              En Forex se opera con <strong>pares de divisas</strong>. Un par indica cuánto vale una moneda frente a otra.
+              Por ejemplo: <strong>EUR/USD = 1.0850</strong> significa que 1 euro vale 1.0850 dólares.
             </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-emerald-400 mb-2">
+                  <span class="material-symbols-outlined">arrow_upward</span>
+                  <span class="font-bold">Divisa base (EUR)</span>
+                </div>
+                <p class="text-sm text-slate-300">La primera del par. Es la que "compras" o "vendes".</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="flex items-center gap-2 text-blue-400 mb-2">
+                  <span class="material-symbols-outlined">arrow_downward</span>
+                  <span class="font-bold">Divisa cotizada (USD)</span>
+                </div>
+                <p class="text-sm text-slate-300">La segunda del par. Indica el precio de la base.</p>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">Comprar vs Vender</h3>
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-green-500 mt-1 text-sm">trending_up</span>
+                <span><strong>Comprar (Long):</strong> Apuestas a que la divisa base (EUR) subirá frente a la cotizada (USD).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">trending_down</span>
+                <span><strong>Vender (Short):</strong> Apuestas a que la divisa base bajará frente a la cotizada.</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Tip de principiante:</strong> no necesitas memorizar jerga. Solo entiende esto:
+              <em>en Forex siempre comparas dos monedas</em>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Tipos de pares -->
+        <section class="scroll-mt-24" id="tipos-pares">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Tipos de pares de divisas
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-blue-400">star</span>
+                <h3 class="text-white font-bold text-lg">Mayores</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">Los más líquidos. Incluyen USD.</p>
+              <ul class="text-sm text-slate-300 space-y-1">
+                <li>• EUR/USD</li>
+                <li>• GBP/USD</li>
+                <li>• USD/JPY</li>
+                <li>• USD/CHF</li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-purple-400">flag</span>
+                <h3 class="text-white font-bold text-lg">Menores (Cruces)</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">No incluyen USD. Menos liquidez.</p>
+              <ul class="text-sm text-slate-300 space-y-1">
+                <li>• EUR/GBP</li>
+                <li>• EUR/JPY</li>
+                <li>• GBP/JPY</li>
+                <li>• AUD/NZD</li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark rounded-xl p-6 border border-slate-800">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-yellow-400">travel_explore</span>
+                <h3 class="text-white font-bold text-lg">Exóticos</h3>
+              </div>
+              <p class="text-slate-400 text-sm mb-4">Mercados emergentes. Spreads altos.</p>
+              <ul class="text-sm text-slate-300 space-y-1">
+                <li>• USD/TRY (Lira turca)</li>
+                <li>• USD/ZAR (Rand sudafricano)</li>
+                <li>• EUR/TRY</li>
+                <li>⚠️ Más riesgo</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Horarios -->
+        <section class="scroll-mt-24" id="horarios">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Horarios y sesiones del mercado Forex
+          </h2>
+
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-6">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              Forex opera <strong>24 horas, de lunes a viernes</strong>, siguiendo el ciclo de sesiones globales.
+              Las sesiones principales son: <strong>asiática</strong>, <strong>europea</strong> y <strong>americana</strong>.
+            </p>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-700">
+              <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-surface-dark text-slate-200 uppercase font-bold text-xs">
+                  <tr>
+                    <th class="px-6 py-4">Sesión</th>
+                    <th class="px-6 py-4">Horario (CET)</th>
+                    <th class="px-6 py-4">Pares más activos</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700 bg-background-dark">
+                  <tr>
+                    <td class="px-6 py-4 font-medium text-white">Asiática (Tokio)</td>
+                    <td class="px-6 py-4">00:00 – 09:00</td>
+                    <td class="px-6 py-4">USD/JPY, AUD/USD</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 font-medium text-white">Europea (Londres)</td>
+                    <td class="px-6 py-4">08:00 – 17:00</td>
+                    <td class="px-6 py-4">EUR/USD, GBP/USD</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 font-medium text-white">Americana (Nueva York)</td>
+                    <td class="px-6 py-4">14:00 – 23:00</td>
+                    <td class="px-6 py-4">EUR/USD, USD/CAD</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 font-medium text-white">Superposición EUR-USA</td>
+                    <td class="px-6 py-4">14:00 – 17:00</td>
+                    <td class="px-6 py-4 text-yellow-400">Mayor volatilidad</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-emerald-900/20 rounded border border-emerald-400/20 text-slate-200 text-sm">
+              <strong>Consejo CDL:</strong> las superposiciones de sesiones (Europa + USA) suelen traer más liquidez y movimiento.
+              Profundiza en: <a class="underline hover:text-primary" href="/aprende/horarios-sesiones-forex/">Horarios y sesiones</a>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Participantes -->
+        <section class="scroll-mt-24" id="participantes">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            ¿Quiénes participan en Forex?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              El mercado Forex incluye diversos participantes con distintos objetivos:
+            </p>
+
+            <ul class="space-y-3 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">account_balance</span>
+                <span><strong>Bancos centrales:</strong> regulan política monetaria e intervienen para estabilizar divisas.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">business</span>
+                <span><strong>Bancos comerciales:</strong> proveen liquidez y ejecutan operaciones institucionales.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">trending_up</span>
+                <span><strong>Fondos e instituciones:</strong> hedge funds, gestoras de activos, empresas multinacionales.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">person</span>
+                <span><strong>Traders minoristas:</strong> personas individuales operando vía brokers (como tú).</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 6: Ventajas y riesgos -->
+        <section class="scroll-mt-24" id="ventajas-riesgos">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Ventajas y riesgos del Forex para principiantes
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Ventajas</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  <strong>Alta liquidez:</strong> volumen enorme, facilita entradas/salidas.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  <strong>Accesible:</strong> puedes empezar con cuentas pequeñas.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  <strong>Horarios flexibles:</strong> 24h adaptable a tu rutina.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-green-500">check_circle</span>
+                  <strong>Spreads bajos:</strong> especialmente en pares mayores.
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+              <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Riesgos</h3>
+              <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  <strong>Apalancamiento:</strong> amplifica ganancias y pérdidas.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  <strong>Volatilidad:</strong> movimientos rápidos en noticias/datos macro.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  <strong>Falta de plan:</strong> error #1 del principiante.
+                </li>
+                <li class="flex items-center gap-3 text-slate-300">
+                  <span class="material-symbols-outlined text-red-500">cancel</span>
+                  <strong>Brokers:</strong> elegir uno regulado es crítico.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+            <strong>Regla CDL:</strong> antes de "buscar ganar", aprende a <em>no perder por errores básicos</em>:
+            riesgo por operación, stop y disciplina.
+          </div>
+        </section>
+
+        <!-- 7: Para quién -->
+        <section class="scroll-mt-24" id="para-quien">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            ¿Forex es el mejor mercado para empezar?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-5">
+              <strong>Depende de tu perfil.</strong> Forex es popular por su liquidez y horarios 24h, pero
+              no es "mejor" automáticamente. Algunas personas se adaptan mejor a:
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Índices</h3>
+                <p class="text-sm text-slate-300">Movimientos más "limpios", menos ruido que pares exóticos.</p>
+                <a class="text-sm underline hover:text-primary" href="/aprende/indices-para-trading/">Ver guía</a>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Acciones</h3>
+                <p class="text-sm text-slate-300">Movimientos más lentos, análisis fundamental.</p>
+                <a class="text-sm underline hover:text-primary" href="/aprende/acciones-para-trading/">Ver guía</a>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <h3 class="text-white font-bold mb-2">Cripto</h3>
+                <p class="text-sm text-slate-300">Volatilidad extrema, operación 24/7.</p>
+                <a class="text-sm underline hover:text-primary" href="/aprende/cripto-para-principiantes/">Ver guía</a>
+              </div>
+            </div>
+
+            <p class="text-slate-300 leading-relaxed mt-5">
+              Si quieres comparar Forex con otros mercados sin confundirte, usa la guía pilar:
+              <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado financiero</a>.
+            </p>
+          </div>
+        </section>
+
+        <!-- 8: Primeros pasos -->
+        <section class="scroll-mt-24" id="primeros-pasos">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">8</span>
+            Primeros pasos recomendados (sin humo)
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ol class="space-y-4 text-slate-300">
+              <li class="flex items-start gap-3">
+                <span class="flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold flex-shrink-0">1</span>
+                <div>
+                  <strong class="text-white">Entiende pares y sesiones</strong>
+                  <p class="text-sm mt-1">Ya lo tienes cubierto con esta guía. Revisa los horarios y elige una sesión que encaje con tu rutina.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold flex-shrink-0">2</span>
+                <div>
+                  <strong class="text-white">Define un riesgo fijo por operación</strong>
+                  <p class="text-sm mt-1">Micro, constante (ej: 0.5% o 1% de cuenta por trade). Esto es lo que protege tu capital.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold flex-shrink-0">3</span>
+                <div>
+                  <strong class="text-white">Practica en demo con un plan simple</strong>
+                  <p class="text-sm mt-1">No uses "señales mágicas". Construye un método propio y registra cada operación.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold flex-shrink-0">4</span>
+                <div>
+                  <strong class="text-white">Pasa a real con tamaño micro</strong>
+                  <p class="text-sm mt-1">Cuando pases a cuenta real, baja el tamaño y prioriza consistencia antes que rentabilidad.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Lectura recomendada:</strong>
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+              <a class="underline hover:text-primary" href="/aprende/que-es-el-spread/">Qué es el spread</a> →
+              <a class="underline hover:text-primary" href="/aprende/el-swap-overnight/">El swap overnight</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">9</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Para construir conocimiento sólido, explora estos temas complementarios:
+            </p>
+
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/tipos-de-mercado/">Tipos de mercado</a>
+                <p class="text-sm text-slate-400 mt-1">Comparativa completa: Forex, índices, acciones, cripto.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/indices-para-trading/">Índices para trading</a>
+                <p class="text-sm text-slate-400 mt-1">S&P 500, Nasdaq, DAX: horarios y estrategias.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/acciones-para-trading/">Acciones para trading</a>
+                <p class="text-sm text-slate-400 mt-1">Earnings, gaps y selección de empresas.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/horarios-sesiones-forex/">Horarios y sesiones</a>
+                <p class="text-sm text-slate-400 mt-1">Ventanas de liquidez en Forex y otros mercados.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-spread/">Qué es el spread</a>
+                <p class="text-sm text-slate-400 mt-1">Coste real en tu operativa.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/que-es-el-slippage/">Qué es el slippage</a>
+                <p class="text-sm text-slate-400 mt-1">Deslizamiento de precio en volatilidad.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">10</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es Forex en palabras simples?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Forex es el mercado donde se intercambian divisas (monedas) como EUR, USD, JPY. En trading, se opera con pares como EUR/USD,
+                especulando sobre si una moneda subirá o bajará frente a otra.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Forex es lo mismo que trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                No. Trading es la actividad de operar en distintos mercados (acciones, índices, criptomonedas, etc.).
+                Forex es un mercado específico: el de divisas.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Por qué Forex es riesgoso para principiantes?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Principalmente por el apalancamiento y la volatilidad. Con poca formación, es fácil arriesgar de más o entrar sin un plan.
+                El error #1 es no definir riesgo por operación y stops.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuándo abre el mercado Forex?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Forex opera 24 horas de lunes a viernes, siguiendo las sesiones asiática (00:00-09:00 CET), europea (08:00-17:00 CET)
+                y americana (14:00-23:00 CET). Las superposiciones traen más liquidez.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cuánto dinero necesito para empezar en Forex?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Técnicamente puedes empezar con $100-$500 en cuentas micro, pero lo importante no es el capital inicial sino
+                la gestión de riesgo: nunca arriesgues más del 1-2% por operación.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Forex o índices para principiantes?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Ambos son válidos. Forex ofrece horarios 24h y liquidez, pero índices suelen tener movimientos más "limpios" y técnicos.
+                Depende de tu horario y perfil. Prueba ambos en demo.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  ConDineroLibre es una plataforma educativa centrada en <strong>trading realista</strong>, gestión del riesgo y proceso.
+                  Nuestro enfoque evita promesas falsas: priorizamos estructura, rutina y control de exposición.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a> ·
+                  <a class="underline hover:text-primary" href="/contacto/">Contacto</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Next step -->
+        <section class="mt-8 bg-surface-dark/50 border border-emerald-900/50 p-6 rounded-lg shadow-sm" id="siguiente-paso">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1">
+              <p class="text-slate-300 text-lg leading-relaxed">
+                Ya sabes qué es Forex, cómo funcionan los pares y cuáles son los horarios. El siguiente paso es dominar
+                <strong>riesgo, tamaño de posición y ejecución</strong>.
+              </p>
+              <p class="text-slate-400 text-sm mt-3">
+                Recomendado: <a class="underline hover:text-primary" href="/aprende/que-es-el-trading/">Qué es el trading</a> →
+                <a class="underline hover:text-primary" href="/cursos/">Ver cursos disponibles</a>.
+              </p>
+            </div>
+            <div class="flex-shrink-0">
+              <a class="inline-flex items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-emerald-600 text-black text-base font-bold transition-colors"
+                 href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F" title="Accede a tu dashboard personal">
+                 Acceder a la plataforma
+              </a>
+            </div>
           </div>
         </section>
       </article>
 
-      <!-- SIDEBAR (UX + internal links, no canibalización) -->
-      <aside class="card side" aria-label="Navegación lateral">
-        <h3>En esta guía</h3>
-        <nav class="toc" aria-label="Tabla de contenidos">
-          <a href="#que-es-forex">Qué es Forex</a>
-          <a href="#como-funciona">Cómo funciona</a>
-          <a href="#pares-divisas">Pares de divisas</a>
-          <a href="#horarios">Horarios</a>
-          <a href="#ventajas-riesgos">Ventajas y riesgos</a>
-          <a href="#mejor-para-empezar">¿Es el mejor mercado?</a>
-          <a href="#primeros-pasos">Primeros pasos</a>
-          <a href="#faqs">FAQs</a>
-        </nav>
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
 
-        
-
-        <div class="toc">
-          <h3 style="margin-top:12px">Siguiente paso</h3>
-          <a class="btn btn-primary" href="https://www.condinerolibre.com/#cursos">Ver Indices Para Trading</a>
-          
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#que-es">
+                <span>1.</span> Qué es Forex
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#como-funciona">
+                <span>2.</span> Cómo funciona
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#tipos-pares">
+                <span>3.</span> Tipos de pares
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#horarios">
+                <span>4.</span> Horarios/sesiones
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#participantes">
+                <span>5.</span> Participantes
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#ventajas-riesgos">
+                <span>6.</span> Ventajas/Riesgos
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#para-quien">
+                <span>7.</span> ¿Mejor mercado?
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#primeros-pasos">
+                <span>8.</span> Primeros pasos
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>9.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>10.</span> FAQ
+              </a>
+            </nav>
+          </div>
         </div>
       </aside>
     </div>
-  </div>
-</main>
+  </main>
 
   <!-- Footer se carga dinámicamente desde /shared/footer.html -->
 
-  <!-- ========== JAVASCRIPT (va antes de </body>, después del footer) ========== -->
-  <script>
-    function rewriteLocalModuleLinks() {
-      const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-      if (!isLocal) return;
-
-      const rules = [
-        { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
-        { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
-        { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
-        { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
-      ];
-
-      document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
-        const href = anchor.getAttribute('href');
-        const rule = rules.find((item) => href.startsWith(item.prefix));
-        if (!rule) return;
-        anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
-      });
-    }
-
-    rewriteLocalModuleLinks();
-
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
-    
-    mobileMenuBtn?.addEventListener('click', () => {
-      mobileMenu.classList.add('active');
+<script>
+  function rewriteLocalModuleLinks() {
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    if (!isLocal) return;
+    const rules = [
+      { prefix: '/cdl-portal/', replacement: '/modulo%20portal/cdl-portal/' },
+      { prefix: '/contacto/', replacement: '/modulo%20portal/contacto/' },
+      { prefix: '/aprende/', replacement: '/modulo%20aprende/' },
+      { prefix: '/cursos/', replacement: '/modulo%20Cursos/' }
+    ];
+    document.querySelectorAll('a[href^="/"]').forEach((anchor) => {
+      const href = anchor.getAttribute('href');
+      const rule = rules.find((item) => href.startsWith(item.prefix));
+      if (!rule) return;
+      anchor.setAttribute('href', rule.replacement + href.slice(rule.prefix.length));
     });
-    
-    mobileMenuClose?.addEventListener('click', () => {
+  }
+  rewriteLocalModuleLinks();
+
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.add('active');
+  });
+  
+  mobileMenuClose?.addEventListener('click', () => {
+    mobileMenu.classList.remove('active');
+  });
+
+  // Desktop mega menus with delayed close
+  const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+  desktopDropdowns.forEach((dropdown) => {
+    let closeTimer;
+    const openMenu = () => {
+      clearTimeout(closeTimer);
+      desktopDropdowns.forEach((item) => {
+        if (item !== dropdown) item.classList.remove('is-open');
+      });
+      dropdown.classList.add('is-open');
+    };
+    const closeMenu = () => {
+      closeTimer = setTimeout(() => {
+        dropdown.classList.remove('is-open');
+      }, 260);
+    };
+    dropdown.addEventListener('mouseenter', openMenu);
+    dropdown.addEventListener('mouseleave', closeMenu);
+  });
+
+  mobileMenu?.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) {
       mobileMenu.classList.remove('active');
-    });
+    }
+  });
+</script>
 
-    // Desktop mega menus with delayed close
-    const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
-
-    desktopDropdowns.forEach((dropdown) => {
-      let closeTimer;
-
-      const openMenu = () => {
-        clearTimeout(closeTimer);
-        desktopDropdowns.forEach((item) => {
-          if (item !== dropdown) item.classList.remove('is-open');
-        });
-        dropdown.classList.add('is-open');
-      };
-
-      const closeMenu = () => {
-        closeTimer = setTimeout(() => {
-          dropdown.classList.remove('is-open');
-        }, 260);
-      };
-
-      dropdown.addEventListener('mouseenter', openMenu);
-      dropdown.addEventListener('mouseleave', closeMenu);
-    });
-    
-    // Close mobile menu when clicking outside
-    mobileMenu?.addEventListener('click', (e) => {
-      if (e.target === mobileMenu) {
-        mobileMenu.classList.remove('active');
-      }
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-    
-    // Add scroll effect to header
-    let lastScroll = 0;
-    const header = document.querySelector('header');
-    
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset;
-      
-      if (currentScroll > 100) {
-        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
-      } else {
-        header.style.boxShadow = 'none';
-      }
-      
-      lastScroll = currentScroll;
-    });
-
-    // Tooltip móvil: tap para abrir/cerrar, tap fuera para cerrar
-    document.querySelectorAll('.term').forEach(t => {
-      t.addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.querySelectorAll('.term.open').forEach(o => { if(o !== t) o.classList.remove('open'); });
-        t.classList.toggle('open');
-      });
-    });
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.term.open').forEach(t => t.classList.remove('open'));
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.term.open').forEach(t => t.classList.remove('open'));
-      }
-    });
-  </script>
-
-  <!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
-  <script defer src="/shared/cdl-shell.js"></script>
+<!-- CDL Shell JavaScript - Carga header y footer dinámicamente -->
+<script defer src="/shared/cdl-shell.js"></script>
 </body>
 </html>
