@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Soportes y Resistencias en Trading | CDL</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <article class="lg:col-span-8 flex flex-col gap-8">
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 w-fit">
+          <span class="material-symbols-outlined text-cyan-300 text-sm">show_chart</span>
+          <span class="text-cyan-200 text-xs font-bold uppercase tracking-wider">Análisis Técnico</span>
+        </div>
+        <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+          Soportes y Resistencias:
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">niveles clave del precio</span>
+        </h1>
+        <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+          Los soportes y resistencias son los pilares del análisis técnico. Aquí aprenderás a identificarlos correctamente,
+          entender breakouts, retests y cómo usarlos para tomar decisiones de trading.
+        </p>
+        <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden">
+          <img src="/images/soportes-resistencias-hero.jpg" alt="Soportes y Resistencias en Trading" class="w-full h-auto" width="1200" height="630" loading="eager" fetchpriority="high"/>
+        </figure>
+      </div>
+
+      <section class="scroll-mt-24" id="que-son">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+          ¿Qué son soportes y resistencias?
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <p class="text-slate-300 leading-relaxed mb-4">
+            <strong>Soporte:</strong> Nivel de precio donde históricamente ha aparecido demanda (compradores) suficiente para detener o revertir caídas.
+          </p>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            <strong>Resistencia:</strong> Nivel de precio donde históricamente ha aparecido oferta (vendedores) suficiente para detener o revertir subidas.
+          </p>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 mb-4">
+            <p class="text-slate-300 text-sm"><strong>Psicología:</strong> Son zonas donde traders recuerdan que el precio reaccionó antes,
+              creando "memoria de mercado". Si EUR/USD rebotó 3 veces en 1.0800, muchos traders pondrán órdenes cerca de ese nivel esperando otro rebote.</p>
+          </div>
+          <div class="mt-6 p-4 bg-cyan-900/20 rounded border border-cyan-400/20 text-slate-200 text-sm">
+            <strong>Concepto clave:</strong> No son líneas exactas, son <em>zonas</em>. El precio rara vez respeta un número exacto (1.0800),
+            sino un rango (1.0795-1.0810).
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="como-identificar">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+          Cómo identificar soportes y resistencias
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <h3 class="text-xl font-bold text-white mb-4">Método 1: Swing Highs y Swing Lows</h3>
+          <ul class="space-y-2 text-slate-300 mb-6">
+            <li class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-emerald-500 mt-1 text-sm">check_circle</span>
+              <span><strong>Swing Low:</strong> Punto donde el precio tocó mínimo y rebotó → probable soporte</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-red-500 mt-1 text-sm">check_circle</span>
+              <span><strong>Swing High:</strong> Punto donde el precio tocó máximo y cayó → probable resistencia</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-primary mt-1 text-sm">check_circle</span>
+              <span>Busca puntos donde el precio "rebotó" al menos 2-3 veces</span>
+            </li>
+          </ul>
+
+          <h3 class="text-xl font-bold text-white mb-4">Método 2: Niveles psicológicos redondos</h3>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 mb-6">
+            <p class="text-slate-300 text-sm mb-2">Los números redondos actúan como soportes/resistencias naturales:</p>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>• EUR/USD: 1.1000, 1.0500, 1.2000</li>
+              <li>• Bitcoin: $30,000, $50,000, $100,000</li>
+              <li>• Acciones: $50, $100, $500</li>
+            </ul>
+            <p class="text-slate-400 text-xs mt-2"><em>Razón:</em> Traders ponen órdenes en números fáciles de recordar.</p>
+          </div>
+
+          <h3 class="text-xl font-bold text-white mb-4">Método 3: Zonas de alta actividad (consolidación)</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Áreas donde el precio pasó mucho tiempo moviéndose lateralmente suelen convertirse en S/R después de romperlas.
+            Relacionado: <a class="underline hover:text-primary" href="/aprende/velas-japonesas-trading/">Velas japonesas</a>
+          </p>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="breakouts-retests">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+          Breakouts y Retests
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <h3 class="text-xl font-bold text-white mb-4">¿Qué es un breakout?</h3>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Cuando el precio atraviesa con fuerza un soporte o resistencia. <strong>Cambio de roles:</strong> Resistencia rota → se convierte en soporte.
+            Soporte roto → se convierte en resistencia.
+          </p>
+          <div class="bg-background-dark p-4 rounded-lg border border-emerald-700/50 mb-6">
+            <p class="text-emerald-400 font-bold mb-2">Breakout alcista (ruptura de resistencia)</p>
+            <p class="text-slate-300 text-sm">Precio rompe resistencia en 1.1000 → sube a 1.1050 → vuelve a testear 1.1000 (ahora es soporte) → rebota y continúa subida.</p>
+          </div>
+          <div class="bg-background-dark p-4 rounded-lg border border-red-700/50 mb-6">
+            <p class="text-red-400 font-bold mb-2">Breakout bajista (ruptura de soporte)</p>
+            <p class="text-slate-300 text-sm">Precio rompe soporte en 1.0800 → cae a 1.0750 → vuelve a testear 1.0800 (ahora es resistencia) → rechaza y continúa caída.</p>
+          </div>
+
+          <h3 class="text-xl font-bold text-white mb-4">Retest: la confirmación</h3>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            Después de romper un nivel, el precio <strong>suele volver a testearlo</strong> antes de continuar. Este "retest" es una de las mejores
+            oportunidades de entrada con riesgo bajo.
+          </p>
+          <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+            <strong>Estrategia:</strong> No entres en el breakout mismo (puede ser falso). Espera el retest del nivel roto y entra con stop ajustado.
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="errores-comunes">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+          Errores comunes con S/R
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3 bg-background-dark p-4 rounded-lg border border-red-700/50">
+              <span class="material-symbols-outlined text-red-500 mt-1">cancel</span>
+              <div>
+                <strong class="text-white">Dibujar demasiados niveles</strong>
+                <p class="text-sm text-slate-400 mt-1">Un gráfico lleno de líneas es inútil. Marca solo los niveles OBVIOS donde el precio rebotó múltiples veces.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3 bg-background-dark p-4 rounded-lg border border-red-700/50">
+              <span class="material-symbols-outlined text-red-500 mt-1">cancel</span>
+              <div>
+                <strong class="text-white">Pensar que son líneas exactas</strong>
+                <p class="text-sm text-slate-400 mt-1">Son zonas, no precios exactos. Usa rangos (1.0795-1.0810) en vez de 1.0800.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3 bg-background-dark p-4 rounded-lg border border-red-700/50">
+              <span class="material-symbols-outlined text-red-500 mt-1">cancel</span>
+              <div>
+                <strong class="text-white">Operar breakouts sin confirmación</strong>
+                <p class="text-sm text-slate-400 mt-1">Muchos breakouts son falsos. Espera cierre de vela por encima/debajo + retest para confirmar.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="relacionados">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+          Guías relacionadas
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+              <a class="underline hover:text-primary font-bold" href="/aprende/velas-japonesas-trading/">Velas Japonesas</a>
+              <p class="text-sm text-slate-400 mt-1">Confirma S/R con patrones de velas.</p>
+            </li>
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+              <a class="underline hover:text-primary font-bold" href="/aprende/gestion-de-riesgo-trading/">Gestión de Riesgo</a>
+              <p class="text-sm text-slate-400 mt-1">Dónde poner stops en S/R.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="faq">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+          Preguntas frecuentes
+        </h2>
+        <div class="space-y-4">
+          <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <summary class="cursor-pointer text-white font-bold">¿Qué son soportes y resistencias?</summary>
+            <p class="text-slate-300 mt-3 leading-relaxed">
+              Soportes son niveles donde históricamente hubo demanda que detuvo caídas. Resistencias son niveles donde hubo oferta que detuvo subidas.
+              Son zonas psicológicas donde traders reaccionan porque el precio rebotó ahí antes.
+            </p>
+          </details>
+          <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <summary class="cursor-pointer text-white font-bold">¿Cómo identificar soportes y resistencias?</summary>
+            <p class="text-slate-300 mt-3 leading-relaxed">
+              Busca swing highs/lows (puntos donde rebotó el precio), niveles psicológicos redondos (1.1000, $50, etc.) y zonas de consolidación
+              (donde el precio estuvo lateral). Marca solo los niveles OBVIOS donde rebotó 2-3+ veces.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="autor">
+        <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+          <div class="flex items-start gap-4">
+            <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined">person</span>
+            </div>
+            <div>
+              <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                Soportes y resistencias son la base del análisis técnico. Aprende a usarlos correctamente con contexto y gestión de riesgo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <aside class="hidden lg:block col-span-4 relative">
+      <div class="sticky top-24">
+        <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+          <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+            Contenido
+          </h4>
+          <nav class="flex flex-col space-y-1 text-sm">
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#que-son"><span>1.</span> Qué son</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#como-identificar"><span>2.</span> Cómo identificar</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#breakouts-retests"><span>3.</span> Breakouts y Retests</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#errores-comunes"><span>4.</span> Errores comunes</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#relacionados"><span>5.</span> Relacionados</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#faq"><span>6.</span> FAQ</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Velas Japonesas en Trading | CDL</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <article class="lg:col-span-8 flex flex-col gap-8">
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/20 w-fit">
+            <span class="material-symbols-outlined text-amber-300 text-sm">candlestick_chart</span>
+            <span class="text-amber-200 text-xs font-bold uppercase tracking-wider">Análisis Técnico</span>
+          </div>
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Velas Japonesas en Trading:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">guía completa de candlestick</span>
+          </h1>
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            Las velas japonesas (candlestick) son la herramienta más usada para leer el precio. Aquí aprenderás
+            su anatomía, los patrones más importantes, y cómo interpretarlos correctamente en contexto.
+          </p>
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img
+              src="/images/velas-japonesas-hero.jpg"
+              alt="Velas Japonesas en Trading - Anatomía y patrones de candlestick"
+              class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              id="hero-image"
+            />
+            <button 
+              id="zoom-btn" 
+              class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Ampliar imagen"
+            >
+              <span class="material-symbols-outlined text-xl">zoom_in</span>
+              <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+            </button>
+          </figure>
+          <div 
+            id="image-modal" 
+            class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"
+            style="backdrop-filter: blur(0px);"
+          >
+            <div 
+              id="modal-backdrop" 
+              class="absolute inset-0 bg-black/95"
+              style="backdrop-filter: blur(20px);"
+            ></div>
+            <div class="relative z-10 w-full h-full flex items-center justify-center">
+              <img
+                id="modal-image"
+                src="/images/velas-japonesas-hero.jpg"
+                alt="Velas Japonesas en Trading - Anatomía y patrones de candlestick"
+                class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"
+                style="transform-origin: center center;"
+              />
+              <button 
+                id="close-modal-btn" 
+                class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+                aria-label="Cerrar"
+              >
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base">touch_app</span>
+                  Click para cerrar
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="scroll-mt-24" id="que-son">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Qué son las velas japonesas?
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Las <strong>velas japonesas</strong> (o <em>candlestick</em>) son una forma de representar el movimiento del precio
+              en un gráfico. Fueron inventadas en Japón en el siglo XVIII por comerciantes de arroz.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Cada vela representa un período de tiempo (1 minuto, 5 minutos, 1 hora, 1 día, etc.) y muestra <strong>4 datos clave</strong>:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="bg-background-dark p-4 rounded-lg border border-emerald-700/50">
+                <div class="text-emerald-400 font-bold mb-2">📊 Precio de apertura (Open)</div>
+                <p class="text-sm text-slate-300">El primer precio registrado en ese período.</p>
+              </div>
+              <div class="bg-background-dark p-4 rounded-lg border border-red-700/50">
+                <div class="text-red-400 font-bold mb-2">📉 Precio de cierre (Close)</div>
+                <p class="text-sm text-slate-300">El último precio registrado en ese período.</p>
+              </div>
+              <div class="bg-background-dark p-4 rounded-lg border border-blue-700/50">
+                <div class="text-blue-400 font-bold mb-2">⬆️ Máximo (High)</div>
+                <p class="text-sm text-slate-300">El precio más alto alcanzado.</p>
+              </div>
+              <div class="bg-background-dark p-4 rounded-lg border border-orange-700/50">
+                <div class="text-orange-400 font-bold mb-2">⬇️ Mínimo (Low)</div>
+                <p class="text-sm text-slate-300">El precio más bajo alcanzado.</p>
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">¿Por qué son mejores que las líneas?</h3>
+            <ul class="space-y-2 text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">check_circle</span>
+                <span>Ves si los compradores o vendedores dominaron ese período</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">check_circle</span>
+                <span>Identificas rechazos de precio (mechas largas)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary mt-1 text-sm">check_circle</span>
+                <span>Detectas indecisión o fuerza en el movimiento</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="patrones">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Patrones clave
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-amber-400 mb-3">🔸 Doji (Indecisión)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Características:</strong> Apertura = Cierre (o casi). El cuerpo es extremadamente pequeño o inexistente.
+              </p>
+              <p class="text-emerald-400 text-sm font-bold">
+                ✓ Úsalo: Después de una tendencia fuerte. Puede indicar que la tendencia se está agotando.
+              </p>
+            </div>
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-emerald-400 mb-3">🔨 Martillo (Reversión alcista)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Características:</strong> Cuerpo pequeño en la parte superior. Mecha inferior larga (al menos 2× el cuerpo).
+              </p>
+              <p class="text-emerald-400 text-sm font-bold">
+                ✓ Úsalo: En soportes o al final de una tendencia bajista. Confirma con la siguiente vela alcista.
+              </p>
+            </div>
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50">
+              <h3 class="text-lg font-bold text-red-400 mb-3">⭐ Estrella Fugaz (Reversión bajista)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Características:</strong> Cuerpo pequeño en la parte inferior. Mecha superior larga.
+              </p>
+              <p class="text-red-400 text-sm font-bold">
+                ✓ Úsalo: En resistencias o al final de una tendencia alcista. Confirma con la siguiente vela bajista.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  En CDL enseñamos análisis técnico con fundamentos sólidos. Las velas japonesas son una herramienta poderosa cuando se usan correctamente.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </article>
+
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#que-son"><span>1.</span> Qué son</a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#patrones"><span>2.</span> Patrones clave</a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

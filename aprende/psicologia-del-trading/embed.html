@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Psicología del Trading | CDL</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <article class="lg:col-span-8 flex flex-col gap-8">
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-400/20 w-fit">
+            <span class="material-symbols-outlined text-violet-300 text-sm">psychology</span>
+            <span class="text-violet-200 text-xs font-bold uppercase tracking-wider">Psicología</span>
+          </div>
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Psicología del Trading:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-400">domina tus emociones</span>
+          </h1>
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            La psicología es el 80% del éxito en trading. Puedes tener la mejor estrategia del mundo, pero si no controlas
+            miedo, codicia, FOMO y revenge trading, perderás dinero. Aquí aprenderás cómo dominarte a ti mismo.
+          </p>
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img
+              src="/images/psicologia-trading-hero.jpg"
+              alt="Psicología del Trading - Control emocional y disciplina"
+              class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              id="hero-image"
+            />
+            <button 
+              id="zoom-btn" 
+              class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Ampliar imagen"
+            >
+              <span class="material-symbols-outlined text-xl">zoom_in</span>
+              <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+            </button>
+          </figure>
+          <div 
+            id="image-modal" 
+            class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"
+            style="backdrop-filter: blur(0px);"
+          >
+            <div 
+              id="modal-backdrop" 
+              class="absolute inset-0 bg-black/95"
+              style="backdrop-filter: blur(20px);"
+            ></div>
+            <div class="relative z-10 w-full h-full flex items-center justify-center">
+              <img
+                id="modal-image"
+                src="/images/psicologia-trading-hero.jpg"
+                alt="Psicología del Trading - Control emocional y disciplina"
+                class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"
+                style="transform-origin: center center;"
+              />
+              <button 
+                id="close-modal-btn" 
+                class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+                aria-label="Cerrar"
+              >
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base">touch_app</span>
+                  Click para cerrar
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="scroll-mt-24" id="por-que-importa">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            Por qué la psicología importa más que la estrategia
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              <strong>Dato clave:</strong> El 90% de los traders pierden dinero. No porque sus estrategias sean malas,
+              sino porque <em>no pueden seguirlas</em>.
+            </p>
+            <div class="bg-background-dark p-4 rounded-lg border border-violet-700/50 mb-4">
+              <p class="text-violet-400 font-bold mb-2">Trader A (sin control emocional)</p>
+              <p class="text-slate-300 text-sm">
+                Tiene una estrategia que gana 60% de las veces. Pero después de 2 pérdidas seguidas, entra en revenge trading,
+                duplica el riesgo, salta sus reglas. <strong>Resultado:</strong> Quema su cuenta en 2 semanas.
+              </p>
+            </div>
+            <div class="bg-background-dark p-4 rounded-lg border border-emerald-700/50 mb-4">
+              <p class="text-emerald-400 font-bold mb-2">Trader B (disciplinado)</p>
+              <p class="text-slate-300 text-sm">
+                Tiene la MISMA estrategia. Acepta las pérdidas, sigue su plan, respeta su gestión de riesgo siempre.
+                <strong>Resultado:</strong> Cuenta crece consistentemente en 6 meses.
+              </p>
+            </div>
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Verdad brutal:</strong> No necesitas una estrategia ganadora al 80%. Necesitas ejecutar una estrategia del 55% con
+              disciplina PERFECTA. La psicología es lo que separa traders rentables de los que quiebran.
+            </div>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="cuatro-emociones">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Las 4 emociones que destruyen cuentas
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <h3 class="text-xl font-bold text-white mb-4">1. Miedo (Fear)</h3>
+            <ul class="space-y-2 text-slate-300 mb-6">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">warning</span>
+                <span>Cierras trades ganadores demasiado pronto por miedo a que se reviertan</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">warning</span>
+                <span>No entras en setups válidos por miedo a perder</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-red-500 mt-1 text-sm">warning</span>
+                <span>Mueves el stop loss más cerca del precio (y te sacan antes de que corra)</span>
+              </li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-white mb-4">2. Codicia (Greed)</h3>
+            <ul class="space-y-2 text-slate-300 mb-6">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-amber-500 mt-1 text-sm">attach_money</span>
+                <span>Aumentas el tamaño de posición después de ganar (overtrading)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-amber-500 mt-1 text-sm">attach_money</span>
+                <span>No cierras en target porque "quieres más" (el precio se revierte y pierdes)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-amber-500 mt-1 text-sm">attach_money</span>
+                <span>Operas setups de baja calidad porque "quieres acción"</span>
+              </li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-white mb-4">3. FOMO (Fear of Missing Out)</h3>
+            <ul class="space-y-2 text-slate-300 mb-6">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">trending_up</span>
+                <span>Entras tarde en breakouts solo porque "no quieres quedarte afuera"</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-blue-500 mt-1 text-sm">trending_up</span>
+                <span>Operas pares/instrumentos que no conoces porque "están de moda"</span>
+              </li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-white mb-4">4. Revenge Trading (trading de venganza)</h3>
+            <div class="bg-background-dark p-4 rounded-lg border border-red-700/50">
+              <p class="text-red-400 font-bold mb-2">El asesino silencioso de cuentas</p>
+              <p class="text-slate-300 text-sm mb-3">
+                Perdiste un trade. Te sientes frustrado. Entras inmediatamente en otro trade con DOBLE tamaño
+                "para recuperar lo perdido". Pierdes de nuevo. Entras con TRIPLE tamaño. Boom. Cuenta muerta.
+              </p>
+              <p class="text-emerald-400 text-sm font-bold">
+                ✓ Regla de oro: Después de 2 pérdidas seguidas, CIERRA la plataforma. Vuelve mañana.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="disciplina">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Disciplina > Motivación
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              La motivación es emocional. Te sientes motivado después de una semana ganadora. Te sientes desmotivado después
+              de pérdidas. <strong>La disciplina no depende de cómo te sientas</strong>.
+            </p>
+            <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 mb-4">
+              <h4 class="text-white font-bold mb-2">Cómo construir disciplina (no motivación):</h4>
+              <ol class="space-y-2 text-sm text-slate-300">
+                <li>1. <strong>Plan de trading escrito:</strong> Define ANTES del mercado: qué operas, cuándo, con qué riesgo.</li>
+                <li>2. <strong>Checklist pre-trade:</strong> No ejecutas sin marcar todos los ítems (setup válido, R:R correcto, gestión OK).</li>
+                <li>3. <strong>Horarios fijos:</strong> Operas SOLO en horarios definidos (ej: 9-11am). Fuera de ese horario, plataforma cerrada.</li>
+                <li>4. <strong>Límite de trades diarios:</strong> Máximo 3 trades por día. Si pierdes 2, STOP.</li>
+                <li>5. <strong>Journal obligatorio:</strong> Registra CADA trade. Si no lo registras, no cuentas el profit (autocastigo).</li>
+              </ol>
+            </div>
+            <div class="mt-6 p-4 bg-violet-900/20 rounded border border-violet-500/20 text-slate-200 text-sm">
+              <strong>Frase clave:</strong> "No me importa cómo me siento. Este es mi plan y lo sigo."
+            </div>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Guías relacionadas
+          </h2>
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/gestion-de-riesgo-trading/">Gestión de Riesgo</a>
+                <p class="text-sm text-slate-400 mt-1">Protege tu capital con reglas claras.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  En CDL no vendemos sueños. La psicología del trading es dura, pero dominarla es la única forma de sobrevivir en los mercados.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </article>
+
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#por-que-importa"><span>1.</span> Por qué importa</a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#cuatro-emociones"><span>2.</span> 4 emociones destructivas</a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#disciplina"><span>3.</span> Disciplina</a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#relacionados"><span>4.</span> Relacionados</a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script>
+const zoomBtn = document.getElementById('zoom-btn');
+const modal = document.getElementById('image-modal');
+const modalImage = document.getElementById('modal-image');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function openImageModal() {
+  if (!modal) return;
+  modal.classList.remove('pointer-events-none');
+  setTimeout(() => {
+    modal.style.backdropFilter = 'blur(20px)';
+    modal.classList.remove('opacity-0');
+  }, 50);
+  setTimeout(() => {
+    if (modalImage) modalImage.style.transform = 'scale(1)';
+  }, 100);
+}
+
+function closeImageModal() {
+  if (!modal || !modalImage) return;
+  modalImage.style.transform = 'scale(0)';
+  setTimeout(() => {
+    modal.classList.add('opacity-0');
+    modal.style.backdropFilter = 'blur(0px)';
+  }, 200);
+  setTimeout(() => {
+    modal.classList.add('pointer-events-none');
+  }, 700);
+}
+
+if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  openImageModal();
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
+if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
+if (modal) modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeImageModal();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Schema: Breadcrumb + Article + FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
+          { "@type": "ListItem", "position": 3, "name": "Psicología del Trading", "item": "https://www.condinerolibre.com/aprende/psicologia-del-trading/" }
+        ]
+      },
+      {
+        "@type": "Article",
+        "@id": "https://www.condinerolibre.com/aprende/psicologia-del-trading/#article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://www.condinerolibre.com/aprende/psicologia-del-trading/"
+        },
+        "headline": "Psicología del Trading: Cómo Controlar Emociones y Disciplina",
+        "description": "Guía completa de psicología del trading: cómo controlar miedo, codicia, FOMO, revenge trading, mantener disciplina y gestionar emociones en el mercado.",
+        "author": {
+          "@type": "Person",
+          "name": "Pietro Giordano"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.condinerolibre.com/aprende/psicologia-del-trading/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Por qué la psicología es tan importante en trading?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Porque puedes tener la mejor estrategia del mundo pero si no controlas tus emociones (miedo, codicia, FOMO, revenge trading), tomarás decisiones impulsivas que destruirán tu capital. El 90% de traders falla por psicología, no por falta de conocimiento técnico."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo controlar el miedo y la codicia en trading?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Con un plan de trading escrito que sigas religiosamente, gestión de riesgo consistente (nunca más del 2% por trade), y un journal donde registres tus emociones para identificar patrones. El miedo se controla con confianza en tu sistema. La codicia se controla con objetivos realistas y disciplina."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <meta name="description" content="Psicología del trading: cómo controlar miedo, codicia, FOMO y revenge trading. Disciplina, gestión emocional y técnicas para mantener la calma en el mercado." />
+  <link rel="canonical" href="https://www.condinerolibre.com/aprende/psicologia-del-trading/" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Condinerolibre" />
+  <meta property="og:title" content="Psicología del Trading | Control Emocional y Disciplina" />
+  <meta property="og:description" content="Cómo controlar emociones, mantener disciplina y evitar errores psicológicos en trading: miedo, codicia, FOMO, revenge trading." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/psicologia-del-trading/" />
+  <meta property="og:image" content="https://www.condinerolibre.com/images/psicologia-trading-hero.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Psicología del Trading - ConDineroLibre" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Psicología del Trading | Disciplina y Control Emocional" />
+  <meta name="twitter:description" content="Control de emociones, disciplina y cómo evitar miedo, codicia y FOMO en trading." />
+  <meta name="twitter:image" content="https://www.condinerolibre.com/images/psicologia-trading-hero.jpg" />
+  <meta name="twitter:image:alt" content="Psicología del Trading - ConDineroLibre" />
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Psicología del Trading: Control Emocional y Disciplina | CDL</title>
+
+  <!-- Fonts / Icons / Tailwind -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+
+  <style>
+    /* Mega Menu Styles */
+    .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0.24s;
+      pointer-events: none;
+    }
+    .nav-item-dropdown.is-open .mega-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: all;
+      transition: opacity 0.24s ease, transform 0.24s ease, visibility 0s linear 0s;
+    }
+    .platform-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -185px;
+    }
+    .platform-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.28);
+    }
+    .platform-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .learn-menu {
+      width: min(1035px, calc(100vw - 32px));
+      left: -270px;
+    }
+    .learn-preview {
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
+    }
+    .learn-preview img {
+      object-fit: contain;
+      background: #10161d;
+    }
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    .nav-menu {
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+
+<!-- Header y mobile menu se cargan dinámicamente desde /shared/header.html -->
+
+<!-- MAIN CONTENT -->
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+    <!-- ARTICLE CONTENT -->
+    <article class="lg:col-span-8 flex flex-col gap-8">
+
+      <!-- HERO SECTION -->
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-400/20 w-fit">
+            <span class="material-symbols-outlined text-purple-300 text-sm">psychology</span>
+            <span class="text-purple-200 text-xs font-bold uppercase tracking-wider">Fundamentos</span>
+          </div>
+
+          <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+            Psicología del Trading:
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">control emocional y disciplina</span>
+          </h1>
+
+          <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+            El 90% de traders falla por <strong>psicología</strong>, no por falta de conocimiento técnico. Aquí aprenderás
+            cómo controlar miedo, codicia, FOMO, revenge trading y mantener disciplina férrea en el mercado.
+          </p>
+
+          <!-- Imagen Hero -->
+          <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+            <img
+              src="/images/psicologia-trading-hero.jpg"
+              alt="Psicología del Trading - Control emocional y disciplina en mercados"
+              class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              id="hero-image"
+            />
+            <button 
+              id="zoom-btn" 
+              class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"
+              aria-label="Ampliar imagen"
+            >
+              <span class="material-symbols-outlined text-xl">zoom_in</span>
+              <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+            </button>
+          </figure>
+
+          <!-- Modal de zoom fullscreen -->
+          <div 
+            id="image-modal" 
+            class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"
+            style="backdrop-filter: blur(0px);"
+          >
+            <div 
+              id="modal-backdrop" 
+              class="absolute inset-0 bg-black/95"
+              style="backdrop-filter: blur(20px);"
+            ></div>
+            <div class="relative z-10 w-full h-full flex items-center justify-center">
+              <img
+                id="modal-image"
+                src="/images/psicologia-trading-hero.jpg"
+                alt="Psicología del Trading - Control emocional y disciplina en mercados"
+                class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"
+                style="transform-origin: center center;"
+              />
+              <button 
+                id="close-modal-btn" 
+                class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+                aria-label="Cerrar"
+              >
+                <span class="material-symbols-outlined text-2xl">close</span>
+              </button>
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base">touch_app</span>
+                  Click para cerrar
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1: Por qué importa -->
+        <section class="scroll-mt-24" id="por-que-importa">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">1</span>
+            ¿Por qué la psicología es MÁS importante que la estrategia?
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Hay traders con estrategias mediocres que son consistentemente rentables. Y traders con estrategias excelentes que
+              pierden dinero constantemente. <strong>La diferencia no es técnica, es psicológica.</strong>
+            </p>
+
+            <h3 class="text-xl font-bold text-white mb-4">Estadística brutal</h3>
+            <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 mb-4">
+              <ul class="space-y-2 text-slate-300 text-sm">
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 font-bold">📊</span>
+                  <span>90% de traders minoristas pierden dinero en el primer año</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 font-bold">🧠</span>
+                  <span>De ese 90%, menos del 10% falla por "mala estrategia"</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-500 font-bold">💸</span>
+                  <span>La mayoría quiebra por: overtrading, revenge trading, no respetar stops, FOMO</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-500 font-bold">✓</span>
+                  <span>Los traders exitosos tienen una cosa en común: <strong>disciplina emocional</strong></span>
+                </li>
+              </ul>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">El problema central</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Tu cerebro <strong>no está diseñado para trading</strong>. Evolucionó para:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="bg-background-dark p-4 rounded-lg border border-red-700/50">
+                <div class="text-red-400 font-bold mb-2">🧬 Evitar pérdidas a toda costa</div>
+                <p class="text-sm text-slate-300">Evolutivamente, una pérdida grande = muerte. Por eso el miedo a perder es más
+                  fuerte que el deseo de ganar (loss aversion).</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-orange-700/50">
+                <div class="text-orange-400 font-bold mb-2">⚡ Reaccionar rápido sin pensar</div>
+                <p class="text-sm text-slate-300">Los reflejos instintivos salvaban vidas en la sabana. Pero en trading,
+                  las decisiones impulsivas destruyen cuentas.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-yellow-700/50">
+                <div class="text-yellow-400 font-bold mb-2">🎰 Buscar placer inmediato</div>
+                <p class="text-sm text-slate-300">Trading activa el mismo circuito de recompensa que el juego. La dopamina
+                  del "ganar ahora" puede crear adicción.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-purple-700/50">
+                <div class="text-purple-400 font-bold mb-2">👥 Seguir a la manada</div>
+                <p class="text-sm text-slate-300">FOMO (fear of missing out) es un instinto social. Ver a otros "ganar"
+                  te empuja a entrar sin análisis.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-400/20 text-slate-200 text-sm">
+              <strong>Conclusión:</strong> No estás "mal hecho" si sientes miedo, codicia o FOMO. Estás normal. Pero para tener éxito
+              en trading, <em>debes reprogramar tus respuestas emocionales con proceso y disciplina</em>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 2: Las 4 emociones asesinas -->
+        <section class="scroll-mt-24" id="emociones-asesinas">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">2</span>
+            Las 4 emociones que destruyen cuentas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            
+            <!-- Miedo -->
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-blue-400 mb-3">😰 Miedo (Fear)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Qué es:</strong> Pánico a perder dinero que te paraliza o te hace salir de operaciones ganadoras demasiado pronto.
+              </p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Síntomas:</strong>
+              </p>
+              <ul class="text-sm text-slate-300 space-y-1 mb-3">
+                <li>• Cerrar un trade ganador antes de tiempo "por si acaso"</li>
+                <li>• No entrar en setups válidos por miedo a perder</li>
+                <li>• Reducir tamaño de posición después de una pérdida (cuando deberías mantenerlo constante)</li>
+                <li>• Vigilar el gráfico constantemente con ansiedad</li>
+              </ul>
+              <div class="bg-blue-900/20 p-3 rounded border border-blue-500/30">
+                <p class="text-blue-300 text-sm font-bold">Solución:</p>
+                <p class="text-slate-300 text-xs">Gestión de riesgo: si sabes que solo arriesgas 1% por trade, el miedo disminuye.
+                  Define tu plan de antemano y síguelo sin ver el P&L constantemente.</p>
+              </div>
+            </div>
+
+            <!-- Codicia -->
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-emerald-400 mb-3">🤑 Codicia (Greed)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Qué es:</strong> Deseo insaciable de "ganar más" que te lleva a sobreoperar o no tomar ganancias.
+              </p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Síntomas:</strong>
+              </p>
+              <ul class="text-sm text-slate-300 space-y-1 mb-3">
+                <li>• No cerrar un trade en tu objetivo porque "puede seguir subiendo"</li>
+                <li>• Aumentar tamaño de posición después de ganar (overtrading)</li>
+                <li>• Abrir demasiados trades buscando "duplicar la cuenta rápido"</li>
+                <li>• Ignorar señales de salida porque quieres "exprimir" el movimiento</li>
+              </ul>
+              <div class="bg-emerald-900/20 p-3 rounded border border-emerald-500/30">
+                <p class="text-emerald-300 text-sm font-bold">Solución:</p>
+                <p class="text-slate-300 text-xs">Define objetivos realistas (ej: 5-10% mensual) y TOMA GANANCIAS en tu target.
+                  Recuerda: "Bulls make money, bears make money, pigs get slaughtered."</p>
+              </div>
+            </div>
+
+            <!-- FOMO -->
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-purple-400 mb-3">😱 FOMO (Fear Of Missing Out)</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Qué es:</strong> Miedo a "perderte" un movimiento grande que te hace entrar sin análisis.
+              </p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Síntomas:</strong>
+              </p>
+              <ul class="text-sm text-slate-300 space-y-1 mb-3">
+                <li>• Entrar en un activo después de que ya subió 50% "porque todos están comprando"</li>
+                <li>• Abrir trades sin setup solo porque el mercado se mueve rápido</li>
+                <li>• Ignorar tu plan de trading para "no perderte la oportunidad"</li>
+                <li>• Comprar después de ver redes sociales o noticias virales</li>
+              </ul>
+              <div class="bg-purple-900/20 p-3 rounded border border-purple-500/30">
+                <p class="text-purple-300 text-sm font-bold">Solución:</p>
+                <p class="text-slate-300 text-xs">Acepta que SIEMPRE habrá otra oportunidad. Si perdiste un movimiento, déjalo ir.
+                  Perseguir el precio es la forma más rápida de perder dinero. Espera tu setup.</p>
+              </div>
+            </div>
+
+            <!-- Revenge Trading -->
+            <div class="bg-background-dark p-5 rounded-lg border border-slate-700/50 mb-4">
+              <h3 class="text-lg font-bold text-red-400 mb-3">😡 Revenge Trading</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Qué es:</strong> Intentar "recuperar" pérdidas inmediatamente con trades impulsivos.
+              </p>
+              <p class="text-slate-300 text-sm leading-relaxed mb-3">
+                <strong>Síntomas:</strong>
+              </p>
+              <ul class="text-sm text-slate-300 space-y-1 mb-3">
+                <li>• Perder 1 trade → inmediatamente abrir otro sin analizar</li>
+                <li>• Aumentar el tamaño de posición después de una pérdida "para recuperar más rápido"</li>
+                <li>• Operar con rabia o frustración</li>
+                <li>• Ignorar completamente tu sistema y "gamblear" para recuperar</li>
+              </ul>
+              <div class="bg-red-900/20 p-3 rounded border border-red-500/30">
+                <p class="text-red-300 text-sm font-bold">Solución:</p>
+                <p class="text-slate-300 text-xs"><strong>PARA DE OPERAR.</strong> Después de 2 pérdidas consecutivas, cierra la plataforma.
+                  Ve a caminar. El mercado estará ahí mañana. Revenge trading es la forma #1 de volar una cuenta.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-red-900/20 rounded border border-red-500/20 text-slate-200 text-sm">
+              <strong>Regla de oro:</strong> Si identificas alguna de estas emociones en tiempo real, CIERRA LA PLATAFORMA.
+              No importa si tienes razón o no. Operar emocionalmente es perder garantizado a largo plazo.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3: Disciplina > Motivación -->
+        <section class="scroll-mt-24" id="disciplina">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">3</span>
+            Disciplina vs Motivación: el secreto real
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              La motivación es emoción. La disciplina es proceso. <strong>La motivación te hace empezar. La disciplina te hace ganar.</strong>
+            </p>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-700 mb-6">
+              <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-surface-dark text-slate-200 uppercase font-bold text-xs">
+                  <tr>
+                    <th class="px-6 py-4">Motivación</th>
+                    <th class="px-6 py-4">Disciplina</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700 bg-background-dark">
+                  <tr>
+                    <td class="px-6 py-4">Basada en emociones y resultados</td>
+                    <td class="px-6 py-4 text-emerald-400">Basada en proceso y sistema</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Desaparece después de pérdidas</td>
+                    <td class="px-6 py-4 text-emerald-400">Se mantiene incluso perdiendo</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Requiere sentirse "con ganas"</td>
+                    <td class="px-6 py-4 text-emerald-400">No importa cómo te sientas</td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4">Inconsistente (altas y bajas)</td>
+                    <td class="px-6 py-4 text-emerald-400">Consistente (mismo proceso siempre)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">Cómo construir disciplina real</h3>
+            <div class="space-y-4">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-emerald-400 font-bold mb-2">1. Trading Plan escrito</div>
+                <p class="text-sm text-slate-300">No "en tu cabeza". En papel o documento. Incluye: setups que operas,
+                  gestión de riesgo, horarios de trading, cuándo NO operar.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-blue-400 font-bold mb-2">2. Reglas no negociables</div>
+                <p class="text-sm text-slate-300">Ejemplo: "Máximo 1% riesgo por trade", "No opero después de 2 pérdidas",
+                  "Solo opero mi setup A y B". <strong>Estas reglas son LEY.</strong></p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-purple-400 font-bold mb-2">3. Journal obligatorio</div>
+                <p class="text-sm text-slate-300">Registra CADA trade: setup, emoción previa, razón de entrada, resultado.
+                  Te obliga a ser consciente de tus patrones.</p>
+                <a class="text-xs underline hover:text-primary" href="/aprende/journal-de-trading/">Ver guía de journal</a>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-orange-400 font-bold mb-2">4. Proceso > Resultados</div>
+                <p class="text-sm text-slate-300">Evalúate por si seguiste tu plan, NO por si ganaste o perdiste.
+                  Un trade perdedor ejecutado correctamente = éxito de proceso.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-pink-400 font-bold mb-2">5. Rutinas y estructura</div>
+                <p class="text-sm text-slate-300">Opera en los mismos horarios. Revisa el mercado con la misma checklist.
+                  La estructura elimina decisiones emocionales.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-emerald-900/20 rounded border border-emerald-400/20 text-slate-200 text-sm">
+              <strong>Verdad dura:</strong> Un trader disciplinado con estrategia promedio gana más que un trader emocional
+              con estrategia perfecta. Siempre.
+            </div>
+          </div>
+        </section>
+
+        <!-- 4: Rachas perdedoras -->
+        <section class="scroll-mt-24" id="rachas-perdedoras">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">4</span>
+            Cómo sobrevivir rachas perdedoras
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Las rachas perdedoras (losing streaks) son <strong>inevitables</strong>. Incluso con 60% de winrate,
+              estadísticamente tendrás series de 5-8 pérdidas consecutivas.
+            </p>
+
+            <h3 class="text-xl font-bold text-white mb-4">La trampa mental</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Después de 3-4 pérdidas seguidas, tu cerebro entra en pánico:
+            </p>
+            <div class="bg-background-dark p-4 rounded-lg border border-red-700/50 mb-6">
+              <ul class="text-sm text-slate-300 space-y-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400">💭</span>
+                  <span>"Mi estrategia ya no funciona"</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400">💭</span>
+                  <span>"El mercado cambió"</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400">💭</span>
+                  <span>"Necesito cambiar de sistema"</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-red-400">💭</span>
+                  <span>"Voy a recuperar todo en el siguiente trade" (revenge)</span>
+                </li>
+              </ul>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">Protocolo de racha perdedora (paso a paso)</h3>
+            <div class="space-y-3">
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-blue-400 font-bold mb-2 flex items-center gap-2">
+                  <span class="bg-blue-500 text-white size-6 rounded-full flex items-center justify-center text-xs">1</span>
+                  Después de 2 pérdidas consecutivas: PAUSA
+                </div>
+                <p class="text-sm text-slate-300">Cierra la plataforma. Ve a caminar, hacer ejercicio, o cualquier cosa NO relacionada
+                  con trading por mínimo 30 minutos.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-purple-400 font-bold mb-2 flex items-center gap-2">
+                  <span class="bg-purple-500 text-white size-6 rounded-full flex items-center justify-center text-xs">2</span>
+                  Revisa tu journal
+                </div>
+                <p class="text-sm text-slate-300">¿Seguiste tu plan? Si SÍ → las pérdidas son parte de la estadística normal.
+                  Si NO → identifica qué regla rompiste y por qué.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-emerald-400 font-bold mb-2 flex items-center gap-2">
+                  <span class="bg-emerald-500 text-white size-6 rounded-full flex items-center justify-center text-xs">3</span>
+                  Reduce tamaño de posición (temporalmente)
+                </div>
+                <p class="text-sm text-slate-300">Si normalmente arriesgas 1%, baja a 0.5% o 0.25% hasta recuperar confianza.
+                  Esto reduce presión psicológica.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-orange-400 font-bold mb-2 flex items-center gap-2">
+                  <span class="bg-orange-500 text-white size-6 rounded-full flex items-center justify-center text-xs">4</span>
+                  NO cambies de sistema
+                </div>
+                <p class="text-sm text-slate-300">5 pérdidas no invalidan tu estrategia. Necesitas mínimo 100-200 trades
+                  para evaluar un sistema. Cambiar constantemente = nunca aprender nada.</p>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+                <div class="text-red-400 font-bold mb-2 flex items-center gap-2">
+                  <span class="bg-red-500 text-white size-6 rounded-full flex items-center justify-center text-xs">5</span>
+                  Si llegas a tu límite de drawdown: PARA
+                </div>
+                <p class="text-sm text-slate-300">Si definiste -15% como máximo drawdown y lo alcanzas, deja de operar.
+                  Revisa TODO tu sistema antes de volver. No es fracaso, es profesionalismo.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-blue-900/20 rounded border border-blue-500/20 text-slate-200 text-sm">
+              <strong>Recuerda:</strong> Los traders profesionales también tienen rachas perdedoras. La diferencia es que ellos
+              <em>no dejan que las pérdidas pequeñas se conviertan en pérdidas catastróficas</em>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5: Trading journal como herramienta psicológica -->
+        <section class="scroll-mt-24" id="journal">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">5</span>
+            El journal: tu herramienta de autoconocimiento
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <p class="text-slate-300 leading-relaxed mb-4">
+              Un <strong>trading journal</strong> no es solo para registrar trades. Es para <strong>identificar tus patrones psicológicos</strong>
+              y volverte consciente de lo que te hace fallar.
+            </p>
+
+            <h3 class="text-xl font-bold text-white mb-4">Qué registrar (además de lo obvio)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="bg-background-dark p-4 rounded-lg border border-emerald-700/50">
+                <div class="text-emerald-400 font-bold mb-2">📊 Datos técnicos (obvio)</div>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• Activo, dirección, entrada, salida</li>
+                  <li>• Risk/reward ratio</li>
+                  <li>• Resultado (+/-)</li>
+                </ul>
+              </div>
+
+              <div class="bg-background-dark p-4 rounded-lg border border-purple-700/50">
+                <div class="text-purple-400 font-bold mb-2">🧠 Datos psicológicos (CLAVE)</div>
+                <ul class="text-sm text-slate-300 space-y-1">
+                  <li>• <strong>Emoción ANTES de entrar:</strong> ¿Confiado? ¿Nervioso? ¿FOMO?</li>
+                  <li>• <strong>Emoción DURANTE:</strong> ¿Ansiedad? ¿Ganas de cerrar pronto?</li>
+                  <li>• <strong>Emoción DESPUÉS:</strong> ¿Euforia? ¿Rabia? ¿Arrepentimiento?</li>
+                </ul>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">Análisis de patrones (ejemplo real)</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-3">
+              Después de 30 trades, revisas tu journal y descubres:
+            </p>
+            <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50 mb-4">
+              <p class="text-red-400 text-sm mb-2 font-bold">❌ Patrón negativo identificado:</p>
+              <p class="text-slate-300 text-sm mb-3">
+                "Todos mis trades perdedores los abrí entre 10pm-12am (después de mi horario definido) y tenía registrado
+                'FOMO' o 'nervioso' como emoción previa."
+              </p>
+              <p class="text-emerald-400 text-sm font-bold">✓ Solución:</p>
+              <p class="text-slate-300 text-sm">
+                Agregar regla: "NO operar después de 8pm bajo ninguna circunstancia". Elimina el 80% de trades perdedores.
+              </p>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4">Preguntas para hacerte cada semana</h3>
+            <ul class="space-y-2 text-slate-300 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="text-primary">▸</span>
+                <span>¿Seguí mi plan en todos los trades?</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary">▸</span>
+                <span>¿Qué emoción sentí más frecuentemente?</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary">▸</span>
+                <span>¿Mis pérdidas fueron por mala ejecución o mala suerte estadística?</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary">▸</span>
+                <span>¿Hay algún patrón en mis errores? (horario, activo, tipo de setup)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-primary">▸</span>
+                <span>¿En qué momento sentí más tentación de romper mis reglas?</span>
+              </li>
+            </ul>
+
+            <div class="mt-6 p-4 bg-purple-900/20 rounded border border-purple-400/20 text-slate-200 text-sm">
+              <strong>Importante:</strong> El journal no es para juzgarte. Es para <em>verte objetivamente</em>.
+              La mayoría de traders falla porque nunca se miran al espejo.
+              <a class="underline hover:text-primary ml-1" href="/aprende/journal-de-trading/">Ver guía completa de journal</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relacionados -->
+        <section class="scroll-mt-24" id="relacionados">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">6</span>
+            Guías relacionadas
+          </h2>
+
+          <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-300">
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/gestion-de-riesgo-trading/">Gestión de Riesgo</a>
+                <p class="text-sm text-slate-400 mt-1">Reduce miedo con riesgo controlado.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/journal-de-trading/">Journal de Trading</a>
+                <p class="text-sm text-slate-400 mt-1">Cómo registrar y analizar tu psicología.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/errores-comunes-trading/">Errores Comunes</a>
+                <p class="text-sm text-slate-400 mt-1">Los fallos psicológicos más frecuentes.</p>
+              </li>
+              <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4">
+                <a class="underline hover:text-primary font-bold" href="/aprende/cuentas-fondeadas-prop-trading/">Prop Trading</a>
+                <p class="text-sm text-slate-400 mt-1">Disciplina bajo reglas estrictas.</p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="scroll-mt-24" id="faq">
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="flex items-center justify-center size-8 rounded bg-primary/20 text-primary text-lg font-bold">7</span>
+            Preguntas frecuentes
+          </h2>
+
+          <div class="space-y-4">
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Por qué la psicología es tan importante en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Porque puedes tener la mejor estrategia del mundo pero si no controlas tus emociones (miedo, codicia, FOMO, revenge trading),
+                tomarás decisiones impulsivas que destruirán tu capital. El 90% de traders falla por psicología, no por falta de conocimiento técnico.
+                Incluso estrategias promedio funcionan si las ejecutas con disciplina total.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo controlar el miedo y la codicia en trading?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Con un plan de trading escrito que sigas religiosamente, gestión de riesgo consistente (nunca más del 2% por trade), y un journal
+                donde registres tus emociones para identificar patrones. El miedo se controla con confianza en tu sistema respaldado por datos.
+                La codicia se controla con objetivos realistas (5-10% mensual) y tomando ganancias en tu target predefinido.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué es el revenge trading y cómo evitarlo?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Revenge trading es intentar "recuperar" pérdidas inmediatamente con trades impulsivos y sin análisis. Se evita con una regla simple:
+                <strong>después de 2 pérdidas consecutivas, cierra la plataforma y para de operar por ese día</strong>. Vuelve con mente fresca
+                al día siguiente. Revenge trading es la causa #1 de cuentas voladas.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Cómo sobrevivir una racha perdedora?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                1) Acepta que son inevitables estadísticamente. 2) Revisa tu journal para confirmar que seguiste tu plan. 3) Si seguiste el plan,
+                las pérdidas son varianza normal - continúa. 4) Reduce temporalmente el tamaño de posición (de 1% a 0.5%) para bajar presión.
+                5) NO cambies de sistema después de 5-10 pérdidas - necesitas 100+ trades para evaluar. 6) Si alcanzas tu límite de drawdown (-15%),
+                para completamente y revisa.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Qué diferencia hay entre disciplina y motivación?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Motivación es emoción (te sientes con ganas → operas bien). Disciplina es proceso (operas igual sin importar cómo te sientas).
+                La motivación desaparece después de pérdidas. La disciplina se mantiene con un trading plan escrito, reglas no negociables,
+                y evaluación por proceso en vez de resultados. Traders exitosos tienen disciplina férrea, no motivación constante.
+              </p>
+            </details>
+
+            <details class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+              <summary class="cursor-pointer text-white font-bold">¿Para qué sirve un trading journal psicológico?</summary>
+              <p class="text-slate-300 mt-3 leading-relaxed">
+                Para volverte consciente de tus patrones emocionales. Registra no solo entrada/salida, sino emoción antes, durante y después
+                del trade. Después de 30-50 trades, analizas y descubres patrones (ej: "todos mis trades perdedores fueron después de las 10pm
+                cuando sentía FOMO"). Esto te permite crear reglas específicas que eliminan tus debilidades psicológicas.
+              </p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Autor -->
+        <section class="scroll-mt-24" id="autor">
+          <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+            <div class="flex items-start gap-4">
+              <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <div>
+                <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+                <p class="text-slate-300 text-sm leading-relaxed mt-2">
+                  En CDL creemos que <strong>el trading es 80% psicología, 20% técnica</strong>. Enseñamos proceso, disciplina
+                  y autoconocimiento antes que indicadores mágicos. El mercado no te debe nada - tú debes dominar tu mente primero.
+                </p>
+                <p class="text-slate-400 text-xs mt-3">
+                  Más información: <a class="underline hover:text-primary" href="https://www.condinerolibre.com/como-funciona/">Cómo funciona CDL</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </article>
+
+      <!-- Aside TOC -->
+      <aside class="hidden lg:block col-span-4 relative">
+        <div class="sticky top-24">
+          <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+            <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+              Contenido
+            </h4>
+
+            <nav class="flex flex-col space-y-1 text-sm">
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#por-que-importa">
+                <span>1.</span> Por qué importa
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#emociones-asesinas">
+                <span>2.</span> 4 emociones asesinas
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#disciplina">
+                <span>3.</span> Disciplina vs Motivación
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#rachas-perdedoras">
+                <span>4.</span> Rachas perdedoras
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#journal">
+                <span>5.</span> Journal psicológico
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#relacionados">
+                <span>6.</span> Relacionados
+              </a>
+              <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-l-2 border-transparent hover:border-primary" href="#faq">
+                <span>7.</span> FAQ
+              </a>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<!-- Footer y scripts se cargan dinámicamente desde /shared/footer.html y cdl-shell.js -->
+<script src="/shared/cdl-shell.js"></script>
+
+</body>
+</html>
