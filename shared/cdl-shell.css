@@ -141,6 +141,34 @@ body.cdl-shell-enabled {
   position: relative;
 }
 
+#cdl-shell-header .platform-menu {
+  width: min(1035px, calc(100vw - 32px));
+  left: -185px;
+}
+
+#cdl-shell-header .learn-menu {
+  width: min(1035px, calc(100vw - 32px));
+  left: -270px;
+}
+
+#cdl-shell-header .platform-preview {
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+}
+
+#cdl-shell-header .platform-preview img {
+  object-fit: contain;
+  background: #10161d;
+}
+
+#cdl-shell-header .learn-preview {
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.24);
+}
+
+#cdl-shell-header .learn-preview img {
+  object-fit: contain;
+  background: #10161d;
+}
+
 .mega-menu {
   display: none;
   opacity: 0;
