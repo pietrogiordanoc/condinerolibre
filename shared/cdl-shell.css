@@ -2,6 +2,10 @@ body.cdl-shell-enabled {
   padding-top: 82px;
 }
 
+#cdl-shell-header .nav-menu {
+  font-size: 0.8rem;
+}
+
 .cdl-shell-hidden {
   display: none !important;
 }
