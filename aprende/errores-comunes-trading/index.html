@@ -82,9 +82,52 @@
         <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
           El 90% de traders comete estos errores. Aprende a identificarlos y evitarlos ANTES de que destruyan tu cuenta.
         </p>
-        <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer">
-          <img src="/images/errores-trading-hero.jpg" alt="Errores Comunes Trading" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high"/>
+        <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+          <img src="/images/errores-trading-hero.jpg" alt="Errores Comunes Trading" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+          <button 
+            id="zoom-btn" 
+            class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105"
+            aria-label="Ampliar imagen"
+          >
+            <span class="material-symbols-outlined text-xl">zoom_in</span>
+            <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+          </button>
         </figure>
+
+        <!-- Modal de zoom fullscreen -->
+        <div 
+          id="image-modal" 
+          class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500"
+          style="backdrop-filter: blur(0px);"
+        >
+          <div 
+            id="modal-backdrop" 
+            class="absolute inset-0 bg-black/95"
+            style="backdrop-filter: blur(20px);"
+          ></div>
+          <div class="relative z-10 w-full h-full flex items-center justify-center">
+            <img
+              id="modal-image"
+              src="/images/errores-trading-hero.jpg"
+              alt="Errores Comunes Trading"
+              class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0"
+              style="transform-origin: center center;"
+            />
+            <button 
+              id="close-modal-btn" 
+              class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+              aria-label="Cerrar"
+            >
+              <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+              <span class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">touch_app</span>
+                Click para cerrar
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <section class="scroll-mt-24" id="error-1">
@@ -281,5 +324,58 @@
   </div>
 </main>
 <script src="/shared/cdl-shell.js"></script>
+
+<!-- Image Zoom Modal Script -->
+<script>
+  (function() {
+    const zoomBtn = document.getElementById('zoom-btn');
+    const heroImageContainer = document.getElementById('hero-image-container');
+    const imageModal = document.getElementById('image-modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    
+    if (!zoomBtn || !imageModal || !modalImage) return;
+    
+    function openModal(e) {
+      e.stopPropagation();
+      const heroImage = document.getElementById('hero-image');
+      const rect = heroImage.getBoundingClientRect();
+      modalImage.style.transformOrigin = `${rect.left + rect.width/2}px ${rect.top + rect.height/2}px`;
+      imageModal.classList.remove('pointer-events-none');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => {
+        imageModal.style.opacity = '1';
+        modalImage.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        modalImage.style.transform = 'scale(1) rotate(0deg)';
+        setTimeout(() => { modalImage.style.transform = 'scale(1.02) rotate(0.5deg)'; }, 100);
+        setTimeout(() => { modalImage.style.transform = 'scale(1) rotate(0deg)'; }, 300);
+      });
+    }
+    
+    function closeModal(e) {
+      if (e) e.stopPropagation();
+      modalImage.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      modalImage.style.transform = 'scale(0) rotate(-2deg)';
+      imageModal.style.opacity = '0';
+      setTimeout(() => {
+        imageModal.classList.add('pointer-events-none');
+        document.body.style.overflow = '';
+        modalImage.style.transform = 'scale(0)';
+      }, 500);
+    }
+    
+    zoomBtn.addEventListener('click', openModal);
+    heroImageContainer.addEventListener('click', (e) => {
+      if (e.target === heroImageContainer || e.target.id === 'hero-image') openModal(e);
+    });
+    closeModalBtn.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !imageModal.classList.contains('pointer-events-none')) closeModal();
+    });
+    imageModal.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+  })();
+</script>
 </body>
 </html>
