@@ -1,732 +1,392 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html class="dark" lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <title>Análisis Fundamental en Trading: Guía Completa 2026</title>
-    <meta name="description" content="Aprende análisis fundamental: indicadores económicos (NFP, CPI, GDP), decisiones bancos centrales, news trading y cómo combinarlo con técnico.">
-    <link rel="canonical" href="https://condinerolibre.com/aprende/analisis-fundamental-trading/">
-    
-    <meta property="og:title" content="Análisis Fundamental en Trading: Guía Completa 2026">
-    <meta property="og:description" content="Todo sobre análisis fundamental: NFP, tasas de interés, calendario económico y cómo usar noticias para trading.">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://condinerolibre.com/aprende/analisis-fundamental-trading/">
-    <meta property="og:image" content="https://www.condinerolibre.com/images/fundamentalhero.jpg" />
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Análisis Fundamental en Trading: Guía Completa 2026">
-    <meta name="twitter:description" content="Todo sobre análisis fundamental: NFP, tasas de interés, calendario económico y cómo usar noticias para trading.">
-    
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700" rel="stylesheet">
-    <link rel="stylesheet" href="/shared/cdl-shell.css">
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
+  <meta charset="utf-8"/>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
         "@type": "BreadcrumbList",
-        "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Inicio",
-            "item": "https://condinerolibre.com/"
-        },{
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Aprende",
-            "item": "https://condinerolibre.com/aprende/"
-        },{
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Análisis Fundamental",
-            "item": "https://condinerolibre.com/aprende/analisis-fundamental-trading/"
-        }]
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.condinerolibre.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://www.condinerolibre.com/aprende/" },
+          { "@type": "ListItem", "position": 3, "name": "Analisis Fundamental", "item": "https://www.condinerolibre.com/aprende/analisis-fundamental-trading/" }
+        ]
+      },
+      {
         "@type": "Article",
-        "headline": "Análisis Fundamental en Trading: Guía Completa 2026",
-        "description": "Aprende análisis fundamental desde cero: indicadores económicos, bancos centrales, news trading y más.",
-        "author": {
-            "@type": "Organization",
-            "name": "Con Dinero Libre"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Con Dinero Libre",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://condinerolibre.com/images/logocdl.avif"
-            }
-        },
-        "datePublished": "2026-04-23",
-        "dateModified": "2026-04-23"
-    }
-    </script>
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'display': ['Lexend', 'sans-serif'],
-                        'body': ['Noto Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        'primary': '#39E079',
-                        'background-dark': '#122017',
-                        'surface-dark': '#1c2633',
-                    }
-                }
-            }
+        "headline": "Analisis Fundamental en Trading: Guia Completa 2026",
+        "description": "Aprende analisis fundamental: indicadores economicos (NFP, CPI, GDP), decisiones bancos centrales, news trading y como combinarlo con tecnico.",
+        "author": { "@type": "Person", "name": "Pietro Giordano" }
+      }
+    ]
+  }
+  </script>
+  <meta name="description" content="Aprende analisis fundamental: indicadores economicos (NFP, CPI, GDP), decisiones bancos centrales, news trading y como combinarlo con tecnico." />
+  <link rel="canonical" href="https://www.condinerolibre.com/aprende/analisis-fundamental-trading/" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Analisis Fundamental en Trading: Guia Completa 2026" />
+  <meta property="og:description" content="Todo sobre analisis fundamental: NFP, tasas de interes, calendario economico y como usar noticias para trading." />
+  <meta property="og:url" content="https://www.condinerolibre.com/aprende/analisis-fundamental-trading/" />
+  <meta property="og:image" content="https://www.condinerolibre.com/images/fundamentalhero.jpg" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Analisis Fundamental en Trading: Guia Completa 2026 | CDL</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#39E079",
+            "background-light": "#f6f8f7",
+            "background-dark": "#122017",
+            "surface-dark": "#1c2633",
+            "surface-darker": "#111822"
+          },
+          fontFamily: {
+            display: "Lexend",
+            body: ["Noto Sans", "sans-serif"]
+          }
         }
-    </script>
-    <style>
-        body { font-family: 'Noto Sans', sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Lexend', sans-serif; }
-        .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-smoothing: antialiased; }
-        .toc-link.active { color: #39E079; border-left-color: #39E079; }
-    </style>
+      }
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
-<body class="bg-background-dark text-gray-300">
-    <div id="cdl-shell-wrapper"></div>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
-        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-            <aside class="hidden lg:block lg:col-span-3 lg:sticky lg:top-24 lg:self-start" style="z-index: 10;">
-                <nav class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                    <h3 class="text-sm font-semibold text-primary uppercase tracking-wider mb-4">En esta guía</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#que-es" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">Qué es Análisis Fundamental</a></li>
-                        <li><a href="#indicadores" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">Indicadores Económicos</a></li>
-                        <li><a href="#bancos" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">Bancos Centrales</a></li>
-                        <li><a href="#calendario" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">Calendario Económico</a></li>
-                        <li><a href="#news-trading" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">News Trading</a></li>
-                        <li><a href="#combinacion" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">Fundamental + Técnico</a></li>
-                        <li><a href="#para-quien" class="toc-link block py-1 px-3 text-gray-400 hover:text-primary border-l-2 border-transparent hover:border-primary transition-colors">¿Es Para Ti?</a></li>
-                    </ul>
-                </nav>
-            </aside>
-
-            <article class="lg:col-span-9">
-                <div class="prose prose-invert prose-lg max-w-none">
-                    <div class="mb-12">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="bg-gradient-to-br from-orange-500 to-amber-600 p-4 rounded-2xl">
-                                <span class="material-symbols-outlined text-white text-5xl">description</span>
-                            </div>
-                            <div>
-                                <h1 class="text-4xl md:text-5xl font-bold text-white mb-2 font-display">Análisis Fundamental en Trading</h1>
-                                <p class="text-xl text-gray-400">Opera las noticias económicas que mueven el mercado</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-8">
-                        <p class="text-lg leading-relaxed">
-                            El <strong class="text-primary">análisis fundamental</strong> estudia los <strong>factores económicos</strong> que afectan el valor de las divisas: inflación, empleo, tasas de interés, decisiones de bancos centrales. A diferencia del <a href="../analisis-tecnico-velas-japonesas/" class="text-primary hover:underline">análisis técnico</a> que mira gráficos, el fundamental mira la economía real.
-                        </p>
-                    </div>
-
-                    <section id="que-es" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">analytics</span>
-                            1. ¿Qué es el Análisis Fundamental?
-                        </h2>
-                        
-                        <p class="mb-6 text-lg leading-relaxed">
-                            El análisis fundamental intenta determinar el <strong>valor real</strong> de una divisa basándose en la salud económica del país. Si la economía USA está fuerte (bajo desempleo, alta inflación controlada, buenos datos), el USD debería subir.
-                        </p>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Análisis Técnico vs Fundamental</h3>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-sm">
-                                    <thead class="bg-gray-800">
-                                        <tr>
-                                            <th class="px-4 py-3 text-left text-primary">Aspecto</th>
-                                            <th class="px-4 py-3 text-left text-primary">Técnico</th>
-                                            <th class="px-4 py-3 text-left text-primary">Fundamental</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-gray-300">
-                                        <tr class="border-t border-gray-700">
-                                            <td class="px-4 py-3 font-semibold">Qué estudia</td>
-                                            <td class="px-4 py-3">Gráficos, patrones, indicadores</td>
-                                            <td class="px-4 py-3">Economía, noticias, datos</td>
-                                        </tr>
-                                        <tr class="border-t border-gray-700">
-                                            <td class="px-4 py-3 font-semibold">Horizonte</td>
-                                            <td class="px-4 py-3">Corto plazo (minutos-días)</td>
-                                            <td class="px-4 py-3">Medio-largo plazo (semanas-meses)</td>
-                                        </tr>
-                                        <tr class="border-t border-gray-700">
-                                            <td class="px-4 py-3 font-semibold">Herramientas</td>
-                                            <td class="px-4 py-3">TradingView, MT4, indicadores</td>
-                                            <td class="px-4 py-3">Calendario económico, noticias</td>
-                                        </tr>
-                                        <tr class="border-t border-gray-700">
-                                            <td class="px-4 py-3 font-semibold">Pregunta clave</td>
-                                            <td class="px-4 py-3">¿Hacia dónde va el precio?</td>
-                                            <td class="px-4 py-3">¿Por qué debería ir ahí?</td>
-                                        </tr>
-                                        <tr class="border-t border-gray-700">
-                                            <td class="px-4 py-3 font-semibold">Ideal para</td>
-                                            <td class="px-4 py-3">Day traders, scalpers</td>
-                                            <td class="px-4 py-3">Swing traders, inversores</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="bg-gray-800/50 border-l-4 border-orange-500 p-6 rounded-r-lg">
-                            <h4 class="text-lg font-semibold text-orange-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">info</span>
-                                Ejemplo Real de Análisis Fundamental
-                            </h4>
-                            <p class="text-gray-300 mb-3">
-                                <strong class="text-white">Escenario:</strong> El 1 de marzo 2024, la Reserva Federal (FED) anuncia que <strong>subirá las tasas de interés</strong> de 5.25% a 5.50%.
-                            </p>
-                            <p class="text-gray-300">
-                                <strong class="text-primary">Lógica fundamental:</strong> Tasas más altas → USD más atractivo para inversores → Demanda de USD sube → EUR/USD cae (USD se fortalece). Un trader fundamental compraría USD/JPY o vendería EUR/USD <strong>antes</strong> del anuncio si anticipa la decisión.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section id="indicadores" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">monitoring</span>
-                            2. Principales Indicadores Económicos
-                        </h2>
-
-                        <p class="mb-6 text-lg leading-relaxed">
-                            Estos son los <strong>datos económicos más importantes</strong> que mueven el mercado Forex. Todos se publican en el <strong>calendario económico</strong>.
-                        </p>
-
-                        <div class="space-y-6">
-                            <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-2xl font-bold text-white font-display">NFP (Non-Farm Payrolls)</h3>
-                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">ALTO IMPACTO</span>
-                                </div>
-                                <p class="text-gray-300 mb-4">
-                                    <strong>Qué es:</strong> Número de empleos creados en USA (excluyendo sector agrícola). Se publica el <strong>primer viernes de cada mes</strong> a las 8:30 AM EST.
-                                </p>
-                                <div class="grid md:grid-cols-2 gap-4 mb-4">
-                                    <div class="bg-emerald-900/20 border border-emerald-600 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-emerald-400 mb-2">NFP ALTO (>200K empleos)</h4>
-                                        <p class="text-sm text-gray-400">Economía fuerte → USD sube → EUR/USD cae</p>
-                                    </div>
-                                    <div class="bg-red-900/20 border border-red-600 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-red-400 mb-2">NFP BAJO (<100K empleos)</h4>
-                                        <p class="text-sm text-gray-400">Economía débil → USD cae → EUR/USD sube</p>
-                                    </div>
-                                </div>
-                                <div class="bg-yellow-900/20 border border-yellow-600 rounded p-4">
-                                    <p class="text-sm text-yellow-400 mb-1"><strong>⚠️ ADVERTENCIA</strong></p>
-                                    <p class="text-sm text-gray-400">El NFP causa movimientos de 100-200 pips en minutos. Spreads se amplían 5-10x. Solo traders muy experimentados operan NFP directamente.</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-2xl font-bold text-white font-display">CPI (Consumer Price Index - Inflación)</h3>
-                                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">ALTO IMPACTO</span>
-                                </div>
-                                <p class="text-gray-300 mb-4">
-                                    <strong>Qué es:</strong> Mide cuánto suben los precios (inflación). Se publica mensualmente. Meta de bancos centrales: 2% anual.
-                                </p>
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div class="bg-gray-800/50 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-primary mb-2">INFLACIÓN ALTA (>3%)</h4>
-                                        <p class="text-sm text-gray-400">Banco central subirá tasas → Moneda sube</p>
-                                    </div>
-                                    <div class="bg-gray-800/50 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-primary mb-2">INFLACIÓN BAJA (<1.5%)</h4>
-                                        <p class="text-sm text-gray-400">Banco central bajará tasas → Moneda cae</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-2xl font-bold text-white font-display">GDP (Gross Domestic Product - PIB)</h3>
-                                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">MEDIO IMPACTO</span>
-                                </div>
-                                <p class="text-gray-300 mb-4">
-                                    <strong>Qué es:</strong> Valor total de bienes/servicios producidos. Se publica <strong>trimestralmente</strong> (cada 3 meses). Mide crecimiento económico.
-                                </p>
-                                <ul class="space-y-2 text-gray-300 text-sm">
-                                    <li>• <strong class="text-emerald-400">GDP positivo (+2% o más):</strong> Economía creciendo → Moneda fuerte</li>
-                                    <li>• <strong class="text-red-400">GDP negativo (menos de 0%):</strong> Recesión → Moneda débil</li>
-                                    <li>• <strong class="text-yellow-400">GDP muy alto (+4%+):</strong> Riesgo de sobrecalentamiento → Banco central podría subir tasas agresivamente</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-2xl font-bold text-white font-display">Tasa de Desempleo (Unemployment Rate)</h3>
-                                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">MEDIO IMPACTO</span>
-                                </div>
-                                <p class="text-gray-300 mb-4">
-                                    <strong>Qué es:</strong> Porcentaje de población sin trabajo. Se publica mensualmente junto con NFP.
-                                </p>
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div class="bg-gray-800/50 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-emerald-400 mb-2">DESEMPLEO BAJO (<4%)</h4>
-                                        <p class="text-sm text-gray-400">Economía saludable, pleno empleo → Moneda fuerte</p>
-                                    </div>
-                                    <div class="bg-gray-800/50 rounded p-4">
-                                        <h4 class="text-sm font-semibold text-red-400 mb-2">DESEMPLEO ALTO (>6%)</h4>
-                                        <p class="text-sm text-gray-400">Economía en problemas → Moneda débil</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-2xl font-bold text-white font-display">PMI (Purchasing Managers Index)</h3>
-                                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">BAJO IMPACTO</span>
-                                </div>
-                                <p class="text-gray-300 mb-4">
-                                    <strong>Qué es:</strong> Encuesta a gerentes de compras sobre actividad industrial. Se publica mensualmente. Escala: 0-100.
-                                </p>
-                                <ul class="space-y-2 text-gray-300 text-sm">
-                                    <li>• <strong class="text-emerald-400">PMI > 50:</strong> Sector manufacturero en expansión (positivo)</li>
-                                    <li>• <strong class="text-red-400">PMI < 50:</strong> Sector en contracción (negativo)</li>
-                                    <li>• <strong class="text-yellow-400">PMI > 55:</strong> Expansión fuerte → Posible inflación</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="bg-blue-900/20 border border-blue-700 rounded-lg p-6 mt-6">
-                            <h4 class="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">lightbulb</span>
-                                Cómo Leer los Indicadores
-                            </h4>
-                            <p class="text-gray-300 mb-3">
-                                En el calendario económico verás 3 números para cada indicador:
-                            </p>
-                            <ul class="space-y-2 text-gray-300 text-sm">
-                                <li>• <strong class="text-yellow-400">Forecast (Pronóstico):</strong> Lo que esperan los analistas</li>
-                                <li>• <strong class="text-red-400">Previous (Anterior):</strong> Dato del mes pasado</li>
-                                <li>• <strong class="text-emerald-400">Actual (Real):</strong> Dato que acaba de salir</li>
-                            </ul>
-                            <div class="bg-gray-800/50 rounded p-4 mt-3">
-                                <p class="text-sm text-gray-300"><strong class="text-primary">Regla:</strong> Si <strong>Actual > Forecast</strong> → Moneda sube. Si <strong>Actual < Forecast</strong> → Moneda cae. El mercado reacciona a la <strong>sorpresa</strong>, no al número absoluto.</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="bancos" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">account_balance</span>
-                            3. Bancos Centrales y Tasas de Interés
-                        </h2>
-
-                        <p class="mb-6 text-lg leading-relaxed">
-                            Los <strong>bancos centrales</strong> son la fuerza más poderosa del mercado Forex. Sus decisiones sobre <strong>tasas de interés</strong> mueven billones de dólares.
-                        </p>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Principales Bancos Centrales</h3>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h4 class="text-sm font-semibold text-primary mb-3">PRINCIPALES</h4>
-                                    <ul class="space-y-2 text-sm text-gray-300">
-                                        <li>• <strong class="text-white">FED (Federal Reserve):</strong> USA - Controla USD</li>
-                                        <li>• <strong class="text-white">ECB (European Central Bank):</strong> Eurozona - Controla EUR</li>
-                                        <li>• <strong class="text-white">BoE (Bank of England):</strong> Reino Unido - Controla GBP</li>
-                                        <li>• <strong class="text-white">BoJ (Bank of Japan):</strong> Japón - Controla JPY</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-semibold text-primary mb-3">OTROS IMPORTANTES</h4>
-                                    <ul class="space-y-2 text-sm text-gray-300">
-                                        <li>• <strong class="text-white">RBA:</strong> Australia - AUD</li>
-                                        <li>• <strong class="text-white">SNB:</strong> Suiza - CHF</li>
-                                        <li>• <strong class="text-white">BoC:</strong> Canadá - CAD</li>
-                                        <li>• <strong class="text-white">RBNZ:</strong> Nueva Zelanda - NZD</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Cómo Funcionan las Tasas de Interés</h3>
-                            <p class="text-gray-300 mb-4">
-                                La <strong>tasa de interés</strong> es el costo de pedir dinero prestado. Los bancos centrales la usan para controlar inflación y empleo.
-                            </p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div class="bg-emerald-900/20 border border-emerald-600 rounded-lg p-4">
-                                    <h4 class="text-lg font-semibold text-emerald-400 mb-3">Suben Tasas (Hawkish) 📈</h4>
-                                    <p class="text-sm text-gray-300 mb-3"><strong class="text-white">Cuándo:</strong> Inflación alta (>3%), economía sobrecalentada</p>
-                                    <p class="text-sm text-gray-300 mb-3"><strong class="text-white">Efecto:</strong> Inversores buscan esa moneda para ganar más interés</p>
-                                    <p class="text-sm text-emerald-400 font-semibold">→ MONEDA SUBE</p>
-                                    <p class="text-xs text-gray-400 mt-2">Ejemplo: FED sube tasas de 5% a 5.5% → USD sube vs EUR, GBP, JPY</p>
-                                </div>
-
-                                <div class="bg-red-900/20 border border-red-600 rounded-lg p-4">
-                                    <h4 class="text-lg font-semibold text-red-400 mb-3">Bajan Tasas (Dovish) 📉</h4>
-                                    <p class="text-sm text-gray-300 mb-3"><strong class="text-white">Cuándo:</strong> Inflación baja (<2%), recesión, desempleo alto</p>
-                                    <p class="text-sm text-gray-300 mb-3"><strong class="text-white">Efecto:</strong> Inversores venden esa moneda (poco interés)</p>
-                                    <p class="text-sm text-red-400 font-semibold">→ MONEDA CAE</p>
-                                    <p class="text-xs text-gray-400 mt-2">Ejemplo: ECB baja tasas de 4% a 3.5% → EUR cae vs USD, GBP</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-yellow-900/20 border border-yellow-600 rounded-lg p-6">
-                            <h4 class="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">campaign</span>
-                                Reuniones de Bancos Centrales (FOMC, ECB, BoE)
-                            </h4>
-                            <p class="text-gray-300 mb-4">
-                                Cada 6-8 semanas, los bancos centrales se reúnen para decidir si suben, bajan o mantienen tasas. Estas reuniones causan <strong>volatilidad masiva</strong>.
-                            </p>
-                            <div class="bg-gray-800/50 rounded p-4">
-                                <p class="text-sm text-gray-300 mb-2"><strong class="text-white">Calendario típico de FED (FOMC):</strong></p>
-                                <ul class="text-sm text-gray-400 space-y-1">
-                                    <li>• <strong>14:00 EST:</strong> Anuncio de decisión de tasas</li>
-                                    <li>• <strong>14:30 EST:</strong> Conferencia de prensa de Jerome Powell (Presidente FED)</li>
-                                    <li>• <strong>Movimiento típico:</strong> 80-150 pips en 30 minutos</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="calendario" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">calendar_month</span>
-                            4. Cómo Usar el Calendario Económico
-                        </h2>
-
-                        <p class="mb-6 text-lg leading-relaxed">
-                            El <strong>calendario económico</strong> es la herramienta #1 del análisis fundamental. Muestra todos los eventos importantes del día/semana.
-                        </p>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Mejores Calendarios Económicos</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center justify-between bg-gray-800/50 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-semibold text-white">Investing.com</h4>
-                                        <p class="text-sm text-gray-400">Más popular, muy completo, gratis</p>
-                                    </div>
-                                    <span class="text-emerald-400 font-semibold">GRATIS</span>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-800/50 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-semibold text-white">ForexFactory</h4>
-                                        <p class="text-sm text-gray-400">Más usado por traders profesionales</p>
-                                    </div>
-                                    <span class="text-emerald-400 font-semibold">GRATIS</span>
-                                </div>
-                                <div class="flex items-center justify-between bg-gray-800/50 rounded-lg p-4">
-                                    <div>
-                                        <h4 class="font-semibold text-white">TradingView (integrado)</h4>
-                                        <p class="text-sm text-gray-400">Calendario dentro de la plataforma</p>
-                                    </div>
-                                    <span class="text-emerald-400 font-semibold">GRATIS</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Niveles de Impacto</h3>
-                            <p class="text-gray-300 mb-4">
-                                Las noticias se clasifican por su <strong>impacto esperado</strong> en el mercado:
-                            </p>
-                            <div class="space-y-4">
-                                <div class="flex items-start gap-4">
-                                    <div class="bg-red-500 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-                                        <span class="text-white font-bold text-lg">3</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-white font-semibold mb-1">Alto Impacto (Rojo)</h4>
-                                        <p class="text-sm text-gray-400">NFP, CPI, decisiones de tasas, GDP. Movimientos de 50-200 pips. <strong class="text-red-400">Evita operar 30 min antes y después</strong> si eres principiante.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div class="bg-orange-500 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-                                        <span class="text-white font-bold text-lg">2</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-white font-semibold mb-1">Medio Impacto (Naranja)</h4>
-                                        <p class="text-sm text-gray-400">Desempleo, PMI, ventas retail. Movimientos de 20-50 pips. Puedes operar pero con precaución.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div class="bg-yellow-500 w-8 h-8 rounded flex items-center justify-center flex-shrink-0">
-                                        <span class="text-white font-bold text-lg">1</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-white font-semibold mb-1">Bajo Impacto (Amarillo)</h4>
-                                        <p class="text-sm text-gray-400">Discursos de funcionarios menores, datos regionales. Movimientos de 5-15 pips. Ignorable para la mayoría de traders.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-blue-900/20 border border-blue-700 rounded-lg p-6">
-                            <h4 class="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">tips_and_updates</span>
-                                Rutina Diaria con el Calendario
-                            </h4>
-                            <ol class="space-y-3 text-gray-300">
-                                <li class="flex gap-3">
-                                    <span class="bg-primary text-black font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0">1</span>
-                                    <div><strong class="text-white">Cada mañana (antes de operar):</strong> Revisa el calendario económico del día</div>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="bg-primary text-black font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0">2</span>
-                                    <div><strong class="text-white">Marca eventos rojos:</strong> Anota hora exacta de NFP, CPI, FOMC</div>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="bg-primary text-black font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0">3</span>
-                                    <div><strong class="text-white">Evita operar:</strong> 30 min antes y 30 min después de eventos rojos</div>
-                                </li>
-                                <li class="flex gap-3">
-                                    <span class="bg-primary text-black font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0">4</span>
-                                    <div><strong class="text-white">Si tienes posiciones abiertas:</strong> Mueve SL a breakeven o cierra antes de la noticia</div>
-                                </li>
-                            </ol>
-                        </div>
-                    </section>
-
-                    <section id="news-trading" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">breaking_news</span>
-                            5. News Trading (Operar Noticias)
-                        </h2>
-
-                        <p class="mb-6 text-lg leading-relaxed">
-                            <strong>News trading</strong> es abrir operaciones durante o inmediatamente después de noticias de alto impacto. <strong class="text-red-400">MUY PELIGROSO</strong> para principiantes.
-                        </p>
-
-                        <div class="bg-red-900/20 border border-red-600 rounded-lg p-6 mb-6">
-                            <h4 class="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">warning</span>
-                                Por Qué News Trading es Difícil
-                            </h4>
-                            <ul class="space-y-2 text-gray-300">
-                                <li class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-red-400 mt-1">cancel</span>
-                                    <div><strong class="text-white">Spreads masivos:</strong> El spread de EUR/USD pasa de 1 pip a 15-30 pips durante NFP</div>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-red-400 mt-1">cancel</span>
-                                    <div><strong class="text-white">Slippage extremo:</strong> Entras en 1.1000, ejecuta en 1.0985 (15 pips de diferencia)</div>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-red-400 mt-1">cancel</span>
-                                    <div><strong class="text-white">Movimientos erráticos:</strong> Precio sube 80 pips, luego cae 120 pips en 5 minutos</div>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-red-400 mt-1">cancel</span>
-                                    <div><strong class="text-white">Stop Loss inútiles:</strong> Precio "salta" sobre tu SL sin ejecutarlo</div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Si Decides Hacer News Trading (Avanzado)</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <h4 class="text-primary font-semibold mb-2">Estrategia 1: Straddle (Pending Orders)</h4>
-                                    <p class="text-sm text-gray-400 mb-2">Colocas 2 pending orders antes de la noticia: una compra arriba del precio actual, una venta abajo.</p>
-                                    <div class="bg-gray-800/50 rounded p-3 text-xs text-gray-400">
-                                        Ejemplo: EUR/USD en 1.1000 → Buy Stop en 1.1020 | Sell Stop en 1.0980<br>
-                                        Cuando sale la noticia, una se ejecuta y la otra cancelas.
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="text-primary font-semibold mb-2">Estrategia 2: Esperar 15 Minutos</h4>
-                                    <p class="text-sm text-gray-400 mb-2">Deja que salga la noticia y espera 15 min. Cuando el precio se estabiliza, entras en dirección de la tendencia.</p>
-                                    <p class="text-xs text-emerald-400">✓ Más seguro que entrar inmediatamente</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-primary font-semibold mb-2">Estrategia 3: Fade the Move (Contrarian)</h4>
-                                    <p class="text-sm text-gray-400 mb-2">Esperas que el precio haga movimiento exagerado (+120 pips), luego operas en contra esperando corrección.</p>
-                                    <p class="text-xs text-red-400">✗ Solo para traders muy experimentados con <a href="../gestion-de-riesgo-trading/" class="text-primary hover:underline">gestión de riesgo</a> perfecta</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="combinacion" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">join</span>
-                            6. Combinar Análisis Fundamental + Técnico
-                        </h2>
-
-                        <p class="mb-6 text-lg leading-relaxed">
-                            Los traders profesionales <strong>combinan ambos enfoques</strong>. El fundamental te dice <strong>dirección</strong>, el técnico te da <strong>timing</strong> (cuándo entrar).
-                        </p>
-
-                        <div class="bg-surface-dark border border-gray-700 rounded-lg p-6 mb-6">
-                            <h3 class="text-xl font-semibold text-white mb-4 font-display">Ejemplo Completo: Fundamental + Técnico</h3>
-                            <div class="space-y-4">
-                                <div class="bg-blue-900/20 border border-blue-600 rounded-lg p-4">
-                                    <p class="text-sm font-semibold text-blue-400 mb-2">PASO 1: Análisis Fundamental (Dirección)</p>
-                                    <p class="text-sm text-gray-400">FED anuncia que subirá tasas de 5% a 5.5%. ECB mantiene tasas en 4%. Conclusión fundamental: <strong class="text-emerald-400">USD se fortalecerá vs EUR → EUR/USD debería caer</strong></p>
-                                </div>
-
-                                <div class="bg-purple-900/20 border border-purple-600 rounded-lg p-4">
-                                    <p class="text-sm font-semibold text-purple-400 mb-2">PASO 2: Análisis Técnico (Timing)</p>
-                                    <p class="text-sm text-gray-400">Abres gráfico Daily de EUR/USD. Ves que precio está en <a href="../soportes-y-resistencias/" class="text-primary hover:underline">resistencia</a> de 1.1200. RSI sobrecomprado (72). <a href="../analisis-tecnico-velas-japonesas/" class="text-primary hover:underline">Vela</a> de rechazo bearish.</p>
-                                </div>
-
-                                <div class="bg-emerald-900/20 border border-emerald-600 rounded-lg p-4">
-                                    <p class="text-sm font-semibold text-emerald-400 mb-2">PASO 3: Decisión de Entrada</p>
-                                    <p class="text-sm text-gray-400">
-                                        <strong class="text-white">Fundamental dice:</strong> EUR/USD debería caer<br>
-                                        <strong class="text-white">Técnico dice:</strong> Ahora es buen momento (resistencia + sobrecompra)<br>
-                                        <strong class="text-emerald-400">→ ENTRAS SELL EUR/USD</strong>
-                                    </p>
-                                </div>
-
-                                <div class="bg-gray-800/50 rounded-lg p-4">
-                                    <p class="text-sm font-semibold text-white mb-2">Configuración del Trade:</p>
-                                    <ul class="text-xs text-gray-400 space-y-1">
-                                        <li>• <strong>Entrada:</strong> Sell @ 1.1200</li>
-                                        <li>• <strong>Stop Loss:</strong> 1.1260 (por encima de resistencia) = 60 pips</li>
-                                        <li>• <strong>Take Profit:</strong> 1.1020 (soporte siguiente) = 180 pips</li>
-                                        <li>• <strong>R:R:</strong> 1:3 (excelente)</li>
-                                        <li>• <strong>Lógica:</strong> Fundamental apoya la dirección, técnico confirma entrada</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-r from-orange-900/30 to-amber-900/30 border border-orange-600 rounded-lg p-6">
-                            <h4 class="text-lg font-semibold text-orange-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">auto_awesome</span>
-                                Regla de Oro: Nunca Operes Contra el Fundamental
-                            </h4>
-                            <p class="text-gray-300 mb-3">
-                                Si el análisis fundamental dice que <strong>USD debe subir</strong> (porque FED subió tasas), <strong>NO compres EUR/USD</strong> aunque el técnico te dé señal de compra. El fundamental siempre gana a largo plazo.
-                            </p>
-                            <p class="text-sm text-gray-400">
-                                <strong class="text-primary">Mejor estrategia:</strong> Espera que fundamental y técnico estén alineados, luego entras con confianza.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section id="para-quien" class="mb-12">
-                        <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-display">
-                            <span class="material-symbols-outlined text-orange-500 text-4xl">person_search</span>
-                            7. ¿El Análisis Fundamental es Para Ti?
-                        </h2>
-
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="bg-emerald-900/20 border border-emerald-700 rounded-lg p-6">
-                                <h4 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center gap-2">
-                                    <span class="material-symbols-outlined">check_circle</span>
-                                    Análisis Fundamental ES Para Ti Si:
-                                </h4>
-                                <ul class="space-y-2 text-gray-300 text-sm">
-                                    <li>✓ Haces <a href="../estrategia-swing-trading/" class="text-primary hover:underline"><strong>swing trading</strong></a> (operaciones de días/semanas)</li>
-                                    <li>✓ Te gusta leer <strong>noticias económicas</strong> y entender la economía</li>
-                                    <li>✓ Tienes <strong>paciencia</strong> para esperar eventos importantes</li>
-                                    <li>✓ Operas <strong>pares de divisas</strong> (Forex), no índices/acciones</li>
-                                    <li>✓ Quieres entender <strong>por qué</strong> el precio se mueve, no solo cómo</li>
-                                    <li>✓ Puedes dedicar <strong>30 min al día</strong> a revisar calendario económico</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-red-900/20 border border-red-700 rounded-lg p-6">
-                                <h4 class="text-lg font-semibold text-red-400 mb-4 flex items-center gap-2">
-                                    <span class="material-symbols-outlined">cancel</span>
-                                    Análisis Fundamental NO ES Para Ti Si:
-                                </h4>
-                                <ul class="space-y-2 text-gray-300 text-sm">
-                                    <li>✗ Haces <a href="../estrategia-scalping/" class="text-primary hover:underline"><strong>scalping</strong></a> o <a href="../estrategia-day-trading/" class="text-primary hover:underline"><strong>day trading</strong></a> puro (M1-M15)</li>
-                                    <li>✗ Las noticias económicas te <strong>aburren</strong> o confunden</li>
-                                    <li>✗ Solo quieres mirar <strong>gráficos</strong> y olvidarte de todo lo demás</li>
-                                    <li>✗ Operas <strong>criptomonedas</strong> (menos influenciadas por economía tradicional)</li>
-                                    <li>✗ Buscas <strong>setups rápidos</strong> sin esperar eventos</li>
-                                    <li>✗ No puedes estar al tanto del <strong>calendario económico</strong> diario</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-r from-orange-900/30 to-amber-900/30 border border-orange-600 rounded-lg p-6">
-                            <h4 class="text-lg font-semibold text-orange-400 mb-3 flex items-center gap-2">
-                                <span class="material-symbols-outlined">recommend</span>
-                                Veredicto Final
-                            </h4>
-                            <p class="text-gray-300 mb-4">
-                                El análisis fundamental NO reemplaza al técnico, lo <strong>complementa</strong>. Los mejores traders:
-                            </p>
-                            <ul class="space-y-2 text-gray-300">
-                                <li>• Usan <strong>fundamental</strong> para decidir qué par operar y en qué dirección (bias)</li>
-                                <li>• Usan <strong>técnico</strong> para encontrar el punto exacto de entrada y SL/TP</li>
-                                <li>• <strong>Nunca</strong> operan contra el fundamental</li>
-                            </ul>
-                            <div class="bg-orange-800/30 rounded p-4 mt-4">
-                                <p class="text-sm text-gray-300">
-                                    <strong class="text-white">Recomendación:</strong> Si eres <strong>principiante</strong>, empieza con análisis técnico puro. Cuando domines <a href="../soportes-y-resistencias/" class="text-primary hover:underline">soportes/resistencias</a> y <a href="../analisis-tecnico-velas-japonesas/" class="text-primary hover:underline">velas japonesas</a>, agrega el fundamental como filtro adicional.
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <div class="bg-gradient-to-r from-primary/20 to-emerald-500/20 border border-primary/50 rounded-lg p-8 text-center">
-                        <h3 class="text-2xl font-bold text-white mb-4 font-display">¿Listo Para Usar Análisis Fundamental?</h3>
-                        <p class="text-lg text-gray-300 mb-6">
-                            Empieza simple: <strong>revisa el calendario económico cada mañana</strong> en Investing.com o ForexFactory. Marca eventos rojos (NFP, CPI, FOMC) y <strong>evita operar 30 min antes/después</strong>. Cuando domines eso, empieza a anticipar movimientos basándote en sorpresas (Actual vs Forecast). La práctica hace al maestro.
-                        </p>
-                    </div>
-                </div>
-            </article>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased selection:bg-primary selection:text-white">
+<main class="relative flex flex-col items-center w-full min-h-screen pt-8 pb-20">
+  <div class="w-full max-w-7xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <article class="lg:col-span-8 flex flex-col gap-8">
+      <div class="flex flex-col gap-6 border-b border-slate-800 pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-400/20 w-fit">
+          <span class="material-symbols-outlined text-orange-300 text-sm">monitoring</span>
+          <span class="text-orange-200 text-xs font-bold uppercase tracking-wider">Analisis Fundamental</span>
         </div>
-    </main>
+        <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-[-0.033em]">
+          Analisis Fundamental:
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">opera las noticias que mueven el mercado</span>
+        </h1>
+        <p class="text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-3xl">
+          El analisis fundamental estudia los factores economicos que mueven el precio: inflacion, empleo, tasas de interes, bancos centrales. Aqui aprenderas a leerlos y a combinarlos con el tecnico.
+        </p>
+        <figure class="relative bg-surface-dark rounded-xl border border-slate-800 overflow-hidden group cursor-pointer" id="hero-image-container">
+          <img src="/images/fundamentalhero.jpg" alt="Analisis Fundamental en Trading" class="w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]" width="1200" height="630" loading="eager" fetchpriority="high" id="hero-image"/>
+          <button id="zoom-btn" class="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-black/70 hover:bg-black/90 backdrop-blur-sm text-white rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 shadow-lg hover:shadow-xl hover:scale-105" aria-label="Ampliar imagen">
+            <span class="material-symbols-outlined text-xl">zoom_in</span>
+            <span class="text-sm font-semibold hidden sm:inline">Ampliar</span>
+          </button>
+        </figure>
+        <div id="image-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-500" style="backdrop-filter: blur(0px);">
+          <div id="modal-backdrop" class="absolute inset-0 bg-black/95" style="backdrop-filter: blur(20px);"></div>
+          <div class="relative z-10 w-full h-full flex items-center justify-center">
+            <img id="modal-image" src="/images/fundamentalhero.jpg" alt="Analisis Fundamental en Trading" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform scale-0" style="transform-origin: center center;"/>
+            <button id="close-modal-btn" class="absolute top-4 right-4 flex items-center justify-center size-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110" aria-label="Cerrar">
+              <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white text-sm rounded-full shadow-lg">
+              <span class="flex items-center gap-2"><span class="material-symbols-outlined text-base">touch_app</span>Click para cerrar</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <script src="/shared/cdl-shell.js"></script>
-    <script>
-        document.querySelectorAll('.toc-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+      <div class="bg-surface-dark border border-slate-700 rounded-xl p-6">
+        <p class="text-slate-300 text-lg leading-relaxed">El <strong class="text-primary">analisis fundamental</strong> estudia los <strong>factores economicos</strong> que afectan el valor de las divisas: inflacion, empleo, tasas de interes, decisiones de bancos centrales. A diferencia del analisis tecnico que mira graficos, el fundamental mira la economia real.</p>
+      </div>
 
-        const observerOptions = {
-            root: null,
-            rootMargin: '-20% 0px -80% 0px',
-            threshold: 0
-        };
+      <section class="scroll-mt-24" id="que-es">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">1</span>
+          Que es el Analisis Fundamental?
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed">El analisis fundamental intenta determinar el <strong>valor real</strong> de una divisa basandose en la salud economica del pais. Si la economia USA esta fuerte, el USD deberia subir.</p>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-3">Analisis Tecnico vs Fundamental</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-800"><tr><th class="px-4 py-3 text-left text-primary">Aspecto</th><th class="px-4 py-3 text-left text-primary">Tecnico</th><th class="px-4 py-3 text-left text-primary">Fundamental</th></tr></thead>
+                <tbody class="text-slate-300">
+                  <tr class="border-t border-slate-700"><td class="px-4 py-3 font-semibold">Que estudia</td><td class="px-4 py-3">Graficos, patrones, indicadores</td><td class="px-4 py-3">Economia, noticias, datos</td></tr>
+                  <tr class="border-t border-slate-700"><td class="px-4 py-3 font-semibold">Horizonte</td><td class="px-4 py-3">Corto plazo (minutos-dias)</td><td class="px-4 py-3">Medio-largo plazo (semanas-meses)</td></tr>
+                  <tr class="border-t border-slate-700"><td class="px-4 py-3 font-semibold">Herramientas</td><td class="px-4 py-3">TradingView, MT4, indicadores</td><td class="px-4 py-3">Calendario economico, noticias</td></tr>
+                  <tr class="border-t border-slate-700"><td class="px-4 py-3 font-semibold">Pregunta clave</td><td class="px-4 py-3">Hacia donde va el precio?</td><td class="px-4 py-3">Por que deberia ir ahi?</td></tr>
+                  <tr class="border-t border-slate-700"><td class="px-4 py-3 font-semibold">Ideal para</td><td class="px-4 py-3">Day traders, scalpers</td><td class="px-4 py-3">Swing traders, inversores</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="p-4 bg-orange-900/20 rounded border border-orange-400/20 text-slate-200 text-sm">
+            <strong>Ejemplo real:</strong> La FED anuncia subida de tasas del 5.25% al 5.50%. Tasas mas altas, USD mas atractivo, demanda de USD sube, EUR/USD cae. Un trader fundamental venderia EUR/USD antes del anuncio si anticipaba la decision.
+          </div>
+        </div>
+      </section>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    document.querySelectorAll('.toc-link').forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + entry.target.id) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        }, observerOptions);
+      <section class="scroll-mt-24" id="indicadores">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">2</span>
+          Principales Indicadores Economicos
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed">Estos son los <strong>datos economicos mas importantes</strong> que mueven el mercado Forex, todos publicados en el calendario economico.</p>
+          <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+            <div class="flex items-start justify-between mb-3"><h3 class="text-white font-bold text-lg">NFP (Non-Farm Payrolls)</h3><span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">ALTO IMPACTO</span></div>
+            <p class="text-slate-300 text-sm mb-3">Numero de empleos creados en USA (excluye sector agricola). Se publica el <strong>primer viernes de cada mes</strong> a las 8:30 AM EST.</p>
+            <div class="grid md:grid-cols-2 gap-3 mb-3">
+              <div class="bg-emerald-900/20 border border-emerald-600/50 rounded p-3"><p class="text-xs font-semibold text-emerald-400 mb-1">NFP ALTO (+200K empleos)</p><p class="text-xs text-slate-400">Economia fuerte, USD sube, EUR/USD cae</p></div>
+              <div class="bg-red-900/20 border border-red-600/50 rounded p-3"><p class="text-xs font-semibold text-red-400 mb-1">NFP BAJO (-100K empleos)</p><p class="text-xs text-slate-400">Economia debil, USD cae, EUR/USD sube</p></div>
+            </div>
+            <div class="bg-amber-900/20 rounded p-3 text-xs text-amber-300"><strong>Advertencia:</strong> El NFP causa movimientos de 100-200 pips en minutos. Spreads se amplian 5-10x. Solo traders muy experimentados operan NFP directamente.</div>
+          </div>
+          <div class="bg-background-dark p-5 rounded-lg border border-red-700/50">
+            <div class="flex items-start justify-between mb-3"><h3 class="text-white font-bold text-lg">CPI (Inflacion)</h3><span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">ALTO IMPACTO</span></div>
+            <p class="text-slate-300 text-sm mb-3">Mide cuanto suben los precios. Se publica mensualmente. Meta de bancos centrales: 2% anual.</p>
+            <div class="grid md:grid-cols-2 gap-3">
+              <div class="bg-slate-800/50 rounded p-3"><p class="text-xs font-semibold text-primary mb-1">INFLACION ALTA (+3%)</p><p class="text-xs text-slate-400">Banco central subira tasas, moneda sube</p></div>
+              <div class="bg-slate-800/50 rounded p-3"><p class="text-xs font-semibold text-primary mb-1">INFLACION BAJA (-1.5%)</p><p class="text-xs text-slate-400">Banco central bajara tasas, moneda cae</p></div>
+            </div>
+          </div>
+          <div class="bg-background-dark p-5 rounded-lg border border-orange-700/50">
+            <div class="flex items-start justify-between mb-3"><h3 class="text-white font-bold text-lg">GDP (PIB)</h3><span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">MEDIO IMPACTO</span></div>
+            <p class="text-slate-300 text-sm mb-3">Valor total de bienes/servicios producidos. Se publica <strong>trimestralmente</strong>. Mide crecimiento economico.</p>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>- <strong class="text-emerald-400">GDP positivo (+2%):</strong> Economia creciendo, moneda fuerte</li>
+              <li>- <strong class="text-red-400">GDP negativo:</strong> Recesion, moneda debil</li>
+              <li>- <strong class="text-amber-400">GDP muy alto (+4%+):</strong> Riesgo sobrecalentamiento, posible subida agresiva de tasas</li>
+            </ul>
+          </div>
+          <div class="p-4 bg-blue-900/20 rounded border border-blue-400/20 text-slate-200 text-sm">
+            <strong>Como leer los indicadores:</strong> En el calendario veras 3 numeros: Forecast (pronostico), Previous (mes pasado), Actual (real). Si Actual es mayor que Forecast, moneda sube. Si Actual es menor que Forecast, moneda cae. El mercado reacciona a la <strong>sorpresa</strong>, no al numero absoluto.
+          </div>
+        </div>
+      </section>
 
-        document.querySelectorAll('section[id]').forEach(section => {
-            observer.observe(section);
-        });
-    </script>
+      <section class="scroll-mt-24" id="bancos">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">3</span>
+          Bancos Centrales y Tasas de Interes
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed">Los <strong>bancos centrales</strong> son la fuerza mas poderosa del mercado Forex. Sus decisiones sobre <strong>tasas de interes</strong> mueven billones de dolares.</p>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-3">Principales Bancos Centrales</h4>
+            <div class="grid md:grid-cols-2 gap-4">
+              <ul class="text-sm text-slate-300 space-y-1"><li>- <strong>FED:</strong> USA � USD</li><li>- <strong>ECB:</strong> Eurozona � EUR</li><li>- <strong>BoE:</strong> Reino Unido � GBP</li><li>- <strong>BoJ:</strong> Japon � JPY</li></ul>
+              <ul class="text-sm text-slate-300 space-y-1"><li>- <strong>RBA:</strong> Australia � AUD</li><li>- <strong>SNB:</strong> Suiza � CHF</li><li>- <strong>BoC:</strong> Canada � CAD</li><li>- <strong>RBNZ:</strong> Nueva Zelanda � NZD</li></ul>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-emerald-900/20 p-4 rounded border border-emerald-500/30">
+              <h4 class="text-emerald-400 font-bold mb-2">Suben Tasas (Hawkish)</h4>
+              <p class="text-sm text-slate-300 mb-2">Cuando hay inflacion alta o economia sobrecalentada. Inversores buscan esa moneda para ganar mas interes.</p>
+              <p class="text-sm font-bold text-emerald-400">MONEDA SUBE</p>
+            </div>
+            <div class="bg-red-900/20 p-4 rounded border border-red-500/30">
+              <h4 class="text-red-400 font-bold mb-2">Bajan Tasas (Dovish)</h4>
+              <p class="text-sm text-slate-300 mb-2">Cuando hay inflacion baja, recesion o desempleo alto. Inversores venden esa moneda.</p>
+              <p class="text-sm font-bold text-red-400">MONEDA CAE</p>
+            </div>
+          </div>
+          <div class="p-4 bg-amber-900/20 rounded border border-amber-500/20 text-slate-200 text-sm">
+            <strong>Reuniones FOMC:</strong> Cada 6-8 semanas la FED decide tasas. A las 14:00 EST anuncio, 14:30 EST conferencia de Powell. Movimiento tipico: 80-150 pips en 30 minutos.
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="calendario">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">4</span>
+          Como Usar el Calendario Economico
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed">El <strong>calendario economico</strong> es la herramienta #1 del analisis fundamental. Muestra todos los eventos importantes del dia/semana.</p>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-3">Mejores Calendarios (todos gratis)</h4>
+            <ul class="text-sm text-slate-300 space-y-2"><li>- <strong>Investing.com</strong> � El mas popular, muy completo</li><li>- <strong>ForexFactory</strong> � El mas usado por traders profesionales</li><li>- <strong>TradingView</strong> � Integrado dentro de la plataforma</li></ul>
+          </div>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-3">Niveles de Impacto</h4>
+            <ul class="text-sm text-slate-300 space-y-2">
+              <li>- <strong class="text-red-400">Alto (Rojo):</strong> NFP, CPI, tasas, GDP � 50-200 pips. Evita operar 30 min antes/despues si eres principiante.</li>
+              <li>- <strong class="text-orange-400">Medio (Naranja):</strong> Desempleo, PMI, ventas retail � 20-50 pips. Opera con precaucion.</li>
+              <li>- <strong class="text-amber-400">Bajo (Amarillo):</strong> Discursos menores, datos regionales � 5-15 pips. Ignorable para la mayoria.</li>
+            </ul>
+          </div>
+          <div class="p-4 bg-blue-900/20 rounded border border-blue-400/20 text-slate-200 text-sm">
+            <strong>Rutina diaria:</strong> 1) Revisa el calendario antes de operar. 2) Marca eventos rojos con hora exacta. 3) Evita operar 30 min antes/despues. 4) Si tienes posiciones abiertas, mueve SL a breakeven antes de la noticia.
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="news-trading">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">5</span>
+          News Trading (Operar Noticias)
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed"><strong>News trading</strong> es abrir operaciones durante o inmediatamente despues de noticias de alto impacto. <strong class="text-red-400">MUY PELIGROSO</strong> para principiantes.</p>
+          <div class="bg-red-900/20 p-4 rounded border border-red-500/30">
+            <h4 class="text-red-400 font-bold mb-3">Por Que es Dificil</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>- <strong>Spreads masivos:</strong> EUR/USD pasa de 1 pip a 15-30 pips durante NFP</li>
+              <li>- <strong>Slippage extremo:</strong> Entras en 1.1000, ejecuta en 1.0985</li>
+              <li>- <strong>Movimientos erraticos:</strong> +80 pips luego -120 pips en 5 minutos</li>
+              <li>- <strong>Stop Loss inutiles:</strong> El precio salta sobre tu SL sin ejecutarlo</li>
+            </ul>
+          </div>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-3">Estrategias (solo avanzados)</h4>
+            <ul class="text-sm text-slate-300 space-y-3">
+              <li><strong class="text-primary">Straddle:</strong> Pending orders arriba y abajo del precio antes de la noticia. Cuando sale, una se ejecuta y cancelas la otra.</li>
+              <li><strong class="text-primary">Esperar 15 minutos:</strong> Deja que salga la noticia, espera que el precio se estabilice y entra en la direccion de la tendencia. Mas seguro.</li>
+              <li><strong class="text-primary">Fade the Move:</strong> Esperas movimiento exagerado y operas en contra esperando correccion. Solo para traders con gestion de riesgo perfecta.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="combinacion">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">6</span>
+          Combinar Fundamental + Tecnico
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800 flex flex-col gap-5">
+          <p class="text-slate-300 leading-relaxed">Los traders profesionales <strong>combinan ambos enfoques</strong>. El fundamental te dice <strong>direccion</strong>, el tecnico te da <strong>timing</strong> (cuando entrar).</p>
+          <div class="bg-background-dark p-4 rounded-lg border border-slate-700/50">
+            <h4 class="text-white font-bold mb-4">Ejemplo: Fundamental + Tecnico</h4>
+            <div class="space-y-3">
+              <div class="bg-blue-900/20 p-3 rounded border border-blue-500/30"><p class="text-xs font-semibold text-blue-400 mb-1">PASO 1 � Fundamental (Direccion)</p><p class="text-sm text-slate-300">FED sube tasas de 5% a 5.5%. ECB mantiene en 4%. USD se fortalece vs EUR, EUR/USD deberia caer.</p></div>
+              <div class="bg-purple-900/20 p-3 rounded border border-purple-500/30"><p class="text-xs font-semibold text-purple-400 mb-1">PASO 2 � Tecnico (Timing)</p><p class="text-sm text-slate-300">EUR/USD en resistencia 1.1200. RSI sobrecomprado (72). Vela de rechazo bearish.</p></div>
+              <div class="bg-emerald-900/20 p-3 rounded border border-emerald-500/30"><p class="text-xs font-semibold text-emerald-400 mb-1">PASO 3 � Decision</p><p class="text-sm text-slate-300">Sell EUR/USD @ 1.1200, SL 1.1260 (60 pips), TP 1.1020 (180 pips), R:R 1:3</p></div>
+            </div>
+          </div>
+          <div class="p-4 bg-orange-900/20 rounded border border-orange-400/20 text-slate-200 text-sm">
+            <strong>Regla de Oro:</strong> Si el fundamental dice que USD debe subir, NO compres EUR/USD aunque el tecnico te de senal de compra. El fundamental siempre gana a largo plazo. Espera que ambos esten alineados.
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="para-quien">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">7</span>
+          El Analisis Fundamental es Para Ti?
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-emerald-900/20 p-4 rounded border border-emerald-500/30">
+              <h4 class="text-emerald-400 font-bold mb-2">SI es para ti si:</h4>
+              <ul class="text-sm text-slate-300 space-y-1"><li>- Haces swing trading (dias/semanas)</li><li>- Te gustan las noticias economicas</li><li>- Tienes paciencia para esperar eventos</li><li>- Operas pares de divisas Forex</li><li>- Puedes revisar el calendario diario</li></ul>
+            </div>
+            <div class="bg-red-900/20 p-4 rounded border border-red-500/30">
+              <h4 class="text-red-400 font-bold mb-2">NO es para ti si:</h4>
+              <ul class="text-sm text-slate-300 space-y-1"><li>- Haces scalping o day trading puro</li><li>- Las noticias economicas te aburren</li><li>- Solo quieres mirar graficos</li><li>- Operas criptomonedas principalmente</li><li>- Buscas setups rapidos sin esperar</li></ul>
+            </div>
+          </div>
+          <div class="p-4 bg-orange-900/20 rounded border border-orange-400/20 text-slate-200 text-sm">
+            <strong>Veredicto:</strong> El fundamental no reemplaza al tecnico, lo complementa. Si eres principiante, domina primero soportes/resistencias y velas japonesas, luego agrega el fundamental como filtro de direccion.
+          </div>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="relacionados">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="flex items-center justify-center size-8 rounded bg-orange-500/20 text-orange-400 text-lg font-bold">8</span>
+          Guias relacionadas
+        </h2>
+        <div class="bg-surface-dark p-6 rounded-xl border border-slate-800">
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4"><a class="underline hover:text-primary font-bold" href="/aprende/soportes-y-resistencias/">Soportes y Resistencias</a><p class="text-sm text-slate-400 mt-1">Tecnico para complementar el fundamental.</p></li>
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4"><a class="underline hover:text-primary font-bold" href="/aprende/gestion-de-riesgo-trading/">Gestion de Riesgo</a><p class="text-sm text-slate-400 mt-1">Imprescindible en news trading.</p></li>
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4"><a class="underline hover:text-primary font-bold" href="/aprende/horarios-sesiones-forex/">Horarios Sesiones Forex</a><p class="text-sm text-slate-400 mt-1">Cuando hay mas volatilidad por noticias.</p></li>
+            <li class="bg-background-dark rounded-lg border border-slate-700/50 p-4"><a class="underline hover:text-primary font-bold" href="/aprende/estrategia-swing-trading/">Swing Trading</a><p class="text-sm text-slate-400 mt-1">La estrategia que mas usa el fundamental.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="scroll-mt-24" id="autor">
+        <div class="bg-surface-dark/50 border border-slate-700 p-6 rounded-xl">
+          <div class="flex items-start gap-4">
+            <div class="size-12 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined">person</span></div>
+            <div>
+              <h3 class="text-white font-bold text-lg">Sobre ConDineroLibre</h3>
+              <p class="text-slate-300 text-sm leading-relaxed mt-2">Formacion aplicada a trading real. Sin promesas. Sin humo. Con practica.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <aside class="hidden lg:block col-span-4 relative">
+      <div class="sticky top-24">
+        <div class="bg-surface-dark rounded-xl border border-slate-800 p-5">
+          <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-slate-400 text-lg">list</span>
+            Contenido
+          </h4>
+          <nav class="flex flex-col space-y-1 text-sm">
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#que-es"><span>1.</span> Que es</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#indicadores"><span>2.</span> Indicadores Economicos</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#bancos"><span>3.</span> Bancos Centrales</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#calendario"><span>4.</span> Calendario Economico</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#news-trading"><span>5.</span> News Trading</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#combinacion"><span>6.</span> Fundamental + Tecnico</a>
+            <a class="flex items-center gap-3 p-2 rounded text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" href="#para-quien"><span>7.</span> Es Para Ti?</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+<script src="/shared/cdl-shell.js"></script>
+<script>
+  (function() {
+    var zoomBtn = document.getElementById('zoom-btn');
+    var heroImageContainer = document.getElementById('hero-image-container');
+    var imageModal = document.getElementById('image-modal');
+    var modalImage = document.getElementById('modal-image');
+    var closeModalBtn = document.getElementById('close-modal-btn');
+    var modalBackdrop = document.getElementById('modal-backdrop');
+    if (!zoomBtn || !imageModal || !modalImage) return;
+    function openModal(e) {
+      e.stopPropagation();
+      var heroImage = document.getElementById('hero-image');
+      var rect = heroImage.getBoundingClientRect();
+      modalImage.style.transformOrigin = (rect.left + rect.width/2) + 'px ' + (rect.top + rect.height/2) + 'px';
+      imageModal.classList.remove('pointer-events-none');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function() {
+        imageModal.style.opacity = '1';
+        modalImage.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        modalImage.style.transform = 'scale(1) rotate(0deg)';
+        setTimeout(function() { modalImage.style.transform = 'scale(1.02) rotate(0.5deg)'; }, 100);
+        setTimeout(function() { modalImage.style.transform = 'scale(1) rotate(0deg)'; }, 300);
+      });
+    }
+    function closeModal(e) {
+      if (e) e.stopPropagation();
+      modalImage.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      modalImage.style.transform = 'scale(0) rotate(-2deg)';
+      imageModal.style.opacity = '0';
+      setTimeout(function() { imageModal.classList.add('pointer-events-none'); document.body.style.overflow = ''; modalImage.style.transform = 'scale(0)'; }, 500);
+    }
+    zoomBtn.addEventListener('click', openModal);
+    heroImageContainer.addEventListener('click', function(e) { if (e.target === heroImageContainer || e.target.id === 'hero-image') openModal(e); });
+    closeModalBtn.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && !imageModal.classList.contains('pointer-events-none')) closeModal(); });
+    imageModal.addEventListener('wheel', function(e) { e.preventDefault(); }, { passive: false });
+  })();
+</script>
 </body>
 </html>
