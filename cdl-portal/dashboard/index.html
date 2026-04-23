@@ -2330,7 +2330,17 @@
       
       // Reinicializar iconos de Lucide cuando se muestre la vista Aprende
       if (which === "aprende" && typeof lucide !== 'undefined') {
-        setTimeout(() => lucide.createIcons(), 100);
+        setTimeout(() => {
+          lucide.createIcons();
+          // Cargar el primer artículo automáticamente
+          const firstLink = document.querySelector('.aprende-link');
+          if (firstLink && !document.querySelector('.aprende-link.active')) {
+            const aprendeFrame = document.getElementById('aprendeFrame');
+            const url = firstLink.getAttribute('href');
+            aprendeFrame.src = url;
+            firstLink.classList.add('active');
+          }
+        }, 100);
       }
 
       if (isMobileView()) closeMobileMenu();
