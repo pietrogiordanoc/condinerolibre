@@ -7,64 +7,20 @@
   <title>Mensaje enviado · ConDineroLibre</title>
   <link rel="icon" href="/favicon.ico" />
   <style>
-    #gracias-content-wrapper {
-      min-height: calc(100vh - 82px);
-      padding-top: 140px;
-      padding-bottom: 60px;
-      background: #0b0b0c;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-    }
-    
-    .gracias-card{
-      max-width:680px;
-      width:100%;
-      margin:0 auto;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
-      background:rgba(255,255,255,.02);
-      padding:48px 32px;
-      text-align:center;
-    }
-    
-    .gracias-card h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin: 0 0 16px 0;
-    }
-    
-    .gracias-card p {
-      color: #b8b8b8;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin: 0 0 24px 0;
-    }
-    
-    .gracias-card a {
-      color: #6BFF57;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-    
-    .gracias-card a:hover {
-      color: #39d98a;
-      text-decoration: underline;
-    }
+    body{margin:0;background:#0b0b0c;color:#f1f1f1;font-family:system-ui;padding:24px;line-height:1.6}
+    a{color:#6BFF57;text-decoration:none} a:hover{text-decoration:underline}
+    .card{max-width:860px;margin:0 auto;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.02);padding:18px}
   </style>
-  <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 <body>
-  <div id="gracias-content-wrapper">
-    <div class="gracias-card">
-      <h1>¡Enviado! ✅</h1>
-      <p>Gracias. Te responderemos lo antes posible.</p>
-      <p><a href="https://www.condinerolibre.com/">Volver al inicio</a></p>
-    </div>
+  <div class="card">
+    <a href="https://www.condinerolibre.com/" aria-label="Portal CDL">
+      <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" alt="ConDineroLibre" style="height:44px;width:auto;border-radius:10px;display:block;margin:0 auto 18px;" />
+    </a>
+    <h1>¡Enviado! ✅</h1>
+    <p>Gracias. Te responderemos lo antes posible.</p>
+    <p><a href="https://www.condinerolibre.com/">Volver al portal</a></p>
   </div>
-  <script defer src="/shared/cdl-shell.js"></script>
 </body>
 </html>
 
