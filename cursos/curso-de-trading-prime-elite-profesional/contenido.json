@@ -65,7 +65,7 @@
         },
         "contenido": [
           {"titulo": "Aula", "tiempo": "11:39"},
-          {"titulo": "Trading View 01", "tiempo": "08:27"},
+          {"titulo": "TradingView 01", "tiempo": "08:27"},
           {"titulo": "Altos y Bajos", "tiempo": "19:23"},
           {"titulo": "Order Block 01", "tiempo": "28:40"},
           {"titulo": "Order Block 02", "tiempo": "24:06"},
@@ -78,7 +78,7 @@
           {"titulo": "Ciclo Bitcoin", "tiempo": "18:33"},
           {"titulo": "Ruptura de Mercado NASDAQ", "tiempo": "56:15"},
           {"titulo": "Ruptura de Mercado DAX Fib Expansion", "tiempo": "15:55"},
-          {"titulo": "Ruptura de Mercado NICKEY225 Fib Expansion", "tiempo": "02:18"},
+          {"titulo": "Ruptura de Mercado NIKKEI 225 Fib Expansion", "tiempo": "02:18"},
           {"titulo": "Opening Gaps", "tiempo": "45:13"},
           {"titulo": "Operando Sesión NY en Vivo", "tiempo": "51:55"},
           {"titulo": "La Bailarina", "tiempo": "02:49"}
