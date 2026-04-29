@@ -234,48 +234,7 @@
     </div>
   </main>
 
-<script>
-const zoomBtn = document.getElementById('zoom-btn');
-const modal = document.getElementById('image-modal');
-const modalImage = document.getElementById('modal-image');
-const closeModalBtn = document.getElementById('close-modal-btn');
-const modalBackdrop = document.getElementById('modal-backdrop');
-
-function openImageModal() {
-  if (!modal) return;
-  modal.classList.remove('pointer-events-none');
-  setTimeout(() => {
-    modal.style.backdropFilter = 'blur(20px)';
-    modal.classList.remove('opacity-0');
-  }, 50);
-  setTimeout(() => {
-    if (modalImage) modalImage.style.transform = 'scale(1)';
-  }, 100);
-}
-
-function closeImageModal() {
-  if (!modal || !modalImage) return;
-  modalImage.style.transform = 'scale(0)';
-  setTimeout(() => {
-    modal.classList.add('opacity-0');
-    modal.style.backdropFilter = 'blur(0px)';
-  }, 200);
-  setTimeout(() => {
-    modal.classList.add('pointer-events-none');
-  }, 700);
-}
-
-if (zoomBtn) zoomBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  openImageModal();
-});
-
-if (closeModalBtn) closeModalBtn.addEventListener('click', closeImageModal);
-if (modalBackdrop) modalBackdrop.addEventListener('click', closeImageModal);
-if (modal) modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeImageModal();
-});
-</script>
+<script>(function(){const a=document.getElementById('zoom-btn'),b=document.getElementById('hero-image-container'),c=document.getElementById('image-modal'),d=document.getElementById('modal-image'),e=document.getElementById('close-modal-btn'),f=document.getElementById('modal-backdrop');if(!a||!c||!d)return;function g(h){h.stopPropagation();const i=document.getElementById('hero-image'),j=i.getBoundingClientRect();d.style.transformOrigin=`${j.left+j.width/2}px ${j.top+j.height/2}px`;c.classList.remove('pointer-events-none');document.body.style.overflow='hidden';requestAnimationFrame(()=>{c.style.opacity='1';d.style.transition='transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';d.style.transform='scale(1) rotate(0deg)';setTimeout(()=>d.style.transform='scale(1.02) rotate(0.5deg)',100);setTimeout(()=>d.style.transform='scale(1) rotate(0deg)',300)})}function k(h){if(h)h.stopPropagation();d.style.transition='transform 0.5s cubic-bezier(0.68,-0.55,0.265,1.55)';d.style.transform='scale(0) rotate(-2deg)';c.style.opacity='0';setTimeout(()=>{c.classList.add('pointer-events-none');document.body.style.overflow='';d.style.transform='scale(0)'},500)}a.addEventListener('click',g);b.addEventListener('click',h=>{if(h.target===b||h.target.id==='hero-image')g(h)});e.addEventListener('click',k);f.addEventListener('click',k);document.addEventListener('keydown',h=>{if(h.key==='Escape'&&!c.classList.contains('pointer-events-none'))k()});c.addEventListener('wheel',h=>h.preventDefault(),{passive:!1})})();</script>
 
 </body>
 </html>
