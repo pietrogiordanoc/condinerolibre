@@ -9,127 +9,222 @@
   <link rel="icon" href="/favicon.ico" />
 
   <style>
-    :root{
-      --bg:#0b0b0c; --text:#ffffff; --muted:#b8b8b8;
-      --brand:#6BFF57; --brand2:#39d98a;
-      --shadow:0 10px 35px rgba(0,0,0,.45);
-      --radius:16px; --max:920px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    #contact-content-wrapper {
+      min-height: calc(100vh - 82px);
+      padding-top: 120px;
+      padding-bottom: 60px;
       background:
         radial-gradient(900px 500px at 12% 0%, rgba(107,255,87,.10), transparent 60%),
         radial-gradient(900px 500px at 88% 12%, rgba(57,217,138,.10), transparent 60%),
-        var(--bg);
-      color:var(--text); line-height:1.55;
+        #0b0b0c;
     }
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px; padding-top:100px}
     
-    .card{
+    .contact-wrap{
+      max-width:920px; 
+      margin:0 auto; 
+      padding:24px;
+    }
+    
+    .contact-card{
       background:rgba(255,255,255,.02);
       border:1px solid rgba(255,255,255,.08);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
+      border-radius:16px;
+      box-shadow:0 10px 35px rgba(0,0,0,.45);
+      padding:32px;
     }
-    .kicker{color:var(--brand2);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem}
-    h1{margin:8px 0 8px;font-size:clamp(1.55rem,2.2vw,2.05rem);line-height:1.15}
-    p{margin:0 0 12px;color:var(--muted)}
+    
+    .contact-kicker{
+      color:#39d98a;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:.78rem;
+      margin-bottom:8px;
+    }
+    
+    .contact-card h1{
+      margin:8px 0 16px;
+      font-size:clamp(1.8rem,2.5vw,2.4rem);
+      line-height:1.15;
+      color:#ffffff;
+      font-weight:700;
+    }
+    
+    .contact-card p{
+      margin:0 0 24px;
+      color:#b8b8b8;
+      line-height:1.6;
+    }
 
-    form{margin-top:10px}
-    label{display:block;font-weight:800;margin:12px 0 6px;font-size:.95rem}
-    input,select,textarea{
-      width:100%; padding:12px 12px; border-radius:12px;
+    .contact-card form{margin-top:10px}
+    .contact-card label{
+      display:block;
+      font-weight:700;
+      margin:16px 0 8px;
+      font-size:.95rem;
+      color:#ffffff;
+    }
+    
+    .contact-card input,
+    .contact-card select,
+    .contact-card textarea{
+      width:100%; 
+      padding:12px 14px; 
+      border-radius:10px;
       border:1px solid rgba(255,255,255,.12);
       background:#0b0b0c;
-      color:var(--text); outline:none;
+      color:#ffffff; 
+      outline:none;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      font-size:1rem;
+      transition: all 0.2s ease;
     }
 
-    select, select option {
+    .contact-card select, 
+    .contact-card select option {
       background:#0b0b0c !important;
-      color:var(--text) !important;
+      color:#ffffff !important;
     }
-    textarea{min-height:140px;resize:vertical}
-    input:focus,select:focus,textarea:focus{
+    
+    .contact-card textarea{
+      min-height:140px;
+      resize:vertical;
+    }
+    
+    .contact-card input:focus,
+    .contact-card select:focus,
+    .contact-card textarea:focus{
       border-color: rgba(107,255,87,.65);
       box-shadow: 0 0 0 4px rgba(107,255,87,.12);
     }
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media(max-width:820px){.row{grid-template-columns:1fr}}
+    
+    .contact-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    
+    @media(max-width:820px){
+      .contact-row{grid-template-columns:1fr}
+      .contact-card{padding:24px}
+    }
 
-    .actions{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:12px 14px;border-radius:12px;
+    .contact-actions{
+      margin-top:24px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    
+    .contact-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 28px;
+      border-radius:10px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.03);
-      color:var(--text); font-weight:900; cursor:pointer;
+      color:#ffffff; 
+      font-weight:700; 
+      cursor:pointer;
+      text-decoration:none;
+      font-size:1rem;
+      transition: all 0.2s ease;
     }
-    .btn-primary{
+    
+    .contact-btn:hover{
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.2);
+    }
+    
+    .contact-btn-primary{
       background:linear-gradient(135deg, rgba(107,255,87,.95), rgba(57,217,138,.95));
-      border-color:transparent; color:#0b0b0c;
+      border-color:transparent; 
+      color:#0b0b0c;
+      font-weight:800;
     }
-    .fine{margin-top:12px;font-size:.92rem;color:var(--muted)}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+    
+    .contact-btn-primary:hover{
+      background:linear-gradient(135deg, rgba(107,255,87,1), rgba(57,217,138,1));
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(107,255,87,.3);
+    }
+    
+    .contact-fine{
+      margin-top:16px;
+      font-size:.88rem;
+      color:#9fb0bf;
+    }
+    
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      border:0;
+    }
   </style>
   <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 
 <body>
-  <div class="wrap">
-    <main class="card">
-      <div class="kicker">Contacto general</div>
-      <h1>Escríbenos</h1>
-      <p>Te respondemos por email. Si es un tema técnico, describe los pasos y el error exacto.</p>
+  <div id="contact-content-wrapper">
+    <div class="contact-wrap">
+      <main class="contact-card">
+        <div class="contact-kicker">Contacto general</div>
+        <h1>Escríbenos</h1>
+        <p>Te respondemos por email. Si es un tema técnico, describe los pasos y el error exacto.</p>
 
-      <form name="contacto-cdl" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contacto/gracias/">
-        <input type="hidden" name="form-name" value="contacto-cdl" />
-        <p class="sr-only">
-          <label>No rellenes esto: <input name="bot-field" /></label>
-        </p>
+        <form name="contacto-cdl" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contacto/gracias/">
+          <input type="hidden" name="form-name" value="contacto-cdl" />
+          <p class="sr-only">
+            <label>No rellenes esto: <input name="bot-field" /></label>
+          </p>
 
-        <!-- Origen para saber desde qué proyecto vino -->
-        <input type="hidden" name="origen" id="origen" />
-        <input type="hidden" name="pagina" id="pagina" />
+          <!-- Origen para saber desde qué proyecto vino -->
+          <input type="hidden" name="origen" id="origen" />
+          <input type="hidden" name="pagina" id="pagina" />
 
-        <div class="row">
-          <div>
-            <label for="nombre">Nombre *</label>
-            <input id="nombre" name="nombre" autocomplete="name" required />
+          <div class="contact-row">
+            <div>
+              <label for="nombre">Nombre *</label>
+              <input id="nombre" name="nombre" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
           </div>
-          <div>
-            <label for="email">Email *</label>
-            <input id="email" name="email" type="email" autocomplete="email" required />
+
+          <label for="tema">Tema *</label>
+          <select id="tema" name="tema" required>
+            <option value="" selected disabled>Selecciona…</option>
+            <option>Formación</option>
+            <option>Portal (login/registro)</option>
+            <option>Brokers / Afiliación</option>
+            <option>Prop Firms</option>
+            <option>Negocio / Colaboración</option>
+            <option>Otro</option>
+          </select>
+
+          <label for="mensaje">Mensaje *</label>
+          <textarea id="mensaje" name="mensaje" required placeholder="Cuéntanos tu caso en 3–6 líneas."></textarea>
+
+          <div class="contact-actions">
+            <button class="contact-btn contact-btn-primary" type="submit">Enviar</button>
+            <a class="contact-btn" href="https://www.condinerolibre.com/">Volver</a>
           </div>
-        </div>
 
-        <label for="tema">Tema *</label>
-        <select id="tema" name="tema" required>
-          <option value="" selected disabled>Selecciona…</option>
-          <option>Formación</option>
-          <option>Portal (login/registro)</option>
-          <option>Brokers / Afiliación</option>
-          <option>Prop Firms</option>
-          <option>Negocio / Colaboración</option>
-          <option>Otro</option>
-        </select>
-
-        <label for="mensaje">Mensaje *</label>
-        <textarea id="mensaje" name="mensaje" required placeholder="Cuéntanos tu caso en 3–6 líneas."></textarea>
-
-        <div class="actions">
-          <button class="btn btn-primary" type="submit">Enviar</button>
-          <a class="btn" href="https://www.condinerolibre.com/">Volver</a>
-        </div>
-
-        <div class="fine">
-          Aviso: contenido educativo. No es asesoramiento financiero.
-        </div>
-      </form>
-    </main>
+          <div class="contact-fine">
+            Aviso: contenido educativo. No es asesoramiento financiero.
+          </div>
+        </form>
+      </main>
+    </div>
   </div>
 
   <script>
