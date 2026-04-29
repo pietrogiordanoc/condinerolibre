@@ -26,13 +26,8 @@
     }
     a{color:var(--brand);text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0 16px}
-    header img{height:44px;width:auto;border-radius:10px}
-    .nav{display:flex;gap:12px;flex-wrap:wrap;font-size:.95rem}
-    .nav a{color:var(--muted)}
-    .nav a:hover{color:var(--text);text-decoration:none}
-
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px; padding-top:100px}
+    
     .card{
       background:rgba(255,255,255,.02);
       border:1px solid rgba(255,255,255,.08);
@@ -80,21 +75,11 @@
     .fine{margin-top:12px;font-size:.92rem;color:var(--muted)}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   </style>
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
 </head>
 
 <body>
   <div class="wrap">
-    <header>
-      <a href="https://www.condinerolibre.com/" aria-label="Portal CDL">
-        <img src="https://ik.imagekit.io/primel/ConDineroLibreImages/logocdl.png?updatedAt=1766903325070" alt="ConDineroLibre" />
-      </a>
-      <nav class="nav" aria-label="Navegación">
-        <a href="/cdl-portal/login/">Login</a>
-        <a href="/cdl-portal/registro/">Registro</a>
-        <a href="https://www.condinerolibre.com" target="_blank" rel="noopener">Web</a>
-      </nav>
-    </header>
-
     <main class="card">
       <div class="kicker">Contacto general</div>
       <h1>Escríbenos</h1>
@@ -145,16 +130,12 @@
         </div>
       </form>
     </main>
-
-    <footer class="fine">
-      © <span id="y"></span> ConDineroLibre
-    </footer>
   </div>
 
   <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
     document.getElementById("origen").value = document.referrer || "directo";
     document.getElementById("pagina").value = location.href;
   </script>
+  <script defer src="/shared/cdl-shell.js"></script>
 </body>
 </html>
