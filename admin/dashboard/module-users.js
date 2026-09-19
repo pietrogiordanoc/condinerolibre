@@ -99,6 +99,7 @@ function renderUsers() {
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
         <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></td>
+        <td data-label="Teléfono">${u.phone || "—"}</td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
