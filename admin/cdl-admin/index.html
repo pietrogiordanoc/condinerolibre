@@ -84,13 +84,13 @@
     const submitBtn = document.getElementById("submit-btn");
 
     async function redirectAdmin(session) {
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", session.user.id)
+      const { data: adminUser, error } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", session.user.id)
         .maybeSingle();
 
-      if (error || profile?.role !== "admin") {
+      if (error || !adminUser) {
         await supabase.auth.signOut();
         statusEl.style.color = "#f97373";
         statusEl.textContent = "Acceso denegado: no eres administrador.";

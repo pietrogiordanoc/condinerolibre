@@ -7,13 +7,13 @@ async function init() {
     return; 
   }
 
-  const { data: profile, error: profileError } = await sp
-    .from("profiles")
-    .select("role")
-    .eq("id", session.user.id)
+  const { data: adminUser, error: adminError } = await sp
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", session.user.id)
     .maybeSingle();
 
-  if (profileError || profile?.role !== "admin") {
+  if (adminError || !adminUser) {
     await sp.auth.signOut();
     window.location.href = "/admin/cdl-admin/?error=forbidden";
     return;
