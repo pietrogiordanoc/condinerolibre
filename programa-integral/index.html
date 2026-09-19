@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Programa Integral CDL + CDLRadar | ConDineroLibre</title>
+  <meta name="description" content="Accede a la formación integral de ConDineroLibre, aprende a utilizar TradingView y obtén acceso a CDLRadar mediante un plan de pagos progresivo.">
+  <link rel="canonical" href="https://www.condinerolibre.com/programa-integral/">
+  <link rel="stylesheet" href="/shared/cdl-shell.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --cdl-ink: #0f172a; --cdl-muted: #526174; --cdl-green: #8ee61b; --cdl-blue: #0d3b6f; --cdl-line: #d8e1e8; --cdl-paper: #f5f8f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--cdl-paper); color: var(--cdl-ink); font-family: "DM Sans", sans-serif; }
+    h1, h2, h3 { font-family: Manrope, sans-serif; letter-spacing: 0; }
+    main { padding-top: 82px; }
+    .integral-wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .eyebrow { color: #277149; font-size: .76rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .hero { padding: 78px 0 64px; background: linear-gradient(135deg, #f7faf9 0%, #e8f1ee 100%); border-bottom: 1px solid var(--cdl-line); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 56px; align-items: center; }
+    .hero h1 { margin: 16px 0; max-width: 720px; font-size: clamp(2.35rem, 5vw, 4.5rem); line-height: 1.04; }
+    .hero-copy { max-width: 670px; color: var(--cdl-muted); font-size: 1.13rem; line-height: 1.7; }
+    .hero-note { margin-top: 24px; color: #486054; font-size: .92rem; }
+    .payment-card { background: #fff; border: 1px solid #d6e2dc; border-radius: 12px; padding: 30px; box-shadow: 0 18px 50px rgba(15, 61, 45, .1); }
+    .payment-card h2 { margin: 0 0 8px; font-size: 1.42rem; }
+    .payment-card p { color: var(--cdl-muted); line-height: 1.55; }
+    .price { margin: 22px 0 4px; font-family: Manrope, sans-serif; font-size: 2.6rem; font-weight: 800; line-height: 1; }
+    .price small { font-family: "DM Sans", sans-serif; font-size: .95rem; font-weight: 600; color: var(--cdl-muted); }
+    .paypal-status { min-height: 24px; margin: 16px 0 10px; color: var(--cdl-muted); font-size: .88rem; }
+    #paypal-button-container { min-height: 46px; }
+    .secure-note { margin: 16px 0 0; color: #5c6b70; font-size: .82rem; line-height: 1.5; }
+    .section { padding: 76px 0; }
+    .section h2 { margin: 0 0 14px; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+    .section-intro { max-width: 700px; color: var(--cdl-muted); line-height: 1.65; }
+    .include-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 42px; margin-top: 32px; }
+    .include-item { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid var(--cdl-line); color: #304255; line-height: 1.5; }
+    .include-item::before { content: "✓"; display: inline-grid; place-items: center; flex: 0 0 24px; height: 24px; border-radius: 50%; background: #dff4c4; color: #23622e; font-weight: 800; }
+    .schedule-section { background: #0d3b6f; color: #fff; }
+    .schedule-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: start; }
+    .schedule-section .section-intro { color: rgba(255,255,255,.78); }
+    .start-price { margin: 20px 0 8px; color: var(--cdl-green); font-family: Manrope, sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800; line-height: 1; }
+    .schedule { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); border-radius: 10px; overflow: hidden; }
+    .schedule-row { display: flex; justify-content: space-between; gap: 20px; padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,.13); }
+    .schedule-row:last-child { border-bottom: 0; }
+    .schedule-row strong { color: #fff; }
+    .permanent-note { margin-top: 22px; color: rgba(255,255,255,.8); font-size: .92rem; line-height: 1.6; }
+    .trust-band { padding: 40px 0; background: #e5eee9; border-bottom: 1px solid var(--cdl-line); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .trust-grid strong { display: block; margin-bottom: 5px; font-family: Manrope, sans-serif; }
+    .trust-grid span { color: var(--cdl-muted); font-size: .9rem; line-height: 1.5; }
+    .education-note { padding: 42px 0 62px; color: #50606d; font-size: .88rem; line-height: 1.65; }
+    .education-note p { max-width: 900px; margin: 0; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #1479c9; outline-offset: 3px; }
+    @media (max-width: 800px) {
+      .hero { padding: 52px 0 42px; }
+      .hero-grid, .schedule-grid { grid-template-columns: 1fr; gap: 34px; }
+      .include-grid, .trust-grid { grid-template-columns: 1fr; }
+      .section { padding: 54px 0; }
+      .payment-card { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="integral-wrap hero-grid">
+        <div>
+          <div class="eyebrow">Programa integral de formación</div>
+          <h1>Programa Integral CDL + CDLRadar</h1>
+          <p class="hero-copy">Accede a la formación completa de ConDineroLibre y comienza hoy con un pago inicial de solo $19.</p>
+          <p class="hero-copy">Un programa educativo diseñado para ayudarte a desarrollar conocimientos y herramientas prácticas para el análisis de los mercados, el uso de TradingView y la aplicación de una metodología estructurada.</p>
+          <p class="hero-note">Plan de pagos progresivo de 12 meses. Consulta el calendario completo antes de suscribirte.</p>
+        </div>
+        <aside class="payment-card" aria-labelledby="payment-title">
+          <h2 id="payment-title">Completa tu inscripción de forma segura</h2>
+          <p>El primer cargo será de $19. Los pagos posteriores se procesarán automáticamente de acuerdo con el calendario mostrado anteriormente.</p>
+          <div class="price">$19 <small>hoy</small></div>
+          <div id="paypal-status" class="paypal-status" role="status" aria-live="polite">Cargando el botón de pago seguro...</div>
+          <div id="paypal-button-container" aria-label="Botón de suscripción de PayPal"></div>
+          <p class="secure-note">Pago seguro procesado por PayPal. PayPal puede solicitar iniciar sesión o crear una cuenta para administrar la suscripción.</p>
+          <p class="secure-note"><a href="/contacto/privacidad.html">Privacidad</a> · <a href="/contacto/aviso-legal.html">Términos y aviso legal</a> · <a href="/contacto/">Contacto</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="includes-title">
+      <div class="integral-wrap">
+        <div class="eyebrow">Contenido del programa</div>
+        <h2 id="includes-title">Qué incluye</h2>
+        <p class="section-intro">Una ruta de aprendizaje amplia para estudiar a tu ritmo y trabajar con herramientas conocidas del análisis de mercados.</p>
+        <div class="include-grid">
+          <div class="include-item">Acceso a todos los cursos incluidos en el Programa Integral CDL.</div>
+          <div class="include-item">Formación práctica para el uso de TradingView.</div>
+          <div class="include-item">Contenido sobre análisis técnico y lectura del mercado.</div>
+          <div class="include-item">Acceso a la plataforma CDLRadar durante el plan.</div>
+          <div class="include-item">Acceso permanente a CDLRadar después de completar todos los pagos del programa.</div>
+          <div class="include-item">Actualizaciones correspondientes al contenido incluido.</div>
+          <div class="include-item">Acceso desde computadora, tableta o teléfono cuando sea compatible.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section schedule-section" aria-labelledby="schedule-title">
+      <div class="integral-wrap schedule-grid">
+        <div>
+          <div class="eyebrow" style="color:#b9ed72">Inversión clara</div>
+          <h2 id="schedule-title">Comienza hoy por</h2>
+          <div class="start-price">$19</div>
+          <p class="section-intro">El importe cambia según la etapa del programa. Aquí tienes el calendario completo, sin cuotas iguales ni costes ocultos.</p>
+        </div>
+        <div>
+          <div class="schedule" aria-label="Calendario de pagos">
+            <div class="schedule-row"><span>Hoy</span><strong>$19</strong></div>
+            <div class="schedule-row"><span>Meses 2 y 3</span><strong>$29 al mes</strong></div>
+            <div class="schedule-row"><span>Meses 4 al 12</span><strong>$49 al mes</strong></div>
+            <div class="schedule-row"><span>Duración total</span><strong>12 meses</strong></div>
+            <div class="schedule-row"><span>Total del programa</span><strong>$518</strong></div>
+          </div>
+          <p class="permanent-note">El acceso permanente a CDLRadar se obtiene después de completar los 12 pagos del programa. Si la suscripción se cancela antes de completar el plan, no se obtiene el acceso permanente.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-band" aria-label="Información importante">
+      <div class="integral-wrap trust-grid">
+        <div><strong>Pago gestionado por PayPal</strong><span>No almacenamos números de tarjeta ni información financiera.</span></div>
+        <div><strong>Acceso flexible</strong><span>Consulta el contenido desde computadora, tableta o teléfono cuando sea compatible.</span></div>
+        <div><strong>Condiciones visibles</strong><span>Revisa el calendario y el total antes de completar la suscripción.</span></div>
+      </div>
+    </section>
+
+    <section class="integral-wrap education-note">
+      <p>ConDineroLibre ofrece contenido exclusivamente educativo. No proporciona asesoría financiera personalizada ni garantiza resultados, ganancias o rentabilidad. Operar en los mercados financieros implica riesgo y cada participante es responsable de sus propias decisiones.</p>
+    </section>
+  </main>
+  <script defer src="/shared/cdl-shell.js"></script>
+  <script>
+    (function () {
+      const PAYPAL_CLIENT_ID = 'ATeQqFo-1rpKLpkSsABudZfD5nPLEeFEX44Cq84qFkvvDHY8OohSadLVzvjXubX6sqhtwwGPVDyUJ51K';
+      const PAYPAL_PLAN_ID = 'P-8WN86335RL7197925NFXDFTI';
+      const statusEl = document.getElementById('paypal-status');
+      const container = document.getElementById('paypal-button-container');
+      let rendered = false;
+
+      function setStatus(message) { statusEl.textContent = message; }
+      function trackCheckoutStart() {
+        if (typeof window.gtag === 'function') window.gtag('event', 'begin_checkout', { item_id: 'CDL-INTEGRAL' });
+        if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: 'begin_checkout', item_id: 'CDL-INTEGRAL' });
+      }
+      function loadPayPal() {
+        if (window.paypal) return Promise.resolve(window.paypal);
+        return new Promise(function (resolve, reject) {
+          const script = document.createElement('script');
+          script.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(PAYPAL_CLIENT_ID) + '&vault=true&intent=subscription';
+          script.onload = function () { resolve(window.paypal); };
+          script.onerror = function () { reject(new Error('paypal-sdk')); };
+          document.head.appendChild(script);
+        });
+      }
+      function renderButton(paypal) {
+        if (rendered || !paypal || !paypal.Buttons) throw new Error('paypal-button');
+        rendered = true;
+        return paypal.Buttons({
+          style: { shape: 'rect', color: 'blue', layout: 'vertical', label: 'subscribe', tagline: false },
+          createSubscription: function (data, actions) {
+            trackCheckoutStart();
+            return actions.subscription.create({ plan_id: PAYPAL_PLAN_ID, application_context: { shipping_preference: 'NO_SHIPPING', user_action: 'SUBSCRIBE_NOW' } });
+          },
+          onApprove: function (data) {
+            setStatus('Solicitud recibida. PayPal está procesando tu suscripción.');
+            const id = encodeURIComponent(data.subscriptionID || '');
+            window.location.href = '/pago-confirmado/' + (id ? '?subscription_id=' + id : '');
+          },
+          onCancel: function () { setStatus('No se completó la suscripción. Puedes intentarlo de nuevo cuando quieras.'); },
+          onError: function () { rendered = false; setStatus('No se pudo cargar el pago. Actualiza la página o contacta con nosotros.'); }
+        }).render('#paypal-button-container');
+      }
+      loadPayPal().then(function (paypal) { return renderButton(paypal); }).then(function () { setStatus('Botón de pago listo.'); }).catch(function () { setStatus('No se pudo cargar el pago. Actualiza la página o contacta con nosotros.'); });
+    }());
+  </script>
+</body>
+</html>

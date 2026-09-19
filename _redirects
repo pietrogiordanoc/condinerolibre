@@ -27,6 +27,10 @@
 /admin/* /admin/:splat 200
 
 # Contacto
+/programa-integral /programa-integral/index.html 200
+/programa-integral/ /programa-integral/index.html 200
+/pago-confirmado /pago-confirmado/index.html 200
+/pago-confirmado/ /pago-confirmado/index.html 200
 /contacto /contacto/index.html 200
 /contacto/ /contacto/index.html 200
 /aviso-legal /contacto/aviso-legal.html 200
