@@ -6,6 +6,18 @@ async function init() {
     window.location.href = isLocal ? "../cdl-admin/" : "/cdl-admin/"; 
     return; 
   }
+
+  const { data: profile, error: profileError } = await sp
+    .from("profiles")
+    .select("role")
+    .eq("id", session.user.id)
+    .maybeSingle();
+
+  if (profileError || profile?.role !== "admin") {
+    await sp.auth.signOut();
+    window.location.href = "/admin/cdl-admin/?error=forbidden";
+    return;
+  }
   
   document.getElementById("sessionEmail").textContent = session.user.email;
   

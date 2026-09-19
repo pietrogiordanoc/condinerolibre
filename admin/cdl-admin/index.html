@@ -83,12 +83,30 @@
     const statusEl = document.getElementById("message");
     const submitBtn = document.getElementById("submit-btn");
 
-    // ✅ 1. Si ya hay sesión → entrar al dashboard
+    async function redirectAdmin(session) {
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+      if (error || profile?.role !== "admin") {
+        await supabase.auth.signOut();
+        statusEl.style.color = "#f97373";
+        statusEl.textContent = "Acceso denegado: no eres administrador.";
+        return false;
+      }
+
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      window.location.href = isLocal ? "../dashboard/" : "/admin/dashboard/";
+      return true;
+    }
+
+    // ✅ 1. Si ya hay sesión → verificar admin antes de entrar al dashboard
     (async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        window.location.href = isLocal ? "../dashboard/" : "/admin/dashboard/";
+        await redirectAdmin(session);
       }
     })();
 
@@ -113,6 +131,12 @@
       if (error) {
         statusEl.style.color = "#f97373";
         statusEl.textContent = "Error: " + error.message;
+        return;
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session || !(await redirectAdmin(sessionData.session))) {
+        submitBtn.disabled = false;
         return;
       }
 
