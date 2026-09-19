@@ -2296,6 +2296,20 @@
 
     // --- NAVEGACIÓN ---
     async function showView(which) {
+      // Antes de mostrar Radar, exigir perfil completo (nombre + teléfono)
+      if (which === "radar") {
+        const { data: { session } } = await sp.auth.getSession();
+        const { data: profile } = await getProfileForSession(session, "plan, full_name, phone");
+        const hasName = !!(profile?.full_name && profile.full_name.trim());
+        const hasPhone = !!(profile?.phone && profile.phone.trim());
+        if (!hasName || !hasPhone) {
+          openCompleteProfileModal(profile);
+          if (location.hash === "#radar") { location.hash = "#dashboard"; }
+          else { showView("dashboard"); }
+          return;
+        }
+      }
+
       document.body.setAttribute('data-view', which);
       document.getElementById("viewDashboard").style.display = (which === "dashboard") ? "grid" : "none";
       document.getElementById("viewAccounts").style.display = (which === "accounts") ? "flex" : "none";
@@ -2568,6 +2582,43 @@
       document.getElementById('editNameModal').classList.remove('open');
     }
 
+    // Complete Profile Modal Functions (nombre + teléfono obligatorios para usar Radar)
+    const PHONE_REGEX_PORTAL = /^\+[1-9]\d{6,14}$/;
+
+    function openCompleteProfileModal(profile) {
+      const modal = document.getElementById('completeProfileModal');
+      document.getElementById('completeProfileName').value = profile?.full_name || '';
+      document.getElementById('completeProfilePhone').value = profile?.phone || '';
+      document.getElementById('completeProfileMsg').textContent = '';
+      modal.classList.add('open');
+    }
+
+    function closeCompleteProfileModal() {
+      document.getElementById('completeProfileModal').classList.remove('open');
+    }
+
+    async function saveCompleteProfile() {
+      const msgEl = document.getElementById('completeProfileMsg');
+      const name = document.getElementById('completeProfileName').value.trim();
+      const phone = document.getElementById('completeProfilePhone').value.trim().replace(/[\s()-]/g, '');
+
+      if (!name || name.length < 2) { msgEl.textContent = 'Ingresa tu nombre completo.'; return; }
+      if (!PHONE_REGEX_PORTAL.test(phone)) { msgEl.textContent = 'Ingresa un teléfono válido con código de país (ej: +52 55 1234 5678).'; return; }
+
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) return;
+
+      const { error } = await updateProfileForSession(session, { full_name: name, phone });
+      if (error) { msgEl.textContent = 'No se pudo guardar. Intenta nuevamente.'; console.error(error); return; }
+
+      document.getElementById('username').textContent = name;
+      const userNameDisplayEl = document.getElementById('userNameDisplay');
+      if (userNameDisplayEl) userNameDisplayEl.textContent = name;
+
+      closeCompleteProfileModal();
+      navigateTo('#radar');
+    }
+
     async function saveNewName() {
       const newName = document.getElementById('editNameInput').value.trim();
       
@@ -2628,6 +2679,30 @@
       <div class="edit-modal-actions">
         <button class="btn-cancel" onclick="closeEditNameModal()">Cancelar</button>
         <button class="btn-save" onclick="saveNewName()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETE PROFILE MODAL (obligatorio para acceder a CDLRadar) -->
+  <div id="completeProfileModal" class="edit-modal-backdrop" onclick="closeCompleteProfileModal()">
+    <div class="edit-modal-box" onclick="event.stopPropagation()">
+      <h3>Completa tu perfil</h3>
+      <p style="color:var(--muted); font-size:13px; margin:-8px 0 16px;">Para acceder a CDLRadar necesitamos tu nombre completo y tu teléfono con código de país.</p>
+      <input 
+        type="text" 
+        id="completeProfileName" 
+        placeholder="Nombre completo"
+      />
+      <input 
+        type="tel" 
+        id="completeProfilePhone" 
+        placeholder="Ej: +52 55 1234 5678"
+        onkeypress="if(event.key==='Enter') saveCompleteProfile()"
+      />
+      <div id="completeProfileMsg" style="color:salmon; font-size:12px; margin:-8px 0 12px; min-height:14px;"></div>
+      <div class="edit-modal-actions">
+        <button class="btn-cancel" onclick="closeCompleteProfileModal()">Más tarde</button>
+        <button class="btn-save" onclick="saveCompleteProfile()">Guardar y continuar</button>
       </div>
     </div>
   </div>

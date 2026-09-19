@@ -3,6 +3,10 @@ let RADAR_USAGE_BY_ID = {};
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
+// Límite diario gratuito de CDLRadar en minutos. Debe coincidir con el límite real
+// aplicado por la Edge Function `radar-access` (radar/supabase/functions/radar-access).
+const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
+
 async function refreshUsers() {
   const { data } = await sp.from("profiles").select("*, notas_admin").order("email", { ascending: true });
   PROFILES = data || [];
@@ -83,12 +87,13 @@ function renderUsers() {
       radarDisplay = '<span style="color:#10b981;">∞ Ilimitado</span>';
     } else if (u.radarUsage && typeof u.radarUsage.seconds_used === 'number') {
       const minutesUsed = Math.floor(u.radarUsage.seconds_used / 60);
-      const isLimitReached = minutesUsed >= 60;
-      const color = isLimitReached ? '#e74c3c' : (minutesUsed >= 50 ? '#f59e0b' : '#94a3b8');
+      const isLimitReached = minutesUsed >= RADAR_FREE_DAILY_LIMIT_MINUTES;
+      const warningThreshold = Math.max(1, RADAR_FREE_DAILY_LIMIT_MINUTES - 2);
+      const color = isLimitReached ? '#e74c3c' : (minutesUsed >= warningThreshold ? '#f59e0b' : '#94a3b8');
       const icon = isLimitReached ? '🚫' : '⏱️';
-      radarDisplay = `<span style="color:${color};">${minutesUsed}/60 min ${icon}</span>`;
+      radarDisplay = `<span style="color:${color};">${minutesUsed}/${RADAR_FREE_DAILY_LIMIT_MINUTES} min ${icon}</span>`;
     } else {
-      radarDisplay = '<span style="color:#64748b;">— / 60 min</span>';
+      radarDisplay = `<span style="color:#64748b;">— / ${RADAR_FREE_DAILY_LIMIT_MINUTES} min</span>`;
     }
     
     return `

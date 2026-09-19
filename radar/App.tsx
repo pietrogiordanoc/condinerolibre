@@ -9,33 +9,9 @@ import TendencialModal from './components/TendencialModal';
 import Radar from './components/Radar';
 import SessionMonitor from './components/SessionMonitor';
 import { audioService } from './utils/audioService';
-import { PriceStore } from './services/twelveDataService';
 import { supabase } from './services/supabaseClient';
 
 type SortConfig = { key: 'symbol' | 'action' | 'signal' | 'price' | 'score'; direction: 'asc' | 'desc' } | null;
-
-interface DemoTrade {
-  id: string;
-  symbol: string;
-  instrumentType: 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto';
-  direction: 'buy' | 'sell';
-  entry: number;
-  tp: number;
-  positionSize: number;
-  riskAmount: number;
-  openTime: number;
-  closeTime?: number;
-  profit?: number;
-  closed: boolean;
-}
-
-interface DemoAccount {
-  enabled: boolean;
-  initialBalance: number;
-  currentBalance: number;
-  riskPercentage: number;
-  trades: DemoTrade[];
-}
 
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -49,32 +25,7 @@ const App: React.FC = () => {
   const [isTendencialModalVisible, setIsTendencialModalVisible] = useState(false);
   const [showActiveTradesOnly, setShowActiveTradesOnly] = useState(false);
   const [refreshJustCompleted, setRefreshJustCompleted] = useState(false);
-  const [demoBalanceInput, setDemoBalanceInput] = useState('10000');
-  const [showDemoScreener, setShowDemoScreener] = useState(false);
   const [showDebugFrames, setShowDebugFrames] = useState(false);
-  const [demoTradesTab, setDemoTradesTab] = useState<'active' | 'closed'>('active');
-  const [demoRiskInput, setDemoRiskInput] = useState(() => {
-    const saved = localStorage.getItem('demoAccount');
-    if (saved) {
-      const account = JSON.parse(saved);
-      return account.riskPercentage?.toString() || '2';
-    }
-    return '2';
-  });
-  
-  const [demoAccount, setDemoAccount] = useState<DemoAccount>(() => {
-    const saved = localStorage.getItem('demoAccount');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return {
-      enabled: false,
-      initialBalance: 10000,
-      currentBalance: 10000,
-      riskPercentage: 2,
-      trades: []
-    };
-  });
   
   const [userId, setUserId] = useState<string | null>(null);
   
@@ -88,174 +39,7 @@ const App: React.FC = () => {
     return decimals > 0 ? parts.join(',') : parts[0];
   };
 
-  // Guardar demoAccount en localStorage
-  useEffect(() => {
-    localStorage.setItem('demoAccount', JSON.stringify(demoAccount));
-  }, [demoAccount]);
-
-  const handleActivateDemo = () => {
-    const balance = parseFloat(demoBalanceInput) || 10000;
-    const risk = parseFloat(demoRiskInput) || 2;
-    setDemoAccount({
-      enabled: true,
-      initialBalance: balance,
-      currentBalance: balance,
-      riskPercentage: risk,
-      trades: []
-    });
-  };
-
-  const updateDemoRisk = () => {
-    const newRisk = parseFloat(demoRiskInput) || 2;
-    setDemoAccount(prev => ({
-      ...prev,
-      riskPercentage: Math.max(0.1, Math.min(10, newRisk))
-    }));
-  };
-
-  const handleDemoTrade = useCallback((symbol: string, instrumentType: 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto', direction: 'buy' | 'sell', entry: number, tp: number) => {
-    if (!demoAccount.enabled) return null;
-
-    const riskAmount = demoAccount.currentBalance * (demoAccount.riskPercentage / 100);
-    const stopDistance = Math.abs(tp - entry) * 0.5; // SL a mitad de distancia al TP
-    const positionSize = riskAmount / stopDistance;
-
-    console.log('Demo Trade Opened:', {
-      symbol,
-      instrumentType,
-      direction,
-      entry,
-      tp,
-      currentBalance: demoAccount.currentBalance,
-      riskPercentage: demoAccount.riskPercentage,
-      riskAmount,
-      stopDistance,
-      positionSize
-    });
-
-    const trade: DemoTrade = {
-      id: `${symbol}-${Date.now()}`,
-      symbol,
-      instrumentType,
-      direction,
-      entry,
-      tp,
-      positionSize,
-      riskAmount,
-      openTime: Date.now(),
-      closed: false
-    };
-
-    setDemoAccount(prev => ({
-      ...prev,
-      trades: [...prev.trades, trade]
-    }));
-
-    return trade;
-  }, [demoAccount]);
-
-  const handleCloseDemoTrade = useCallback((tradeId: string, currentPrice: number) => {
-    setDemoAccount(prev => {
-      const trade = prev.trades.find(t => t.id === tradeId);
-      if (!trade || trade.closed) return prev;
-
-      const priceChange = trade.direction === 'buy' 
-        ? (currentPrice - trade.entry)
-        : (trade.entry - currentPrice);
-      const profit = priceChange * trade.positionSize;
-
-      console.log('Demo Trade Closed:', {
-        symbol: trade.symbol,
-        direction: trade.direction,
-        entry: trade.entry,
-        exit: currentPrice,
-        priceChange,
-        positionSize: trade.positionSize,
-        profit,
-        balanceBefore: prev.currentBalance,
-        balanceAfter: prev.currentBalance + profit
-      });
-
-      const updatedTrades = prev.trades.map(t => 
-        t.id === tradeId 
-          ? { ...t, closed: true, closeTime: Date.now(), profit }
-          : t
-      );
-
-      // Forzar actualización de UI después de cerrar el trade
-      setTimeout(() => forceUpdate(t => t + 1), 0);
-
-      return {
-        ...prev,
-        currentBalance: prev.currentBalance + profit,
-        trades: updatedTrades
-      };
-    });
-  }, []);
-
-  const resetDemoAccount = () => {
-    setDemoAccount({
-      enabled: false,
-      initialBalance: 10000,
-      currentBalance: 10000,
-      riskPercentage: 2,
-      trades: []
-    });
-    setDemoBalanceInput('10000');
-  };
-
-  // Calcular estadísticas de sesión
-  const demoStats = useMemo(() => {
-    const sessionTrades = demoAccount.trades.filter(t => t.closed);
-    const activeTrades = demoAccount.trades.filter(t => !t.closed);
-    
-    // Calcular P&L flotante de trades activos
-    let floatingPL = 0;
-    activeTrades.forEach(trade => {
-      const currentPrice = PriceStore[trade.symbol];
-      if (currentPrice && currentPrice > 0) {
-        const priceChange = trade.direction === 'buy'
-          ? (currentPrice - trade.entry)
-          : (trade.entry - currentPrice);
-        floatingPL += priceChange * trade.positionSize;
-      }
-    });
-    
-    // Balance realizado + P&L flotante
-    const realizedPL = demoAccount.currentBalance - demoAccount.initialBalance;
-    const totalPL = realizedPL + floatingPL;
-    const currentEquity = demoAccount.currentBalance + floatingPL;
-    const plPercentage = (totalPL / demoAccount.initialBalance) * 100;
-    
-    const wins = sessionTrades.filter(t => (t.profit || 0) > 0).length;
-    const losses = sessionTrades.filter(t => (t.profit || 0) < 0).length;
-    const winRate = sessionTrades.length > 0 ? (wins / sessionTrades.length) * 100 : 0;
-    
-    return {
-      totalPL,
-      plPercentage,
-      currentEquity,
-      floatingPL,
-      realizedPL,
-      totalTrades: sessionTrades.length,
-      wins,
-      losses,
-      winRate,
-      activeTrades: activeTrades.length
-    };
-  }, [demoAccount, forceUpdateTrigger]);
-
-  // Forzar actualización cada 5s para reflejar P&L flotante en tiempo real
-  useEffect(() => {
-    if (!demoAccount.enabled || demoAccount.trades.filter(t => !t.closed).length === 0) return;
-    
-    const interval = setInterval(() => {
-      forceUpdate(t => t + 1);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [demoAccount.enabled, demoAccount.trades]);
-
+  // Guardar volumen de alertas en localStorage
   useEffect(() => {
     localStorage.setItem('alertVolume', volume.toString());
     audioService.setVolume(volume);
@@ -344,6 +128,30 @@ const App: React.FC = () => {
         if (!session) {
           console.log('[Radar] Sin sesión - redirigiendo a login');
           window.location.href = '/login?next=/radar';
+          return;
+        }
+
+        // Perfil incompleto (falta nombre o teléfono) → completar antes de usar el Radar
+        let profileResp = await supabase
+          .from('profiles')
+          .select('full_name, phone')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        if (profileResp.error) {
+          // Compatibilidad de esquema: algunos entornos usan profiles.user_id en vez de profiles.id
+          profileResp = await supabase
+            .from('profiles')
+            .select('full_name, phone')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+        }
+        const profile = profileResp.data;
+
+        const hasName = !!(profile?.full_name && profile.full_name.trim());
+        const hasPhone = !!(profile?.phone && profile.phone.trim());
+        if (!hasName || !hasPhone) {
+          console.log('[Radar] Perfil incompleto - redirigiendo al portal');
+          window.location.href = '/dashboard#radar';
           return;
         }
         
@@ -545,7 +353,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <header className={`sticky top-0 bg-[#050505]/95 backdrop-blur-2xl border-b border-white/5 px-4 md:px-8 py-3 md:py-5 ${showDemoScreener ? 'z-[250]' : hasVisibleChart ? 'z-50' : 'z-[150]'}`}>
+      <header className={`sticky top-0 bg-[#050505]/95 backdrop-blur-2xl border-b border-white/5 px-4 md:px-8 py-3 md:py-5 ${hasVisibleChart ? 'z-50' : 'z-[150]'}`}>
         <div className="max-w-[1500px] mx-auto flex flex-col items-start md:items-center md:flex-row justify-between gap-3 md:gap-6">
           <div className={`flex items-center space-x-3 md:space-x-4 p-1 md:p-2 relative ${showDebugFrames ? 'border-2 border-red-500' : ''}`}>
             {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-red-500 z-50">HEADER-1: LOGO</span>}
@@ -579,71 +387,6 @@ const App: React.FC = () => {
 
           <div className={`flex flex-wrap items-center gap-2 md:space-x-6 md:gap-0 p-1 md:p-2 relative w-full md:w-auto ${showDebugFrames ? 'border-2 border-green-500' : ''}`}>
             {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-green-500 z-50">HEADER-3: CONTROLS</span>}
-            {/* Paper Money Demo */}
-            {!demoAccount.enabled ? (
-              <div className="flex items-center gap-1.5 md:gap-2 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-lg md:rounded-xl px-2 md:px-3 py-1.5 md:py-2 relative text-xs md:text-sm">
-                {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-1 text-[9px] text-purple-400 z-50">H3A-PaperMoney</span>}
-                <span className="text-[8px] md:text-[9px] font-black uppercase tracking-widest text-cyan-400 hidden md:inline">Paper Money</span>
-                <span className="text-[8px] font-black uppercase tracking-widest text-cyan-400 md:hidden">Demo</span>
-                <input
-                  type="text"
-                  value={demoBalanceInput}
-                  onChange={(e) => setDemoBalanceInput(e.target.value)}
-                  placeholder="10000"
-                  className="w-16 md:w-24 bg-black/30 border border-white/10 rounded px-1.5 md:px-2 py-0.5 md:py-1 text-xs md:text-sm text-white font-normal focus:outline-none focus:border-cyan-500/50"
-                />
-                <input
-                  type="text"
-                  value={demoRiskInput}
-                  onChange={(e) => setDemoRiskInput(e.target.value)}
-                  placeholder="2"
-                  className="w-8 md:w-12 bg-black/30 border border-white/10 rounded px-1 md:px-2 py-0.5 md:py-1 text-xs md:text-sm text-white font-normal focus:outline-none focus:border-cyan-500/50"
-                  title="Riesgo % por trade"
-                />
-                <span className="text-[7px] md:text-[8px] text-neutral-500">%</span>
-                <button
-                  onClick={handleActivateDemo}
-                  className="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-[9px] font-black uppercase tracking-widest border border-cyan-500/40 hover:bg-cyan-500/30 transition-colors"
-                >
-                  Start
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 md:gap-3 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-lg md:rounded-xl px-2 md:px-3 py-1.5 md:py-2 relative text-xs md:text-sm">
-                {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-1 text-[9px] text-purple-400 z-50">H3A-PaperMoney</span>}
-                <div className="flex flex-col">
-                  <span className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-neutral-500">Paper Balance</span>
-                  <div className="flex items-baseline gap-1 md:gap-2">
-                    <span className="text-sm md:text-lg font-normal text-white">
-                      ${formatNumber(demoStats.currentEquity, 2)}
-                    </span>
-                    <span className={`text-[10px] md:text-xs font-bold ${
-                      demoStats.totalPL >= 0 ? 'text-emerald-400' : 'text-rose-400'
-                    }`}>
-                      {demoStats.totalPL >= 0 ? '+' : ''}{demoStats.plPercentage.toFixed(1)}%
-                    </span>
-                  </div>
-                </div>
-                {demoStats.totalTrades > 0 && (
-                  <div className="hidden md:flex flex-col border-l border-white/10 pl-3">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-neutral-500">Stats</span>
-                    <div className="flex items-center gap-2 text-[9px]">
-                      <span className="text-emerald-400">{demoStats.wins}W</span>
-                      <span className="text-rose-400">{demoStats.losses}L</span>
-                      <span className="text-neutral-400">{demoStats.winRate.toFixed(0)}%</span>
-                    </div>
-                  </div>
-                )}
-                <button
-                  onClick={resetDemoAccount}
-                  className="text-[7px] md:text-[8px] px-1.5 md:px-2 py-0.5 md:py-1 rounded bg-neutral-800/50 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors font-bold uppercase tracking-wider"
-                  title="Reset paper account"
-                >
-                  Reset
-                </button>
-              </div>
-            )}
-            
             <div className="hidden md:flex items-center space-x-4 bg-white/5 p-2 px-3 rounded-xl border border-white/10 relative">
               {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-1 text-[9px] text-orange-400 z-50">H3B-Audio</span>}
               <div className="flex items-center gap-2">
@@ -744,21 +487,6 @@ const App: React.FC = () => {
               <button className="text-[10px] font-bold text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">Calendario</button>
               <button className="text-[10px] font-bold text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">Mercado Cripto</button>
             </div>
-            
-            {/* History Toggle Button - Only visible when demo account is active */}
-            {demoAccount.enabled && (
-              <>
-                {/* Separator - Hidden on mobile */}
-                <div className="hidden md:block h-6 w-px bg-white/10"></div>
-                
-                <button
-                  onClick={() => setShowDemoScreener(!showDemoScreener)}
-                  className="text-[9px] md:text-[10px] px-2 py-1 rounded bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 border border-cyan-500/40 transition-colors font-bold uppercase tracking-wider"
-                >
-                  {showDemoScreener ? 'Close History' : 'History'}
-                </button>
-              </>
-            )}
           </div>
         </div>
       </header>
@@ -813,9 +541,6 @@ const App: React.FC = () => {
                   isTestMode={false}
                   onOpenChart={handleOpenChart}
                   chartStatus={charts[instrument.symbol]}
-                  demoAccount={demoAccount}
-                  onDemoTrade={handleDemoTrade}
-                  onCloseDemoTrade={handleCloseDemoTrade}
                   refreshJustCompleted={refreshJustCompleted}
                 />
               </div>
@@ -870,381 +595,6 @@ const App: React.FC = () => {
         />
       )}
 
-      {/* Demo Screener Fullscreen */}
-      {showDemoScreener && demoAccount.enabled && (
-        <div className="fixed inset-0 z-[200] bg-[#050505] pt-[200px]">
-          <div className="h-full w-full max-w-[1500px] mx-auto flex flex-col">
-          
-          {/* SECTIONS A + B: Stats & Top Instruments */}
-          <div className="flex gap-6 px-6 border-b border-white/5 flex-shrink-0">
-            
-            {/* SECTION A: Stats */}
-            <div className="flex-1">
-              <div className={`flex items-center gap-6 text-[14px] py-1 relative ${showDebugFrames ? 'border-2 border-red-500' : ''}`}>
-                {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-red-500">SECTION A: STATS</span>}
-                
-                <div className={`flex items-center gap-3 p-1 relative ${showDebugFrames ? 'border border-purple-400' : ''}`}>
-                  {showDebugFrames && <span className="absolute -top-2 left-1 bg-[#050505] px-1 text-[9px] text-purple-400">A1-Balance</span>}
-                  <div className="text-[11px] text-neutral-600">balance</div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-neutral-600">${formatNumber(demoAccount.initialBalance, 0)}</span>
-                    <span className="text-neutral-700">→</span>
-                    <span className="text-white">${formatNumber(demoStats.currentEquity, 2)}</span>
-                  </div>
-                </div>
-                
-                <div className="h-8 w-px bg-white/10"></div>
-                
-                <div className={`flex items-center gap-3 p-1 relative ${showDebugFrames ? 'border border-orange-400' : ''}`}>
-                  {showDebugFrames && <span className="absolute -top-2 left-1 bg-[#050505] px-1 text-[9px] text-orange-400">A2-PL</span>}
-                  <div className="text-[11px] text-neutral-600">p&l</div>
-                  <div className="flex items-center gap-2">
-                    <span className={demoStats.totalPL >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
-                      {demoStats.totalPL >= 0 ? '+' : ''}${formatNumber(Math.abs(demoStats.totalPL), 2)}
-                    </span>
-                    <span className={demoStats.totalPL >= 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}>
-                      {demoStats.plPercentage >= 0 ? '+' : ''}{demoStats.plPercentage.toFixed(1)}%
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="h-8 w-px bg-white/10"></div>
-                
-                <div className={`flex items-center gap-3 p-1 relative ${showDebugFrames ? 'border border-pink-400' : ''}`}>
-                  {showDebugFrames && <span className="absolute -top-2 left-1 bg-[#050505] px-1 text-[9px] text-pink-400">A3-WinRate</span>}
-                  <div className="text-[11px] text-neutral-600">win rate</div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-cyan-400">{demoStats.winRate.toFixed(0)}%</span>
-                    <span className="text-emerald-400">{demoStats.wins}W</span>
-                    <span className="text-rose-400">{demoStats.losses}L</span>
-                  </div>
-                </div>
-                
-                <div className="h-8 w-px bg-white/10"></div>
-                
-                <div className={`flex items-center gap-3 p-1 relative ${showDebugFrames ? 'border border-cyan-400' : ''}`}>
-                  {showDebugFrames && <span className="absolute -top-2 left-1 bg-[#050505] px-1 text-[9px] text-cyan-400">A4-Risk</span>}
-                  <div className="text-[11px] text-neutral-600">risk</div>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      value={demoRiskInput}
-                      onChange={(e) => setDemoRiskInput(e.target.value)}
-                      onBlur={updateDemoRisk}
-                      step="0.1"
-                      min="0.1"
-                      max="10"
-                      className="w-12 bg-neutral-900 border border-white/5 rounded px-1.5 py-0.5 text-[14px] text-white focus:outline-none focus:border-cyan-500/30"
-                    />
-                    <span className="text-neutral-600">%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Separator vertical */}
-            <div className="w-px bg-white/10"></div>
-
-            {/* SECTION B: Top Instruments */}
-            <div className="flex-1">
-              <div className={`flex items-center gap-4 py-1 relative ${showDebugFrames ? 'border-2 border-blue-500' : ''}`}>
-                {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-blue-500">SECTION B: TOP INSTRUMENTS</span>}
-                <div className="flex-1">
-                  {(() => {
-                    const instrumentStats: Record<string, { trades: number; totalPL: number; wins: number; losses: number }> = {};
-                    
-                    demoAccount.trades.filter(t => t.closed).forEach(trade => {
-                      if (!instrumentStats[trade.symbol]) {
-                        instrumentStats[trade.symbol] = { trades: 0, totalPL: 0, wins: 0, losses: 0 };
-                      }
-                      instrumentStats[trade.symbol].trades++;
-                      instrumentStats[trade.symbol].totalPL += trade.profit || 0;
-                      if ((trade.profit || 0) > 0) instrumentStats[trade.symbol].wins++;
-                      else instrumentStats[trade.symbol].losses++;
-                    });
-
-                    const sortedInstruments = Object.entries(instrumentStats).sort((a, b) => b[1].totalPL - a[1].totalPL);
-                    const topInstruments = sortedInstruments.slice(0, 5);
-
-                    return topInstruments.length > 0 ? (
-                      <div className="flex items-center gap-3 text-[14px]">
-                        <span className="text-neutral-600">top:</span>
-                        {topInstruments.map(([symbol, stats]) => (
-                          <div key={symbol} className="flex items-center gap-1.5">
-                            <span className="text-white">{symbol}</span>
-                            <span className={stats.totalPL >= 0 ? 'text-emerald-400 text-xs' : 'text-rose-400 text-xs'}>
-                              {stats.totalPL >= 0 ? '+' : ''}${formatNumber(Math.abs(stats.totalPL), 0)}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-[14px] text-neutral-600">
-                        no instruments yet
-                      </div>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex items-center gap-2 px-6 py-3 border-b border-white/5 flex-shrink-0">
-            <button
-              onClick={() => setDemoTradesTab('active')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                demoTradesTab === 'active'
-                  ? 'bg-cyan-500/20 text-cyan-400 border-2 border-cyan-500/40'
-                  : 'bg-white/5 text-neutral-500 border-2 border-transparent hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Active Trades ({demoAccount.trades.filter(t => !t.closed).length})
-            </button>
-            <button
-              onClick={() => setDemoTradesTab('closed')}
-              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                demoTradesTab === 'closed'
-                  ? 'bg-emerald-500/20 text-emerald-400 border-2 border-emerald-500/40'
-                  : 'bg-white/5 text-neutral-500 border-2 border-transparent hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Closed Trades ({demoAccount.trades.filter(t => t.closed).length})
-            </button>
-          </div>
-
-          {/* Trade List - Full Height con Scroll */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="px-6 py-4">
-              {demoTradesTab === 'active' ? (
-                /* ACTIVE TRADES */
-                <>
-                  {demoAccount.trades.filter(t => !t.closed).length === 0 ? (
-                    <div className="py-12 text-center text-[14px] text-neutral-600 border border-dashed border-white/5 rounded">
-                      no active trades
-                    </div>
-                  ) : (
-                  <div className="space-y-4">
-                    {(() => {
-                      const activeByInstrument: Record<string, any[]> = {};
-                      
-                      demoAccount.trades.filter(t => !t.closed).forEach(trade => {
-                        if (!activeByInstrument[trade.symbol]) {
-                          activeByInstrument[trade.symbol] = [];
-                        }
-                        activeByInstrument[trade.symbol].push(trade);
-                      });
-
-                      return Object.entries(activeByInstrument).map(([symbol, trades]) => {
-                        const instrumentType = trades[0]?.instrumentType || 'unknown';
-                        
-                        return (
-                          <div key={symbol} className="border border-cyan-500/30 rounded overflow-hidden bg-cyan-500/5">
-                            {/* Header: Instrumento */}
-                            <div className="grid grid-cols-3 gap-4 px-4 py-2 bg-cyan-500/10 border-b border-cyan-500/20 text-[14px]">
-                              <div>
-                                <div className="text-white font-bold">{symbol}</div>
-                                <div className="text-[10px] text-neutral-600">symbol</div>
-                              </div>
-                              <div>
-                                <div className="text-cyan-400 uppercase text-xs">{instrumentType}</div>
-                                <div className="text-[10px] text-neutral-600">type</div>
-                              </div>
-                              <div>
-                                <div className="text-cyan-400">{trades.length} active</div>
-                                <div className="text-[10px] text-neutral-600">trades</div>
-                              </div>
-                            </div>
-                            
-                            {/* Trades activos */}
-                            <div>
-                              {/* Headers de columnas */}
-                              <div className="grid grid-cols-[40px_60px_60px_100px_100px_100px_80px_100px_100px_60px_50px] gap-4 px-4 py-2 bg-white/[0.01] border-b border-white/5 text-[11px] text-neutral-600">
-                                <div>#</div>
-                                <div>type</div>
-                                <div>side</div>
-                                <div className="text-right">entry</div>
-                                <div className="text-right">tp</div>
-                                <div className="text-right">size</div>
-                                <div className="text-right">time</div>
-                                <div className="text-right">open</div>
-                                <div className="text-right">p&l</div>
-                                <div className="text-right">%</div>
-                                <div className="text-center">action</div>
-                              </div>
-                              
-                              {trades.map((trade, idx) => {
-                                const currentPrice = PriceStore[trade.symbol] || trade.entry;
-                                const currentProfit = trade.direction === 'buy' 
-                                  ? (currentPrice - trade.entry) * trade.positionSize
-                                  : (trade.entry - currentPrice) * trade.positionSize;
-                                const profitPercent = (currentProfit / trade.riskAmount) * 100;
-                                const duration = Date.now() - trade.openTime;
-                                const durationMins = Math.round(duration / 60000);
-                                const openDate = new Date(trade.openTime);
-
-                                return (
-                                  <div key={trade.id} className="grid grid-cols-[40px_60px_60px_100px_100px_100px_80px_100px_100px_60px_50px] gap-4 px-4 py-2 border-b border-white/5 hover:bg-white/[0.02] text-[14px]">
-                                    <div className="text-neutral-600">#{trades.length - idx}</div>
-                                    <div className="text-neutral-500 text-xs uppercase">{trade.instrumentType}</div>
-                                    <div className={trade.direction === 'buy' ? 'text-emerald-400' : 'text-rose-400'}>
-                                      {trade.direction}
-                                    </div>
-                                    <div className="text-right text-neutral-400">{trade.entry.toFixed(5)}</div>
-                                    <div className="text-right text-neutral-400">{trade.tp.toFixed(5)}</div>
-                                    <div className="text-right text-cyan-400">{formatNumber(trade.positionSize, 0)}</div>
-                                    <div className="text-right text-cyan-400">{durationMins}m</div>
-                                    <div className="text-right text-neutral-600">
-                                      {openDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' })} {openDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-                                    </div>
-                                    <div className={`text-right font-bold ${currentProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                      {currentProfit >= 0 ? '+' : ''}${formatNumber(Math.abs(currentProfit), 2)}
-                                    </div>
-                                    <div className={`text-right ${currentProfit >= 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>
-                                      {profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(0)}%
-                                    </div>
-                                    <div className="text-center">
-                                      <button 
-                                        onClick={() => handleCloseDemoTrade(trade.id, currentPrice)}
-                                        className="px-2 py-0.5 text-xs text-rose-400 hover:bg-rose-500/10 rounded transition-colors"
-                                        title="Close trade"
-                                      >
-                                        ✕
-                                      </button>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      });
-                    })()}
-                  </div>
-                  )}
-                </>
-              ) : (
-                /* CLOSED TRADES */
-                <>
-                  {demoAccount.trades.filter(t => t.closed).length === 0 ? (
-                    <div className="py-12 text-center text-[14px] text-neutral-600 border border-dashed border-white/5 rounded">
-                      no closed trades yet
-                    </div>
-                  ) : (
-                  <div className="space-y-4">
-                    {(() => {
-                      const instrumentStats: Record<string, { trades: any[]; totalPL: number; wins: number; losses: number }> = {};
-                      
-                      demoAccount.trades.filter(t => t.closed).forEach(trade => {
-                        if (!instrumentStats[trade.symbol]) {
-                          instrumentStats[trade.symbol] = { trades: [], totalPL: 0, wins: 0, losses: 0 };
-                        }
-                        instrumentStats[trade.symbol].trades.push(trade);
-                        instrumentStats[trade.symbol].totalPL += trade.profit || 0;
-                        if ((trade.profit || 0) > 0) instrumentStats[trade.symbol].wins++;
-                        else instrumentStats[trade.symbol].losses++;
-                      });
-
-                      const sortedInstruments = Object.entries(instrumentStats).sort((a, b) => b[1].totalPL - a[1].totalPL);
-
-                      return sortedInstruments.map(([symbol, stats]) => {
-                        const instrumentType = stats.trades[0]?.instrumentType || 'unknown';
-                        
-                        return (
-                          <div key={symbol} className="border border-white/5 rounded overflow-hidden">
-                            {/* Header: Instrumento y Stats */}
-                            <div className="grid grid-cols-6 gap-4 px-4 py-2 bg-white/[0.03] border-b border-white/5 text-[14px]">
-                              <div>
-                                <div className="text-white font-bold">{symbol}</div>
-                                <div className="text-[10px] text-neutral-600">symbol</div>
-                              </div>
-                              <div>
-                                <div className="text-neutral-400 uppercase text-xs">{instrumentType}</div>
-                                <div className="text-[10px] text-neutral-600">type</div>
-                              </div>
-                              <div>
-                                <div className={stats.totalPL >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
-                                  {stats.totalPL >= 0 ? '+' : ''}${formatNumber(Math.abs(stats.totalPL), 0)}
-                                </div>
-                                <div className="text-[10px] text-neutral-600">p&l</div>
-                              </div>
-                              <div>
-                                <div className="text-neutral-400">{stats.trades.length}</div>
-                                <div className="text-[10px] text-neutral-600">trades</div>
-                              </div>
-                              <div>
-                                <div className="text-emerald-400">{stats.wins}</div>
-                                <div className="text-[10px] text-neutral-600">wins</div>
-                              </div>
-                              <div>
-                                <div className="text-rose-400">{stats.losses}</div>
-                                <div className="text-[10px] text-neutral-600">losses</div>
-                              </div>
-                            </div>
-                            
-                            {/* Trades del instrumento */}
-                            <div>
-                              {/* Headers de columnas */}
-                              <div className="grid grid-cols-[40px_60px_60px_100px_100px_100px_80px_100px_100px_60px] gap-4 px-4 py-2 bg-white/[0.01] border-b border-white/5 text-[11px] text-neutral-600">
-                                <div>#</div>
-                                <div>type</div>
-                                <div>side</div>
-                                <div className="text-right">entry</div>
-                                <div className="text-right">tp</div>
-                                <div className="text-right">size</div>
-                                <div className="text-right">time</div>
-                                <div className="text-right">open</div>
-                                <div className="text-right">p&l</div>
-                                <div className="text-right">%</div>
-                              </div>
-                              
-                              {stats.trades
-                                .sort((a, b) => (b.closeTime || 0) - (a.closeTime || 0))
-                                .map((trade, idx) => {
-                                  const profit = trade.profit || 0;
-                                  const profitPercent = ((profit / trade.riskAmount) * 100);
-                                  const duration = trade.closeTime && trade.openTime 
-                                    ? Math.round((trade.closeTime - trade.openTime) / 60000) 
-                                    : 0;
-                                  const openDate = new Date(trade.openTime);
-
-                                  return (
-                                    <div key={trade.id} className="grid grid-cols-[40px_60px_60px_100px_100px_100px_80px_100px_100px_60px] gap-4 px-4 py-2 border-b border-white/5 hover:bg-white/[0.02] text-[14px]">
-                                      <div className="text-neutral-600">#{stats.trades.length - idx}</div>
-                                      <div className="text-neutral-500 text-xs uppercase">{trade.instrumentType}</div>
-                                      <div className={trade.direction === 'buy' ? 'text-emerald-400' : 'text-rose-400'}>
-                                        {trade.direction}
-                                      </div>
-                                      <div className="text-right text-neutral-400">{trade.entry.toFixed(5)}</div>
-                                      <div className="text-right text-neutral-400">{trade.tp.toFixed(5)}</div>
-                                      <div className="text-right text-cyan-400">{formatNumber(trade.positionSize, 0)}</div>
-                                      <div className="text-right text-neutral-600">{duration}m</div>
-                                      <div className="text-right text-neutral-600">
-                                        {openDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' })} {openDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-                                      </div>
-                                      <div className={`text-right ${profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                        {profit >= 0 ? '+' : ''}${formatNumber(Math.abs(profit), 2)}
-                                      </div>
-                                      <div className={`text-right ${profit >= 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>
-                                        {profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(0)}%
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          </div>
-                        );
-                      });
-                    })()}
-                  </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      )}
     </div>
   );
 };

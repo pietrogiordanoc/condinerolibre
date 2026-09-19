@@ -22,9 +22,6 @@ interface InstrumentRowProps {
   isTestMode?: boolean;
   onOpenChart: (symbol: string) => void;
   chartStatus?: 'visible' | 'minimized';
-  demoAccount?: any;
-  onDemoTrade?: (symbol: string, instrumentType: 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto', direction: 'buy' | 'sell', entry: number, tp: number) => any;
-  onCloseDemoTrade?: (tradeId: string, currentPrice: number) => void;
   refreshJustCompleted?: boolean;
 }
 
@@ -32,7 +29,6 @@ type ActiveTrade = {
   entryPrice: number;
   direction: 'buy' | 'sell';
   tp?: number;
-  demoTradeId?: string;
 };
 
 const ChartMonitorIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -67,7 +63,7 @@ const calculateProfitDisplay = (tp: number, entry: number, instrument: Instrumen
 };
 
 const InstrumentRow: React.FC<InstrumentRowProps> = ({ 
-  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, demoAccount, onDemoTrade, onCloseDemoTrade, refreshJustCompleted = false
+  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, refreshJustCompleted = false
 }) => {
   const [analysis, setAnalysis] = useState<MultiTimeframeAnalysis | null>(() => GlobalAnalysisCache[instrument.id]?.analysis || null);
   const [isLoading, setIsLoading] = useState(false);
@@ -249,14 +245,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       tp: tradeSetup?.tp
     };
 
-    // Si demo está activo, crear trade demo
-    if (demoAccount?.enabled && onDemoTrade && tradeSetup) {
-      const demoTrade = onDemoTrade(instrument.symbol, instrument.type, direction, currentPrice, tradeSetup.tp);
-      if (demoTrade) {
-        trade.demoTradeId = demoTrade.id;
-      }
-    }
-
     setActiveTrade(trade);
     
     // 🟢 Actualizar cache global para ordenamiento
@@ -266,11 +254,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   };
 
   const handleCloseTrade = () => {
-    // Si es trade demo, cerrar en el sistema demo
-    if (activeTrade?.demoTradeId && onCloseDemoTrade) {
-      onCloseDemoTrade(activeTrade.demoTradeId, currentPrice);
-    }
-
     setActiveTrade(null);
     
     // 🟢 Actualizar cache global

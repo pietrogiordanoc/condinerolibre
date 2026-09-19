@@ -6,6 +6,9 @@ const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 
+// Límite diario gratuito de CDLRadar (debe coincidir con la Edge Function radar-access)
+const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 serve(async (req) => {
@@ -124,13 +127,13 @@ serve(async (req) => {
           "✅ isPaid: " + isPaid + "\n\n" +
           "⚠️ *IMPORTANTE - PLAN GRATUITO:*\n" +
           "🔄 Al cerrar el navegador, tu conexión se desconecta automáticamente\n" +
-          "⏰ Tu cuota diaria se renueva a las 12:00 AM (medianoche)\n" +
-          "⏱️ Tienes 1 hora de señales por día\n\n" +
+          "⏰ Tu cuota diaria se renueva a medianoche (00:00 UTC)\n" +
+          `⏱️ Tienes ${RADAR_FREE_DAILY_LIMIT_MINUTES} minutos de señales por día\n\n` +
           "💡 *OPTIMIZA TU TIEMPO:*\n" +
-          "• Tu hora empieza a contar cuando abres el Radar\n" +
+          "• Tu tiempo empieza a contar cuando abres el Radar\n" +
           "• Abre a la hora que más te convenga (no desperdicies tu cuota)\n" +
-          "• Puedes fraccionar: usa 20 min, cierra, reconéctate más tarde = 40 min restantes\n" +
-          "• Cada día a medianoche se renueva tu hora completa\n\n" +
+          `• Puedes fraccionar tus ${RADAR_FREE_DAILY_LIMIT_MINUTES} minutos en varias conexiones durante el día\n` +
+          "• Cada día a medianoche se renueva tu cuota completa\n\n" +
           "💎 *¿Quieres alertas ilimitadas 24/7?* Hazte Premium.";
       }
       
