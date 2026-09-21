@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Bookmark, X } from 'lucide-react';
+import { Bookmark } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
@@ -9,7 +9,7 @@ export const GlobalAnalysisCache: Record<string, {
   trigger: number, 
   newSignalTriggerId?: number | null, 
   lastAction?: ActionType | null,
-  hasActiveTrade?: boolean 
+  isBookmarked?: boolean 
 }> = {};
 
 interface InstrumentRowProps {
@@ -22,14 +22,8 @@ interface InstrumentRowProps {
   isTestMode?: boolean;
   onOpenChart: (symbol: string) => void;
   chartStatus?: 'visible' | 'minimized';
-  refreshJustCompleted?: boolean;
+  stats?: { totalSignals: number; winRatePct: number | null; avgResultPct: number | null } | null;
 }
-
-type ActiveTrade = {
-  entryPrice: number;
-  direction: 'buy' | 'sell';
-  tp?: number;
-};
 
 const ChartMonitorIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -63,7 +57,7 @@ const calculateProfitDisplay = (tp: number, entry: number, instrument: Instrumen
 };
 
 const InstrumentRow: React.FC<InstrumentRowProps> = ({ 
-  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, refreshJustCompleted = false
+  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, stats
 }) => {
   const [analysis, setAnalysis] = useState<MultiTimeframeAnalysis | null>(() => GlobalAnalysisCache[instrument.id]?.analysis || null);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,43 +68,25 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   });
   const [newSignalTriggerId, setNewSignalTriggerId] = useState<number | null>(null);
   const [tradeSetup, setTradeSetup] = useState<TradeSetup | null>(null);
-  const [activeTrade, setActiveTrade] = useState<ActiveTrade | null>(null);
   const [copyStatus, setCopyStatus] = useState<boolean>(false);
   
   const lastRefreshTriggerRef = useRef<number>(GlobalAnalysisCache[instrument.id]?.trigger ?? -1);
 
-  // 🟢 Sincronizar activeTrade con GlobalAnalysisCache para ordenamiento
+  // Sincronizar bookmark con GlobalAnalysisCache para priorizar el orden (destacar arriba)
   useEffect(() => {
     if (GlobalAnalysisCache[instrument.id]) {
-      GlobalAnalysisCache[instrument.id].hasActiveTrade = activeTrade !== null;
+      GlobalAnalysisCache[instrument.id].isBookmarked = isBookmarked;
     }
-  }, [activeTrade, instrument.id]);
+  }, [isBookmarked, instrument.id]);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      // Si hay un trade activo, consultar precio en tiempo real desde Supabase
-      if (activeTrade) {
-        try {
-          const { supabase } = await import('../services/supabaseClient');
-          const { data } = await supabase
-            .rpc('get_latest_close', { symbol_param: instrument.symbol });
-          
-          if (data && data > 0) {
-            setCurrentPrice(data);
-            PriceStore[instrument.symbol] = data;
-          }
-        } catch (error) {
-          console.error(`Error fetching live price for ${instrument.symbol}:`, error);
-        }
-      } else {
-        // Sin trade activo, usar PriceStore (más eficiente)
-        if (PriceStore[instrument.symbol]) {
-          setCurrentPrice(PriceStore[instrument.symbol]);
-        }
+    const interval = setInterval(() => {
+      if (PriceStore[instrument.symbol]) {
+        setCurrentPrice(PriceStore[instrument.symbol]);
       }
     }, 5000);
     return () => clearInterval(interval);
-  }, [instrument.symbol, activeTrade]);
+  }, [instrument.symbol]);
 
   const handleCopyTradeSetup = (setup: TradeSetup) => {
     if (!setup) return;
@@ -158,7 +134,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         const result = strategy.analyze(instrument.symbol, combinedData as any, false, instrument);
         
         if (result.tradeSetup) setTradeSetup(result.tradeSetup);
-        else if (!activeTrade) setTradeSetup(null);
+        else setTradeSetup(null);
         
         const lastActionInCache = GlobalAnalysisCache[instrument.id]?.lastAction;
         const isNewEntry = result.action === ActionType.ENTRAR_AHORA && lastActionInCache !== ActionType.ENTRAR_AHORA;
@@ -170,6 +146,24 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
           // Alarma se dispara en useEffect vinculado al badge NOW
           signalTriggerForUpdate = globalRefreshTrigger;
           setNewSignalTriggerId(signalTriggerForUpdate);
+        }
+
+        // Registrar la señal en el historial compartido (una vez por señal nueva, no por usuario ni por polling)
+        if (isNewEntry && result.tradeSetup && result.price) {
+          import('../services/supabaseClient').then(({ supabase }) => {
+            supabase.rpc('record_new_signal', {
+              p_symbol: instrument.symbol,
+              p_type: instrument.type,
+              p_direction: result.mainSignal === SignalType.SALE ? 'sell' : 'buy',
+              p_score: result.powerScore || 0,
+              p_entry: result.tradeSetup!.entry,
+              p_tp: result.tradeSetup!.tp,
+              p_rr: result.tradeSetup!.rr || null,
+              p_current_price: result.price,
+            }).then(({ error }) => {
+              if (error) console.error(`[SignalHistory] Error registrando ${instrument.symbol}:`, error.message);
+            });
+          });
         }
         
         setAnalysis(result);
@@ -192,7 +186,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [instrument, strategy, onAnalysisUpdate, playAlertSound, globalRefreshTrigger, activeTrade]);
+  }, [instrument, strategy, onAnalysisUpdate, playAlertSound, globalRefreshTrigger]);
 
   // Authoritative effect to sync "NOW" state from global cache and handle cleanup.
   useEffect(() => {
@@ -232,37 +226,9 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   useEffect(() => { 
     if (globalRefreshTrigger !== lastRefreshTriggerRef.current) {
       lastRefreshTriggerRef.current = globalRefreshTrigger;
-      if (!activeTrade) {
-          performAnalysis();
-      }
+      performAnalysis();
     }
-  }, [globalRefreshTrigger, performAnalysis, activeTrade]);
-  
-  const handleTakeTrade = (direction: 'buy' | 'sell') => {
-    const trade: ActiveTrade = { 
-      entryPrice: currentPrice, 
-      direction,
-      tp: tradeSetup?.tp
-    };
-
-    setActiveTrade(trade);
-    
-    // 🟢 Actualizar cache global para ordenamiento
-    if (GlobalAnalysisCache[instrument.id]) {
-      GlobalAnalysisCache[instrument.id].hasActiveTrade = true;
-    }
-  };
-
-  const handleCloseTrade = () => {
-    setActiveTrade(null);
-    
-    // 🟢 Actualizar cache global
-    if (GlobalAnalysisCache[instrument.id]) {
-      GlobalAnalysisCache[instrument.id].hasActiveTrade = false;
-    }
-    
-    performAnalysis();
-  };
+  }, [globalRefreshTrigger, performAnalysis]);
 
   const getActionColor = (action?: ActionType, score: number = 0, mainSignal?: SignalType) => {
     if (isLoading) return 'text-neutral-700 border-white/5';
@@ -314,50 +280,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     return 'bg-neutral-800';
   };
   
-  const calculatePL = () => {
-    if (!activeTrade || !currentPrice) return { value: 0, color: 'text-neutral-400', prefix: '' };
-    const pl = ((currentPrice - activeTrade.entryPrice) / activeTrade.entryPrice) * 100 * (activeTrade.direction === 'buy' ? 1 : -1);
-    const absValue = Math.abs(pl);
-    return {
-        value: absValue,
-        color: pl >= 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-        prefix: pl >= 0 ? '+' : '-'
-    };
-  };
-
-  const calculateTPProgress = () => {
-    if (!activeTrade || !currentPrice || !activeTrade.tp) return null;
-    
-    const isBuy = activeTrade.direction === 'buy';
-    const totalDistance = Math.abs(activeTrade.tp - activeTrade.entryPrice);
-    const currentDistance = isBuy 
-      ? (currentPrice - activeTrade.entryPrice)
-      : (activeTrade.entryPrice - currentPrice);
-    
-    // Calcular progreso (puede ser negativo si va en contra)
-    const progress = (currentDistance / totalDistance) * 100;
-    const clampedProgress = Math.max(0, Math.min(100, progress)); // 0-100%
-    
-    // Determinar color basado en progreso
-    let barColor = '';
-    if (progress >= 100) barColor = 'bg-cyan-400'; // TP alcanzado
-    else if (progress >= 75) barColor = 'bg-emerald-400'; // Muy cerca
-    else if (progress >= 50) barColor = 'bg-amber-400'; // A mitad
-    else if (progress >= 25) barColor = 'bg-yellow-500'; // Avanzando
-    else if (progress >= 0) barColor = 'bg-orange-500'; // Poco avance
-    else barColor = 'bg-rose-500'; // Perdiendo
-    
-    return {
-      progress: clampedProgress,
-      rawProgress: progress,
-      barColor,
-      distanceRemaining: totalDistance - currentDistance
-    };
-  };
-
   const marketOpen = isMarketOpen(instrument.type, instrument.symbol);
-  const pl = calculatePL();
-  const tpProgress = calculateTPProgress();
   const isHighSignal = analysis?.action === ActionType.ENTRAR_AHORA && (analysis?.powerScore || 0) >= 85;
   const profitInfo = tradeSetup ? calculateProfitDisplay(tradeSetup.tp, tradeSetup.entry, instrument) : null;
 
@@ -377,17 +300,9 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       <div className={`hidden md:flex items-center justify-start gap-4 p-3 px-4 rounded-xl border transition-colors duration-200
         ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
         hover:bg-white/[0.04] hover:border-white/10
-        ${refreshJustCompleted && activeTrade ? 'animate-pulse-slow' : ''}
         ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
       
       <style jsx>{`
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.6; }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 0.8s ease-in-out 3;
-        }
         @keyframes pulseNewSignal {
           0% { opacity: 1; background-color: rgba(6, 182, 212, 0.08); }
           1% { opacity: 0.4; background-color: rgba(6, 182, 212, 0.02); }
@@ -517,6 +432,13 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                   </div>
                 ) : null;
               })()}
+
+              {stats && stats.totalSignals >= 10 && (
+                <div className="flex items-center justify-between px-2 py-1 rounded border border-white/10 bg-white/[0.02] text-[9px] font-mono text-neutral-400">
+                  <span className={stats.winRatePct && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct}% acierto</span>
+                  <span className="text-neutral-600">{stats.totalSignals} señales</span>
+                </div>
+              )}
             </div>
         )}
       </div>
@@ -528,59 +450,18 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       </div>
 
       <div className="w-[120px] shrink-0 flex items-center justify-center">
-        {isLoading && !activeTrade ? (
+        {isLoading ? (
           <div className="w-[110px] px-4 py-1.5 rounded border border-neutral-800 text-[9px] text-neutral-600 text-center">
             Escaneando...
           </div>
         ) : (
-          <button
-            onClick={isHighSignal && !activeTrade ? () => handleTakeTrade(analysis.mainSignal === SignalType.SALE ? 'sell' : 'buy') : undefined}
-            disabled={!!activeTrade}
-            className={`w-[110px] px-4 py-1.5 rounded border text-[9px] uppercase tracking-wider text-center transition-colors duration-150
+          <div
+            className={`w-[110px] px-4 py-1.5 rounded border text-[9px] uppercase tracking-wider text-center
             ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-            ${activeTrade ? 'opacity-30 cursor-not-allowed' : ''}
             `}
           >
             {getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-          </button>
-        )}
-      </div>
-
-      <div className="w-[190px] shrink-0 flex items-center justify-center">
-        {activeTrade ? (
-          <div className="flex flex-col items-center justify-center gap-1.5 w-full">
-            <div className="flex items-center justify-center gap-2">
-              <div className={`flex items-center text-xs font-mono px-2 py-0.5 rounded border ${pl.color}`}>
-                <span>{pl.prefix}{pl.value.toFixed(2)}%</span>
-              </div>
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCloseTrade();
-                }} 
-                title="Cerrar trade" 
-                className="p-1 rounded text-neutral-600 hover:text-neutral-300 hover:bg-neutral-800 transition-colors"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {tpProgress && (
-              <div className="w-full flex items-center gap-2">
-                <div className="flex-grow h-px bg-neutral-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${tpProgress.barColor} transition-all duration-500`}
-                    style={{ width: `${tpProgress.progress}%` }}
-                  />
-                </div>
-                <span className="text-[9px] text-neutral-600 font-mono tabular-nums min-w-[28px] text-right">
-                  {tpProgress.rawProgress >= 0 ? Math.round(tpProgress.progress) : 0}%
-                </span>
-              </div>
-            )}
           </div>
-        ) : (
-          <div className="h-[22px]" />
         )}
       </div>
 
@@ -594,7 +475,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     {/* Mobile Layout - Card Style */}
     <div className={`md:hidden flex flex-col gap-3 p-3 rounded-lg border transition-colors duration-200
       ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
-      ${refreshJustCompleted && activeTrade ? 'animate-pulse-slow' : ''}
       ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
       
       {/* Row 1: Symbol, Status, Bookmark */}
@@ -638,21 +518,18 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       </div>
 
       {/* Row 3: Action Button (full width) */}
-      {isLoading && !activeTrade ? (
+      {isLoading ? (
         <div className="w-full px-3 py-2 rounded border border-neutral-800 text-[9px] text-neutral-600 text-center">
           Escaneando...
         </div>
       ) : (
-        <button
-          onClick={isHighSignal && !activeTrade ? () => handleTakeTrade(analysis.mainSignal === SignalType.SALE ? 'sell' : 'buy') : undefined}
-          disabled={!!activeTrade}
-          className={`w-full px-3 py-2 rounded border text-[10px] uppercase tracking-wider text-center transition-colors duration-150
+        <div
+          className={`w-full px-3 py-2 rounded border text-[10px] uppercase tracking-wider text-center
           ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-          ${activeTrade ? 'opacity-30 cursor-not-allowed' : ''}
           `}
         >
           {getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-        </button>
+        </div>
       )}
 
       {/* Row 4: Trade Setup (if available) */}
@@ -688,36 +565,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       )}
 
-      {/* Row 5: Active Trade P&L */}
-      {activeTrade && (
-        <div className="flex flex-col gap-2 w-full">
-          <div className="flex items-center justify-between">
-            <div className={`flex items-center text-sm font-mono px-2 py-1 rounded border ${pl.color}`}>
-              <span>{pl.prefix}{pl.value.toFixed(2)}%</span>
-            </div>
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCloseTrade();
-              }} 
-              className="px-2 py-1 rounded text-xs bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
-            >
-              Cerrar
-            </button>
-          </div>
-          {tpProgress && (
-            <div className="w-full flex items-center gap-2">
-              <div className="flex-grow h-1 bg-neutral-800 rounded-full overflow-hidden">
-                <div
-                  className={`h-full ${tpProgress.barColor} transition-all duration-500`}
-                  style={{ width: `${tpProgress.progress}%` }}
-                />
-              </div>
-              <span className="text-[9px] text-neutral-600 font-mono">
-                {tpProgress.rawProgress >= 0 ? Math.round(tpProgress.progress) : 0}%
-              </span>
-            </div>
-          )}
+      {stats && stats.totalSignals >= 10 && (
+        <div className="flex items-center justify-between px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[10px] font-mono text-neutral-400 w-full">
+          <span className={stats.winRatePct && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct}% acierto</span>
+          <span className="text-neutral-600">{stats.totalSignals} señales</span>
         </div>
       )}
     </div>

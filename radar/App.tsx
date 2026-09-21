@@ -23,11 +23,10 @@ const App: React.FC = () => {
   const [audioReady, setAudioReady] = useState(() => localStorage.getItem('audioActivated') === 'true');
   const [isRadarVisible, setIsRadarVisible] = useState(false);
   const [isTendencialModalVisible, setIsTendencialModalVisible] = useState(false);
-  const [showActiveTradesOnly, setShowActiveTradesOnly] = useState(false);
-  const [refreshJustCompleted, setRefreshJustCompleted] = useState(false);
   const [showDebugFrames, setShowDebugFrames] = useState(false);
   
   const [userId, setUserId] = useState<string | null>(null);
+  const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
   const [forceUpdateTrigger, forceUpdate] = useState(0);
@@ -44,6 +43,30 @@ const App: React.FC = () => {
     localStorage.setItem('alertVolume', volume.toString());
     audioService.setVolume(volume);
   }, [volume]);
+
+  // Cargar estadísticas históricas de aciertos por instrumento (una sola vez, no es polling)
+  useEffect(() => {
+    supabase
+      .from('radar_signal_stats')
+      .select('instrument_symbol, total_signals, win_rate_pct, avg_result_pct')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('[SignalStats] Error cargando estadísticas:', error.message);
+          return;
+        }
+        if (data) {
+          const map: Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }> = {};
+          data.forEach((row: any) => {
+            map[row.instrument_symbol] = {
+              totalSignals: row.total_signals,
+              winRatePct: row.win_rate_pct,
+              avgResultPct: row.avg_result_pct,
+            };
+          });
+          setSignalStats(map);
+        }
+      });
+  }, []);
 
   useEffect(() => {
     audioService.setVolume(volume);
@@ -185,8 +208,6 @@ const App: React.FC = () => {
 
   const handleRefreshComplete = useCallback(() => {
     setRefreshTrigger(t => t + 1);
-    setRefreshJustCompleted(true);
-    setTimeout(() => setRefreshJustCompleted(false), 3000); // Parpadeo dura 3s
   }, []);
 
   const handleAnalysisUpdate = useCallback((id: string, data: MultiTimeframeAnalysis | null) => {
@@ -231,13 +252,6 @@ const App: React.FC = () => {
 
   // Función helper para determinar si un instrumento debe ser VISIBLE (no eliminado)
   const isInstrumentVisible = useCallback((instrument: typeof ALL_INSTRUMENTS[0]) => {
-    // Filtro de trades activos (tiene máxima prioridad)
-    if (showActiveTradesOnly) {
-      const cache = GlobalAnalysisCache[instrument.id];
-      // Solo mostrar si tiene activeTrade en el cache
-      return cache?.hasActiveTrade === true;
-    }
-    
     // Filtro por categoría
     if (filter !== 'all' && instrument.type !== filter) return false;
     
@@ -245,7 +259,7 @@ const App: React.FC = () => {
     if (searchQuery && !instrument.symbol.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     
     return true;
-  }, [filter, searchQuery, forceUpdateTrigger, showActiveTradesOnly]);
+  }, [filter, searchQuery, forceUpdateTrigger]);
 
   // Calcular estadísticas de actividad del mercado
   const marketQuietnessStats = useMemo(() => {
@@ -270,7 +284,7 @@ const App: React.FC = () => {
     const quietPercentage = totalConnected > 0 ? Math.round((waiting / totalConnected) * 100) : 0;
     
     return { totalConnected, waiting, entering, exiting, quietPercentage };
-  }, [forceUpdateTrigger, filter, searchQuery, showActiveTradesOnly]);
+  }, [forceUpdateTrigger, filter, searchQuery]);
 
   const sortedInstruments = useMemo(() => {
     const items = ALL_INSTRUMENTS;
@@ -283,14 +297,14 @@ const App: React.FC = () => {
       // 🎯 PRIORIDAD MÁXIMA: Obtener info del cache global
       const cacheA = GlobalAnalysisCache[a.id];
       const cacheB = GlobalAnalysisCache[b.id];
-      const hasActiveTradeA = cacheA?.hasActiveTrade === true;
-      const hasActiveTradeB = cacheB?.hasActiveTrade === true;
+      const isBookmarkedA = cacheA?.isBookmarked === true;
+      const isBookmarkedB = cacheB?.isBookmarked === true;
       const isNewSignalA = cacheA?.newSignalTriggerId === refreshTrigger;
       const isNewSignalB = cacheB?.newSignalTriggerId === refreshTrigger;
 
-      // 🟢 PRIORIDAD 0: TRADES ACTIVOS van SIEMPRE PRIMERO
-      if (hasActiveTradeA && !hasActiveTradeB) return -1;
-      if (!hasActiveTradeA && hasActiveTradeB) return 1;
+      // 🟢 PRIORIDAD 0: INSTRUMENTOS DESTACADOS (bookmark) van SIEMPRE PRIMERO
+      if (isBookmarkedA && !isBookmarkedB) return -1;
+      if (!isBookmarkedA && isBookmarkedB) return 1;
 
       // 🚨 PRIORIDAD 1: Señales "NOW" (nuevas) van SIEMPRE arriba, sin excepción
       if (isNewSignalA && !isNewSignalB) return -1;
@@ -508,22 +522,6 @@ const App: React.FC = () => {
             <div className="w-[190px] shrink-0 text-center">Trade Setup</div>
             <div className="w-[78px] shrink-0 text-center ml-auto">Session</div>
             <div className="w-[120px] shrink-0 text-center">Action</div>
-            <div 
-              className="w-[190px] shrink-0 text-center cursor-pointer hover:text-white transition-colors relative group"
-              onClick={() => {
-                setShowActiveTradesOnly(!showActiveTradesOnly);
-                forceUpdate(t => t + 1); // Forzar re-render inmediato
-              }}
-              title="Click para filtrar trades activos"
-            >
-              P&amp;L / Progress
-              {showActiveTradesOnly && (
-                <span className="ml-2 text-[8px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">ACTIVE</span>
-              )}
-              <svg className="w-3 h-3 inline-block ml-1 opacity-50 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-            </div>
             <div className="w-10 shrink-0"></div>
           </div>
           
@@ -541,7 +539,7 @@ const App: React.FC = () => {
                   isTestMode={false}
                   onOpenChart={handleOpenChart}
                   chartStatus={charts[instrument.symbol]}
-                  refreshJustCompleted={refreshJustCompleted}
+                  stats={signalStats[instrument.symbol]}
                 />
               </div>
             );
