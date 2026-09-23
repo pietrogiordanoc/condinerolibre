@@ -259,6 +259,16 @@ const App: React.FC = () => {
       delete newChartsState[symbol];
       return newChartsState;
     });
+    const instrument = ALL_INSTRUMENTS.find(item => item.symbol === symbol);
+    if (instrument) {
+      const saved = localStorage.getItem('bookmarks');
+      const pinnedRows = saved ? JSON.parse(saved) : [];
+      localStorage.setItem('bookmarks', JSON.stringify(pinnedRows.filter((id: string) => id !== instrument.id)));
+      if (GlobalAnalysisCache[instrument.id]) {
+        GlobalAnalysisCache[instrument.id].isBookmarked = false;
+      }
+      forceUpdate(trigger => trigger + 1);
+    }
   }, []);
 
   const handleSearchChange = (value: string) => {

@@ -80,6 +80,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   const [isSlInfoOpen, setIsSlInfoOpen] = useState(false);
   
   const lastRefreshTriggerRef = useRef<number>(GlobalAnalysisCache[instrument.id]?.trigger ?? -1);
+  const previousChartStatusRef = useRef(chartStatus);
 
   // Sincronizar la fijación con el caché global para priorizar la fila arriba.
   useEffect(() => {
@@ -102,6 +103,13 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     setIsBookmarked(true);
     onPinChange();
   }, [chartStatus, instrument.id, isBookmarked, onPinChange]);
+
+  useEffect(() => {
+    if (previousChartStatusRef.current && !chartStatus && isBookmarked) {
+      setIsBookmarked(false);
+    }
+    previousChartStatusRef.current = chartStatus;
+  }, [chartStatus, isBookmarked]);
 
   useEffect(() => {
     const interval = setInterval(() => {
