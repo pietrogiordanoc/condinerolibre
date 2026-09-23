@@ -525,8 +525,8 @@ const App: React.FC = () => {
             </div>
             <div className="w-[280px] shrink-0 text-center">Trade Setup</div>
             <div className="w-[104px] shrink-0 text-center">
-              <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Cómo se calcula Historial">
-                Historial <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
+              <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Estadística de precisión">
+                Precisión <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
               </button>
             </div>
             {experimentalSlEnabled && (
@@ -615,7 +615,7 @@ const App: React.FC = () => {
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/75 p-4" onClick={() => setMetricInfo(null)}>
           <div className="w-full max-w-md rounded-lg border border-white/15 bg-[#111] p-5" onClick={(event) => event.stopPropagation()}>
             <div className="mb-3 flex items-center justify-between">
-              <h2 className={metricInfo === 'sl' ? 'text-amber-300 font-semibold' : 'text-cyan-300 font-semibold'}>{metricInfo === 'history' ? 'Historial' : 'Validación SL'}</h2>
+              <h2 className={metricInfo === 'sl' ? 'text-amber-300 font-semibold' : 'text-cyan-300 font-semibold'}>{metricInfo === 'history' ? 'Precisión' : 'Validación SL'}</h2>
               <button className="text-sm text-neutral-500 hover:text-white" onClick={() => setMetricInfo(null)}>Cerrar</button>
             </div>
             <p className="text-sm leading-relaxed text-neutral-300">

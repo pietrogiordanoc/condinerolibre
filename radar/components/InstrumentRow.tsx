@@ -414,15 +414,15 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     <div className="grid grid-cols-3 gap-3">
                       <div className="min-w-0">
                         <span className="block text-[8px] text-neutral-600">E</span>
-                        <span className="block text-[13px] text-neutral-100 truncate">{formatSetupValue(tradeSetup.entry)}</span>
+                        <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.entry)}</span>
                       </div>
                       <div className="min-w-0">
                         <span className="block text-[8px] text-neutral-600">TP</span>
-                        <span className="block text-[13px] text-neutral-100 truncate">{formatSetupValue(tradeSetup.tp)}</span>
+                        <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.tp)}</span>
                       </div>
                       <div className="min-w-0">
                         <span className="block text-[8px] text-amber-400">SL</span>
-                        <span className="block text-[13px] text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
+                        <span className="block text-base text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
                       </div>
                     </div>
                 )}
@@ -431,16 +431,16 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
               {profitInfo && tradeSetup.rr && !copyStatus && (() => {
                 const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
                 return (
-                  <div className="ml-auto flex flex-col items-center pr-2">
-                    <div className="flex items-baseline gap-1">
-                      <span className={`text-base font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>{profitInfo.value}</span>
-                      <span className="text-[8px] text-neutral-600">{profitInfo.unit}</span>
-                    </div>
-                    {qualityMsg && (
-                      <div className={`mt-1 px-2 py-0.5 rounded border text-[8px] font-mono text-center leading-tight ${qualityMsg.color}`}>
+                  <div className="flex items-center justify-between px-2">
+                    {qualityMsg ? (
+                      <div className={`px-2 py-0.5 rounded border text-[10px] font-mono text-center leading-tight ${qualityMsg.color}`}>
                         {qualityMsg.label.replace('Setup ', '')}
                       </div>
-                    )}
+                    ) : <span />}
+                    <div className="flex items-baseline gap-1">
+                      <span className={`text-lg font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>{profitInfo.value}</span>
+                      <span className="text-[9px] text-neutral-500">{profitInfo.unit}</span>
+                    </div>
                   </div>
                 );
               })()}
@@ -451,10 +451,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       <div className="w-[104px] shrink-0 text-center">
         {stats && stats.totalSignals > 0 ? (
           <div className="font-mono">
-            <div className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-xs' : 'text-rose-400 text-xs'}>
+            <div className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-base' : 'text-rose-400 text-base'}>
               {stats.winRatePct ?? '--'}%
             </div>
-            <div className="text-[8px] text-neutral-600">{stats.totalSignals} cerradas</div>
+            <div className="text-[10px] text-neutral-500">{stats.totalSignals} cerradas</div>
           </div>
         ) : (
           <span className="text-[9px] text-neutral-700">Sin datos</span>
@@ -590,9 +590,9 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       )}
 
       <div className="flex items-center justify-between px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[10px] font-mono w-full">
-        <span className="text-neutral-500">Historial</span>
+        <span className="text-neutral-400">Precisión</span>
         {stats && stats.totalSignals > 0 ? (
-          <span className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct ?? '--'}% · {stats.totalSignals} cerradas</span>
+          <span className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-xs' : 'text-rose-400 text-xs'}>{stats.winRatePct ?? '--'}% · {stats.totalSignals} cerradas</span>
         ) : (
           <span className="text-neutral-700">Sin datos</span>
         )}
