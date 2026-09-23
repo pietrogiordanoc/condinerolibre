@@ -350,7 +350,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         }
       `}</style>
       
-      <div className="flex items-center justify-center w-16">
+      <div className="flex flex-col items-center justify-center gap-1 w-16">
+        <span className={`text-[8px] uppercase tracking-wider ${isLoading ? 'text-neutral-500' : marketOpen ? 'text-emerald-500' : 'text-neutral-700'}`}>
+          {isLoading ? 'Espera' : marketOpen ? 'Abierto' : 'Cerrado'}
+        </span>
         <div className="h-6 w-10 rounded-full transition-all duration-200 flex items-center p-0.5 bg-neutral-900 border border-neutral-800">
           <div className={`h-5 w-5 rounded-full transition-all duration-300 ${isLoading ? 'bg-neutral-600 translate-x-0' : (!marketOpen ? 'bg-neutral-700 translate-x-0' : 'bg-emerald-500 translate-x-4')}`} />
         </div>
@@ -463,12 +466,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
           <span className="text-[9px] text-neutral-700">En evaluación</span>
         </div>
       )}
-
-      <div className="flex flex-col items-center justify-center w-[78px] shrink-0 text-center ml-auto">
-        {marketOpen 
-          ? <span className="text-[9px] uppercase text-emerald-500 tracking-widest">Abierto</span> 
-          : <span className="text-[9px] uppercase text-neutral-700 tracking-widest">Cerrado</span>}
-      </div>
 
       <div className="w-[120px] shrink-0 flex items-center justify-center">
         {isLoading ? (

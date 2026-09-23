@@ -562,7 +562,6 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
-            <div className="w-[78px] shrink-0 text-center ml-auto">Session</div>
             <div className="w-[120px] shrink-0 text-center">Action</div>
             <div className="w-10 shrink-0"></div>
           </div>
