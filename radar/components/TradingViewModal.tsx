@@ -22,6 +22,7 @@ const formatSetupValue = (value: number): string => {
 const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const initializedSymbolRef = useRef<string | null>(null);
 
   const handleClose = () => {
@@ -153,12 +154,24 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isVisible, onMinimize]);
 
-  const thumbnailTop = 80 + (thumbnailIndex * 220);
+  useEffect(() => {
+    const updateViewportWidth = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', updateViewportWidth);
+    return () => window.removeEventListener('resize', updateViewportWidth);
+  }, []);
   
   // Mantener siempre el mismo tamaño para evitar que TradingView reinicialice
   const scale = isVisible ? 1 : 0.2; // 20% en thumbnail
   const thumbnailWidth = 1600; // Tamaño base del widget
   const thumbnailHeight = 900;
+  const thumbnailGap = 16;
+  const scaledThumbnailWidth = thumbnailWidth * scale;
+  const scaledThumbnailHeight = thumbnailHeight * scale;
+  const thumbnailColumns = Math.max(1, Math.floor((viewportWidth - thumbnailGap) / (scaledThumbnailWidth + thumbnailGap)));
+  const thumbnailColumn = thumbnailIndex % thumbnailColumns;
+  const thumbnailRow = Math.floor(thumbnailIndex / thumbnailColumns);
+  const thumbnailTop = 16 + (thumbnailRow * (scaledThumbnailHeight + thumbnailGap));
+  const thumbnailRight = 16 + (thumbnailColumn * (scaledThumbnailWidth + thumbnailGap));
 
   return (
     <div 
@@ -175,9 +188,9 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
           backdropFilter: 'blur(8px)',
         } : {
           top: `${thumbnailTop}px`,
-          right: '16px',
-          width: `${thumbnailWidth * scale}px`,
-          height: `${thumbnailHeight * scale}px`,
+          right: `${thumbnailRight}px`,
+          width: `${scaledThumbnailWidth}px`,
+          height: `${scaledThumbnailHeight}px`,
           backgroundColor: 'transparent',
           transformOrigin: 'top right',
         }),
