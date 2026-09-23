@@ -620,7 +620,7 @@ const App: React.FC = () => {
             </div>
             <p className="text-sm leading-relaxed text-neutral-300">
               {metricInfo === 'history'
-                ? 'Resume cómo terminó cada señal cuando el radar detectó una nueva oportunidad fuerte del mismo instrumento. No evalúa Stop Loss ni confirma que el TP se haya tocado.'
+                ? 'Estadística de aciertos.'
                 : 'Métrica experimental. Cuando haya datos suficientes, comparará si el precio tocó antes el TP o el Stop Loss técnico propuesto. Hoy está en evaluación y no altera el Historial.'}
             </p>
           </div>
