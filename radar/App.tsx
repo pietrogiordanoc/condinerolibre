@@ -13,6 +13,13 @@ import { supabase } from './services/supabaseClient';
 
 type SortConfig = { key: 'symbol' | 'action' | 'signal' | 'price' | 'score'; direction: 'asc' | 'desc' } | null;
 
+const normalizeSearchText = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+const pairBases = new Set(
+  ALL_INSTRUMENTS
+    .filter(({ symbol }) => symbol.includes('/'))
+    .map(({ symbol }) => symbol.split('/')[0])
+);
+
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [filter, setFilter] = useState<'all' | 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto'>('all');
@@ -254,13 +261,33 @@ const App: React.FC = () => {
     });
   }, []);
 
+  const handleSearchChange = (value: string) => {
+    const uppercaseValue = value.toUpperCase();
+    const compactValue = uppercaseValue.replace(/[^A-Z0-9]/g, '');
+    const pairBase = compactValue.slice(0, 3);
+    const hasSeparator = /[\s/\-]/.test(value);
+
+    if (!hasSeparator && compactValue.length >= 3 && pairBases.has(pairBase)) {
+      setSearchQuery(`${pairBase}/${compactValue.slice(3)}`);
+      return;
+    }
+
+    setSearchQuery(uppercaseValue);
+  };
+
   // Función helper para determinar si un instrumento debe ser VISIBLE (no eliminado)
   const isInstrumentVisible = useCallback((instrument: typeof ALL_INSTRUMENTS[0]) => {
     // Filtro por categoría
     if (filter !== 'all' && instrument.type !== filter) return false;
     
     // Filtro por búsqueda
-    if (searchQuery && !instrument.symbol.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    const normalizedQuery = normalizeSearchText(searchQuery);
+    if (normalizedQuery) {
+      const matchesSymbol = normalizeSearchText(instrument.symbol).includes(normalizedQuery);
+      const matchesName = normalizeSearchText(instrument.name).includes(normalizedQuery);
+      const matchesType = normalizeSearchText(instrument.type).includes(normalizedQuery);
+      if (!matchesSymbol && !matchesName && !matchesType) return false;
+    }
     
     return true;
   }, [filter, searchQuery, forceUpdateTrigger]);
@@ -470,9 +497,9 @@ const App: React.FC = () => {
             {/* Search */}
             <input 
               type="text" 
-              placeholder="Search..."
+              placeholder="Buscar: EURUSD, BTC o nombre"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2 text-xs font-mono focus:outline-none focus:border-emerald-500/50 w-full md:w-[280px] transition-all"
             />
             
