@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Bookmark, Info } from 'lucide-react';
+import { Info, Pin } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
@@ -21,6 +21,7 @@ interface InstrumentRowProps {
   onAnalysisUpdate?: (id: string, data: MultiTimeframeAnalysis | null) => void;
   isTestMode?: boolean;
   onOpenChart: (symbol: string) => void;
+  onPinChange: () => void;
   chartStatus?: 'visible' | 'minimized';
   stats?: { totalSignals: number; winRatePct: number | null; avgResultPct: number | null } | null;
   experimentalSlEnabled: boolean;
@@ -64,7 +65,7 @@ const formatSetupValue = (value: number): string => {
 };
 
 const InstrumentRow: React.FC<InstrumentRowProps> = ({ 
-  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, stats, experimentalSlEnabled
+  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, onPinChange, chartStatus, stats, experimentalSlEnabled
 }) => {
   const [analysis, setAnalysis] = useState<MultiTimeframeAnalysis | null>(() => GlobalAnalysisCache[instrument.id]?.analysis || null);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +81,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   
   const lastRefreshTriggerRef = useRef<number>(GlobalAnalysisCache[instrument.id]?.trigger ?? -1);
 
-  // Sincronizar bookmark con GlobalAnalysisCache para priorizar el orden (destacar arriba)
+  // Sincronizar la fijación con el caché global para priorizar la fila arriba.
   useEffect(() => {
     if (GlobalAnalysisCache[instrument.id]) {
       GlobalAnalysisCache[instrument.id].isBookmarked = isBookmarked;
@@ -104,20 +105,22 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     setTimeout(() => setCopyStatus(false), 1500);
   };
 
-  const toggleBookmark = (e: React.MouseEvent) => {
+  const togglePin = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsBookmarked(prev => {
-      const newState = !prev;
-      const saved = localStorage.getItem('bookmarks');
-      let list = saved ? JSON.parse(saved) : [];
-      if (newState) {
-        if (!list.includes(instrument.id)) list.push(instrument.id);
-      } else {
-        list = list.filter((id: string) => id !== instrument.id);
-      }
-      localStorage.setItem('bookmarks', JSON.stringify(list));
-      return newState;
-    });
+    const newState = !isBookmarked;
+    const saved = localStorage.getItem('bookmarks');
+    let list = saved ? JSON.parse(saved) : [];
+    if (newState) {
+      if (!list.includes(instrument.id)) list.push(instrument.id);
+    } else {
+      list = list.filter((id: string) => id !== instrument.id);
+    }
+    localStorage.setItem('bookmarks', JSON.stringify(list));
+    if (GlobalAnalysisCache[instrument.id]) {
+      GlobalAnalysisCache[instrument.id].isBookmarked = newState;
+    }
+    setIsBookmarked(newState);
+    onPinChange();
   };
 
   const playAlertSound = useCallback((type: 'entry' | 'exit') => {
@@ -296,16 +299,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   const isHighSignal = analysis?.action === ActionType.ENTRAR_AHORA && (analysis?.powerScore || 0) >= 85;
   const profitInfo = tradeSetup ? calculateProfitDisplay(tradeSetup.tp, tradeSetup.entry, instrument) : null;
 
-  const getChartButtonClass = () => {
-    if (chartStatus === 'visible') {
-      return 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400';
-    }
-    if (chartStatus === 'minimized') {
-      return 'bg-emerald-500/10 border-emerald-500/25 text-emerald-400';
-    }
-    return 'bg-transparent border-neutral-800 text-neutral-700 hover:border-neutral-700 hover:text-neutral-400';
-  };
-
   return (
     <>
       {/* Desktop Layout */}
@@ -370,16 +363,22 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     </span>
                 )}
             </div>
-              {currentPrice > 0 && <span className="text-[11px] font-mono text-neutral-200 leading-none mt-1">${currentPrice.toLocaleString()}</span>}
+              <div className="flex items-center gap-1.5 mt-1">
+                <button onClick={togglePin} className={`p-0.5 transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
+                  <Pin className="w-3 h-3" fill={isBookmarked ? 'currentColor' : 'none'} />
+                </button>
+                {currentPrice > 0 && <span className="text-[11px] font-mono text-neutral-200 leading-none">${currentPrice.toLocaleString()}</span>}
+              </div>
             <span className="text-[9px] text-neutral-500 font-medium leading-none mt-0.5">{instrument.name}</span>
           </div>
         </div>
         <span className="text-[9px] text-neutral-700 uppercase tracking-widest">{instrument.type}</span>
       </div>
 
-      <div className="w-[44px] shrink-0 flex items-center justify-center">
-        <button onClick={() => onOpenChart(instrument.symbol)} className={`p-1 rounded border transition-colors ${getChartButtonClass()}`} title="Abrir gráfico">
-          <ChartMonitorIcon className="w-7 h-7" />
+      <div className="w-[110px] shrink-0 flex items-center justify-center">
+        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex items-center justify-center gap-2 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-1 ring-cyan-400/70 border-cyan-400 text-cyan-100' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
+          <ChartMonitorIcon className="w-4 h-4" />
+          <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
         </button>
       </div>
 
@@ -427,25 +426,23 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     </div>
                 )}
               </button>
-              
-              {profitInfo && tradeSetup.rr && !copyStatus && (() => {
-                const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
-                return (
-                  <div className="flex items-center justify-between px-2">
-                    {qualityMsg ? (
-                      <div className={`px-2 py-0.5 rounded border text-[10px] font-mono text-center leading-tight ${qualityMsg.color}`}>
-                        {qualityMsg.label.replace('Setup ', '')}
-                      </div>
-                    ) : <span />}
-                    <div className="flex items-baseline gap-1">
-                      <span className={`text-lg font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>{profitInfo.value}</span>
-                      <span className="text-[9px] text-neutral-500">{profitInfo.unit}</span>
-                    </div>
-                  </div>
-                );
-              })()}
             </div>
         )}
+      </div>
+
+      <div className="w-[84px] shrink-0 text-center">
+        {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
+          const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
+          return (
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-baseline gap-1">
+                <span className={`text-lg font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>{profitInfo.value}</span>
+                <span className="text-[9px] text-neutral-500">{profitInfo.unit}</span>
+              </div>
+              {qualityMsg && <div className={`px-2 py-0.5 rounded border text-[10px] font-mono leading-tight ${qualityMsg.color}`}>{qualityMsg.label.replace('Setup ', '')}</div>}
+            </div>
+          );
+        })()}
       </div>
 
       <div className="w-[104px] shrink-0 text-center">
@@ -467,27 +464,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       )}
 
-      <div className="w-[120px] shrink-0 flex items-center justify-center">
-        {isLoading ? (
-          <div className="w-[110px] px-4 py-1.5 rounded border border-neutral-800 text-[9px] text-neutral-600 text-center">
-            Escaneando...
-          </div>
-        ) : (
-          <div
-            className={`w-[110px] px-4 py-1.5 rounded border text-[9px] uppercase tracking-wider text-center
-            ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-            `}
-          >
-            {getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-          </div>
-        )}
-      </div>
-
-      <div className="w-10 flex justify-center items-center shrink-0">
-        <button onClick={toggleBookmark} className={`p-1 rounded transition-colors ${isBookmarked ? 'text-neutral-300' : 'text-neutral-800 hover:text-neutral-600'}`}>
-          <Bookmark className="w-4 h-4" fill={isBookmarked ? 'currentColor' : 'none'} />
-        </button>
-      </div>
     </div>
 
     {/* Mobile Layout - Card Style */}
@@ -495,7 +471,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
       ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
       
-      {/* Row 1: Symbol, Status, Bookmark */}
+      {/* Row 1: Symbol, Status, Pin */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col flex-1">
           <div className="flex items-center gap-2">
@@ -514,12 +490,12 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             <span className="text-[8px] text-neutral-700 uppercase">{instrument.type}</span>
           </div>
         </div>
-        <button onClick={toggleBookmark} className={`p-1 rounded transition-colors ${isBookmarked ? 'text-neutral-300' : 'text-neutral-800'}`}>
-          <Bookmark className="w-3.5 h-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
+        <button onClick={togglePin} className={`p-1 rounded transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
+          <Pin className="w-3.5 h-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
         </button>
       </div>
 
-      {/* Row 2: Price, Score, Chart */}
+      {/* Row 2: Price, Score, Chart Action */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {currentPrice > 0 && <span className="text-xs font-mono text-neutral-300">${currentPrice.toLocaleString()}</span>}
@@ -530,27 +506,13 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             <span className="text-[7px] text-neutral-700 uppercase">Score</span>
           </div>
         </div>
-        <button onClick={() => onOpenChart(instrument.symbol)} className={`p-1 rounded border transition-colors ${getChartButtonClass()}`}>
-          <ChartMonitorIcon className="w-6 h-6" />
+        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[118px] flex items-center justify-center gap-2 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-1 ring-cyan-400/70 border-cyan-400 text-cyan-100' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`}>
+          <ChartMonitorIcon className="w-4 h-4" />
+          <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
         </button>
       </div>
 
-      {/* Row 3: Action Button (full width) */}
-      {isLoading ? (
-        <div className="w-full px-3 py-2 rounded border border-neutral-800 text-[9px] text-neutral-600 text-center">
-          Escaneando...
-        </div>
-      ) : (
-        <div
-          className={`w-full px-3 py-2 rounded border text-[10px] uppercase tracking-wider text-center
-          ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-          `}
-        >
-          {getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}
-        </div>
-      )}
-
-      {/* Row 4: Trade Setup (if available) */}
+      {/* Row 3: Trade Setup (if available) */}
       {tradeSetup && isHighSignal && (
         <button
           onClick={() => handleCopyTradeSetup(tradeSetup)}

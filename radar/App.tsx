@@ -544,12 +544,13 @@ const App: React.FC = () => {
           <div className="hidden md:flex sticky top-[104px] z-40 items-center justify-start gap-4 px-4 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="w-16 text-center shrink-0">Status</div>
             <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
-            <div className="w-[44px] shrink-0 text-center">Chart</div>
+            <div className="w-[110px] shrink-0 text-center">Acción</div>
             <div className="w-[124px] shrink-0 text-center">MTF Alignment</div>
             <div className="w-14 shrink-0 text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
             <div className="w-[280px] shrink-0 text-center">Trade Setup</div>
+            <div className="w-[84px] shrink-0 text-center">Pips</div>
             <div className="w-[104px] shrink-0 text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Estadística de precisión">
                 Precisión <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
@@ -562,8 +563,6 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
-            <div className="w-[120px] shrink-0 text-center">Action</div>
-            <div className="w-10 shrink-0"></div>
           </div>
           
           {sortedInstruments.map(instrument => {
@@ -579,6 +578,7 @@ const App: React.FC = () => {
                   onAnalysisUpdate={handleAnalysisUpdate}
                   isTestMode={false}
                   onOpenChart={handleOpenChart}
+                  onPinChange={() => forceUpdate(trigger => trigger + 1)}
                   chartStatus={charts[instrument.symbol]}
                   stats={signalStats[instrument.symbol]}
                   experimentalSlEnabled={experimentalSlEnabled}
