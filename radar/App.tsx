@@ -586,6 +586,7 @@ const App: React.FC = () => {
               instrument={instrument}
               tradeSetup={analysis?.tradeSetup || null}
               mainSignal={analysis?.mainSignal}
+              experimentalSlEnabled={experimentalSlEnabled}
               isVisible={status === 'visible'}
               onMinimize={() => handleMinimizeChart(symbol)}
               onClose={() => handleCloseChart(symbol)}

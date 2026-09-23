@@ -5,6 +5,7 @@ interface TradingViewModalProps {
   instrument: Instrument;
   tradeSetup?: TradeSetup | null;
   mainSignal?: SignalType;
+  experimentalSlEnabled: boolean;
   isVisible: boolean;
   onMinimize: () => void;
   onClose: () => void;
@@ -18,7 +19,7 @@ const formatSetupValue = (value: number): string => {
   return value.toFixed(6);
 };
 
-const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
+const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const initializedSymbolRef = useRef<string | null>(null);
@@ -262,6 +263,9 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
                 <span>E: {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
                 <span>TP: {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
                 <span>PIPS: {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}</span>
+                {experimentalSlEnabled && tradeSetup?.sl && (
+                  <span className="text-amber-300">SL: {formatSetupValue(tradeSetup.sl)}</span>
+                )}
                 {mainSignal && (
                   <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>
                     {mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}
