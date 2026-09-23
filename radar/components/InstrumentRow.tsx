@@ -89,6 +89,21 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   }, [isBookmarked, instrument.id]);
 
   useEffect(() => {
+    if (chartStatus !== 'minimized' || isBookmarked) return;
+
+    const saved = localStorage.getItem('bookmarks');
+    const pinnedRows = saved ? JSON.parse(saved) : [];
+    if (!pinnedRows.includes(instrument.id)) {
+      localStorage.setItem('bookmarks', JSON.stringify([...pinnedRows, instrument.id]));
+    }
+    if (GlobalAnalysisCache[instrument.id]) {
+      GlobalAnalysisCache[instrument.id].isBookmarked = true;
+    }
+    setIsBookmarked(true);
+    onPinChange();
+  }, [chartStatus, instrument.id, isBookmarked, onPinChange]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (PriceStore[instrument.symbol]) {
         setCurrentPrice(PriceStore[instrument.symbol]);
@@ -365,7 +380,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             </div>
               <div className="flex items-center gap-1.5 mt-1">
                 <button onClick={togglePin} className={`p-0.5 transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
-                  <Pin className="w-3 h-3" fill={isBookmarked ? 'currentColor' : 'none'} />
+                  <Pin className="w-6 h-6" fill={isBookmarked ? 'currentColor' : 'none'} />
                 </button>
                 {currentPrice > 0 && <span className="text-[11px] font-mono text-neutral-200 leading-none">${currentPrice.toLocaleString()}</span>}
               </div>
@@ -376,9 +391,12 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       </div>
 
       <div className="w-[110px] shrink-0 flex items-center justify-center">
-        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex items-center justify-center gap-2 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-1 ring-cyan-400/70 border-cyan-400 text-cyan-100' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
+        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
+          <span className="flex items-center gap-2">
           <ChartMonitorIcon className="w-4 h-4" />
           <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
+          </span>
+          {chartStatus === 'minimized' && <span className="text-[7px] tracking-widest text-cyan-200">GRÁFICO FIJADO</span>}
         </button>
       </div>
 
@@ -491,7 +509,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
           </div>
         </div>
         <button onClick={togglePin} className={`p-1 rounded transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
-          <Pin className="w-3.5 h-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
+          <Pin className="w-6 h-6" fill={isBookmarked ? 'currentColor' : 'none'} />
         </button>
       </div>
 
@@ -506,9 +524,12 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             <span className="text-[7px] text-neutral-700 uppercase">Score</span>
           </div>
         </div>
-        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[118px] flex items-center justify-center gap-2 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-1 ring-cyan-400/70 border-cyan-400 text-cyan-100' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`}>
-          <ChartMonitorIcon className="w-4 h-4" />
-          <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
+        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[118px] flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`}>
+          <span className="flex items-center gap-2">
+            <ChartMonitorIcon className="w-4 h-4" />
+            <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
+          </span>
+          {chartStatus === 'minimized' && <span className="text-[7px] tracking-widest text-cyan-200">GRÁFICO FIJADO</span>}
         </button>
       </div>
 
