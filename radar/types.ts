@@ -46,6 +46,10 @@ export interface TradeSetup {
   entry: number;
   tp: number;
   rr?: number; // Risk/Reward multiplier
+  sl?: number;
+  slStructurePrice?: number;
+  slAtr?: number;
+  slMargin?: number;
 }
 
 export interface MultiTimeframeAnalysis {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Info } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
@@ -23,6 +23,7 @@ interface InstrumentRowProps {
   onOpenChart: (symbol: string) => void;
   chartStatus?: 'visible' | 'minimized';
   stats?: { totalSignals: number; winRatePct: number | null; avgResultPct: number | null } | null;
+  experimentalSlEnabled: boolean;
 }
 
 const ChartMonitorIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -56,8 +57,14 @@ const calculateProfitDisplay = (tp: number, entry: number, instrument: Instrumen
     return { value: profitDistance.toFixed(2), unit: 'PROFIT' };
 };
 
+const formatSetupValue = (value: number): string => {
+  if (value >= 1000) return value.toFixed(2);
+  if (value >= 1) return value.toFixed(4);
+  return value.toFixed(6);
+};
+
 const InstrumentRow: React.FC<InstrumentRowProps> = ({ 
-  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, stats
+  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, chartStatus, stats, experimentalSlEnabled
 }) => {
   const [analysis, setAnalysis] = useState<MultiTimeframeAnalysis | null>(() => GlobalAnalysisCache[instrument.id]?.analysis || null);
   const [isLoading, setIsLoading] = useState(false);
@@ -69,6 +76,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   const [newSignalTriggerId, setNewSignalTriggerId] = useState<number | null>(null);
   const [tradeSetup, setTradeSetup] = useState<TradeSetup | null>(null);
   const [copyStatus, setCopyStatus] = useState<boolean>(false);
+  const [isSlInfoOpen, setIsSlInfoOpen] = useState(false);
   
   const lastRefreshTriggerRef = useRef<number>(GlobalAnalysisCache[instrument.id]?.trigger ?? -1);
 
@@ -160,6 +168,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
               p_tp: result.tradeSetup!.tp,
               p_rr: result.tradeSetup!.rr || null,
               p_current_price: result.price,
+              p_sl: result.tradeSetup!.sl || null,
+              p_sl_structure_price: result.tradeSetup!.slStructurePrice || null,
+              p_sl_atr: result.tradeSetup!.slAtr || null,
+              p_sl_margin: result.tradeSetup!.slMargin || null,
             }).then(({ error }) => {
               if (error) console.error(`[SignalHistory] Error registrando ${instrument.symbol}:`, error.message);
             });
@@ -433,15 +445,38 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                 ) : null;
               })()}
 
-              {stats && stats.totalSignals >= 10 && (
-                <div className="flex items-center justify-between px-2 py-1 rounded border border-white/10 bg-white/[0.02] text-[9px] font-mono text-neutral-400">
-                  <span className={stats.winRatePct && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct}% acierto</span>
-                  <span className="text-neutral-600">{stats.totalSignals} señales</span>
-                </div>
+              {experimentalSlEnabled && tradeSetup.sl && (
+                <button
+                  onClick={() => setIsSlInfoOpen(true)}
+                  className="flex items-center justify-between px-2 py-1 rounded border border-amber-500/25 bg-amber-500/5 text-[9px] font-mono text-amber-100 hover:border-amber-400/50 transition-colors"
+                  title="Ver cálculo experimental del SL"
+                >
+                  <span>SL experimental</span>
+                  <span className="flex items-center gap-1">{formatSetupValue(tradeSetup.sl)} <Info className="w-3 h-3" /></span>
+                </button>
               )}
             </div>
         )}
       </div>
+
+      <div className="w-[104px] shrink-0 text-center">
+        {stats && stats.totalSignals > 0 ? (
+          <div className="font-mono">
+            <div className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-xs' : 'text-rose-400 text-xs'}>
+              {stats.winRatePct ?? '--'}%
+            </div>
+            <div className="text-[8px] text-neutral-600">{stats.totalSignals} cerradas</div>
+          </div>
+        ) : (
+          <span className="text-[9px] text-neutral-700">Sin datos</span>
+        )}
+      </div>
+
+      {experimentalSlEnabled && (
+        <div className="w-[120px] shrink-0 text-center">
+          <span className="text-[9px] text-neutral-700">En evaluación</span>
+        </div>
+      )}
 
       <div className="flex flex-col items-center justify-center w-[78px] shrink-0 text-center ml-auto">
         {marketOpen 
@@ -565,10 +600,46 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       )}
 
-      {stats && stats.totalSignals >= 10 && (
-        <div className="flex items-center justify-between px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[10px] font-mono text-neutral-400 w-full">
-          <span className={stats.winRatePct && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct}% acierto</span>
-          <span className="text-neutral-600">{stats.totalSignals} señales</span>
+      <div className="flex items-center justify-between px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[10px] font-mono w-full">
+        <span className="text-neutral-500">Historial</span>
+        {stats && stats.totalSignals > 0 ? (
+          <span className={stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400' : 'text-rose-400'}>{stats.winRatePct ?? '--'}% · {stats.totalSignals} cerradas</span>
+        ) : (
+          <span className="text-neutral-700">Sin datos</span>
+        )}
+      </div>
+
+      {experimentalSlEnabled && (
+        <>
+          {tradeSetup?.sl && (
+            <button onClick={() => setIsSlInfoOpen(true)} className="flex items-center justify-between px-3 py-1.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono w-full">
+              <span className="text-amber-300">SL experimental</span>
+              <span className="flex items-center gap-1 text-amber-100">{formatSetupValue(tradeSetup.sl)} <Info className="w-3 h-3" /></span>
+            </button>
+          )}
+          <div className="flex items-center justify-between px-3 py-1.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono w-full">
+            <span className="text-amber-300">Validación SL</span>
+            <span className="text-neutral-600">En evaluación</span>
+          </div>
+        </>
+      )}
+
+      {experimentalSlEnabled && isSlInfoOpen && tradeSetup?.sl && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/75 p-4" onClick={() => setIsSlInfoOpen(false)}>
+          <div className="w-full max-w-md border border-amber-500/30 bg-[#111] p-5 rounded-lg text-sm" onClick={(event) => event.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-amber-300 font-semibold">SL experimental · {instrument.symbol}</div>
+              <button onClick={() => setIsSlInfoOpen(false)} className="text-neutral-500 hover:text-white">Cerrar</button>
+            </div>
+            <div className="space-y-2 font-mono text-xs text-neutral-300">
+              <div>Dirección: <span className="text-white">{analysis?.mainSignal === SignalType.SALE ? 'VENTA' : 'COMPRA'}</span></div>
+              <div>Entry: <span className="text-white">{formatSetupValue(tradeSetup.entry)}</span> · TP: <span className="text-white">{formatSetupValue(tradeSetup.tp)}</span></div>
+              <div>{analysis?.mainSignal === SignalType.SALE ? 'Máximo estructural' : 'Mínimo estructural'}: <span className="text-white">{formatSetupValue(tradeSetup.slStructurePrice || 0)}</span></div>
+              <div>ATR: <span className="text-white">{formatSetupValue(tradeSetup.slAtr || 0)}</span> · Margen: <span className="text-white">{formatSetupValue(tradeSetup.slMargin || 0)}</span></div>
+              <div className="pt-2 border-t border-white/10 text-amber-100">SL = estructura {analysis?.mainSignal === SignalType.SALE ? '+' : '-'} 20% del ATR = {formatSetupValue(tradeSetup.sl)}</div>
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-neutral-500">Nivel calculado para evaluación con las últimas 20 velas de 5 minutos. No es una orden automática.</p>
+          </div>
         </div>
       )}
     </div>

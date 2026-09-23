@@ -79,15 +79,29 @@ export const validateV4Signal = (
       tpMultiplier = 2.0; // Señal Excepcional
     }
 
-    let suggestedEntry, suggestedTp;
+    const structureCandles = candles5m.slice(-20);
+    const slMargin = currentAtr * 0.2;
+    let suggestedEntry, suggestedTp, suggestedSl, structurePrice;
     if (m5 === SignalType.BUY) {
       suggestedEntry = signalCandle.high - fibRetracement;
       suggestedTp = suggestedEntry + (currentAtr * tpMultiplier);
+      structurePrice = Math.min(...structureCandles.map(candle => candle.low));
+      suggestedSl = structurePrice - slMargin;
     } else { // SALE
       suggestedEntry = signalCandle.low + fibRetracement;
       suggestedTp = suggestedEntry - (currentAtr * tpMultiplier);
+      structurePrice = Math.max(...structureCandles.map(candle => candle.high));
+      suggestedSl = structurePrice + slMargin;
     }
-    tradeSetup = { entry: suggestedEntry, tp: suggestedTp, rr: tpMultiplier };
+    tradeSetup = {
+      entry: suggestedEntry,
+      tp: suggestedTp,
+      rr: tpMultiplier,
+      sl: suggestedSl,
+      slStructurePrice: structurePrice,
+      slAtr: currentAtr,
+      slMargin,
+    };
 
   } else if (score >= 60 && macroTrend === m5) {
     action = ActionType.ESPERAR;

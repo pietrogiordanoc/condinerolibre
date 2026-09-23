@@ -26,6 +26,8 @@ const App: React.FC = () => {
   const [showDebugFrames, setShowDebugFrames] = useState(false);
   
   const [userId, setUserId] = useState<string | null>(null);
+  const [experimentalSlEnabled, setExperimentalSlEnabled] = useState(false);
+  const [metricInfo, setMetricInfo] = useState<'history' | 'sl' | null>(null);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
@@ -155,16 +157,17 @@ const App: React.FC = () => {
         }
 
         // Perfil incompleto (falta nombre o teléfono) → completar antes de usar el Radar
+        setUserId(session.user.id);
         let profileResp = await supabase
           .from('profiles')
-          .select('full_name, phone')
+          .select('full_name, phone, experimental_sl_enabled')
           .eq('id', session.user.id)
           .maybeSingle();
         if (profileResp.error) {
           // Compatibilidad de esquema: algunos entornos usan profiles.user_id en vez de profiles.id
           profileResp = await supabase
             .from('profiles')
-            .select('full_name, phone')
+            .select('full_name, phone, experimental_sl_enabled')
             .eq('user_id', session.user.id)
             .maybeSingle();
         }
@@ -172,6 +175,7 @@ const App: React.FC = () => {
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
+        setExperimentalSlEnabled(profile?.experimental_sl_enabled === true);
         if (!hasName || !hasPhone) {
           console.log('[Radar] Perfil incompleto - redirigiendo al portal');
           window.location.href = '/dashboard#radar';
@@ -520,6 +524,18 @@ const App: React.FC = () => {
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
             <div className="w-[190px] shrink-0 text-center">Trade Setup</div>
+            <div className="w-[104px] shrink-0 text-center">
+              <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Cómo se calcula Historial">
+                Historial <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
+              </button>
+            </div>
+            {experimentalSlEnabled && (
+              <div className="w-[120px] shrink-0 text-center">
+                <button onClick={() => setMetricInfo('sl')} className="inline-flex items-center gap-1 text-amber-300 hover:text-amber-100" title="Cómo se calcula Validación SL">
+                  Validación SL <span className="rounded-full border border-amber-500/60 px-1 text-[8px] normal-case">i</span>
+                </button>
+              </div>
+            )}
             <div className="w-[78px] shrink-0 text-center ml-auto">Session</div>
             <div className="w-[120px] shrink-0 text-center">Action</div>
             <div className="w-10 shrink-0"></div>
@@ -540,6 +556,7 @@ const App: React.FC = () => {
                   onOpenChart={handleOpenChart}
                   chartStatus={charts[instrument.symbol]}
                   stats={signalStats[instrument.symbol]}
+                  experimentalSlEnabled={experimentalSlEnabled}
                 />
               </div>
             );
@@ -591,6 +608,22 @@ const App: React.FC = () => {
           isVisible={isTendencialModalVisible}
           onClose={() => setIsTendencialModalVisible(false)}
         />
+      )}
+
+      {metricInfo && (
+        <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/75 p-4" onClick={() => setMetricInfo(null)}>
+          <div className="w-full max-w-md rounded-lg border border-white/15 bg-[#111] p-5" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className={metricInfo === 'sl' ? 'text-amber-300 font-semibold' : 'text-cyan-300 font-semibold'}>{metricInfo === 'history' ? 'Historial' : 'Validación SL'}</h2>
+              <button className="text-sm text-neutral-500 hover:text-white" onClick={() => setMetricInfo(null)}>Cerrar</button>
+            </div>
+            <p className="text-sm leading-relaxed text-neutral-300">
+              {metricInfo === 'history'
+                ? 'Resume cómo terminó cada señal cuando el radar detectó una nueva oportunidad fuerte del mismo instrumento. No evalúa Stop Loss ni confirma que el TP se haya tocado.'
+                : 'Métrica experimental. Cuando haya datos suficientes, comparará si el precio tocó antes el TP o el Stop Loss técnico propuesto. Hoy está en evaluación y no altera el Historial.'}
+            </p>
+          </div>
+        </div>
       )}
 
     </div>

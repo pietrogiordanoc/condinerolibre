@@ -104,6 +104,7 @@ function renderUsers() {
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
         <td data-label="Historial"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button></td>
+        <td data-label="SL Experimental"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:${u.experimental_sl_enabled ? '#fbbf24' : '#64748b'};"><input type="checkbox" ${u.experimental_sl_enabled ? 'checked' : ''} onchange="toggleExperimentalSl('${u.id}', this.checked)"> ${u.experimental_sl_enabled ? 'Activo' : 'Inactivo'}</label></td>
         <td data-label="Ubicación">${u.pres.ciudad || "—"}, ${u.pres.pais || "—"}</td>
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
         <td data-label="Acción">${blockBtn}</td>
@@ -135,6 +136,36 @@ async function adminSetPlan(uId, plan) {
     } catch(e) { console.log("Audit log:", e); }
     refreshUsers(); 
   }
+}
+
+async function toggleExperimentalSl(uId, enabled) {
+  const action = enabled ? 'activar' : 'desactivar';
+  if (!confirm(`¿Quieres ${action} el SL experimental para este usuario?`)) {
+    refreshUsers();
+    return;
+  }
+
+  const { error } = await sp.from("profiles").update({ experimental_sl_enabled: enabled }).eq("id", uId);
+  if (error) {
+    Toastify({ text: "Error: " + error.message, duration: 3000, backgroundColor: "#e74c3c" }).showToast();
+    refreshUsers();
+    return;
+  }
+
+  try {
+    const { data: { session } } = await sp.auth.getSession();
+    await sp.from("audit_events").insert({
+      user_id: uId,
+      event_type: "SL experimental (Admin)",
+      metadata: { enabled, admin_user: session?.user.email, timestamp: new Date().toISOString() },
+      created_at: new Date().toISOString()
+    });
+  } catch (auditError) {
+    console.log("Audit log:", auditError);
+  }
+
+  Toastify({ text: enabled ? "SL experimental activado" : "SL experimental desactivado", duration: 2000, backgroundColor: "#10b981" }).showToast();
+  refreshUsers();
 }
 
 async function toggleBlock(uId, block) {
