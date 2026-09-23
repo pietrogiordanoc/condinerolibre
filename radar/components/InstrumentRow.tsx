@@ -399,12 +399,12 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <span className="text-[8px] text-neutral-700 uppercase tracking-wider">Score</span>
       </div>
 
-      <div className="w-[190px] shrink-0">
+      <div className="w-[250px] shrink-0">
         {tradeSetup && isHighSignal && (
             <div className="flex flex-col gap-1">
               <button
                 onClick={() => handleCopyTradeSetup(tradeSetup)}
-                className="flex items-center justify-between bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono w-full text-left hover:border-neutral-700 transition-colors"
+                className="flex items-stretch bg-neutral-900 border border-neutral-800 rounded px-2 py-2 text-[10px] font-mono w-full text-left hover:border-neutral-700 transition-colors"
               >
                 {copyStatus ? (
                   <div className="w-full text-center">
@@ -412,18 +412,22 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                   </div>
                 ) : (
                   <>
-                    <div className="space-y-1 flex-grow">
-                      <div className="flex items-center gap-2">
-                        <span className="text-neutral-600">E</span>
-                        <span className="text-neutral-200">{tradeSetup.entry.toFixed(4)}</span>
+                    <div className="grid grid-cols-3 flex-1 gap-2 pr-2">
+                      <div className="min-w-0">
+                        <span className="block text-[8px] text-neutral-600">E</span>
+                        <span className="block text-[11px] text-neutral-200 truncate">{formatSetupValue(tradeSetup.entry)}</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-neutral-600">TP</span>
-                        <span className="text-neutral-200">{tradeSetup.tp.toFixed(4)}</span>
+                      <div className="min-w-0">
+                        <span className="block text-[8px] text-neutral-600">TP</span>
+                        <span className="block text-[11px] text-neutral-200 truncate">{formatSetupValue(tradeSetup.tp)}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <span className="block text-[8px] text-amber-400">SL</span>
+                        <span className="block text-[11px] text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
                       </div>
                     </div>
                     {profitInfo && tradeSetup.rr && (
-                      <div className="flex flex-col items-center justify-center pl-3 border-l border-neutral-800 ml-3">
+                      <div className="flex flex-col items-center justify-center pl-2 border-l border-neutral-800">
                         <span className={`text-base font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>
                           {profitInfo.value}
                         </span>
@@ -439,22 +443,11 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
               {tradeSetup.rr && !copyStatus && (() => {
                 const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
                 return qualityMsg ? (
-                  <div className={`flex items-center px-2 py-1 rounded border text-[9px] font-mono ${qualityMsg.color}`}>
-                    {qualityMsg.label}
+                  <div className={`ml-auto w-[52px] -mt-1 flex justify-center px-1 py-0.5 rounded border text-[8px] font-mono text-center leading-tight ${qualityMsg.color}`}>
+                    {qualityMsg.label.replace('Setup ', '')}
                   </div>
                 ) : null;
               })()}
-
-              {experimentalSlEnabled && tradeSetup.sl && (
-                <button
-                  onClick={() => setIsSlInfoOpen(true)}
-                  className="flex items-center justify-between px-2 py-1 rounded border border-amber-500/25 bg-amber-500/5 text-[9px] font-mono text-amber-100 hover:border-amber-400/50 transition-colors"
-                  title="Ver cálculo experimental del SL"
-                >
-                  <span>SL experimental</span>
-                  <span className="flex items-center gap-1">{formatSetupValue(tradeSetup.sl)} <Info className="w-3 h-3" /></span>
-                </button>
-              )}
             </div>
         )}
       </div>

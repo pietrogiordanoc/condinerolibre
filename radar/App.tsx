@@ -514,7 +514,7 @@ const App: React.FC = () => {
         
         <div className="grid grid-cols-1 gap-3 md:gap-4">
           {/* Desktop table header - Hidden on mobile */}
-          <div className="hidden md:flex items-center justify-start gap-4 px-4 py-3 bg-white/[0.02] rounded-xl border border-white/5 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
+          <div className="hidden md:flex sticky top-[104px] z-40 items-center justify-start gap-4 px-4 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="w-16 text-center shrink-0">Status</div>
             <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div className="w-[44px] shrink-0 text-center">Chart</div>
@@ -523,7 +523,7 @@ const App: React.FC = () => {
             <div className="w-14 shrink-0 text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
-            <div className="w-[190px] shrink-0 text-center">Trade Setup</div>
+            <div className="w-[250px] shrink-0 text-center">Trade Setup</div>
             <div className="w-[104px] shrink-0 text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Cómo se calcula Historial">
                 Historial <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
