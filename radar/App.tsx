@@ -251,6 +251,18 @@ const App: React.FC = () => {
   
   const handleMinimizeChart = useCallback((symbol: string) => {
     setCharts(prev => (prev[symbol] ? { ...prev, [symbol]: 'minimized' } : prev));
+    const instrument = ALL_INSTRUMENTS.find(item => item.symbol === symbol);
+    if (instrument) {
+      const saved = localStorage.getItem('bookmarks');
+      const pinnedRows = saved ? JSON.parse(saved) : [];
+      if (!pinnedRows.includes(instrument.id)) {
+        localStorage.setItem('bookmarks', JSON.stringify([...pinnedRows, instrument.id]));
+      }
+      if (GlobalAnalysisCache[instrument.id]) {
+        GlobalAnalysisCache[instrument.id].isBookmarked = true;
+      }
+      forceUpdate(trigger => trigger + 1);
+    }
   }, []);
   
   const handleCloseChart = useCallback((symbol: string) => {

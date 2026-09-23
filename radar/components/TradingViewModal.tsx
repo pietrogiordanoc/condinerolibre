@@ -178,7 +178,7 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
     <div 
       className="fixed transition-all duration-300"
       style={{
-        zIndex: isVisible ? 100 : 50,
+        zIndex: isVisible ? 200 : 180,
         pointerEvents: isVisible ? 'auto' : 'none', // Sin interacción cuando minimizado
         ...(isVisible ? {
           inset: 0,
