@@ -519,11 +519,11 @@ const App: React.FC = () => {
             <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div className="w-[44px] shrink-0 text-center">Chart</div>
             <div className="w-[90px] shrink-0">Price</div>
-            <div className="w-[170px] shrink-0 text-center">MTF Alignment</div>
+            <div className="w-[124px] shrink-0 text-center">MTF Alignment</div>
             <div className="w-14 shrink-0 text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
-            <div className="w-[250px] shrink-0 text-center">Trade Setup</div>
+            <div className="w-[280px] shrink-0 text-center">Trade Setup</div>
             <div className="w-[104px] shrink-0 text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Cómo se calcula Historial">
                 Historial <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>

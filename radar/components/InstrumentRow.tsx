@@ -383,11 +383,11 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         {currentPrice > 0 && <span className="text-xs font-mono text-neutral-300">${currentPrice.toLocaleString()}</span>}
       </div>
 
-      <div className="flex space-x-4 w-[170px] shrink-0 justify-center">
+      <div className="flex flex-col gap-1 w-[124px] shrink-0">
         {(['4h', '1h', '15min', '5min'] as Timeframe[]).map(tf => (
-          <div key={tf} className="flex flex-col items-center">
-            <span className="text-[8px] text-neutral-600 mb-1 uppercase">{tf}</span>
-            <div className={`h-1 w-7 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
+          <div key={tf} className="flex items-center gap-2">
+            <span className="w-8 text-[8px] text-neutral-600 uppercase">{tf}</span>
+            <div className={`h-1 flex-1 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
           </div>
         ))}
       </div>
@@ -399,54 +399,50 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <span className="text-[8px] text-neutral-700 uppercase tracking-wider">Score</span>
       </div>
 
-      <div className="w-[250px] shrink-0">
+      <div className="w-[280px] shrink-0">
         {tradeSetup && isHighSignal && (
             <div className="flex flex-col gap-1">
               <button
                 onClick={() => handleCopyTradeSetup(tradeSetup)}
-                className="flex items-stretch bg-neutral-900 border border-neutral-800 rounded px-2 py-2 text-[10px] font-mono w-full text-left hover:border-neutral-700 transition-colors"
+                className="bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono w-full text-left hover:border-neutral-700 transition-colors"
               >
                 {copyStatus ? (
                   <div className="w-full text-center">
                     <span className="text-neutral-300 text-[10px]">Copiado</span>
                   </div>
                 ) : (
-                  <>
-                    <div className="grid grid-cols-3 flex-1 gap-2 pr-2">
+                    <div className="grid grid-cols-3 gap-3">
                       <div className="min-w-0">
                         <span className="block text-[8px] text-neutral-600">E</span>
-                        <span className="block text-[11px] text-neutral-200 truncate">{formatSetupValue(tradeSetup.entry)}</span>
+                        <span className="block text-[13px] text-neutral-100 truncate">{formatSetupValue(tradeSetup.entry)}</span>
                       </div>
                       <div className="min-w-0">
                         <span className="block text-[8px] text-neutral-600">TP</span>
-                        <span className="block text-[11px] text-neutral-200 truncate">{formatSetupValue(tradeSetup.tp)}</span>
+                        <span className="block text-[13px] text-neutral-100 truncate">{formatSetupValue(tradeSetup.tp)}</span>
                       </div>
                       <div className="min-w-0">
                         <span className="block text-[8px] text-amber-400">SL</span>
-                        <span className="block text-[11px] text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
+                        <span className="block text-[13px] text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
                       </div>
                     </div>
-                    {profitInfo && tradeSetup.rr && (
-                      <div className="flex flex-col items-center justify-center pl-2 border-l border-neutral-800">
-                        <span className={`text-base font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>
-                          {profitInfo.value}
-                        </span>
-                        <span className="text-[8px] text-neutral-600 leading-none mt-0.5">
-                          {profitInfo.unit}
-                        </span>
-                      </div>
-                    )}
-                  </>
                 )}
               </button>
               
-              {tradeSetup.rr && !copyStatus && (() => {
+              {profitInfo && tradeSetup.rr && !copyStatus && (() => {
                 const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
-                return qualityMsg ? (
-                  <div className={`ml-auto w-[52px] -mt-1 flex justify-center px-1 py-0.5 rounded border text-[8px] font-mono text-center leading-tight ${qualityMsg.color}`}>
-                    {qualityMsg.label.replace('Setup ', '')}
+                return (
+                  <div className="ml-auto flex flex-col items-center pr-2">
+                    <div className="flex items-baseline gap-1">
+                      <span className={`text-base font-mono leading-none ${getRRColor(tradeSetup.rr)}`}>{profitInfo.value}</span>
+                      <span className="text-[8px] text-neutral-600">{profitInfo.unit}</span>
+                    </div>
+                    {qualityMsg && (
+                      <div className={`mt-1 px-2 py-0.5 rounded border text-[8px] font-mono text-center leading-tight ${qualityMsg.color}`}>
+                        {qualityMsg.label.replace('Setup ', '')}
+                      </div>
+                    )}
                   </div>
-                ) : null;
+                );
               })()}
             </div>
         )}
