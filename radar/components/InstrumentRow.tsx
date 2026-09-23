@@ -367,6 +367,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     </span>
                 )}
             </div>
+              {currentPrice > 0 && <span className="text-[11px] font-mono text-neutral-200 leading-none mt-1">${currentPrice.toLocaleString()}</span>}
             <span className="text-[9px] text-neutral-500 font-medium leading-none mt-0.5">{instrument.name}</span>
           </div>
         </div>
@@ -377,10 +378,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <button onClick={() => onOpenChart(instrument.symbol)} className={`p-1 rounded border transition-colors ${getChartButtonClass()}`} title="Abrir gráfico">
           <ChartMonitorIcon className="w-7 h-7" />
         </button>
-      </div>
-
-      <div className="w-[90px] shrink-0 text-left">
-        {currentPrice > 0 && <span className="text-xs font-mono text-neutral-300">${currentPrice.toLocaleString()}</span>}
       </div>
 
       <div className="flex flex-col gap-1 w-[124px] shrink-0">

@@ -518,7 +518,6 @@ const App: React.FC = () => {
             <div className="w-16 text-center shrink-0">Status</div>
             <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div className="w-[44px] shrink-0 text-center">Chart</div>
-            <div className="w-[90px] shrink-0">Price</div>
             <div className="w-[124px] shrink-0 text-center">MTF Alignment</div>
             <div className="w-14 shrink-0 text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
