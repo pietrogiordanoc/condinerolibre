@@ -22,6 +22,7 @@ const formatSetupValue = (value: number): string => {
 const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const initializedSymbolRef = useRef<string | null>(null);
 
@@ -271,20 +272,17 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
 
         {isVisible && (
           <div className="shrink-0 px-3 py-2 border-b border-cyan-500/20 bg-cyan-500/5">
-            <div className="mx-auto w-full max-w-[720px] px-3 py-1 rounded-md border border-cyan-500/25 bg-[#0e1c2a]/70 text-cyan-200">
-              <div className="flex flex-wrap items-center justify-center md:justify-between gap-x-4 gap-y-1 text-xs md:text-sm font-mono">
+            <div className="mx-auto flex w-full max-w-[840px] items-center gap-3 rounded-md border border-cyan-500/25 bg-[#0e1c2a]/70 px-3 py-1 text-cyan-200">
+              <div className="shrink-0 border-r border-cyan-500/25 pr-3 font-mono text-xs md:text-sm">
+                <span className="text-cyan-400">PIPS:</span> {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}
+              </div>
+              <div className="flex flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs md:text-sm font-mono">
                 <span>E: {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
                 <span>TP: {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
-                <span>PIPS: {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}</span>
-                {experimentalSlEnabled && tradeSetup?.sl && (
-                  <span className="text-amber-300">SL: {formatSetupValue(tradeSetup.sl)}</span>
-                )}
-                {mainSignal && (
-                  <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>
-                    {mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}
-                  </span>
-                )}
+                {experimentalSlEnabled && tradeSetup?.sl && <span className="text-amber-300">SL: {formatSetupValue(tradeSetup.sl)}</span>}
+                {mainSignal && <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>{mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}</span>}
               </div>
+              <button onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(true); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
             </div>
           </div>
         )}
@@ -295,6 +293,20 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
           </div>
         </div>
       </div>
+
+      {isTutorialOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4" onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(false); }}>
+          <div className="w-full max-w-xl rounded-lg border border-cyan-500/30 bg-[#101820] p-5" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-semibold text-cyan-200">Tutorial de CDLRadar</h2>
+              <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
+            </div>
+            <div className="flex aspect-video items-center justify-center rounded border border-dashed border-cyan-500/30 bg-black/30 px-6 text-center text-sm text-neutral-400">
+              El video del tutorial estará disponible aquí próximamente.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
