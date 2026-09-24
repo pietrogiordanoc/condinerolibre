@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ArrowRight, Pin } from 'lucide-react';
 import { Instrument, SignalType, TradeSetup } from '../types';
 
 interface TradingViewModalProps {
@@ -23,8 +24,20 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [copiedValue, setCopiedValue] = useState<string | null>(null);
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const initializedSymbolRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (isVisible) setIsMaximized(true);
+  }, [isVisible]);
+
+  const handleCopyValue = (label: string, value?: number) => {
+    if (value === undefined) return;
+    navigator.clipboard.writeText(value.toFixed(5));
+    setCopiedValue(label);
+    setTimeout(() => setCopiedValue(null), 1500);
+  };
 
   const handleClose = () => {
     // Resetear el ref cuando se cierra (X) para permitir reinicialización limpia
@@ -118,7 +131,7 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
     script.innerHTML = JSON.stringify({
       "autosize": true,
       "symbol": tvSymbol,
-      "interval": "15",
+      "interval": "5",
       "timezone": "Etc/UTC",
       "theme": "dark",
       "style": "1",
@@ -242,6 +255,11 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
           <div className="flex items-center space-x-2">
             {isVisible && (
               <>
+                <div className="hidden sm:flex items-center gap-1.5 mr-1 text-[10px] text-amber-300/90" title="Minimiza para mantener este chart fijado arriba">
+                  <span>Minimiza para mantenerlo fijado arriba</span>
+                  <Pin className="w-3.5 h-3.5" fill="currentColor" />
+                  <ArrowRight className="w-3.5 h-3.5 text-neutral-500" />
+                </div>
                 <button 
                   onClick={(e) => { e.stopPropagation(); onMinimize(); }}
                   className="p-2 text-neutral-500 hover:text-white hover:bg-white/10 rounded-md transition-colors" title="Minimize">
@@ -277,9 +295,15 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
                 <span className="text-cyan-400">PIPS:</span> {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}
               </div>
               <div className="flex flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs md:text-sm font-mono">
-                <span className="text-cyan-200"><span className="text-cyan-400">ENTRY:</span> {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
-                <span className="text-cyan-200"><span className="text-cyan-400">TakeProfit:</span> {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
-                {experimentalSlEnabled && tradeSetup?.sl && <span className="text-amber-100"><span className="text-amber-300">StopLoss:</span> {formatSetupValue(tradeSetup.sl)}</span>}
+                <button onClick={() => handleCopyValue('ENTRY', tradeSetup?.entry)} className="text-left text-cyan-200 hover:text-white transition-colors" title="Copiar ENTRY">
+                  <span className="text-cyan-400">{copiedValue === 'ENTRY' ? 'Copiado:' : 'ENTRY:'}</span> {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}
+                </button>
+                <button onClick={() => handleCopyValue('TakeProfit', tradeSetup?.tp)} className="text-left text-cyan-200 hover:text-white transition-colors" title="Copiar TakeProfit">
+                  <span className="text-cyan-400">{copiedValue === 'TakeProfit' ? 'Copiado:' : 'TakeProfit:'}</span> {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}
+                </button>
+                {experimentalSlEnabled && tradeSetup?.sl && <button onClick={() => handleCopyValue('StopLoss', tradeSetup.sl)} className="text-left text-amber-100 hover:text-white transition-colors" title="Copiar StopLoss">
+                  <span className="text-amber-300">{copiedValue === 'StopLoss' ? 'Copiado:' : 'StopLoss:'}</span> {formatSetupValue(tradeSetup.sl)}
+                </button>}
                 {mainSignal && <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>{mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}</span>}
               </div>
               <button onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(true); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
