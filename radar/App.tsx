@@ -19,7 +19,6 @@ const pairBases = new Set(
     .filter(({ symbol }) => symbol.includes('/'))
     .map(({ symbol }) => symbol.split('/')[0])
 );
-const TUTORIAL_EMBED_URL = 'https://www.youtube.com/embed/TWuSwNC9H80?autoplay=1&rel=0';
 
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -184,7 +183,7 @@ const App: React.FC = () => {
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
-        setExperimentalSlEnabled(profile?.experimental_sl_enabled === true);
+        setExperimentalSlEnabled(profile?.experimental_sl_enabled !== false);
         if (!hasName || !hasPhone) {
           console.log('[Radar] Perfil incompleto - redirigiendo al portal');
           window.location.href = '/dashboard#radar';
@@ -283,10 +282,6 @@ const App: React.FC = () => {
       }
       forceUpdate(trigger => trigger + 1);
     }
-  }, []);
-
-  const handleOpenTutorial = useCallback(() => {
-    setIsTutorialOpen(true);
   }, []);
 
   const handleSearchChange = (value: string) => {
@@ -591,7 +586,6 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
-            <div className="w-[84px] shrink-0 text-center">Tutorial</div>
           </div>
           
           {sortedInstruments.map(instrument => {
@@ -607,7 +601,7 @@ const App: React.FC = () => {
                   onAnalysisUpdate={handleAnalysisUpdate}
                   isTestMode={false}
                   onOpenChart={handleOpenChart}
-                  onOpenTutorial={handleOpenTutorial}
+                  onOpenTutorial={() => setIsTutorialOpen(true)}
                   onPinChange={() => forceUpdate(trigger => trigger + 1)}
                   chartStatus={charts[instrument.symbol]}
                   stats={signalStats[instrument.symbol]}
@@ -642,7 +636,6 @@ const App: React.FC = () => {
               tradeSetup={analysis?.tradeSetup || null}
               mainSignal={analysis?.mainSignal}
               experimentalSlEnabled={experimentalSlEnabled}
-              onOpenTutorial={handleOpenTutorial}
               isVisible={status === 'visible'}
               onMinimize={() => handleMinimizeChart(symbol)}
               onClose={() => handleCloseChart(symbol)}
@@ -691,7 +684,9 @@ const App: React.FC = () => {
               <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
             </div>
             <div className="flex aspect-video items-center justify-center overflow-hidden rounded border border-cyan-500/20 bg-black">
-              <iframe className="h-full w-full" src={TUTORIAL_EMBED_URL} title="Tutorial de CDLRadar" allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />
+              <video className="h-full w-full" controls autoPlay src="https://yhgqmbexjscojlrzguvh.supabase.co/storage/v1/object/public/Video%20Tutoriales/TutorialExpress.mp4">
+                Tu navegador no puede reproducir este video.
+              </video>
             </div>
           </div>
         </div>

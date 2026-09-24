@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ArrowRight, Pin } from 'lucide-react';
 import { Instrument, SignalType, TradeSetup } from '../types';
 
 interface TradingViewModalProps {
@@ -6,7 +7,6 @@ interface TradingViewModalProps {
   tradeSetup?: TradeSetup | null;
   mainSignal?: SignalType;
   experimentalSlEnabled: boolean;
-  onOpenTutorial: () => void;
   isVisible: boolean;
   onMinimize: () => void;
   onClose: () => void;
@@ -20,11 +20,24 @@ const formatSetupValue = (value: number): string => {
   return value.toFixed(6);
 };
 
-const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, onOpenTutorial, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
+const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [copiedValue, setCopiedValue] = useState<string | null>(null);
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const initializedSymbolRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (isVisible) setIsMaximized(true);
+  }, [isVisible]);
+
+  const handleCopyValue = (label: string, value?: number) => {
+    if (value === undefined) return;
+    navigator.clipboard.writeText(value.toFixed(5));
+    setCopiedValue(label);
+    setTimeout(() => setCopiedValue(null), 1500);
+  };
 
   const handleClose = () => {
     // Resetear el ref cuando se cierra (X) para permitir reinicialización limpia
@@ -118,7 +131,7 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
     script.innerHTML = JSON.stringify({
       "autosize": true,
       "symbol": tvSymbol,
-      "interval": "15",
+      "interval": "5",
       "timezone": "Etc/UTC",
       "theme": "dark",
       "style": "1",
@@ -242,6 +255,11 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
           <div className="flex items-center space-x-2">
             {isVisible && (
               <>
+                <div className="hidden sm:flex items-center gap-1.5 mr-1 text-xs text-amber-300" title="Minimiza para mantener este chart fijado arriba">
+                  <span>Minimiza para mantenerlo fijado arriba</span>
+                  <Pin className="w-4 h-4 text-amber-300" fill="currentColor" />
+                  <ArrowRight className="w-3.5 h-3.5 text-neutral-500" />
+                </div>
                 <button 
                   onClick={(e) => { e.stopPropagation(); onMinimize(); }}
                   className="p-2 text-neutral-500 hover:text-white hover:bg-white/10 rounded-md transition-colors" title="Minimize">
@@ -277,12 +295,18 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
                 <span className="text-cyan-400">PIPS:</span> {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}
               </div>
               <div className="flex flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs md:text-sm font-mono">
-                <span>E: {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
-                <span>TP: {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
-                {experimentalSlEnabled && tradeSetup?.sl && <span className="text-amber-300">SL: {formatSetupValue(tradeSetup.sl)}</span>}
+                <button onClick={() => handleCopyValue('ENTRY', tradeSetup?.entry)} className="text-left text-cyan-200 hover:text-white transition-colors" title="Copiar ENTRY">
+                  <span className="text-cyan-400">{copiedValue === 'ENTRY' ? 'Copiado:' : 'ENTRY:'}</span> {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}
+                </button>
+                <button onClick={() => handleCopyValue('TakeProfit', tradeSetup?.tp)} className="text-left text-cyan-200 hover:text-white transition-colors" title="Copiar TakeProfit">
+                  <span className="text-cyan-400">{copiedValue === 'TakeProfit' ? 'Copiado:' : 'TakeProfit:'}</span> {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}
+                </button>
+                {experimentalSlEnabled && tradeSetup?.sl && <button onClick={() => handleCopyValue('StopLoss', tradeSetup.sl)} className="text-left text-amber-100 hover:text-white transition-colors" title="Copiar StopLoss">
+                  <span className="text-amber-300">{copiedValue === 'StopLoss' ? 'Copiado:' : 'StopLoss:'}</span> {formatSetupValue(tradeSetup.sl)}
+                </button>}
                 {mainSignal && <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>{mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}</span>}
               </div>
-              <button onClick={(event) => { event.stopPropagation(); onOpenTutorial(); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
+              <button onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(true); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
             </div>
           </div>
         )}
@@ -294,6 +318,19 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
         </div>
       </div>
 
+      {isTutorialOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4" onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(false); }}>
+          <div className="w-full max-w-xl rounded-lg border border-cyan-500/30 bg-[#101820] p-5" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-semibold text-cyan-200">Tutorial de CDLRadar</h2>
+              <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
+            </div>
+            <div className="flex aspect-video items-center justify-center rounded border border-dashed border-cyan-500/30 bg-black/30 px-6 text-center text-sm text-neutral-400">
+              El video del tutorial estará disponible aquí próximamente.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
