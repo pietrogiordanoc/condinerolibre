@@ -19,8 +19,7 @@ const pairBases = new Set(
     .filter(({ symbol }) => symbol.includes('/'))
     .map(({ symbol }) => symbol.split('/')[0])
 );
-const TUTORIAL_BUCKET = 'Video Tutoriales';
-const TUTORIAL_VIDEO_PATH = 'TutorialExpress.mp4';
+const TUTORIAL_VIDEO_URL = 'https://yhgqmbexjscojlrzguvh.supabase.co/storage/v1/object/public/Video%20Tutoriales/TutorialExpress.mp4';
 
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -38,8 +37,7 @@ const App: React.FC = () => {
   const [experimentalSlEnabled, setExperimentalSlEnabled] = useState(false);
   const [metricInfo, setMetricInfo] = useState<'history' | 'sl' | null>(null);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [tutorialVideoUrl, setTutorialVideoUrl] = useState<string | null>(null);
-  const [isTutorialLoading, setIsTutorialLoading] = useState(false);
+  const [tutorialVideoError, setTutorialVideoError] = useState(false);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
@@ -288,17 +286,9 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const handleOpenTutorial = useCallback(async () => {
+  const handleOpenTutorial = useCallback(() => {
+    setTutorialVideoError(false);
     setIsTutorialOpen(true);
-    setIsTutorialLoading(true);
-    const { data, error } = await supabase.storage.from(TUTORIAL_BUCKET).createSignedUrl(TUTORIAL_VIDEO_PATH, 3600);
-    if (error) {
-      console.error('[Tutorial] Error cargando video:', error.message);
-      setTutorialVideoUrl(null);
-    } else {
-      setTutorialVideoUrl(data.signedUrl);
-    }
-    setIsTutorialLoading(false);
   }, []);
 
   const handleSearchChange = (value: string) => {
@@ -603,6 +593,7 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
+            <div className="w-[84px] shrink-0 text-center">Tutorial</div>
           </div>
           
           {sortedInstruments.map(instrument => {
@@ -702,9 +693,8 @@ const App: React.FC = () => {
               <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
             </div>
             <div className="flex aspect-video items-center justify-center overflow-hidden rounded border border-cyan-500/20 bg-black">
-              {isTutorialLoading && <span className="text-sm text-neutral-400">Cargando tutorial...</span>}
-              {!isTutorialLoading && tutorialVideoUrl && <video className="h-full w-full" controls autoPlay src={tutorialVideoUrl}>Tu navegador no puede reproducir este video.</video>}
-              {!isTutorialLoading && !tutorialVideoUrl && <span className="px-6 text-center text-sm text-neutral-400">No se pudo cargar el video del tutorial.</span>}
+              {!tutorialVideoError && <video className="h-full w-full" controls autoPlay src={TUTORIAL_VIDEO_URL} onError={() => setTutorialVideoError(true)}>Tu navegador no puede reproducir este video.</video>}
+              {tutorialVideoError && <span className="px-6 text-center text-sm text-neutral-400">No se pudo cargar el video. Verifica que el bucket <span className="text-cyan-300">Video Tutoriales</span> sea público en Supabase.</span>}
             </div>
           </div>
         </div>

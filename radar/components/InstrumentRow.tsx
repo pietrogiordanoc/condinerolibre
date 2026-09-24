@@ -408,7 +408,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             </span>
             {chartStatus === 'minimized' && <span className="text-[7px] tracking-widest text-cyan-200">GRÁFICO FIJADO</span>}
           </button>
-          <button onClick={onOpenTutorial} className="text-[8px] font-bold tracking-wider text-cyan-300 hover:text-white">TUTORIAL</button>
         </div>
       </div>
 
@@ -493,6 +492,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
           <span className="text-[9px] text-neutral-700">En evaluación</span>
         </div>
       )}
+
+      <div className="w-[84px] shrink-0 text-center">
+        <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
+      </div>
 
     </div>
 
