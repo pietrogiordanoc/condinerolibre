@@ -182,7 +182,7 @@ const App: React.FC = () => {
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
-        setExperimentalSlEnabled(profile?.experimental_sl_enabled === true);
+        setExperimentalSlEnabled(profile?.experimental_sl_enabled !== false);
         if (!hasName || !hasPhone) {
           console.log('[Radar] Perfil incompleto - redirigiendo al portal');
           window.location.href = '/dashboard#radar';

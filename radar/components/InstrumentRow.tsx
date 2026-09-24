@@ -436,17 +436,17 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     <span className="text-neutral-300 text-[10px]">Copiado</span>
                   </div>
                 ) : (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-2">
                       <div className="min-w-0">
-                        <span className="block text-[8px] text-neutral-600">E</span>
+                        <span className="block text-[10px] text-neutral-600">ENTRY</span>
                         <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.entry)}</span>
                       </div>
                       <div className="min-w-0">
-                        <span className="block text-[8px] text-neutral-600">TP</span>
+                        <span className="block text-[10px] text-neutral-600">TakeProfit</span>
                         <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.tp)}</span>
                       </div>
                       <div className="min-w-0">
-                        <span className="block text-[8px] text-amber-400">SL</span>
+                        <span className="block text-[10px] text-amber-400">StopLoss</span>
                         <span className="block text-base text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
                       </div>
                     </div>
