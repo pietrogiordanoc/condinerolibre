@@ -19,6 +19,8 @@ const pairBases = new Set(
     .filter(({ symbol }) => symbol.includes('/'))
     .map(({ symbol }) => symbol.split('/')[0])
 );
+const TUTORIAL_BUCKET = 'Video Tutoriales';
+const TUTORIAL_VIDEO_PATH = 'TutorialExpress.mp4';
 
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -35,6 +37,9 @@ const App: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [experimentalSlEnabled, setExperimentalSlEnabled] = useState(false);
   const [metricInfo, setMetricInfo] = useState<'history' | 'sl' | null>(null);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [tutorialVideoUrl, setTutorialVideoUrl] = useState<string | null>(null);
+  const [isTutorialLoading, setIsTutorialLoading] = useState(false);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
@@ -182,7 +187,7 @@ const App: React.FC = () => {
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
-        setExperimentalSlEnabled(profile?.experimental_sl_enabled !== false);
+        setExperimentalSlEnabled(profile?.experimental_sl_enabled === true);
         if (!hasName || !hasPhone) {
           console.log('[Radar] Perfil incompleto - redirigiendo al portal');
           window.location.href = '/dashboard#radar';
@@ -281,6 +286,19 @@ const App: React.FC = () => {
       }
       forceUpdate(trigger => trigger + 1);
     }
+  }, []);
+
+  const handleOpenTutorial = useCallback(async () => {
+    setIsTutorialOpen(true);
+    setIsTutorialLoading(true);
+    const { data, error } = await supabase.storage.from(TUTORIAL_BUCKET).createSignedUrl(TUTORIAL_VIDEO_PATH, 3600);
+    if (error) {
+      console.error('[Tutorial] Error cargando video:', error.message);
+      setTutorialVideoUrl(null);
+    } else {
+      setTutorialVideoUrl(data.signedUrl);
+    }
+    setIsTutorialLoading(false);
   }, []);
 
   const handleSearchChange = (value: string) => {
@@ -600,6 +618,7 @@ const App: React.FC = () => {
                   onAnalysisUpdate={handleAnalysisUpdate}
                   isTestMode={false}
                   onOpenChart={handleOpenChart}
+                  onOpenTutorial={handleOpenTutorial}
                   onPinChange={() => forceUpdate(trigger => trigger + 1)}
                   chartStatus={charts[instrument.symbol]}
                   stats={signalStats[instrument.symbol]}
@@ -634,6 +653,7 @@ const App: React.FC = () => {
               tradeSetup={analysis?.tradeSetup || null}
               mainSignal={analysis?.mainSignal}
               experimentalSlEnabled={experimentalSlEnabled}
+              onOpenTutorial={handleOpenTutorial}
               isVisible={status === 'visible'}
               onMinimize={() => handleMinimizeChart(symbol)}
               onClose={() => handleCloseChart(symbol)}
@@ -670,6 +690,22 @@ const App: React.FC = () => {
                 ? 'Estadística de aciertos.'
                 : 'Métrica experimental. Cuando haya datos suficientes, comparará si el precio tocó antes el TP o el Stop Loss técnico propuesto. Hoy está en evaluación y no altera el Historial.'}
             </p>
+          </div>
+        </div>
+      )}
+
+      {isTutorialOpen && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/80 p-4" onClick={() => setIsTutorialOpen(false)}>
+          <div className="w-full max-w-4xl rounded-lg border border-cyan-500/30 bg-[#101820] p-5" onClick={(event) => event.stopPropagation()}>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="font-semibold text-cyan-200">Tutorial de CDLRadar</h2>
+              <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
+            </div>
+            <div className="flex aspect-video items-center justify-center overflow-hidden rounded border border-cyan-500/20 bg-black">
+              {isTutorialLoading && <span className="text-sm text-neutral-400">Cargando tutorial...</span>}
+              {!isTutorialLoading && tutorialVideoUrl && <video className="h-full w-full" controls autoPlay src={tutorialVideoUrl}>Tu navegador no puede reproducir este video.</video>}
+              {!isTutorialLoading && !tutorialVideoUrl && <span className="px-6 text-center text-sm text-neutral-400">No se pudo cargar el video del tutorial.</span>}
+            </div>
           </div>
         </div>
       )}
