@@ -640,6 +640,7 @@ const App: React.FC = () => {
               onMinimize={() => handleMinimizeChart(symbol)}
               onClose={() => handleCloseChart(symbol)}
               onExpand={() => handleOpenChart(symbol)}
+              onOpenTutorial={() => setIsTutorialOpen(true)}
               thumbnailIndex={status === 'minimized' ? minimizedBefore : 0}
             />
           );

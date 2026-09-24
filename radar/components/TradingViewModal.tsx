@@ -12,6 +12,7 @@ interface TradingViewModalProps {
   onClose: () => void;
   thumbnailIndex?: number;
   onExpand: () => void;
+  onOpenTutorial: () => void;
 }
 
 const formatSetupValue = (value: number): string => {
@@ -20,10 +21,9 @@ const formatSetupValue = (value: number): string => {
   return value.toFixed(6);
 };
 
-const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand }) => {
+const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSetup, mainSignal, experimentalSlEnabled, isVisible, onMinimize, onClose, thumbnailIndex = 0, onExpand, onOpenTutorial }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
-  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const initializedSymbolRef = useRef<string | null>(null);
@@ -306,7 +306,7 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
                 </button>}
                 {mainSignal && <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>{mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}</span>}
               </div>
-              <button onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(true); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
+              <button onClick={(event) => { event.stopPropagation(); onOpenTutorial(); }} className="rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
             </div>
           </div>
         )}
@@ -318,19 +318,6 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
         </div>
       </div>
 
-      {isTutorialOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 p-4" onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(false); }}>
-          <div className="w-full max-w-xl rounded-lg border border-cyan-500/30 bg-[#101820] p-5" onClick={(event) => event.stopPropagation()}>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-semibold text-cyan-200">Tutorial de CDLRadar</h2>
-              <button onClick={() => setIsTutorialOpen(false)} className="text-sm text-neutral-500 hover:text-white">Cerrar</button>
-            </div>
-            <div className="flex aspect-video items-center justify-center rounded border border-dashed border-cyan-500/30 bg-black/30 px-6 text-center text-sm text-neutral-400">
-              El video del tutorial estará disponible aquí próximamente.
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
