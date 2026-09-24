@@ -277,9 +277,9 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
                 <span className="text-cyan-400">PIPS:</span> {tradeSetup ? formatSetupValue(Math.abs(tradeSetup.tp - tradeSetup.entry)) : '--'}
               </div>
               <div className="flex flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs md:text-sm font-mono">
-                <span>E: {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
-                <span>TP: {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
-                {experimentalSlEnabled && tradeSetup?.sl && <span className="text-amber-300">SL: {formatSetupValue(tradeSetup.sl)}</span>}
+                <span className="text-cyan-200"><span className="text-cyan-400">ENTRY:</span> {tradeSetup ? formatSetupValue(tradeSetup.entry) : '--'}</span>
+                <span className="text-cyan-200"><span className="text-cyan-400">TakeProfit:</span> {tradeSetup ? formatSetupValue(tradeSetup.tp) : '--'}</span>
+                {experimentalSlEnabled && tradeSetup?.sl && <span className="text-amber-100"><span className="text-amber-300">StopLoss:</span> {formatSetupValue(tradeSetup.sl)}</span>}
                 {mainSignal && <span className={mainSignal === SignalType.SALE ? 'text-rose-300' : 'text-emerald-300'}>{mainSignal === SignalType.SALE ? 'SELL' : 'BUY'}</span>}
               </div>
               <button onClick={(event) => { event.stopPropagation(); setIsTutorialOpen(true); }} className="shrink-0 rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>

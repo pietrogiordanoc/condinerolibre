@@ -76,7 +76,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   });
   const [newSignalTriggerId, setNewSignalTriggerId] = useState<number | null>(null);
   const [tradeSetup, setTradeSetup] = useState<TradeSetup | null>(null);
-  const [copyStatus, setCopyStatus] = useState<boolean>(false);
+  const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [isSlInfoOpen, setIsSlInfoOpen] = useState(false);
   
   const lastRefreshTriggerRef = useRef<number>(GlobalAnalysisCache[instrument.id]?.trigger ?? -1);
@@ -120,12 +120,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     return () => clearInterval(interval);
   }, [instrument.symbol]);
 
-  const handleCopyTradeSetup = (setup: TradeSetup) => {
-    if (!setup) return;
-    const copyText = `E: ${setup.entry.toFixed(5)}\nTP: ${setup.tp.toFixed(5)}`;
-    navigator.clipboard.writeText(copyText);
-    setCopyStatus(true);
-    setTimeout(() => setCopyStatus(false), 1500);
+  const handleCopySetupValue = (label: string, value: number) => {
+    navigator.clipboard.writeText(value.toFixed(5));
+    setCopyStatus(label);
+    setTimeout(() => setCopyStatus(null), 1500);
   };
 
   const togglePin = (e: React.MouseEvent) => {
@@ -207,11 +205,13 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         setAnalysis(result);
         if (result.price) setCurrentPrice(result.price);
         
+        const wasBookmarked = GlobalAnalysisCache[instrument.id]?.isBookmarked === true;
         GlobalAnalysisCache[instrument.id] = { 
             analysis: result, 
             trigger: globalRefreshTrigger,
             newSignalTriggerId: signalTriggerForUpdate,
             lastAction: result.action,
+          isBookmarked: wasBookmarked,
         };
         
         if (onAnalysisUpdate) onAnalysisUpdate(instrument.id, result);
@@ -427,31 +427,27 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       <div className="w-[280px] shrink-0">
         {tradeSetup && isHighSignal && (
             <div className="flex flex-col gap-1">
-              <button
-                onClick={() => handleCopyTradeSetup(tradeSetup)}
-                className="bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono w-full text-left hover:border-neutral-700 transition-colors"
-              >
-                {copyStatus ? (
-                  <div className="w-full text-center">
-                    <span className="text-neutral-300 text-[10px]">Copiado</span>
-                  </div>
+              <div className="grid grid-cols-3 gap-2 bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono">
+                <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
+                  <span className="block text-[10px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'}</span>
+                  <span className="block text-base text-cyan-200 truncate">{formatSetupValue(tradeSetup.entry)}</span>
+                </button>
+                <button onClick={() => handleCopySetupValue('TakeProfit', tradeSetup.tp)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar TakeProfit">
+                  <span className="block text-[10px] text-cyan-400">{copyStatus === 'TakeProfit' ? 'Copiado' : 'TakeProfit'}</span>
+                  <span className="block text-base text-cyan-200 truncate">{formatSetupValue(tradeSetup.tp)}</span>
+                </button>
+                {experimentalSlEnabled && tradeSetup.sl ? (
+                  <button onClick={() => handleCopySetupValue('StopLoss', tradeSetup.sl)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar StopLoss">
+                    <span className="block text-[10px] text-amber-400">{copyStatus === 'StopLoss' ? 'Copiado' : 'StopLoss'}</span>
+                    <span className="block text-base text-amber-100 truncate">{formatSetupValue(tradeSetup.sl)}</span>
+                  </button>
                 ) : (
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="min-w-0">
-                        <span className="block text-[10px] text-neutral-600">ENTRY</span>
-                        <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.entry)}</span>
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block text-[10px] text-neutral-600">TakeProfit</span>
-                        <span className="block text-base text-neutral-100 truncate">{formatSetupValue(tradeSetup.tp)}</span>
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block text-[10px] text-amber-400">StopLoss</span>
-                        <span className="block text-base text-amber-100 truncate">{experimentalSlEnabled && tradeSetup.sl ? formatSetupValue(tradeSetup.sl) : '--'}</span>
-                      </div>
-                    </div>
+                  <div className="min-w-0">
+                    <span className="block text-[10px] text-amber-400">StopLoss</span>
+                    <span className="block text-base text-amber-100 truncate">--</span>
+                  </div>
                 )}
-              </button>
+              </div>
             </div>
         )}
       </div>
@@ -543,35 +539,27 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
 
       {/* Row 3: Trade Setup (if available) */}
       {tradeSetup && isHighSignal && (
-        <button
-          onClick={() => handleCopyTradeSetup(tradeSetup)}
-          className="flex items-center justify-between bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono w-full text-left"
-        >
-          {copyStatus ? (
-            <span className="text-neutral-300 text-center w-full">Copiado</span>
-          ) : (
-            <>
-              <div className="flex items-center gap-3">
-                <div>
-                  <span className="text-neutral-600">E: </span>
-                  <span className="text-neutral-200">{tradeSetup.entry.toFixed(4)}</span>
-                </div>
-                <div>
-                  <span className="text-neutral-600">TP: </span>
-                  <span className="text-neutral-200">{tradeSetup.tp.toFixed(4)}</span>
-                </div>
-              </div>
-              {profitInfo && (
-                <div className="flex flex-col items-center">
-                  <span className={`text-sm font-mono ${getRRColor(tradeSetup.rr || 0)}`}>
-                    {profitInfo.value}
-                  </span>
-                  <span className="text-[7px] text-neutral-600">{profitInfo.unit}</span>
-                </div>
-              )}
-            </>
+        <div className="flex items-center justify-between bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono w-full">
+          <div className="flex items-center gap-3">
+            <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="text-left text-cyan-200 hover:opacity-80 transition-opacity" title="Copiar ENTRY">
+              <span className="text-cyan-400">ENTRY: </span>{copyStatus === 'ENTRY' ? 'Copiado' : tradeSetup.entry.toFixed(4)}
+            </button>
+            <button onClick={() => handleCopySetupValue('TakeProfit', tradeSetup.tp)} className="text-left text-cyan-200 hover:opacity-80 transition-opacity" title="Copiar TakeProfit">
+              <span className="text-cyan-400">TakeProfit: </span>{copyStatus === 'TakeProfit' ? 'Copiado' : tradeSetup.tp.toFixed(4)}
+            </button>
+            {experimentalSlEnabled && tradeSetup.sl && (
+              <button onClick={() => handleCopySetupValue('StopLoss', tradeSetup.sl)} className="text-left text-amber-100 hover:opacity-80 transition-opacity" title="Copiar StopLoss">
+                <span className="text-amber-300">StopLoss: </span>{copyStatus === 'StopLoss' ? 'Copiado' : formatSetupValue(tradeSetup.sl)}
+              </button>
+            )}
+          </div>
+          {profitInfo && (
+            <div className="flex flex-col items-center">
+              <span className={`text-sm font-mono ${getRRColor(tradeSetup.rr || 0)}`}>{profitInfo.value}</span>
+              <span className="text-[7px] text-neutral-600">{profitInfo.unit}</span>
+            </div>
           )}
-        </button>
+        </div>
       )}
 
       <div className="flex items-center justify-between px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] text-[10px] font-mono w-full">
