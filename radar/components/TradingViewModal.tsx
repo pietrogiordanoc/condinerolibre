@@ -255,9 +255,9 @@ const TradingViewModal: React.FC<TradingViewModalProps> = ({ instrument, tradeSe
           <div className="flex items-center space-x-2">
             {isVisible && (
               <>
-                <div className="hidden sm:flex items-center gap-1.5 mr-1 text-[10px] text-amber-300/90" title="Minimiza para mantener este chart fijado arriba">
+                <div className="hidden sm:flex items-center gap-1.5 mr-1 text-xs text-amber-300" title="Minimiza para mantener este chart fijado arriba">
                   <span>Minimiza para mantenerlo fijado arriba</span>
-                  <Pin className="w-3.5 h-3.5" fill="currentColor" />
+                  <Pin className="w-4 h-4 text-amber-300" fill="currentColor" />
                   <ArrowRight className="w-3.5 h-3.5 text-neutral-500" />
                 </div>
                 <button 
