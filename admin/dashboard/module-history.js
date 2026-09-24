@@ -1,8 +1,15 @@
 // 🔴 SUSCRIPCIÓN EN TIEMPO REAL A EVENTOS DE AUDITORÍA
 let latestEventId = null;
+let historyRefreshTimer = null;
+let historyRequestVersion = 0;
 
-sp.channel('audit_changes').on('postgres_changes', { 
-    event: '*', schema: 'public', table: 'audit_events' 
+function scheduleGlobalHistoryRefresh() {
+  clearTimeout(historyRefreshTimer);
+  historyRefreshTimer = setTimeout(() => refreshGlobalHistory(), 150);
+}
+
+sp.channel('audit_changes').on('postgres_changes', {
+  event: 'INSERT', schema: 'public', table: 'audit_events'
 }, (payload) => {
     console.log('🔴 Evento nuevo en tiempo real:', payload.new?.event_type);
     
@@ -12,12 +19,12 @@ sp.channel('audit_changes').on('postgres_changes', {
     }
     
     refreshLogs();
-    // Si estamos en la pestaña de historial, refrescar también
+    if (typeof refreshLatestUserLogs === 'function') refreshLatestUserLogs();
     const historyView = document.getElementById('viewHistory');
     if (historyView && historyView.style.display !== 'none') {
-        refreshGlobalHistory();
+      scheduleGlobalHistoryRefresh();
     }
-}).subscribe();
+  }).subscribe((status) => console.log('[Historial] Realtime:', status));
 
 async function refreshLogs() {
   const { data } = await sp.from("audit_events").select("*").order("created_at", { ascending: false }).limit(10);
@@ -34,13 +41,28 @@ async function refreshLogs() {
 
 async function refreshGlobalHistory() {
   const limit = document.getElementById("historyLimit")?.value || 50;
+  const requestVersion = ++historyRequestVersion;
   
-  // Obtener eventos con información de usuarios
-  const { data: events } = await sp.from("audit_events").select("*").order("created_at", { ascending: false }).limit(parseInt(limit));
+  const [eventsResponse, profilesResponse, presenceResponse] = await Promise.all([
+    sp.from("audit_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .limit(parseInt(limit)),
+    sp.from("profiles").select("id, email, display_name, full_name, name, plan"),
+    sp.from("user_presence").select("*")
+  ]);
+
+  if (requestVersion !== historyRequestVersion) return;
+
+  const { data: events, error: eventsError } = eventsResponse;
+  if (eventsError) {
+    console.error('[Historial] Error cargando eventos:', eventsError);
+    return;
+  }
   
-  // Obtener información de todos los usuarios y su presencia
-  const { data: profiles } = await sp.from("profiles").select("id, email, display_name, full_name, name, plan");
-  const { data: presence } = await sp.from("user_presence").select("*");
+  const { data: profiles } = profilesResponse;
+  const { data: presence } = presenceResponse;
   
   const tbody = document.getElementById("globalHistoryTbody");
   
@@ -125,7 +147,7 @@ async function openHistory(uId, email) {
   // Obtener datos del usuario
   const { data: profile } = await sp.from("profiles").select("*").eq("id", uId).single();
   const { data: presence } = await sp.from("user_presence").select("*").eq("user_id", uId).single();
-  const { data: events } = await sp.from("audit_events").select("*").eq("metadata->>email", email).order("created_at", { ascending: false }).limit(50);
+  const { data: events } = await sp.from("audit_events").select("*").eq("metadata->>email", email).order("created_at", { ascending: false }).order("id", { ascending: false }).limit(50);
   
   // Mostrar info del usuario en el header
   if (profile) {
@@ -189,3 +211,10 @@ async function openHistory(uId, email) {
     </table>
   `;
 }
+
+setInterval(() => {
+  const historyView = document.getElementById('viewHistory');
+  if (historyView && historyView.style.display !== 'none' && !document.hidden) {
+    refreshGlobalHistory();
+  }
+}, 10000);

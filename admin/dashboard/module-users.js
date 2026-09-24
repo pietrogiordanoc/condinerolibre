@@ -1,5 +1,7 @@
 let PROFILES = [];
 let RADAR_USAGE_BY_ID = {};
+let LATEST_AUDIT_BY_USER = {};
+let LATEST_AUDIT_BY_EMAIL = {};
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
@@ -8,8 +10,37 @@ let sortOrder = 'asc';
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
 async function refreshUsers() {
-  const { data } = await sp.from("profiles").select("*, notas_admin").order("email", { ascending: true });
+  const [profilesResponse, auditResponse] = await Promise.all([
+    sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
+    sp.from("audit_events").select("id, user_id, created_at, metadata").order("created_at", { ascending: false }).order("id", { ascending: false }).limit(10000)
+  ]);
+  const { data } = profilesResponse;
+  updateLatestAuditMaps(auditResponse.data || []);
   PROFILES = data || [];
+  renderUsers();
+}
+
+function updateLatestAuditMaps(events) {
+  LATEST_AUDIT_BY_USER = {};
+  LATEST_AUDIT_BY_EMAIL = {};
+  events.forEach(event => {
+    const email = event.metadata?.email;
+    if (event.user_id && !LATEST_AUDIT_BY_USER[event.user_id]) LATEST_AUDIT_BY_USER[event.user_id] = event;
+    if (email && !LATEST_AUDIT_BY_EMAIL[email]) LATEST_AUDIT_BY_EMAIL[email] = event;
+  });
+}
+
+async function refreshLatestUserLogs() {
+  const { data, error } = await sp.from("audit_events")
+    .select("id, user_id, created_at, metadata")
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(10000);
+  if (error) {
+    console.error('[Usuarios] Error cargando último log:', error);
+    return;
+  }
+  updateLatestAuditMaps(data || []);
   renderUsers();
 }
 
@@ -68,6 +99,10 @@ function renderUsers() {
     const nextPlan = u.plan === 'paid' ? 'free' : 'paid';
     const notePreview = u.notas_admin ? (u.notas_admin.substring(0, 50) + (u.notas_admin.length > 50 ? '...' : '')) : 'Añadir nota...';
     const noteEscaped = escapeJS(u.notas_admin || '');
+    const latestAudit = LATEST_AUDIT_BY_USER[u.id] || LATEST_AUDIT_BY_EMAIL[u.email];
+    const latestAuditDate = latestAudit
+      ? `${new Date(latestAudit.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })} ${new Date(latestAudit.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
+      : 'Sin actividad registrada';
     
     const ipDup = u.pres.ip_address && ipCounts[u.pres.ip_address] > 1;
     const fpDup = u.pres.fingerprint && fpCounts[u.pres.fingerprint] > 1;
@@ -98,7 +133,7 @@ function renderUsers() {
     
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></td>
+        <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div><div style="margin-top:3px; color:#64748b; font-size:10px;">Último log: ${latestAuditDate}</div></td>
         <td data-label="Teléfono">${u.phone || "—"}</td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
