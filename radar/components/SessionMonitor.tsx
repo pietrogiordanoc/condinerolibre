@@ -155,17 +155,14 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
       advice.push("🔥 Momento óptimo para FOREX: Europa y Nueva York operan juntas (máxima liquidez y volatilidad)");
       advice.push("Las señales de EUR/USD, GBP/USD y USD/CHF son más confiables ahora");
     } else if (europeOpen && !americaOpen) {
-      advice.push("✅ Puedes operar índices europeos (DAX, CAC, FTSE) con confianza");
-      advice.push("⚠️ Evita índices americanos (SPX, IXIC, DJI) - Wall Street está cerrado");
+      advice.push("✅ Buena liquidez en pares EUR y GBP mientras Europa está activa");
       advice.push("FOREX: Liquidez moderada, espera apertura de NY (14:30 UTC) para mayor movimiento");
     } else if (americaOpen && !europeOpen) {
-      advice.push("✅ Wall Street operativo - Señales de SPX, IXIC, DJI y acciones USA son válidas");
-      advice.push("⚠️ Evita índices europeos - Mercado EU ya cerró");
+      advice.push("✅ Wall Street operativo - Señales de acciones USA son válidas");
       advice.push("FOREX: Buena liquidez con pares del dólar (USD/JPY, USD/CAD, etc)");
     } else if (asiaOpen && !europeOpen && !americaOpen) {
       advice.push("🌏 Solo sesión asiática activa - Liquidez limitada en FOREX");
       advice.push("⚠️ Evita operar FOREX ahora si eres principiante (spreads más altos, movimientos erráticos)");
-      advice.push("Índices asiáticos (N225, HSI) podrían tener señales, pero verifica horarios locales");
     }
 
     if (americaOpen && americaTimeLeft < 30) {
@@ -174,8 +171,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     }
 
     if (europeOpen && europeTimeLeft < 30) {
-      advice.push("⏰ Mercados europeos cierran en " + formatTime(europeTimeLeft) + " - Precaución con DAX/CAC/FTSE");
-      advice.push("Evita abrir trades nuevos en índices EU, cierra posiciones abiertas si puedes");
+      advice.push("⏰ Mercados europeos cierran en " + formatTime(europeTimeLeft) + " - Precaución con la liquidez en pares EUR/GBP");
     }
 
     if (!asiaOpen && !europeOpen && !americaOpen && (utcDay >= 1 && utcDay <= 5)) {
@@ -187,11 +183,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     if (utcDay === 0) {
       // Domingo
       advice.push("📅 Domingo - Solo FOREX desde las 22:00 UTC y CRYPTO 24/7");
-      advice.push("Los mercados de acciones e índices abren el lunes. Usa este tiempo para planificar");
+      advice.push("Los mercados de acciones abren el lunes. Usa este tiempo para planificar");
     } else if (utcDay === 6) {
       // Sábado
       advice.push("📅 Fin de semana - Mercados cerrados excepto CRYPTO");
-      advice.push("⚠️ Ignora señales de FOREX, ÍNDICES y ACCIONES hasta el domingo 22:00 UTC");
+      advice.push("⚠️ Ignora señales de FOREX y ACCIONES hasta el domingo 22:00 UTC");
       advice.push("Es buen momento para revisar tu historial y analizar trades de la semana");
     }
 

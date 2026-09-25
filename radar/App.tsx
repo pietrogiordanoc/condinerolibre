@@ -22,7 +22,7 @@ const pairBases = new Set(
 
 const App: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const [filter, setFilter] = useState<'all' | 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto'>('all');
+  const [filter, setFilter] = useState<'all' | 'forex' | 'stocks' | 'commodities' | 'crypto'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [volume, setVolume] = useState(() => parseFloat(localStorage.getItem('alertVolume') || '0.5'));
@@ -531,7 +531,7 @@ const App: React.FC = () => {
             
             {/* Filters */}
             <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
-              {(['all', 'forex', 'indices', 'stocks', 'commodities', 'crypto'] as const).map((f) => (
+              {(['all', 'forex', 'stocks', 'commodities', 'crypto'] as const).map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}

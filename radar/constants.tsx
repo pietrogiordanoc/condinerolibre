@@ -46,21 +46,6 @@ export const INSTRUMENT_NAMES: Record<string, string> = {
   "WTI": "Crude Oil WTI",
   "CC": "Cocoa Futures",
   "KC": "Coffee Futures",
-  "SPX": "S&P 500 Index",
-  "IXIC": "Nasdaq Composite",
-  "DJI": "Dow Jones Industrial",
-  "NDX": "Nasdaq 100",
-  "N225": "Nikkei 225",
-  "HSI": "Hang Seng Index",
-  "KS11": "KOSPI Index",
-  "FTSE": "FTSE 100",
-  "BVSP": "Bovespa Index",
-  "DAX": "DAX Index",
-  "CAC": "CAC 40",
-  "STOXX50E": "Euro Stoxx 50",
-  "SSEC": "Shanghai Composite",
-  "AXJO": "ASX 200",
-  "RUT": "Russell 2000",
   "NVDA": "NVIDIA Corp",
   "AAPL": "Apple Inc",
   "TSLA": "Tesla Inc",
@@ -84,9 +69,6 @@ export const INSTRUMENT_NAMES: Record<string, string> = {
 export const INSTRUMENTS_DATA: Record<string, string[]> = {
   "forex": [
     "EUR/USD", "USD/JPY", "GBP/USD", "AUD/USD", "USD/CAD", "USD/CHF", "NZD/USD", "EUR/GBP", "USD/CNH", "EUR/JPY", "GBP/JPY", "AUD/JPY", "EUR/CHF", "USD/MXN"
-  ],
-  "indices": [
-    "SPX", "IXIC", "DJI", "NDX", "N225", "HSI", "KS11", "FTSE", "BVSP", "DAX", "CAC", "STOXX50E", "SSEC", "AXJO", "RUT"
   ],
   "stocks": [
     "NVDA", "MSFT", "GOOGL", "AMZN", "TSM", "META", "AVGO", "LRCX", "KLAC", "NFLX", "V", "MU", "AAPL", "TSLA", "ORCL", "ASML", "AMD", "LLY"

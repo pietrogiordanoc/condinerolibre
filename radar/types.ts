@@ -13,7 +13,7 @@ export interface Instrument {
   id: string;
   name: string;
   symbol: string;
-  type: 'forex' | 'indices' | 'stocks' | 'commodities' | 'crypto';
+  type: 'forex' | 'stocks' | 'commodities' | 'crypto';
   marketStatus?: 'open' | 'closed';
   nextNews?: EconomicEvent | null;
 }

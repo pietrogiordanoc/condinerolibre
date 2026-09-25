@@ -46,10 +46,6 @@ const calculateProfitDisplay = (tp: number, entry: number, instrument: Instrumen
         return { value: pips.toFixed(1), unit: 'PIPS' };
     }
     
-    if (instrument.type === 'indices') {
-        return { value: profitDistance.toFixed(2), unit: 'PTS' };
-    }
-
     if (instrument.type === 'crypto' || instrument.type === 'stocks' || instrument.type === 'commodities') {
         if (profitDistance >= 10) return { value: profitDistance.toFixed(1), unit: 'PTS' };
         if (profitDistance >= 1) return { value: profitDistance.toFixed(2), unit: 'PTS' };

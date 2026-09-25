@@ -99,8 +99,8 @@ export const isMarketOpen = (type: string, symbol: string): boolean => {
     return day >= 1 && day <= 4;
   }
   
-  // Indices y Acciones (Aproximación US Market 14:30 - 21:00 UTC)
-  if (type === 'indices' || type === 'stocks') {
+  // Acciones (Aproximación US Market 14:30 - 21:00 UTC)
+  if (type === 'stocks') {
     if (day === 0 || day === 6) return false;
     const timeInMinutes = hour * 60 + minute;
     // 14:30 UTC = 870 min, 21:00 UTC = 1260 min
