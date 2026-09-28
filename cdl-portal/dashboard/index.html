@@ -2402,8 +2402,13 @@
 
     // --- INICIALIZACIÓN ---
     async function init() {
-      const { data: { session } } = await sp.auth.getSession();
+      let { data: { session } } = await sp.auth.getSession();
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      // Reintento breve: justo tras un login recién hecho, la sesión puede tardar unos ms en persistirse
+      if (!session) {
+        await new Promise(r => setTimeout(r, 500));
+        ({ data: { session } } = await sp.auth.getSession());
+      }
       if (!session) { window.location.href = isLocal ? "../login/" : "/login"; return; }
       
       // Verificar si el usuario está bloqueado
@@ -2420,6 +2425,23 @@
           </div>
         `;
         return;
+      }
+
+      // Registrar el acceso aunque la sesión haya sido recuperada automáticamente
+      try {
+        const { error: accessLogError } = await sp.from("audit_events").insert({
+          user_id: session.user.id,
+          event_type: "Acceso al portal",
+          metadata: {
+            email: session.user.email,
+            page: window.location.pathname,
+            timestamp: new Date().toISOString()
+          },
+          created_at: new Date().toISOString()
+        });
+        if (accessLogError) console.error("Error registrando acceso:", accessLogError);
+      } catch (accessError) {
+        console.error("Error registrando acceso:", accessError);
       }
       
       document.getElementById("useremail").textContent = session.user.email;

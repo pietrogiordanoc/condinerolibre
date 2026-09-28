@@ -198,8 +198,15 @@
           created_at: new Date().toISOString()
         });
       } catch(e) { console.log("Audit log:", e); }
-      
-      setTimeout(() => window.location.replace(destination), 300);
+
+      // Confirmar que la sesión ya quedó persistida antes de redirigir (evita rebote al login)
+      for (let i = 0; i < 5; i++) {
+        const { data: { session: confirmSession } } = await sb.auth.getSession();
+        if (confirmSession) break;
+        await new Promise(r => setTimeout(r, 150));
+      }
+
+      window.location.replace(destination);
     });
     
     // Inicializar iconos Lucide
