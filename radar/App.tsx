@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const [accountEmail, setAccountEmail] = useState('');
   const [accountPlan, setAccountPlan] = useState('free');
   const [hasVerifiedAccess, setHasVerifiedAccess] = useState(false);
+  const [affiliateBalanceCents, setAffiliateBalanceCents] = useState(0);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
@@ -187,6 +188,14 @@ const App: React.FC = () => {
         }
         const profile = profileResp.data;
         setAccountPlan((profile?.plan || 'free').toLowerCase());
+
+        const { data: affiliateLedger, error: affiliateLedgerError } = await supabase
+          .from('affiliate_ledger')
+          .select('amount_cents')
+          .eq('user_id', session.user.id);
+        if (!affiliateLedgerError) {
+          setAffiliateBalanceCents((affiliateLedger || []).reduce((total, entry) => total + entry.amount_cents, 0));
+        }
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
@@ -414,6 +423,12 @@ const App: React.FC = () => {
 
   // Detectar si hay algún chart visible para ajustar z-index del header
   const hasVisibleChart = Object.values(charts).some(status => status === 'visible');
+  const affiliatePayoutMinimumCents = 5000;
+  const affiliateBalance = `$${(affiliateBalanceCents / 100).toFixed(2)}`;
+  const affiliateAmountToPayout = Math.max(0, affiliatePayoutMinimumCents - affiliateBalanceCents);
+  const affiliateProgressLabel = affiliateAmountToPayout === 0
+    ? 'Listo para PayPal'
+    : `Faltan $${(affiliateAmountToPayout / 100).toFixed(2)} para PayPal`;
 
   return (
     <div className="min-h-screen pb-24 bg-[#050505] text-white selection:bg-emerald-500/30">
@@ -460,6 +475,20 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <a
+            href="/dashboard#profile"
+            target="_top"
+            title="Abre tu portal de afiliados para compartir tu enlace y retirar por PayPal"
+            className="hidden lg:flex min-w-[235px] items-center gap-3 rounded-lg border border-emerald-400/25 bg-emerald-400/[0.06] px-3 py-2 transition hover:border-emerald-400/55 hover:bg-emerald-400/[0.1]"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-emerald-400/30 bg-emerald-400/10 text-base font-black text-emerald-300">$</span>
+            <span className="min-w-0">
+              <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-300">Gana $15 por cada Pro</span>
+              <span className="block text-sm font-black leading-4 text-white">Saldo: {affiliateBalance}</span>
+              <span className="block truncate text-[10px] font-semibold text-neutral-400">{affiliateProgressLabel}</span>
+            </span>
+          </a>
 
           <div className={`flex flex-wrap items-center gap-2 md:space-x-6 md:gap-0 p-1 md:p-2 relative w-full md:w-auto ${showDebugFrames ? 'border-2 border-green-500' : ''}`}>
             {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-green-500 z-50">HEADER-3: CONTROLS</span>}
