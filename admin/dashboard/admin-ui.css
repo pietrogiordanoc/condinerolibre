@@ -1,7 +1,8 @@
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 20px; margin: 0; }
 .container { max-width: 1600px; margin: auto; }
 .header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 18px; border: 1px solid #333; }
-.btn-logout { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+.btn-logout { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .section-title { color: #18c36b; font-size: 1.1rem; margin: 18px 0 12px 0; display: flex; align-items: center; gap: 10px; }
 .table-container { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin-bottom: 18px; }
 table { width: 100%; border-collapse: collapse; }
@@ -10,19 +11,19 @@ th.sort-active { color: #18c36b; background: #2a2a2a; }
 td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; font-size: 13px; vertical-align: middle; }
 .name { color:#eaeaea; font-size:13px; font-weight: 600; }
 .email { color:#cfcfcf; font-size: 12px; }
-.badge { display:inline-flex; align-items:center; gap:6px; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+.badge { display:inline-flex; align-items:center; gap:6px; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
 .dot { width: 6px; height: 6px; border-radius: 50%; display:inline-block; }
 .online { background: rgba(24, 195, 107, 0.12); color: #18c36b; }
 .online .dot { background:#18c36b; }
 .offline { background: rgba(231, 76, 60, 0.14); color: #ff6b5f; }
 .offline .dot { background:#ff6b5f; }
 /* PLANES AMBAR/VERDE */
-.pill { display:inline-block; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+.pill { display:inline-block; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; cursor: pointer; }
 .pill-free { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: rgba(245, 158, 11, 0.4); }
 .pill-paid { background: rgba(24, 195, 107, 0.2); color: #18c36b; border-color: rgba(24, 195, 107, 0.4); }
 .btn-note-view { background: rgba(255,255,255,0.05); border: 1px solid #333; color: #bbb; padding: 8px 14px; border-radius: 8px; width: 100%; text-align: left; font-size: 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; transition: all 0.2s; }
 .btn-note-view:hover { background: rgba(24,195,107,0.1); border-color: #18c36b; color: #18c36b; }
-.btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 10px; text-transform: uppercase; }
+.btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
 .btn-primary { background:#18c36b; color:#0b0b0b; }
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index: 9999; padding: 20px; overflow-y: auto; }
 .modal { width: min(1400px, 98vw); max-height: 95vh; background:#121212; border-radius: 20px; border: 1px solid #333; display: flex; flex-direction: column; overflow: hidden; }
@@ -33,7 +34,7 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .filters { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px; margin-bottom: 14px; display: flex; gap: 10px; }
 .filters input, .filters select { background: #0f0f0f; border: 1px solid #333; color: #e0e0e0; padding: 10px; border-radius: 10px; font-size: 13px; }
 /* TABS */
-.tab-btn { background: transparent; border: none; border-bottom: 3px solid transparent; color: #888; padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 700; transition: all 0.2s; }
+.tab-btn { background: transparent; border: none; border-bottom: 3px solid transparent; color: #888; padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
 .tab-btn:hover { color: #e0e0e0; }
 .tab-btn.active { color: #18c36b; border-bottom-color: #18c36b; }
 
@@ -43,7 +44,7 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
   100% { background: transparent; }
 }
 tr.new-event { animation: new-event-flash 1.5s ease-out; }
-.live-indicator { display: inline-flex; align-items: center; gap: 6px; background: rgba(24, 195, 107, 0.15); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; color: #18c36b; }
+.live-indicator { display: inline-flex; align-items: center; gap: 6px; background: rgba(24, 195, 107, 0.15); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; color: #18c36b; }
 .live-indicator .pulse-dot { width: 6px; height: 6px; background: #18c36b; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }

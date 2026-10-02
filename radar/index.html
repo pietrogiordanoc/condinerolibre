@@ -7,8 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #050505;
@@ -18,6 +23,17 @@
         }
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
+        }
+        /* Tope de peso sobre fondo oscuro; mayor especificidad que las utilidades de Tailwind CDN */
+        body .font-black,
+        body .font-extrabold,
+        body .font-bold {
+            font-weight: 600;
+        }
+        body .font-black[class*="text-[7px]"], body .font-black[class*="text-[8px]"], body .font-black[class*="text-[9px]"], body .font-black[class*="text-[10px]"], body .font-black[class*="text-[11px]"], body .font-black[class*="text-xs"],
+        body .font-extrabold[class*="text-[9px]"], body .font-extrabold[class*="text-[10px]"], body .font-extrabold[class*="text-xs"],
+        body .font-bold[class*="text-[7px]"], body .font-bold[class*="text-[8px]"], body .font-bold[class*="text-[9px]"], body .font-bold[class*="text-[10px]"], body .font-bold[class*="text-[11px]"], body .font-bold[class*="text-xs"] {
+            font-weight: 500;
         }
         ::-webkit-scrollbar {
             width: 6px;

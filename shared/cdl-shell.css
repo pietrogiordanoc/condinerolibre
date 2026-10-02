@@ -1,5 +1,8 @@
 body.cdl-shell-enabled {
   padding-top: 82px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 #cdl-shell-header .nav-menu {
@@ -61,7 +64,7 @@ body.cdl-shell-enabled {
   color: #000 !important;
   border-radius: 8px;
   padding: 9px 14px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 #cdl-shell-footer {
