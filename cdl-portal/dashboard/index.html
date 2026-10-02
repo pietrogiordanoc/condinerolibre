@@ -124,7 +124,14 @@
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      font: inherit;
     }
+    button.sidebar-account:hover { border-color: rgba(42,255,138,.4); background: rgba(42,255,138,.08); }
+    button.sidebar-account:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     .sidebar-account h4 {
       margin: 0 0 10px;
       font-size: 12px;
@@ -1458,7 +1465,7 @@
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
     </nav>
-    <div class="sidebar-account">
+    <button id="openProfileCard" class="sidebar-account" type="button" aria-label="Abrir mi cuenta">
       <h4>Mi Cuenta</h4>
       <div class="sidebar-account-grid">
         <div><span>Nombre:</span><span id="userNameDisplay">...</span></div>
@@ -1466,7 +1473,7 @@
         <div><span>Email:</span><span id="emailDisplay">...</span></div>
         <div><span>Miembro:</span><span id="memberSince">...</span></div>
       </div>
-    </div>
+    </button>
     <div class="profile-card">
       <div class="avatar" id="avatar">?</div>
       <div class="profile-info">
@@ -2760,9 +2767,10 @@
     document.getElementById("navAprende").onclick = () => navigateTo("#aprende");
     document.getElementById("navCourses").onclick = () => navigateTo("#courses");
     document.getElementById("navProfile").onclick = () => navigateTo("#profile");
+    document.getElementById("openProfileCard").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
-    document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
+    document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
 
