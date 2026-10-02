@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" href="/cdl-portal/favicon.ico" type="image/x-icon" />
-  <title>Dashboard · CDL Portal</title>
+  <title>CDLRadar · CDL Portal</title>
   <meta name="color-scheme" content="dark" />
   
   <!-- Lucide Icons -->
@@ -186,15 +186,6 @@
     }
     .main-brand-logo { display: block; width: 136px; height: 32px; object-fit: contain; object-position: left center; }
 
-    #viewDashboard {
-      display:none;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 18px;
-      width: 100%;
-      max-width: 1440px;
-      margin: 0 auto;
-      align-items: stretch;
-    }
     body:not([data-view="radar"]) #viewRadar { display: none !important; }
 
     .route-card { grid-area: route; }
@@ -1239,12 +1230,6 @@
         overflow-x: hidden;
       }
 
-      #viewDashboard { grid-template-columns: 1fr !important; gap: 16px !important; }
-
-      #viewDashboard > .card[style*="grid-row"] {
-        grid-row: auto !important;
-      }
-
       .route-wrap {
         grid-template-columns: 1fr;
       }
@@ -1485,7 +1470,8 @@
 
 <body>
   <script>
-    document.body.dataset.view = window.location.hash.replace('#', '') || 'radar';
+    const initialPortalView = window.location.hash.replace('#', '') || 'radar';
+    document.body.dataset.view = initialPortalView === 'dashboard' ? 'radar' : initialPortalView;
   </script>
   <div class="browser-chrome">
     <div class="chrome-dots"><span></span><span></span><span></span></div>
@@ -1505,7 +1491,6 @@
       <div class="nav-label">Menú</div>
       <a class="nav-item" href="https://www.condinerolibre.com/" target="_blank" rel="noopener noreferrer"><i data-lucide="house"></i> Ir al Home</a>
       <a id="navRadar" class="nav-item active"><i data-lucide="activity"></i> CDL Radar <span class="status-dot"></span></a>
-      <a id="navDashboard" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
       <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
       <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
       <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Aprende</a>
@@ -1537,44 +1522,6 @@
     <div class="main-head">
       <img class="main-brand-logo" src="../../images/logocdl.avif" alt="ConDineroLibre">
     </div>
-
-    <!-- VISTA DASHBOARD -->
-    <section id="viewDashboard">
-      <div class="card course-inline-card">
-        <div class="course-inline-shell">
-          <div class="course-player-area">
-            <div class="course-player-box">
-              <iframe
-                id="courseIframe"
-                src=""
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-              </iframe>
-              <div id="courseThumbnail" style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; background:#000;">
-                <img src="/images/diapositiva-basico.jpg" style="width:100%; height:100%; object-fit:contain;">
-                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:80px; height:80px; background:rgba(255,0,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                  <div style="width:0; height:0; border-left:25px solid white; border-top:15px solid transparent; border-bottom:15px solid transparent; margin-left:8px;"></div>
-                </div>
-              </div>
-            </div>
-            <div class="course-now">
-              <h3 id="courseNowTitle">Lección 01: El Instrumento</h3>
-              <p id="courseNowMeta">Curso Trading de Precisión · Con Dinero Libre</p>
-              <div class="course-controls">
-                <button id="coursePrevBtn" onclick="playPrevLesson()">Anterior</button>
-                <button id="courseNextBtn" class="primary" onclick="playNextLesson()">Siguiente</button>
-              </div>
-            </div>
-          </div>
-
-          <aside class="course-playlist-area">
-            <div class="course-playlist-head">Curso Trading de Precisión · 10 Lecciones</div>
-            <div id="coursePlaylist" class="course-playlist"></div>
-          </aside>
-        </div>
-      </div>
-
-    </section>
 
     <!-- VISTA MI CUENTA -->
     <section id="viewProfile">
@@ -2509,7 +2456,7 @@
         user_id: session.user.id, 
         online: true, 
         last_seen: new Date().toISOString(), 
-        page: window.location.hash || "#dashboard",
+        page: window.location.hash || "#radar",
         ciudad: location.ciudad,
         pais: location.pais,
         fingerprint: fingerprint,
@@ -2732,7 +2679,7 @@
     }
 
     function navigateTo(hash) {
-      const target = hash.replace('#', '') || 'dashboard';
+      const target = hash.replace('#', '') || 'radar';
 
       // En móvil cerramos primero siempre, incluso si se toca la vista actual.
       if (isMobileView()) closeMobileMenu();
@@ -2747,6 +2694,10 @@
 
     // --- NAVEGACIÓN ---
     async function showView(which) {
+      if (which === 'dashboard') {
+        history.replaceState(null, '', `${location.pathname}${location.search}#radar`);
+        which = 'radar';
+      }
       // Antes de mostrar Radar, exigir perfil completo (nombre + teléfono)
       if (which === "radar") {
         const { data: { session } } = await sp.auth.getSession();
@@ -2755,14 +2706,13 @@
         const hasPhone = !!(profile?.phone && profile.phone.trim());
         if (!hasName || !hasPhone) {
           openCompleteProfileModal(profile);
-          if (location.hash === "#radar") { location.hash = "#dashboard"; }
-          else { showView("dashboard"); }
+          if (location.hash === "#radar") { location.hash = "#profile"; }
+          else { showView("profile"); }
           return;
         }
       }
 
       document.body.setAttribute('data-view', which);
-      document.getElementById("viewDashboard").style.display = (which === "dashboard") ? "grid" : "none";
       document.getElementById("viewAccounts").style.display = (which === "accounts") ? "flex" : "none";
       document.getElementById("viewAprende").style.display = (which === "aprende") ? "flex" : "none";
       document.getElementById("viewCourses").style.display = (which === "courses") ? "flex" : "none";
@@ -2774,7 +2724,6 @@
 
       // Actualizar estado activo de los botones de navegación
       document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
-      if (which === "dashboard") document.getElementById("navDashboard").classList.add("active");
       if (which === "accounts") document.getElementById("navAccounts").classList.add("active");
       if (which === "aprende") document.getElementById("navAprende").classList.add("active");
       if (which === "courses") document.getElementById("navCourses").classList.add("active");
@@ -2990,7 +2939,6 @@
       window.location.href = isLocal ? "../login/" : "/login"; // CAMBIO QUIRÚRGICO: Redirección real
     };
 
-    document.getElementById("navDashboard").onclick = () => navigateTo("#dashboard");
     document.getElementById("navAccounts").onclick = () => navigateTo("#accounts");
     document.getElementById("navDownload").onclick = () => navigateTo("#download");
     document.getElementById("navAprende").onclick = () => navigateTo("#aprende");
