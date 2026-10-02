@@ -406,8 +406,13 @@
     }
     .profile-shell {
       display: grid;
-      grid-template-columns: minmax(250px, .78fr) minmax(0, 1.22fr);
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+      grid-template-areas:
+        "details summary"
+        "details access"
+        "affiliate affiliate";
       gap: 18px;
+      align-items: start;
     }
     .profile-summary,
     .profile-form-card,
@@ -417,20 +422,20 @@
       background: linear-gradient(160deg, rgba(25,28,32,.94), rgba(12,15,18,.96));
       box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 18px 34px rgba(0,0,0,.2);
     }
-    .profile-summary { padding: 28px; text-align: center; }
-    .profile-avatar-wrap { position: relative; width: 112px; height: 112px; margin: 0 auto 18px; }
-    .profile-avatar-large { width: 112px; height: 112px; border-radius: 50%; border: 2px solid rgba(42,255,138,.65); background: rgba(42,255,138,.12); color: var(--green); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 38px; font-weight: 800; box-shadow: 0 0 0 6px rgba(42,255,138,.06), 0 0 28px rgba(42,255,138,.18); }
+    .profile-summary { grid-area: summary; padding: 20px; text-align: center; }
+    .profile-avatar-wrap { position: relative; width: 82px; height: 82px; margin: 0 auto 13px; }
+    .profile-avatar-large { width: 82px; height: 82px; border-radius: 50%; border: 2px solid rgba(42,255,138,.65); background: rgba(42,255,138,.12); color: var(--green); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 29px; font-weight: 800; box-shadow: 0 0 0 5px rgba(42,255,138,.06), 0 0 24px rgba(42,255,138,.18); }
     .profile-avatar-large img { width: 100%; height: 100%; object-fit: cover; }
     .avatar-upload-label { position: absolute; right: -5px; bottom: -4px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #12171b; color: #fff; cursor: pointer; }
     .avatar-upload-label:hover { background: rgba(42,255,138,.18); border-color: var(--green); color: var(--green); }
     .avatar-upload-label input { display: none; }
     .avatar-remove-btn { position: absolute; left: -5px; bottom: -4px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #12171b; color: #fff; cursor: pointer; }
     .avatar-remove-btn:hover { background: rgba(239,68,68,.18); border-color: #f87171; color: #fca5a5; }
-    .profile-summary h2 { margin: 0; font-size: 24px; color: #fff; }
-    .profile-summary p { margin: 7px 0 18px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+    .profile-summary h2 { margin: 0; font-size: 20px; color: #fff; }
+    .profile-summary p { margin: 6px 0 13px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
     .plan-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid rgba(42,255,138,.35); border-radius: 999px; background: rgba(42,255,138,.1); color: #a9ffd0; font-size: 12px; font-weight: 700; }
     .plan-chip.free { border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.1); color: #fde68a; }
-    .profile-form-card { padding: 26px; }
+    .profile-form-card { grid-area: details; padding: 26px; }
     .profile-section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
     .profile-section-head h2 { margin: 0; color: #fff; font-size: 22px; }
     .profile-section-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
@@ -446,18 +451,19 @@
     .profile-save-btn { border: 0; border-radius: 9px; padding: 11px 16px; background: var(--green); color: #041108; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
     .profile-save-btn:hover { background: #67ffad; }
     .profile-save-btn:disabled { opacity: .55; cursor: wait; }
-    .profile-access-card { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 20px 24px; }
+    .profile-access-card { grid-area: access; display: block; padding: 18px 20px; }
     .profile-access-card h3 { margin: 0; font-size: 16px; color: #fff; }
     .profile-access-card p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
-    .profile-access-actions { display: flex; gap: 10px; }
+    .profile-access-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .affiliate-panel { grid-column: 1 / -1; border: 1px solid rgba(42,255,138,.25); border-radius: 16px; background: linear-gradient(145deg, rgba(14,33,25,.95), rgba(11,15,18,.98)); overflow: hidden; }
+    .affiliate-panel { grid-area: affiliate; border: 1px solid rgba(42,255,138,.25); border-radius: 16px; background: linear-gradient(145deg, rgba(14,33,25,.95), rgba(11,15,18,.98)); overflow: hidden; }
     .affiliate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid rgba(255,255,255,.1); }
     .affiliate-head h2 { margin: 0; color: #fff; font-size: 21px; }
-    .affiliate-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
-    .affiliate-bonus { flex: 0 0 auto; border: 1px solid rgba(251,191,36,.35); border-radius: 9px; padding: 8px 10px; color: #fde68a; background: rgba(251,191,36,.08); font-size: 12px; font-weight: 800; }
+    .affiliate-head p { margin: 7px 0 0; color: #d7e3dc; font-size: 15px; font-weight: 650; line-height: 1.4; }
+    .affiliate-head .metal-money { color: #ffe894; font-weight: 900; text-shadow: 0 1px 0 #856900, 0 0 14px rgba(251,191,36,.28); }
+    .affiliate-bonus { flex: 0 0 auto; border: 1px solid rgba(251,191,36,.52); border-radius: 10px; padding: 10px 13px; color: #fff0aa; background: linear-gradient(135deg, rgba(251,191,36,.2), rgba(116,81,0,.22)); font-size: 16px; font-weight: 900; text-shadow: 0 1px 0 #806500; box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 0 16px rgba(251,191,36,.1); }
     .affiliate-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); gap: 18px; padding: 22px 24px; }
     .affiliate-share, .affiliate-balance, .affiliate-referrals { border: 1px solid rgba(255,255,255,.1); border-radius: 12px; background: rgba(255,255,255,.025); padding: 18px; }
     .affiliate-share h3, .affiliate-balance h3, .affiliate-referrals h3 { margin: 0; color: #fff; font-size: 15px; }
@@ -469,9 +475,17 @@
     .affiliate-btn:disabled { opacity: .5; cursor: not-allowed; }
     .affiliate-share-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
     .affiliate-share-actions .affiliate-btn { min-height: 34px; }
+    .affiliate-message-preview { margin: 14px 0 0; padding: 11px 12px; border-left: 3px solid rgba(42,255,138,.72); border-radius: 0 8px 8px 0; background: rgba(0,0,0,.19); color: #dce8e1; font-size: 12px; line-height: 1.5; }
+    .affiliate-social-cues { display: flex; align-items: center; gap: 8px; margin: 13px 0 0; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .affiliate-social-icons { display: flex; align-items: center; gap: 7px; }
+    .affiliate-social-icon { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid rgba(255,255,255,.12); border-radius: 7px; background: rgba(255,255,255,.045); }
+    .affiliate-social-icon img { width: 14px; height: 14px; object-fit: contain; }
     .affiliate-code { display: inline-flex; margin-top: 14px; color: #9fffc9; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 700; }
-    .affiliate-balance-amount { margin: 12px 0 4px; color: #fff; font-size: 36px; font-weight: 800; line-height: 1; }
+    .affiliate-balance-amount { display: flex; align-items: center; gap: 9px; margin: 12px 0 4px; color: #fff; font-size: 36px; font-weight: 800; line-height: 1; }
+    .affiliate-cash-sign { color: #ffe894; font-family: Georgia, serif; font-size: 56px; font-weight: 700; line-height: .7; text-shadow: 0 2px 0 #806500, 0 0 20px rgba(251,191,36,.32); }
     .affiliate-balance-label { color: #9fffc9; font-size: 12px; font-weight: 700; }
+    .affiliate-paypal-mark { display: inline-flex; align-items: center; gap: 6px; margin-top: 9px; color: #8ec7ff; font-size: 11px; font-weight: 800; }
+    .affiliate-paypal-mark img { width: 16px; height: 16px; object-fit: contain; }
     .affiliate-progress { height: 7px; margin: 16px 0 8px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
     .affiliate-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22e67a, #d8ff58); }
     .affiliate-payout { display: grid; gap: 8px; margin-top: 16px; }
@@ -1267,9 +1281,7 @@
         max-width: 100%;
       }
 
-      .profile-shell { grid-template-columns: 1fr; }
-      .profile-access-card { grid-column: auto; }
-      .affiliate-panel { grid-column: auto; }
+      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "details" "summary" "access" "affiliate"; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1435,6 +1447,7 @@
       .affiliate-referrals { margin: 0 18px 18px; }
       .affiliate-link-row, .affiliate-payout-row { grid-template-columns: 1fr; }
       .affiliate-link-row .affiliate-btn, .affiliate-payout-row .affiliate-btn { min-height: 38px; }
+      .affiliate-social-cues { align-items: flex-start; flex-direction: column; }
       
       #viewAprende {
         flex-direction: column !important;
@@ -1618,7 +1631,7 @@
           <div class="affiliate-head">
             <div>
               <h2 id="affiliate-title">Portal de afiliados</h2>
-              <p>Comparte tu enlace. Por cada referido que confirmemos como Pro, ganas $15.</p>
+              <p>Comparte tu enlace. Por cada referido que confirmemos como Pro, ganas <span class="metal-money">$15</span>.</p>
             </div>
             <span class="affiliate-bonus">$15 por conversión</span>
           </div>
@@ -1631,15 +1644,27 @@
                 <button id="affiliateCopyLink" class="affiliate-btn" type="button">Copiar</button>
               </div>
               <span id="affiliateCode" class="affiliate-code">Código: ...</span>
+              <p id="affiliateMessagePreview" class="affiliate-message-preview">Preparando tu mensaje para compartir...</p>
               <div class="affiliate-share-actions">
                 <button id="affiliateCopyMessage" class="affiliate-btn secondary" type="button">Copiar mensaje</button>
                 <button id="affiliateShare" class="affiliate-btn secondary" type="button">Compartir</button>
               </div>
+              <div class="affiliate-social-cues" aria-label="Puedes compartir en WhatsApp, Instagram, Facebook, X o TikTok">
+                <span>Comparte donde ya está tu comunidad</span>
+                <div class="affiliate-social-icons" aria-hidden="true">
+                  <span class="affiliate-social-icon"><img src="https://cdn.simpleicons.org/whatsapp/25D366" alt=""></span>
+                  <span class="affiliate-social-icon"><img src="https://cdn.simpleicons.org/instagram/E4405F" alt=""></span>
+                  <span class="affiliate-social-icon"><img src="https://cdn.simpleicons.org/facebook/1877F2" alt=""></span>
+                  <span class="affiliate-social-icon"><img src="https://cdn.simpleicons.org/x/ffffff" alt=""></span>
+                  <span class="affiliate-social-icon"><img src="https://cdn.simpleicons.org/tiktok/ffffff" alt=""></span>
+                </div>
+              </div>
             </section>
             <section class="affiliate-balance">
               <h3>Fondos disponibles</h3>
-              <div id="affiliateBalance" class="affiliate-balance-amount">$0.00</div>
+              <div class="affiliate-balance-amount"><span class="affiliate-cash-sign" aria-hidden="true">$</span><span id="affiliateBalance">USD 0.00</span></div>
               <span id="affiliateEligibility" class="affiliate-balance-label">Disponible para retiro desde $50.00</span>
+              <span class="affiliate-paypal-mark"><img src="https://cdn.simpleicons.org/paypal/0070BA" alt="">Pago líquido vía PayPal</span>
               <div class="affiliate-progress"><span id="affiliateProgress" style="width:0%"></span></div>
               <p id="affiliateTotalEarned">Ganancias históricas: $0.00</p>
               <div class="affiliate-payout">
@@ -2287,6 +2312,7 @@
         affiliatePortalState = { link, message };
         document.getElementById('affiliateLink').value = link;
         document.getElementById('affiliateCode').textContent = `Código: ${code}`;
+        document.getElementById('affiliateMessagePreview').textContent = message;
         document.getElementById('affiliateBalance').textContent = formatAffiliateMoney(availableCents);
         document.getElementById('affiliateProgress').style.width = `${progress}%`;
         document.getElementById('affiliateTotalEarned').textContent = `Ganancias históricas: ${formatAffiliateMoney(totalEarnedCents)}`;
