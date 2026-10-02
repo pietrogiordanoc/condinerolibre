@@ -424,6 +424,8 @@
     .avatar-upload-label { position: absolute; right: -5px; bottom: -4px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #12171b; color: #fff; cursor: pointer; }
     .avatar-upload-label:hover { background: rgba(42,255,138,.18); border-color: var(--green); color: var(--green); }
     .avatar-upload-label input { display: none; }
+    .avatar-remove-btn { position: absolute; left: -5px; bottom: -4px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #12171b; color: #fff; cursor: pointer; }
+    .avatar-remove-btn:hover { background: rgba(239,68,68,.18); border-color: #f87171; color: #fca5a5; }
     .profile-summary h2 { margin: 0; font-size: 24px; color: #fff; }
     .profile-summary p { margin: 7px 0 18px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
     .plan-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid rgba(42,255,138,.35); border-radius: 999px; background: rgba(42,255,138,.1); color: #a9ffd0; font-size: 12px; font-weight: 700; }
@@ -1535,6 +1537,7 @@
         <aside class="profile-summary">
           <div class="profile-avatar-wrap">
             <div id="profileAvatarLarge" class="profile-avatar-large">?</div>
+            <button id="profileAvatarRemove" class="avatar-remove-btn" type="button" title="Eliminar foto de perfil" aria-label="Eliminar foto de perfil" hidden><i data-lucide="trash-2"></i></button>
             <label class="avatar-upload-label" for="profileAvatarInput" title="Cambiar foto de perfil"><i data-lucide="camera"></i><input id="profileAvatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
           </div>
           <h2 id="profileHeadingName">Tu cuenta</h2>
@@ -2113,6 +2116,7 @@
       const avatarTargets = [document.getElementById('avatar'), document.getElementById('profileAvatarLarge')];
 
       avatarTargets.forEach((target) => renderAvatar(target, name, avatarUrl));
+      document.getElementById('profileAvatarRemove').hidden = !avatarUrl;
       document.getElementById('profileHeadingName').textContent = name;
       document.getElementById('profileHeadingEmail').textContent = session.user.email;
       document.getElementById('profileFullName').value = profile?.full_name || '';
@@ -2190,12 +2194,37 @@
         const name = document.getElementById('profileFullName').value || user.email.split('@')[0];
         renderAvatar(document.getElementById('avatar'), name, avatarUrl);
         renderAvatar(document.getElementById('profileAvatarLarge'), name, avatarUrl);
+        document.getElementById('profileAvatarRemove').hidden = false;
         status.textContent = 'Foto de perfil actualizada.';
       } catch (error) {
         status.textContent = 'No se pudo actualizar la foto. Inténtalo de nuevo.';
         console.error(error);
       } finally {
         event.target.value = '';
+      }
+    }
+
+    async function removeProfileAvatar() {
+      const removeButton = document.getElementById('profileAvatarRemove');
+      const status = document.getElementById('profileSaveStatus');
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) return;
+
+      removeButton.disabled = true;
+      status.textContent = 'Eliminando foto...';
+      try {
+        const { error } = await sp.auth.updateUser({ data: { avatar_url: null } });
+        if (error) throw error;
+        const name = document.getElementById('profileFullName').value || session.user.email.split('@')[0];
+        renderAvatar(document.getElementById('avatar'), name, '');
+        renderAvatar(document.getElementById('profileAvatarLarge'), name, '');
+        removeButton.hidden = true;
+        status.textContent = 'Foto de perfil eliminada.';
+      } catch (error) {
+        status.textContent = 'No se pudo eliminar la foto. Inténtalo de nuevo.';
+        console.error(error);
+      } finally {
+        removeButton.disabled = false;
       }
     }
 
@@ -2774,6 +2803,7 @@
     document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
+    document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
 
     // --- APRENDE IFRAME LOGIC ---
     const aprendeLinks = document.querySelectorAll('.aprende-link');
