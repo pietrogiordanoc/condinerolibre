@@ -15,7 +15,7 @@
       --bg:#121212; --panel:#1a1a1a; --border:rgba(255,255,255,.12); --text:rgba(255,255,255,.94);
       --muted:rgba(255,255,255,.62); --muted2:rgba(255,255,255,.42);
       --green:#2aff8a; --green2:#18c36b; --radius:24px;
-      --chrome-h: 44px;
+      --chrome-h: 0px;
     }
     * { box-sizing:border-box; }
     html, body { height:100%; margin:0; font-family: ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--text); }
@@ -32,43 +32,6 @@
         radial-gradient(circle at 88% 82%, rgba(42,255,138,.06), transparent 28%);
       background-size: 42px 42px, 42px 42px, auto, auto;
       z-index: 0;
-    }
-
-    .browser-chrome {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--chrome-h);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      background: rgba(15, 15, 15, .93);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      z-index: 9500;
-    }
-
-    .chrome-dots { display: flex; align-items: center; gap: 6px; }
-    .chrome-dots span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.26);
-    }
-    .chrome-address {
-      width: min(62vw, 720px);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255,255,255,.76);
-      font-size: 12px;
-      letter-spacing: .02em;
     }
 
     /* SIDEBAR FIJA */
@@ -1204,15 +1167,6 @@
         padding: 0 6px 18px;
       }
 
-      .browser-chrome {
-        padding: 0 10px;
-      }
-
-      .chrome-address {
-        width: min(72vw, 560px);
-        font-size: 11px;
-      }
-
       main {
         width: 100%;
         max-width: 100%;
@@ -1475,12 +1429,6 @@
     const initialPortalView = window.location.hash.replace('#', '') || 'radar';
     document.body.dataset.view = initialPortalView === 'dashboard' ? 'radar' : initialPortalView;
   </script>
-  <div class="browser-chrome">
-    <div class="chrome-dots"><span></span><span></span><span></span></div>
-    <div class="chrome-address">portal.condinerolibre.com/dashboard</div>
-    <div style="width:46px;"></div>
-  </div>
-
   <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Abrir menú">☰</button>
   <div id="mobileMenuBackdrop" class="mobile-menu-backdrop"></div>
 

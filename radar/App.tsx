@@ -481,17 +481,17 @@ const App: React.FC = () => {
             href="/dashboard#profile"
             target="_top"
             title="Abre tu portal de afiliados para compartir tu enlace y retirar por PayPal"
-            className="hidden lg:flex min-w-[365px] items-center gap-3 rounded-lg border border-emerald-400/35 bg-emerald-400/[0.07] px-3 py-2.5 shadow-[0_0_24px_rgba(16,185,129,0.08)] transition hover:border-emerald-400/65 hover:bg-emerald-400/[0.12]"
+            className="hidden lg:flex min-w-[445px] items-center gap-4 rounded-lg border border-emerald-400/35 bg-emerald-400/[0.07] px-4 py-3 shadow-[0_0_24px_rgba(16,185,129,0.08)] transition hover:border-emerald-400/65 hover:bg-emerald-400/[0.12]"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-emerald-400/35 bg-emerald-400/10 text-xl font-black text-emerald-300">$</span>
-            <span className="min-w-[112px]">
-              <span className="block text-[8px] font-black uppercase tracking-[0.12em] text-emerald-300">Balance a retirar</span>
-              <span className="block text-xl font-black leading-5 text-white">{affiliateBalance}</span>
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-emerald-400/35 bg-emerald-400/10 text-2xl font-black text-emerald-300">$</span>
+            <span className="min-w-[132px]">
+              <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-emerald-300">Balance a retirar</span>
+              <span className="block text-2xl font-black leading-6 text-white">{affiliateBalance}</span>
             </span>
-            <span className="min-w-0 flex-1 border-l border-emerald-400/20 pl-3">
+            <span className="min-w-0 flex-1 border-l border-emerald-400/20 pl-4">
               <span className="block text-[9px] font-black uppercase tracking-wide text-emerald-200">Gana $15 por cada Pro confirmado</span>
-              <span className="mt-0.5 block truncate text-[10px] font-semibold text-neutral-400">{affiliateProgressLabel}</span>
-              <span className="mt-1.5 block h-1 overflow-hidden rounded-full bg-white/10"><span className="block h-full rounded-full bg-emerald-400" style={{ width: `${affiliateProgressPercent}%` }} /></span>
+              <span className="mt-0.5 block truncate text-[11px] font-semibold text-neutral-300">{affiliateProgressLabel}</span>
+              <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-white/10"><span className="block h-full rounded-full bg-emerald-400" style={{ width: `${affiliateProgressPercent}%` }} /></span>
             </span>
             <span className="text-lg font-bold text-emerald-300" aria-hidden="true">→</span>
           </a>
