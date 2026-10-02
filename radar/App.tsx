@@ -6,6 +6,7 @@ import InstrumentRow, { GlobalAnalysisCache } from './components/InstrumentRow';
 import TimerDonut from './components/TimerDonut';
 import TradingViewModal from './components/TradingViewModal';
 import TendencialModal from './components/TendencialModal';
+import AccountPanel from './components/AccountPanel';
 import Radar from './components/Radar';
 import SessionMonitor from './components/SessionMonitor';
 import { audioService } from './utils/audioService';
@@ -36,6 +37,10 @@ const App: React.FC = () => {
   const [experimentalSlEnabled, setExperimentalSlEnabled] = useState(false);
   const [metricInfo, setMetricInfo] = useState<'history' | 'sl' | null>(null);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [isAccountPanelOpen, setIsAccountPanelOpen] = useState(false);
+  const [accountEmail, setAccountEmail] = useState('');
+  const [accountPlan, setAccountPlan] = useState('free');
+  const [hasVerifiedAccess, setHasVerifiedAccess] = useState(false);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
@@ -164,22 +169,24 @@ const App: React.FC = () => {
           return;
         }
 
+        setAccountEmail(session.user.email || '');
         // Perfil incompleto (falta nombre o teléfono) → completar antes de usar el Radar
         setUserId(session.user.id);
         let profileResp = await supabase
           .from('profiles')
-          .select('full_name, phone, experimental_sl_enabled')
+          .select('full_name, phone, plan, experimental_sl_enabled')
           .eq('id', session.user.id)
           .maybeSingle();
         if (profileResp.error) {
           // Compatibilidad de esquema: algunos entornos usan profiles.user_id en vez de profiles.id
           profileResp = await supabase
             .from('profiles')
-            .select('full_name, phone, experimental_sl_enabled')
+            .select('full_name, phone, plan, experimental_sl_enabled')
             .eq('user_id', session.user.id)
             .maybeSingle();
         }
         const profile = profileResp.data;
+        setAccountPlan((profile?.plan || 'free').toLowerCase());
 
         const hasName = !!(profile?.full_name && profile.full_name.trim());
         const hasPhone = !!(profile?.phone && profile.phone.trim());
@@ -201,6 +208,7 @@ const App: React.FC = () => {
         });
         
         const data = await res.json();
+        setHasVerifiedAccess(Boolean(data.allowed));
         
         // Sin acceso → redirigir a upgrade
         if (!data.allowed) {
@@ -510,6 +518,9 @@ const App: React.FC = () => {
               onClick={handleRefreshComplete}
             />
             </div>
+            <button onClick={() => setIsAccountPanelOpen(true)} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-emerald-200">
+              Mi plan
+            </button>
           </div>
         </div>
         
@@ -660,6 +671,14 @@ const App: React.FC = () => {
           onClose={() => setIsTendencialModalVisible(false)}
         />
       )}
+
+      <AccountPanel
+        email={accountEmail}
+        plan={accountPlan}
+        hasVerifiedAccess={hasVerifiedAccess}
+        isOpen={isAccountPanelOpen}
+        onClose={() => setIsAccountPanelOpen(false)}
+      />
 
       {metricInfo && (
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/75 p-4" onClick={() => setMetricInfo(null)}>
