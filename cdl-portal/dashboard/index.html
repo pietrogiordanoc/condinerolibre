@@ -80,8 +80,8 @@
     .logo-container { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 4px 8px 22px; }
     .logo-img {
       display: block;
-      width: 158px;
-      height: 42px;
+      width: 213px;
+      height: 57px;
     }
     .logo-img img { width: 100%; height: 100%; object-fit: contain; object-position: left center; }
     .logo-txt { line-height: 1.1; padding-left: 2px; }
@@ -176,15 +176,6 @@
       backdrop-filter: blur(5px);
       box-shadow: 0 16px 28px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.05);
     }
-
-    .main-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 16px;
-      color: #fff;
-    }
-    .main-brand-logo { display: block; width: 136px; height: 32px; object-fit: contain; object-position: left center; }
 
     body:not([data-view="radar"]) #viewRadar { display: none !important; }
 
@@ -1484,12 +1475,11 @@
 
   <div class="sidebar">
     <div class="logo-container">
-      <div class="logo-img"><img src="../../images/logocdl.avif" alt="ConDineroLibre"></div>
+      <a class="logo-img" href="https://www.condinerolibre.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir ConDineroLibre en una pestaña nueva"><img src="../../images/logocdl.avif" alt="ConDineroLibre"></a>
       <div class="logo-txt"><span>Portal privado</span></div>
     </div>
     <nav class="nav">
       <div class="nav-label">Menú</div>
-      <a class="nav-item" href="https://www.condinerolibre.com/" target="_blank" rel="noopener noreferrer"><i data-lucide="house"></i> Ir al Home</a>
       <a id="navRadar" class="nav-item active"><i data-lucide="activity"></i> CDL Radar <span class="status-dot"></span></a>
       <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
       <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
@@ -1519,9 +1509,6 @@
   </div>
 
   <main>
-    <div class="main-head">
-      <img class="main-brand-logo" src="../../images/logocdl.avif" alt="ConDineroLibre">
-    </div>
 
     <!-- VISTA MI CUENTA -->
     <section id="viewProfile">
