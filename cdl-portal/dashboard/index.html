@@ -390,6 +390,58 @@
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
+    #viewProfile {
+      display: none;
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .profile-shell {
+      display: grid;
+      grid-template-columns: minmax(250px, .78fr) minmax(0, 1.22fr);
+      gap: 18px;
+    }
+    .profile-summary,
+    .profile-form-card,
+    .profile-access-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(160deg, rgba(25,28,32,.94), rgba(12,15,18,.96));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 18px 34px rgba(0,0,0,.2);
+    }
+    .profile-summary { padding: 28px; text-align: center; }
+    .profile-avatar-wrap { position: relative; width: 112px; height: 112px; margin: 0 auto 18px; }
+    .profile-avatar-large { width: 112px; height: 112px; border-radius: 50%; border: 2px solid rgba(42,255,138,.65); background: rgba(42,255,138,.12); color: var(--green); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 38px; font-weight: 800; box-shadow: 0 0 0 6px rgba(42,255,138,.06), 0 0 28px rgba(42,255,138,.18); }
+    .profile-avatar-large img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-upload-label { position: absolute; right: -5px; bottom: -4px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #12171b; color: #fff; cursor: pointer; }
+    .avatar-upload-label:hover { background: rgba(42,255,138,.18); border-color: var(--green); color: var(--green); }
+    .avatar-upload-label input { display: none; }
+    .profile-summary h2 { margin: 0; font-size: 24px; color: #fff; }
+    .profile-summary p { margin: 7px 0 18px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+    .plan-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid rgba(42,255,138,.35); border-radius: 999px; background: rgba(42,255,138,.1); color: #a9ffd0; font-size: 12px; font-weight: 700; }
+    .plan-chip.free { border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.1); color: #fde68a; }
+    .profile-form-card { padding: 26px; }
+    .profile-section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+    .profile-section-head h2 { margin: 0; color: #fff; font-size: 22px; }
+    .profile-section-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .profile-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .profile-field { display: grid; gap: 7px; }
+    .profile-field.full { grid-column: 1 / -1; }
+    .profile-field label { color: #c9d0d5; font-size: 12px; font-weight: 700; }
+    .profile-field input { width: 100%; min-width: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: rgba(255,255,255,.04); color: #fff; padding: 11px 12px; font: inherit; font-size: 14px; }
+    .profile-field input:focus { outline: 2px solid rgba(42,255,138,.45); border-color: var(--green); }
+    .profile-field input[readonly] { color: var(--muted); cursor: default; }
+    .profile-save-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.1); }
+    .profile-save-status { color: var(--muted); font-size: 12px; }
+    .profile-save-btn { border: 0; border-radius: 9px; padding: 11px 16px; background: var(--green); color: #041108; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+    .profile-save-btn:hover { background: #67ffad; }
+    .profile-save-btn:disabled { opacity: .55; cursor: wait; }
+    .profile-access-card { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 20px 24px; }
+    .profile-access-card h3 { margin: 0; font-size: 16px; color: #fff; }
+    .profile-access-card p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .profile-access-actions { display: flex; gap: 10px; }
+    .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
+    .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .ghost-btn {
       border: 1px solid rgba(255,255,255,.22);
       border-radius: 9px;
@@ -1168,9 +1220,13 @@
 
       #viewAccounts,
       #viewCourses,
-      #viewDownload {
+      #viewDownload,
+      #viewProfile {
         max-width: 100%;
       }
+
+      .profile-shell { grid-template-columns: 1fr; }
+      .profile-access-card { grid-column: auto; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1323,6 +1379,13 @@
       .download-grid {
         grid-template-columns: 1fr;
       }
+
+      .profile-form-grid { grid-template-columns: 1fr; }
+      .profile-field.full { grid-column: auto; }
+      .profile-save-row,
+      .profile-access-card { align-items: stretch; flex-direction: column; }
+      .profile-access-card { display: flex; }
+      .profile-access-actions { flex-direction: column; }
       
       #viewAprende {
         flex-direction: column !important;
@@ -1391,6 +1454,7 @@
       <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
       <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Aprende</a>
       <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Ver más cursos</a>
+      <a id="navProfile" class="nav-item"><i data-lucide="circle-user-round"></i> Mi cuenta</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
     </nav>
@@ -1455,6 +1519,50 @@
         </div>
       </div>
 
+    </section>
+
+    <!-- VISTA MI CUENTA -->
+    <section id="viewProfile">
+      <div class="profile-shell">
+        <aside class="profile-summary">
+          <div class="profile-avatar-wrap">
+            <div id="profileAvatarLarge" class="profile-avatar-large">?</div>
+            <label class="avatar-upload-label" for="profileAvatarInput" title="Cambiar foto de perfil"><i data-lucide="camera"></i><input id="profileAvatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+          </div>
+          <h2 id="profileHeadingName">Tu cuenta</h2>
+          <p id="profileHeadingEmail">...</p>
+          <span id="profilePlanChip" class="plan-chip">Cargando plan</span>
+        </aside>
+
+        <section class="profile-form-card" aria-labelledby="profile-details-title">
+          <div class="profile-section-head">
+            <div>
+              <h2 id="profile-details-title">Datos personales</h2>
+              <p>Actualiza la información que usas para acceder y recibir soporte.</p>
+            </div>
+          </div>
+          <div class="profile-form-grid">
+            <div class="profile-field full"><label for="profileFullName">Nombre completo</label><input id="profileFullName" type="text" autocomplete="name" maxlength="80"></div>
+            <div class="profile-field"><label for="profilePhone">Teléfono</label><input id="profilePhone" type="tel" autocomplete="tel" placeholder="+52 55 1234 5678" maxlength="20"></div>
+            <div class="profile-field"><label for="profileEmail">Email de acceso</label><input id="profileEmail" type="email" readonly></div>
+          </div>
+          <div class="profile-save-row">
+            <span id="profileSaveStatus" class="profile-save-status">Tu información se guarda de forma segura.</span>
+            <button id="profileSaveBtn" class="profile-save-btn" type="button">Guardar cambios</button>
+          </div>
+        </section>
+
+        <section class="profile-access-card">
+          <div>
+            <h3 id="profileAccessTitle">Tu acceso</h3>
+            <p id="profileAccessDescription">Consulta tu plan y las opciones disponibles para tu cuenta.</p>
+          </div>
+          <div class="profile-access-actions">
+            <a id="profilePlanAction" class="primary" href="#upgrade">Ver planes</a>
+            <a href="/contacto/privacidad.html" target="_blank" rel="noreferrer">Privacidad</a>
+          </div>
+        </section>
+      </div>
     </section>
 
     <!-- VISTA ABRIR CUENTA -->
@@ -1975,6 +2083,114 @@
       return await sp.from("profiles").update(values).eq("id", session.user.id);
     }
 
+    function renderAvatar(target, name, avatarUrl) {
+      if (!target) return;
+      target.replaceChildren();
+      if (avatarUrl) {
+        const image = document.createElement('img');
+        image.src = avatarUrl;
+        image.alt = 'Foto de perfil';
+        target.appendChild(image);
+        return;
+      }
+      target.textContent = (name || '?').trim().charAt(0).toUpperCase() || '?';
+    }
+
+    function renderProfileView(session, profile) {
+      const plan = (profile?.plan || 'free').toLowerCase();
+      const isPremium = plan === 'paid' || plan === 'pro';
+      const name = profile?.full_name || session.user.user_metadata?.full_name || session.user.email.split('@')[0];
+      const avatarUrl = session.user.user_metadata?.avatar_url || '';
+      const planLabel = isPremium ? 'CDLRadar Pro activo' : 'Plan gratuito';
+      const avatarTargets = [document.getElementById('avatar'), document.getElementById('profileAvatarLarge')];
+
+      avatarTargets.forEach((target) => renderAvatar(target, name, avatarUrl));
+      document.getElementById('profileHeadingName').textContent = name;
+      document.getElementById('profileHeadingEmail').textContent = session.user.email;
+      document.getElementById('profileFullName').value = profile?.full_name || '';
+      document.getElementById('profilePhone').value = profile?.phone || '';
+      document.getElementById('profileEmail').value = session.user.email || '';
+
+      const planChip = document.getElementById('profilePlanChip');
+      planChip.textContent = planLabel;
+      planChip.classList.toggle('free', !isPremium);
+
+      document.getElementById('profileAccessTitle').textContent = isPremium ? 'Tu acceso Pro está activo' : 'Empieza con tu plan gratuito';
+      document.getElementById('profileAccessDescription').textContent = isPremium
+        ? 'Tienes acceso al Radar sin límite diario. Gestiona tu suscripción desde un único lugar.'
+        : 'Tu cuenta incluye el acceso freemium al Radar. Actualiza cuando quieras para operar sin límite diario.';
+      const planAction = document.getElementById('profilePlanAction');
+      planAction.href = isPremium ? '#subscription' : '#upgrade';
+      planAction.textContent = isPremium ? 'Gestionar suscripción' : 'Desbloquear Pro';
+    }
+
+    function resizeAvatar(file) {
+      return new Promise((resolve, reject) => {
+        const source = new Image();
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+        reader.onload = () => { source.src = reader.result; };
+        source.onerror = () => reject(new Error('El archivo no es una imagen válida.'));
+        source.onload = () => {
+          const size = 256;
+          const scale = Math.min(size / source.width, size / source.height, 1);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(source.width * scale));
+          canvas.height = Math.max(1, Math.round(source.height * scale));
+          canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', .82));
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function saveProfileChanges() {
+      const saveButton = document.getElementById('profileSaveBtn');
+      const status = document.getElementById('profileSaveStatus');
+      const fullName = document.getElementById('profileFullName').value.trim();
+      const phone = document.getElementById('profilePhone').value.trim().replace(/[\s()-]/g, '');
+      if (fullName.length < 2) { status.textContent = 'Escribe tu nombre completo para guardar.'; return; }
+      if (phone && !PHONE_REGEX_PORTAL.test(phone)) { status.textContent = 'Usa un teléfono con código de país, por ejemplo +52 55 1234 5678.'; return; }
+
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) return;
+      saveButton.disabled = true;
+      status.textContent = 'Guardando cambios...';
+      const { error } = await updateProfileForSession(session, { full_name: fullName, phone });
+      saveButton.disabled = false;
+      if (error) { status.textContent = 'No se pudieron guardar los cambios. Inténtalo de nuevo.'; console.error(error); return; }
+
+      document.getElementById('username').textContent = fullName;
+      document.getElementById('userNameDisplay').textContent = fullName;
+      renderAvatar(document.getElementById('avatar'), fullName, session.user.user_metadata?.avatar_url || '');
+      document.getElementById('profileHeadingName').textContent = fullName;
+      renderAvatar(document.getElementById('profileAvatarLarge'), fullName, session.user.user_metadata?.avatar_url || '');
+      status.textContent = 'Cambios guardados correctamente.';
+    }
+
+    async function saveProfileAvatar(event) {
+      const file = event.target.files?.[0];
+      const status = document.getElementById('profileSaveStatus');
+      if (!file) return;
+      if (file.size > 3 * 1024 * 1024) { status.textContent = 'Elige una imagen de hasta 3 MB.'; event.target.value = ''; return; }
+
+      try {
+        status.textContent = 'Preparando foto...';
+        const avatarUrl = await resizeAvatar(file);
+        const { data: { user }, error } = await sp.auth.updateUser({ data: { avatar_url: avatarUrl } });
+        if (error || !user) throw error || new Error('No se pudo actualizar la foto.');
+        const name = document.getElementById('profileFullName').value || user.email.split('@')[0];
+        renderAvatar(document.getElementById('avatar'), name, avatarUrl);
+        renderAvatar(document.getElementById('profileAvatarLarge'), name, avatarUrl);
+        status.textContent = 'Foto de perfil actualizada.';
+      } catch (error) {
+        status.textContent = 'No se pudo actualizar la foto. Inténtalo de nuevo.';
+        console.error(error);
+      } finally {
+        event.target.value = '';
+      }
+    }
+
     // --- PRESENCIA Y LIMITES ---
     // Cache de ubicación para no llamar IPAPI en cada heartbeat
     let userLocationCache = null;
@@ -2319,6 +2535,7 @@
       document.getElementById("viewRadar").style.display = (which === "radar") ? "flex" : "none";
       document.getElementById("viewUpgrade").style.display = (which === "upgrade") ? "flex" : "none";
       document.getElementById("viewSubscription").style.display = (which === "subscription") ? "flex" : "none";
+      document.getElementById("viewProfile").style.display = (which === "profile") ? "block" : "none";
 
       // Actualizar estado activo de los botones de navegación
       document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
@@ -2330,6 +2547,7 @@
       if (which === "radar") document.getElementById("navRadar").classList.add("active");
       if (which === "upgrade") document.getElementById("navUpgrade").classList.add("active");
       if (which === "subscription") document.getElementById("navSubscription").classList.add("active");
+      if (which === "profile") document.getElementById("navProfile").classList.add("active");
 
       if (which === "radar") {
         const { data: { session } } = await sp.auth.getSession();
@@ -2412,7 +2630,7 @@
       if (!session) { window.location.href = isLocal ? "../login/" : "/login"; return; }
       
       // Verificar si el usuario está bloqueado
-      const { data: profile } = await getProfileForSession(session, "plan, full_name, blocked");
+      const { data: profile } = await getProfileForSession(session, "plan, full_name, phone, blocked");
       if (profile?.blocked) {
         document.body.innerHTML = `
           <div style="display:flex; align-items:center; justify-content:center; height:100vh; background:#0a0a0a; color:#fff; font-family:Arial; text-align:center; padding:20px;">
@@ -2445,7 +2663,6 @@
       }
       
       document.getElementById("useremail").textContent = session.user.email;
-      document.getElementById("avatar").textContent = session.user.email.charAt(0).toUpperCase();
       
       // Nombre del usuario desde profiles.full_name o fallback
       const userName = profile?.full_name || 
@@ -2483,6 +2700,8 @@
       const navSubscription = document.getElementById("navSubscription");
       
       const isPremium = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
+
+      renderProfileView(session, profile);
       
       if (isPremium) {
         navUpgrade.style.display = "none";
@@ -2540,9 +2759,12 @@
     document.getElementById("navDownload").onclick = () => navigateTo("#download");
     document.getElementById("navAprende").onclick = () => navigateTo("#aprende");
     document.getElementById("navCourses").onclick = () => navigateTo("#courses");
+    document.getElementById("navProfile").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
+    document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
+    document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
 
     // --- APRENDE IFRAME LOGIC ---
     const aprendeLinks = document.querySelectorAll('.aprende-link');
