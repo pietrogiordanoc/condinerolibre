@@ -214,6 +214,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const next = params.get("next");
+    const referralCode = (params.get("ref") || "").trim().toUpperCase();
     const fallback = "../dashboard/";
     const destination = normalizePortalPath(next || fallback);
 
@@ -261,6 +262,14 @@
       if (resp.error) console.error("No se pudo guardar teléfono/nombre en profiles:", resp.error);
     }
 
+    async function claimReferralFromSession() {
+      if (!referralCode) return;
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return;
+      const { error } = await sb.rpc('claim_referral_code', { referral_code_input: referralCode });
+      if (error) console.warn('No se pudo asociar el referido:', error.message);
+    }
+
     form.addEventListener("submit", async e => {
       e.preventDefault();
       btn.disabled = true;
@@ -295,7 +304,10 @@
         email,
         password,
         // Enviamos el nombre en las 3 variantes para que el Trigger lo encuentre sí o sí
-        options: { data: { name, full_name: name, display_name: name, phone }, captchaToken: captcha }
+        options: {
+          data: { name, full_name: name, display_name: name, phone, referral_code: referralCode || null },
+          captchaToken: captcha
+        }
       });
 
       if(error){
@@ -306,6 +318,7 @@
 
       // Guardar teléfono/nombre explícitamente en el perfil (por si el trigger no conoce la columna phone)
       await saveProfileDetails(name, phone);
+      await claimReferralFromSession();
 
       // (Opcional) tu aviso Netlify
       notify(name,email);

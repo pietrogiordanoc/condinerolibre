@@ -39,14 +39,26 @@ window.switchTab = function(tab) {
   if (tab === 'users') {
     document.getElementById('viewUsers').style.display = 'block';
     document.getElementById('viewHistory').style.display = 'none';
+    document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.add('active');
     document.getElementById('tabHistory').classList.remove('active');
+    document.getElementById('tabAffiliates').classList.remove('active');
   } else if (tab === 'history') {
     document.getElementById('viewUsers').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'block';
+    document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
     document.getElementById('tabHistory').classList.add('active');
+    document.getElementById('tabAffiliates').classList.remove('active');
     refreshGlobalHistory();
+  } else if (tab === 'affiliates') {
+    document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewHistory').style.display = 'none';
+    document.getElementById('viewAffiliates').style.display = 'block';
+    document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabHistory').classList.remove('active');
+    document.getElementById('tabAffiliates').classList.add('active');
+    refreshAffiliates();
   }
 };
 

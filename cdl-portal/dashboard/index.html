@@ -452,6 +452,38 @@
     .profile-access-actions { display: flex; gap: 10px; }
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
+    .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .affiliate-panel { grid-column: 1 / -1; border: 1px solid rgba(42,255,138,.25); border-radius: 16px; background: linear-gradient(145deg, rgba(14,33,25,.95), rgba(11,15,18,.98)); overflow: hidden; }
+    .affiliate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .affiliate-head h2 { margin: 0; color: #fff; font-size: 21px; }
+    .affiliate-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+    .affiliate-bonus { flex: 0 0 auto; border: 1px solid rgba(251,191,36,.35); border-radius: 9px; padding: 8px 10px; color: #fde68a; background: rgba(251,191,36,.08); font-size: 12px; font-weight: 800; }
+    .affiliate-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); gap: 18px; padding: 22px 24px; }
+    .affiliate-share, .affiliate-balance, .affiliate-referrals { border: 1px solid rgba(255,255,255,.1); border-radius: 12px; background: rgba(255,255,255,.025); padding: 18px; }
+    .affiliate-share h3, .affiliate-balance h3, .affiliate-referrals h3 { margin: 0; color: #fff; font-size: 15px; }
+    .affiliate-share p, .affiliate-balance p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .affiliate-link-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+    .affiliate-link-row input, .affiliate-email { min-width: 0; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; background: #0d1115; color: #fff; padding: 10px 11px; font: inherit; font-size: 12px; }
+    .affiliate-btn { border: 0; border-radius: 8px; padding: 0 13px; background: var(--green); color: #031108; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+    .affiliate-btn.secondary { border: 1px solid rgba(255,255,255,.18); background: transparent; color: #fff; }
+    .affiliate-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .affiliate-share-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .affiliate-share-actions .affiliate-btn { min-height: 34px; }
+    .affiliate-code { display: inline-flex; margin-top: 14px; color: #9fffc9; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 700; }
+    .affiliate-balance-amount { margin: 12px 0 4px; color: #fff; font-size: 36px; font-weight: 800; line-height: 1; }
+    .affiliate-balance-label { color: #9fffc9; font-size: 12px; font-weight: 700; }
+    .affiliate-progress { height: 7px; margin: 16px 0 8px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
+    .affiliate-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22e67a, #d8ff58); }
+    .affiliate-payout { display: grid; gap: 8px; margin-top: 16px; }
+    .affiliate-payout-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+    .affiliate-status { min-height: 18px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+    .affiliate-referrals { margin: 0 24px 24px; }
+    .affiliate-referral-list { display: grid; gap: 8px; margin-top: 13px; }
+    .affiliate-referral-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 10px; color: #fff; font-size: 13px; }
+    .affiliate-referral-item small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .affiliate-referral-state { flex: 0 0 auto; color: #9fffc9; font-size: 11px; font-weight: 700; text-align: right; }
+    .affiliate-referral-state.converted { color: #fde68a; }
+    .affiliate-empty { color: var(--muted); font-size: 13px; padding: 12px 0 2px; }
     .ghost-btn {
       border: 1px solid rgba(255,255,255,.22);
       border-radius: 9px;
@@ -1237,6 +1269,7 @@
 
       .profile-shell { grid-template-columns: 1fr; }
       .profile-access-card { grid-column: auto; }
+      .affiliate-panel { grid-column: auto; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1396,6 +1429,12 @@
       .profile-access-card { align-items: stretch; flex-direction: column; }
       .profile-access-card { display: flex; }
       .profile-access-actions { flex-direction: column; }
+      .affiliate-head, .affiliate-grid { padding: 18px; }
+      .affiliate-head { display: flex; align-items: stretch; flex-direction: column; }
+      .affiliate-grid { grid-template-columns: 1fr; }
+      .affiliate-referrals { margin: 0 18px 18px; }
+      .affiliate-link-row, .affiliate-payout-row { grid-template-columns: 1fr; }
+      .affiliate-link-row .affiliate-btn, .affiliate-payout-row .affiliate-btn { min-height: 38px; }
       
       #viewAprende {
         flex-direction: column !important;
@@ -1570,8 +1609,50 @@
           </div>
           <div class="profile-access-actions">
             <a id="profilePlanAction" class="primary" href="#upgrade">Ver planes</a>
+            <button id="profileAffiliateAction" type="button">Portal de afiliados</button>
             <a href="/contacto/privacidad.html" target="_blank" rel="noreferrer">Privacidad</a>
           </div>
+        </section>
+
+        <section id="affiliatePanel" class="affiliate-panel" aria-labelledby="affiliate-title">
+          <div class="affiliate-head">
+            <div>
+              <h2 id="affiliate-title">Portal de afiliados</h2>
+              <p>Comparte tu enlace. Por cada referido que confirmemos como Pro, ganas $15.</p>
+            </div>
+            <span class="affiliate-bonus">$15 por conversión</span>
+          </div>
+          <div class="affiliate-grid">
+            <section class="affiliate-share">
+              <h3>Tu enlace personal</h3>
+              <p>Tu referido quedará registrado al crear su cuenta desde este enlace.</p>
+              <div class="affiliate-link-row">
+                <input id="affiliateLink" type="text" readonly value="Preparando enlace..." aria-label="Enlace de afiliado">
+                <button id="affiliateCopyLink" class="affiliate-btn" type="button">Copiar</button>
+              </div>
+              <span id="affiliateCode" class="affiliate-code">Código: ...</span>
+              <div class="affiliate-share-actions">
+                <button id="affiliateCopyMessage" class="affiliate-btn secondary" type="button">Copiar mensaje</button>
+                <button id="affiliateShare" class="affiliate-btn secondary" type="button">Compartir</button>
+              </div>
+            </section>
+            <section class="affiliate-balance">
+              <h3>Fondos disponibles</h3>
+              <div id="affiliateBalance" class="affiliate-balance-amount">$0.00</div>
+              <span id="affiliateEligibility" class="affiliate-balance-label">Disponible para retiro desde $50.00</span>
+              <div class="affiliate-progress"><span id="affiliateProgress" style="width:0%"></span></div>
+              <p id="affiliateTotalEarned">Ganancias históricas: $0.00</p>
+              <div class="affiliate-payout">
+                <input id="affiliatePaypalEmail" class="affiliate-email" type="email" placeholder="Tu email de PayPal" autocomplete="email">
+                <div class="affiliate-payout-row"><button id="affiliateRequestPayout" class="affiliate-btn" type="button" disabled>Solicitar pago por PayPal</button></div>
+              </div>
+              <p id="affiliateStatus" class="affiliate-status">Cargando tu cuenta de afiliado...</p>
+            </section>
+          </div>
+          <section class="affiliate-referrals">
+            <h3>Mis referidos</h3>
+            <div id="affiliateReferralList" class="affiliate-referral-list"><span class="affiliate-empty">Aún no tienes referidos registrados.</span></div>
+          </section>
         </section>
       </div>
     </section>
@@ -2134,6 +2215,104 @@
       const planAction = document.getElementById('profilePlanAction');
       planAction.href = isPremium ? '#subscription' : '#upgrade';
       planAction.textContent = isPremium ? 'Gestionar suscripción' : 'Desbloquear Pro';
+    }
+
+    const AFFILIATE_PAYOUT_MINIMUM_CENTS = 5000;
+    let affiliatePortalState = { link: '', message: '' };
+
+    function formatAffiliateMoney(cents) {
+      return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'USD' }).format((cents || 0) / 100);
+    }
+
+    function maskAffiliateName(name) {
+      const parts = (name || 'Trader CDL').trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return 'Trader CDL';
+      return parts.map((part) => `${part.charAt(0).toUpperCase()}${part.length > 1 ? '.' : ''}`).join(' ');
+    }
+
+    function setAffiliateStatus(message, isError = false) {
+      const status = document.getElementById('affiliateStatus');
+      status.textContent = message;
+      status.style.color = isError ? '#fca5a5' : '';
+    }
+
+    async function copyAffiliateText(text, successMessage) {
+      try {
+        await navigator.clipboard.writeText(text);
+        setAffiliateStatus(successMessage);
+      } catch (error) {
+        setAffiliateStatus('No se pudo copiar. Selecciona el texto e inténtalo de nuevo.', true);
+      }
+    }
+
+    function renderAffiliateReferrals(referrals) {
+      const list = document.getElementById('affiliateReferralList');
+      if (!referrals || referrals.length === 0) {
+        list.innerHTML = '<span class="affiliate-empty">Aún no tienes referidos registrados.</span>';
+        return;
+      }
+
+      list.innerHTML = referrals.map((referral) => {
+        const converted = referral.referral_status === 'converted';
+        const voided = referral.referral_status === 'void';
+        const label = converted ? 'Pro confirmado · +$15.00' : (voided ? 'No elegible' : 'Registrado · Freemium');
+        const date = new Date(referral.registered_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+        return `<div class="affiliate-referral-item"><div><strong>${maskAffiliateName(referral.display_name)}</strong><small>Se registró el ${date}</small></div><span class="affiliate-referral-state ${converted ? 'converted' : ''}">${label}</span></div>`;
+      }).join('');
+    }
+
+    async function loadAffiliatePortal(session) {
+      try {
+        const savedReferralCode = session.user.user_metadata?.referral_code;
+        if (savedReferralCode) await sp.rpc('claim_referral_code', { referral_code_input: savedReferralCode });
+
+        const { data: account, error: accountError } = await sp.rpc('ensure_affiliate_account');
+        if (accountError) throw accountError;
+
+        const [{ data: ledger, error: ledgerError }, { data: referrals, error: referralsError }, { data: payouts, error: payoutsError }] = await Promise.all([
+          sp.from('affiliate_ledger').select('amount_cents, entry_type').eq('user_id', session.user.id),
+          sp.rpc('get_my_affiliate_referrals'),
+          sp.from('affiliate_payout_requests').select('status, requested_at').eq('user_id', session.user.id).order('requested_at', { ascending: false }).limit(1)
+        ]);
+        if (ledgerError || referralsError || payoutsError) throw ledgerError || referralsError || payoutsError;
+
+        const availableCents = (ledger || []).reduce((total, item) => total + item.amount_cents, 0);
+        const totalEarnedCents = (ledger || []).filter((item) => item.amount_cents > 0 && item.entry_type === 'conversion_credit').reduce((total, item) => total + item.amount_cents, 0);
+        const code = account.referral_code;
+        const link = `${window.location.origin}/registro/?ref=${encodeURIComponent(code)}`;
+        const message = `Estoy usando CDLRadar para detectar oportunidades de mercado. Únete con mi enlace y prueba el acceso freemium: ${link}`;
+        const progress = Math.min(100, (availableCents / AFFILIATE_PAYOUT_MINIMUM_CENTS) * 100);
+        const pendingPayout = payouts?.find((payout) => payout.status === 'requested');
+
+        affiliatePortalState = { link, message };
+        document.getElementById('affiliateLink').value = link;
+        document.getElementById('affiliateCode').textContent = `Código: ${code}`;
+        document.getElementById('affiliateBalance').textContent = formatAffiliateMoney(availableCents);
+        document.getElementById('affiliateProgress').style.width = `${progress}%`;
+        document.getElementById('affiliateTotalEarned').textContent = `Ganancias históricas: ${formatAffiliateMoney(totalEarnedCents)}`;
+        document.getElementById('affiliatePaypalEmail').value = account.paypal_email || session.user.email || '';
+        document.getElementById('affiliateEligibility').textContent = availableCents >= AFFILIATE_PAYOUT_MINIMUM_CENTS
+          ? 'Ya puedes solicitar tu pago por PayPal.'
+          : `Te faltan ${formatAffiliateMoney(AFFILIATE_PAYOUT_MINIMUM_CENTS - availableCents)} para retirar.`;
+        document.getElementById('affiliateRequestPayout').disabled = availableCents < AFFILIATE_PAYOUT_MINIMUM_CENTS || Boolean(pendingPayout);
+        renderAffiliateReferrals(referrals);
+        setAffiliateStatus(pendingPayout ? 'Tienes una solicitud de pago en revisión.' : 'Tu saldo se actualiza cuando el equipo acredita una conversión.');
+      } catch (error) {
+        console.error('Affiliate portal:', error);
+        setAffiliateStatus('El Portal de afiliados estará disponible cuando se active la configuración.', true);
+      }
+    }
+
+    async function requestAffiliatePayout() {
+      const email = document.getElementById('affiliatePaypalEmail').value.trim();
+      const button = document.getElementById('affiliateRequestPayout');
+      if (!email) { setAffiliateStatus('Escribe el email donde recibes pagos por PayPal.', true); return; }
+      button.disabled = true;
+      setAffiliateStatus('Enviando solicitud de pago...');
+      const { error } = await sp.rpc('request_affiliate_payout', { paypal_email_input: email });
+      if (error) { setAffiliateStatus(error.message || 'No se pudo solicitar el pago.', true); button.disabled = false; return; }
+      const { data: { session } } = await sp.auth.getSession();
+      if (session) await loadAffiliatePortal(session);
     }
 
     function resizeAvatar(file) {
@@ -2739,6 +2918,7 @@
       const isPremium = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
 
       renderProfileView(session, profile);
+      await loadAffiliatePortal(session);
       
       if (isPremium) {
         navUpgrade.style.display = "none";
@@ -2804,6 +2984,17 @@
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
+    document.getElementById("profileAffiliateAction").onclick = () => document.getElementById('affiliatePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById("affiliateCopyLink").onclick = () => copyAffiliateText(affiliatePortalState.link, 'Enlace copiado. Ya puedes compartirlo.');
+    document.getElementById("affiliateCopyMessage").onclick = () => copyAffiliateText(affiliatePortalState.message, 'Mensaje copiado para compartir.');
+    document.getElementById("affiliateShare").onclick = async () => {
+      if (navigator.share) {
+        try { await navigator.share({ title: 'CDLRadar', text: affiliatePortalState.message, url: affiliatePortalState.link }); } catch (error) { if (error.name !== 'AbortError') setAffiliateStatus('No se pudo abrir el menú de compartir.', true); }
+      } else {
+        await copyAffiliateText(affiliatePortalState.message, 'Mensaje copiado para compartir.');
+      }
+    };
+    document.getElementById("affiliateRequestPayout").onclick = requestAffiliatePayout;
 
     // --- APRENDE IFRAME LOGIC ---
     const aprendeLinks = document.querySelectorAll('.aprende-link');

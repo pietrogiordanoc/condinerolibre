@@ -28,6 +28,7 @@
     <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
       <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
+      <button id="tabAffiliates" class="tab-btn" onclick="switchTab('affiliates')">💸 Afiliados</button>
     </div>
 
     <!-- Vista de Usuarios -->
@@ -104,6 +105,19 @@
       </div>
     </div>
 
+    <div id="viewAffiliates" style="display:none;">
+      <div class="filters" style="justify-content:space-between; align-items:center;">
+        <span style="font-weight:800; color:#18c36b;">PROGRAMA DE AFILIADOS · $15 POR CONVERSIÓN</span>
+        <div style="display:flex; gap:8px;"><button id="linkAffiliateBtn" class="btn">Vincular referido</button><button id="refreshAffiliatesBtn" class="btn btn-primary">Refrescar</button></div>
+      </div>
+      <div class="section-title"><span>💰</span> SALDOS DE REFERIDORES</div>
+      <div class="table-container"><table><thead><tr><th>Referente</th><th>Código</th><th>Registrados</th><th>Conversiones</th><th>Saldo disponible</th><th>Ganado histórico</th></tr></thead><tbody id="affiliateAccountsTbody"></tbody></table></div>
+      <div class="section-title"><span>🤝</span> REFERIDOS</div>
+      <div class="table-container"><table><thead><tr><th>Referente</th><th>Referido</th><th>Registro</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="affiliateReferralsTbody"></tbody></table></div>
+      <div class="section-title"><span>💸</span> SOLICITUDES PAYPAL</div>
+      <div class="table-container"><table><thead><tr><th>Usuario</th><th>Importe</th><th>Email PayPal</th><th>Solicitud</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="affiliatePayoutsTbody"></tbody></table></div>
+    </div>
+
   </div>
 
   <!-- Modales -->
@@ -136,12 +150,24 @@
     </div>
   </div>
 
+  <div id="affiliateLinkModal" class="modal-backdrop">
+    <div class="modal" style="width:min(560px, 98vw);">
+      <div class="modal-header"><div><div style="font-weight:900; font-size:18px;">Vincular referido</div><div class="muted">Úsalo solo para corregir un registro manualmente.</div></div><button onclick="closeAffiliateLinkModal()" class="btn">Cerrar</button></div>
+      <div style="padding:24px; display:grid; gap:16px;">
+        <label style="display:grid; gap:7px; color:#bbb; font-size:12px; font-weight:700;">Referente<select id="affiliateReferrerSelect"></select></label>
+        <label style="display:grid; gap:7px; color:#bbb; font-size:12px; font-weight:700;">Usuario referido<select id="affiliateReferredSelect"></select></label>
+        <button id="saveAffiliateLinkBtn" class="btn btn-primary">Guardar relación</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts Módulares -->
   <script src="/admin/dashboard/admin-config.js"></script>
   <script src="/admin/dashboard/module-presence.js"></script>
   <script src="/admin/dashboard/module-history.js"></script>
   <script src="/admin/dashboard/module-notes.js"></script>
   <script src="/admin/dashboard/module-users.js"></script>
+  <script src="/admin/dashboard/module-affiliates.js"></script>
   <script src="/admin/dashboard/admin-core.js"></script>
 </body>
 </html>
