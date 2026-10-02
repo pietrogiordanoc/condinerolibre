@@ -408,9 +408,9 @@
       display: grid;
       grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
       grid-template-areas:
-        "details summary"
-        "details access"
-        "affiliate affiliate";
+        "summary affiliate"
+        "details affiliate"
+        "access affiliate";
       gap: 18px;
       align-items: start;
     }
@@ -481,8 +481,7 @@
     .affiliate-social-icon { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid rgba(255,255,255,.12); border-radius: 7px; background: rgba(255,255,255,.045); }
     .affiliate-social-icon img { width: 14px; height: 14px; object-fit: contain; }
     .affiliate-code { display: inline-flex; margin-top: 14px; color: #9fffc9; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 700; }
-    .affiliate-balance-amount { display: flex; align-items: center; gap: 9px; margin: 12px 0 4px; color: #fff; font-size: 36px; font-weight: 800; line-height: 1; }
-    .affiliate-cash-sign { color: #ffe894; font-family: Georgia, serif; font-size: 56px; font-weight: 700; line-height: .7; text-shadow: 0 2px 0 #806500, 0 0 20px rgba(251,191,36,.32); }
+    .affiliate-balance-amount { margin: 12px 0 4px; color: #fff; font-size: 36px; font-weight: 800; line-height: 1; }
     .affiliate-balance-label { color: #9fffc9; font-size: 12px; font-weight: 700; }
     .affiliate-paypal-mark { display: inline-flex; align-items: center; gap: 6px; margin-top: 9px; color: #8ec7ff; font-size: 11px; font-weight: 800; }
     .affiliate-paypal-mark img { width: 16px; height: 16px; object-fit: contain; }
@@ -1281,7 +1280,7 @@
         max-width: 100%;
       }
 
-      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "details" "summary" "access" "affiliate"; }
+      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "summary" "details" "access" "affiliate"; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1662,7 +1661,7 @@
             </section>
             <section class="affiliate-balance">
               <h3>Fondos disponibles</h3>
-              <div class="affiliate-balance-amount"><span class="affiliate-cash-sign" aria-hidden="true">$</span><span id="affiliateBalance">USD 0.00</span></div>
+              <div id="affiliateBalance" class="affiliate-balance-amount">$0.00</div>
               <span id="affiliateEligibility" class="affiliate-balance-label">Disponible para retiro desde $50.00</span>
               <span class="affiliate-paypal-mark"><img src="https://cdn.simpleicons.org/paypal/0070BA" alt="">Pago líquido vía PayPal</span>
               <div class="affiliate-progress"><span id="affiliateProgress" style="width:0%"></span></div>
@@ -2246,7 +2245,7 @@
     let affiliatePortalState = { link: '', message: '' };
 
     function formatAffiliateMoney(cents) {
-      return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'USD' }).format((cents || 0) / 100);
+      return `$${((cents || 0) / 100).toFixed(2)}`;
     }
 
     function maskAffiliateName(name) {
