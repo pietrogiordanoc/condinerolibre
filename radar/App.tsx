@@ -481,19 +481,19 @@ const App: React.FC = () => {
             href="/dashboard#profile"
             target="_top"
             title="Abre tu portal de afiliados para compartir tu enlace y retirar por PayPal"
-            className="hidden lg:flex min-w-[445px] items-center gap-4 rounded-lg border border-emerald-400/35 bg-emerald-400/[0.07] px-4 py-3 shadow-[0_0_24px_rgba(16,185,129,0.08)] transition hover:border-emerald-400/65 hover:bg-emerald-400/[0.12]"
+            className="hidden lg:flex min-w-[445px] items-center gap-4 rounded-lg border border-[#31505a] bg-[#0b1519] px-4 py-3 transition hover:border-[#38d5d3]/65 hover:bg-[#101d22]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-emerald-400/35 bg-emerald-400/10 text-2xl font-black text-emerald-300">$</span>
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-[#38d5d3]/35 bg-[#38d5d3]/10 text-2xl font-black text-[#38d5d3]">$</span>
             <span className="min-w-[132px]">
-              <span className="block text-[9px] font-black uppercase tracking-[0.12em] text-emerald-300">Balance a retirar</span>
-              <span className="block text-2xl font-black leading-6 text-white">{affiliateBalance}</span>
+              <span className="block text-xs font-black uppercase tracking-[0.1em] text-[#f3f7f6]">Balance a retirar</span>
+              <span className="block text-2xl font-black leading-6 text-[#dce344]">{affiliateBalance}</span>
             </span>
-            <span className="min-w-0 flex-1 border-l border-emerald-400/20 pl-4">
-              <span className="block text-[9px] font-black uppercase tracking-wide text-emerald-200">Gana $15 por cada Pro confirmado</span>
-              <span className="mt-0.5 block truncate text-[11px] font-semibold text-neutral-300">{affiliateProgressLabel}</span>
-              <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-white/10"><span className="block h-full rounded-full bg-emerald-400" style={{ width: `${affiliateProgressPercent}%` }} /></span>
+            <span className="min-w-0 flex-1 border-l border-[#31505a] pl-4">
+              <span className="block text-sm font-black uppercase tracking-wide text-[#38d5d3]">Gana <span className="text-[#dce344]">$15</span> por cada Pro confirmado</span>
+              <span className="mt-0.5 block truncate text-sm font-semibold text-[#e3e9e7]">{affiliateProgressLabel}</span>
+              <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-[#263338]"><span className="block h-full rounded-full bg-[#4bc77d]" style={{ width: `${affiliateProgressPercent}%` }} /></span>
             </span>
-            <span className="text-lg font-bold text-emerald-300" aria-hidden="true">→</span>
+            <span className="text-2xl font-bold text-[#38d5d3]" aria-hidden="true">→</span>
           </a>
 
           <div className={`flex flex-wrap items-center gap-2 md:space-x-6 md:gap-0 p-1 md:p-2 relative w-full md:w-auto ${showDebugFrames ? 'border-2 border-green-500' : ''}`}>
