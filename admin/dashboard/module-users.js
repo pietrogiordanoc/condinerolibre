@@ -157,7 +157,7 @@ function renderUsers() {
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
         <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></td>
-        <td data-label="Teléfono">${u.phone || "—"}</td>
+        <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="editUserPhone('${u.id}', '${escapeJS(u.phone || '')}')">✎</button></td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
@@ -214,6 +214,18 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
   if (shouldGrant && (grantedCourse?.bunny_collection_id || COURSE_IDS_WITH_MODULES.has(courseId))) {
     syncClassroomCourse(courseId, grantedCourse.title, null);
   }
+}
+
+async function editUserPhone(userId, currentPhone) {
+  const input = prompt('Teléfono del alumno (déjalo vacío para borrarlo):', currentPhone);
+  if (input === null) return;
+  const { error } = await sp.from('profiles').update({ phone: input.trim() }).eq('id', userId);
+  if (error) {
+    Toastify({ text: `No se pudo guardar el teléfono: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+  Toastify({ text: 'Teléfono actualizado', duration: 2000, backgroundColor: '#10b981' }).showToast();
+  refreshUsers();
 }
 
 async function openAuditView(userId, email) {

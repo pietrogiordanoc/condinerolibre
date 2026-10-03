@@ -386,6 +386,12 @@
     .profile-field input { width: 100%; min-width: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: rgba(255,255,255,.04); color: #fff; padding: 9px 11px; font: inherit; font-size: 14px; }
     .profile-field input:focus { outline: 2px solid rgba(42,255,138,.45); border-color: var(--green); }
     .profile-field input[readonly] { color: var(--muted); cursor: default; }
+    .phone-row { display: flex; gap: 8px; }
+    .phone-row select { flex: 0 0 44%; min-width: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 9px; background: #1a1a1a; color: #fff; padding: 9px 8px; font: inherit; font-size: 14px; }
+    .phone-row input { flex: 1; }
+    .edit-modal-box .phone-row { margin-bottom: 16px; }
+    .edit-modal-box .phone-row select { padding: 12px 8px; border-radius: 8px; }
+    .edit-modal-box .phone-row input { margin-bottom: 0; }
     .profile-save-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
     .profile-save-status { color: var(--muted); font-size: 12px; }
     .profile-save-btn { border: 0; border-radius: 9px; padding: 11px 16px; background: var(--green); color: #041108; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
@@ -1535,7 +1541,7 @@
           </div>
           <div class="profile-form-grid">
             <div class="profile-field full"><label for="profileFullName">Nombre completo</label><input id="profileFullName" type="text" autocomplete="name" maxlength="80"></div>
-            <div class="profile-field"><label for="profilePhone">Teléfono</label><input id="profilePhone" type="tel" autocomplete="tel" placeholder="Escribe tu teléfono" maxlength="40"></div>
+            <div class="profile-field"><label for="profilePhone">Teléfono</label><div class="phone-row"><select id="profilePhoneCountry" aria-label="País"></select><input id="profilePhone" type="tel" autocomplete="tel-national" placeholder="Tu número" maxlength="40"></div></div>
             <div class="profile-field"><label for="profileEmail">Email de acceso</label><input id="profileEmail" type="email" readonly></div>
           </div>
           <div class="profile-save-row">
@@ -2187,7 +2193,7 @@
       document.getElementById('profileHeadingName').textContent = name;
       document.getElementById('profileHeadingEmail').textContent = session.user.email;
       document.getElementById('profileFullName').value = profile?.full_name || '';
-      document.getElementById('profilePhone').value = profile?.phone || '';
+      setPhoneFields('profilePhoneCountry', 'profilePhone', profile?.phone);
       document.getElementById('profileEmail').value = session.user.email || '';
 
       const planChip = document.getElementById('profilePlanChip');
@@ -2326,9 +2332,8 @@
       const saveButton = document.getElementById('profileSaveBtn');
       const status = document.getElementById('profileSaveStatus');
       const fullName = document.getElementById('profileFullName').value.trim();
-      const phone = document.getElementById('profilePhone').value.trim();
+      const phone = readPhoneFields('profilePhoneCountry', 'profilePhone');
       if (fullName.length < 2) { status.textContent = 'Escribe tu nombre completo para guardar.'; return; }
-      if (phone && !isPhoneWithCountryCode(phone)) { status.textContent = 'Añade el código de país, por ejemplo +52 5512345678.'; return; }
 
       const { data: { session } } = await sp.auth.getSession();
       if (!session) return;
@@ -3231,15 +3236,36 @@
     }
 
     // Complete Profile Modal Functions (nombre y teléfono obligatorios para usar Radar)
-    function isPhoneWithCountryCode(value) {
-      const compactPhone = value.replace(/[\s().-]/g, '');
-      return /^\+[1-9]\d{6,14}$/.test(compactPhone);
+    const COUNTRY_DIAL_CODES = [
+      ['+52', 'México'], ['+1', 'Estados Unidos / Canadá'], ['+34', 'España'], ['+57', 'Colombia'], ['+54', 'Argentina'],
+      ['+56', 'Chile'], ['+51', 'Perú'], ['+58', 'Venezuela'], ['+593', 'Ecuador'], ['+591', 'Bolivia'],
+      ['+595', 'Paraguay'], ['+598', 'Uruguay'], ['+502', 'Guatemala'], ['+503', 'El Salvador'], ['+504', 'Honduras'],
+      ['+505', 'Nicaragua'], ['+506', 'Costa Rica'], ['+507', 'Panamá'], ['+53', 'Cuba'], ['+809', 'Rep. Dominicana'],
+      ['+55', 'Brasil'], ['+351', 'Portugal'], ['+44', 'Reino Unido'], ['+33', 'Francia'], ['+39', 'Italia'],
+      ['+49', 'Alemania'], ['+41', 'Suiza'], ['+31', 'Países Bajos'], ['+32', 'Bélgica'], ['+353', 'Irlanda'],
+      ['+971', 'Emiratos Árabes'], ['+61', 'Australia'], ['+81', 'Japón'], ['+86', 'China'], ['+91', 'India']
+    ];
+
+    function setPhoneFields(countryId, numberId, storedPhone) {
+      const select = document.getElementById(countryId);
+      if (!select.options.length) {
+        select.innerHTML = COUNTRY_DIAL_CODES.map(([dial, name]) => `<option value="${dial}">${name} (${dial})</option>`).join('');
+      }
+      const text = (storedPhone || '').trim();
+      const match = [...COUNTRY_DIAL_CODES].sort((a, b) => b[0].length - a[0].length).find(([dial]) => text.startsWith(dial));
+      select.value = match ? match[0] : '+52';
+      document.getElementById(numberId).value = match ? text.slice(match[0].length).trim() : text;
+    }
+
+    function readPhoneFields(countryId, numberId) {
+      const number = document.getElementById(numberId).value.trim();
+      return number ? `${document.getElementById(countryId).value} ${number}` : '';
     }
 
     function openCompleteProfileModal(profile) {
       const modal = document.getElementById('completeProfileModal');
       document.getElementById('completeProfileName').value = profile?.full_name || '';
-      document.getElementById('completeProfilePhone').value = profile?.phone || '';
+      setPhoneFields('completeProfileCountry', 'completeProfilePhone', profile?.phone);
       document.getElementById('completeProfileMsg').textContent = '';
       modal.classList.add('open');
     }
@@ -3251,11 +3277,10 @@
     async function saveCompleteProfile() {
       const msgEl = document.getElementById('completeProfileMsg');
       const name = document.getElementById('completeProfileName').value.trim();
-      const phone = document.getElementById('completeProfilePhone').value.trim();
+      const phone = readPhoneFields('completeProfileCountry', 'completeProfilePhone');
 
       if (!name || name.length < 2) { msgEl.textContent = 'Ingresa tu nombre completo.'; return; }
       if (!phone) { msgEl.textContent = 'Ingresa tu teléfono.'; return; }
-      if (!isPhoneWithCountryCode(phone)) { msgEl.textContent = 'Añade el código de país, por ejemplo +52 5512345678.'; return; }
 
       const { data: { session } } = await sp.auth.getSession();
       if (!session) return;
@@ -3336,7 +3361,7 @@
   </div>
 
   <!-- COMPLETE PROFILE MODAL (obligatorio para acceder a CDLRadar) -->
-  <div id="completeProfileModal" class="edit-modal-backdrop" onclick="closeCompleteProfileModal()">
+  <div id="completeProfileModal" class="edit-modal-backdrop">
     <div class="edit-modal-box" onclick="event.stopPropagation()">
       <h3>Completa tu perfil</h3>
       <p style="color:var(--muted); font-size:13px; margin:-8px 0 16px;">Para acceder a CDLRadar necesitamos tu nombre completo y tu teléfono.</p>
@@ -3345,15 +3370,17 @@
         id="completeProfileName" 
         placeholder="Nombre completo"
       />
-      <input 
-        type="tel" 
-        id="completeProfilePhone" 
-        placeholder="Escribe tu teléfono"
-        onkeypress="if(event.key==='Enter') saveCompleteProfile()"
-      />
+      <div class="phone-row">
+        <select id="completeProfileCountry" aria-label="País"></select>
+        <input 
+          type="tel" 
+          id="completeProfilePhone" 
+          placeholder="Tu número"
+          onkeypress="if(event.key==='Enter') saveCompleteProfile()"
+        />
+      </div>
       <div id="completeProfileMsg" style="color:salmon; font-size:12px; margin:-8px 0 12px; min-height:14px;"></div>
       <div class="edit-modal-actions">
-        <button class="btn-cancel" onclick="closeCompleteProfileModal()">Más tarde</button>
         <button class="btn-save" onclick="saveCompleteProfile()">Guardar y continuar</button>
       </div>
     </div>
