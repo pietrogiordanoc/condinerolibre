@@ -30,6 +30,7 @@ function corsHeaders(request: Request) {
 
 type Lesson = {
   course_id: string;
+  module_id: string | null;
   title: string;
   bunny_video_id: string;
   duration_seconds: number;
@@ -100,49 +101,74 @@ serve(async (request) => {
     const { data: course } = await supabaseAdmin
       .from("courses").select("id, bunny_library_id, bunny_collection_id").eq("id", courseId).maybeSingle();
     if (!course) return reply({ error: "Course not found", code: "course_not_found" }, 404);
-    if (!course.bunny_library_id || !course.bunny_collection_id) {
+    if (!course.bunny_library_id) {
       return reply({ error: "Course has no Bunny collection configured", code: "course_not_configured" }, 400);
     }
 
-    const result = await fetchBunnyVideos(Number(course.bunny_library_id), course.bunny_collection_id);
-    if (result.error) {
-      console.error("Bunny request failed:", result.error);
-      const code = result.error.status === 401 || result.error.status === 403 ? "bunny_unauthorized" : "bunny_error";
-      return reply({
-        error: code === "bunny_unauthorized"
-          ? "Bunny rejected the API key. Use the API key of library " + course.bunny_library_id
-          : "Bunny could not return the collection videos",
-        code,
-        bunny_status: result.error.status,
-        ...(isAdmin ? { detail: result.error.detail } : {})
-      }, 502);
+    const { data: modules, error: modulesError } = await supabaseAdmin
+      .from("course_modules")
+      .select("id, title, position, bunny_collection_id")
+      .eq("course_id", course.id)
+      .order("position");
+    if (modulesError && !course.bunny_collection_id) {
+      return reply({ error: "Course modules are not available", code: "modules_table_error" }, 500);
+    }
+    if (modulesError) console.warn("Course modules are not available; using the course collection:", modulesError);
+
+    const sources = !modulesError && (modules || []).length > 0
+      ? modules
+      : course.bunny_collection_id
+        ? [{ id: null, title: "", position: 1, bunny_collection_id: course.bunny_collection_id }]
+        : [];
+    if (sources.length === 0) {
+      return reply({ error: "Course has no Bunny collection configured", code: "course_not_configured" }, 400);
     }
 
-    const allVideos = result.videos || [];
-    const lessons: Lesson[] = allVideos
-      .filter((video) => video.guid && video.title && PLAYABLE_STATUSES.has(Number(video.status)))
-      .sort((a, b) => String(a.title).localeCompare(String(b.title), "es", { numeric: true, sensitivity: "base" }))
-      .map((video, index) => ({
+    const lessons: Lesson[] = [];
+    let bunnyTotal = 0;
+    for (const source of sources) {
+      const result = await fetchBunnyVideos(Number(course.bunny_library_id), source.bunny_collection_id);
+      if (result.error) {
+        console.error("Bunny request failed:", result.error);
+        const code = result.error.status === 401 || result.error.status === 403 ? "bunny_unauthorized" : "bunny_error";
+        return reply({
+          error: code === "bunny_unauthorized"
+            ? "Bunny rejected the API key. Use the API key of library " + course.bunny_library_id
+            : `Bunny could not return the videos for ${source.title || "the course"}`,
+          code,
+          bunny_status: result.error.status,
+          ...(isAdmin ? { detail: result.error.detail } : {})
+        }, 502);
+      }
+
+      const videos = result.videos || [];
+      bunnyTotal += videos.length;
+      const playableVideos = videos
+        .filter((video) => video.guid && video.title && PLAYABLE_STATUSES.has(Number(video.status)))
+        .sort((a, b) => String(a.title).localeCompare(String(b.title), "es", { numeric: true, sensitivity: "base" }));
+      lessons.push(...playableVideos.map((video, index) => ({
         course_id: course.id,
+        module_id: source.id,
         title: String(video.title),
         bunny_video_id: String(video.guid),
         duration_seconds: Math.round(Number(video.length) || 0),
         position: index + 1,
         published: true
-      }));
+      })));
+    }
 
     // An empty or still-processing collection must never wipe lessons that already exist.
     if (lessons.length === 0) {
       return reply({
-        error: allVideos.length === 0 ? "The Bunny collection has no videos" : "The Bunny videos are still processing",
-        code: allVideos.length === 0 ? "collection_empty" : "videos_processing",
-        bunny_total: allVideos.length
+        error: bunnyTotal === 0 ? "The Bunny collections have no videos" : "The Bunny videos are still processing",
+        code: bunnyTotal === 0 ? "collection_empty" : "videos_processing",
+        bunny_total: bunnyTotal
       }, 422);
     }
 
     // Keep unchanged lessons (stable ids); replace only rows that differ, then insert the rest.
     const { data: existing, error: existingError } = await supabaseAdmin
-      .from("course_lessons").select("id, bunny_video_id, title, position, duration_seconds").eq("course_id", course.id);
+      .from("course_lessons").select("id, bunny_video_id, title, position, duration_seconds, module_id").eq("course_id", course.id);
     if (existingError) return reply({ error: existingError.message, code: "lessons_read_error" }, 500);
 
     const wanted = new Map(lessons.map((lesson) => [lesson.bunny_video_id, lesson]));
@@ -150,8 +176,8 @@ serve(async (request) => {
     const staleIds: string[] = [];
     for (const row of existing || []) {
       const lesson = wanted.get(row.bunny_video_id);
-      const same = lesson && lesson.position === row.position && lesson.title === row.title &&
-        lesson.duration_seconds === row.duration_seconds;
+      const same = lesson && lesson.module_id === row.module_id && lesson.position === row.position &&
+        lesson.title === row.title && lesson.duration_seconds === row.duration_seconds;
       if (same) unchangedVideoIds.add(row.bunny_video_id); else staleIds.push(row.id);
     }
 
@@ -168,7 +194,8 @@ serve(async (request) => {
     return reply({
       ok: true,
       imported: lessons.length,
-      skipped_unplayable: allVideos.length - lessons.length,
+      skipped_unplayable: bunnyTotal - lessons.length,
+      modules: sources.length,
       course_id: course.id
     });
   } catch (error) {

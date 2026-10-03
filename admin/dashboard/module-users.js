@@ -1,6 +1,7 @@
 let PROFILES = [];
 let RADAR_USAGE_BY_ID = {};
 let COURSES = [];
+let COURSE_IDS_WITH_MODULES = new Set();
 let COURSE_ENROLLMENTS_BY_USER = {};
 let sortKey = 'displayName';
 let sortOrder = 'asc';
@@ -10,22 +11,24 @@ let sortOrder = 'asc';
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
 async function refreshUsers() {
-  const [profilesResponse, coursesResponse, enrollmentsResponse] = await Promise.all([
+  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
     sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
+    sp.from("course_modules").select("course_id"),
     sp.from("course_enrollments").select("user_id, course_id")
   ]);
 
   PROFILES = profilesResponse.data || [];
   COURSES = coursesResponse.data || [];
+  COURSE_IDS_WITH_MODULES = new Set((modulesResponse.data || []).map(module => module.course_id));
   COURSE_ENROLLMENTS_BY_USER = (enrollmentsResponse.data || []).reduce((byUser, enrollment) => {
     if (!byUser[enrollment.user_id]) byUser[enrollment.user_id] = new Set();
     byUser[enrollment.user_id].add(enrollment.course_id);
     return byUser;
   }, {});
 
-  if (coursesResponse.error || enrollmentsResponse.error) {
-    console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error || enrollmentsResponse.error);
+  if (coursesResponse.error || modulesResponse.error || enrollmentsResponse.error) {
+    console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error || modulesResponse.error || enrollmentsResponse.error);
   }
   renderClassroomSyncActions();
   renderUsers();
@@ -35,7 +38,7 @@ function renderClassroomSyncActions() {
   const container = document.getElementById('classroomSyncActions');
   if (!container) return;
   container.innerHTML = '';
-  COURSES.filter(course => course.bunny_collection_id).forEach(course => {
+  COURSES.filter(course => course.bunny_collection_id || COURSE_IDS_WITH_MODULES.has(course.id)).forEach(course => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'btn';
@@ -173,7 +176,7 @@ function renderUsers() {
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
-        <td data-label="Historial"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button></td>
+        <td data-label="Historial"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="btn" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Ver como alumno</button></td>
         <td data-label="SL Experimental"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:${u.experimental_sl_enabled ? '#fbbf24' : '#64748b'};"><input type="checkbox" ${u.experimental_sl_enabled ? 'checked' : ''} onchange="toggleExperimentalSl('${u.id}', this.checked)"> ${u.experimental_sl_enabled ? 'Activo' : 'Inactivo'}</label></td>
         <td data-label="Ubicación">${u.pres.ciudad || "—"}, ${u.pres.pais || "—"}</td>
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
@@ -223,7 +226,32 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
 
   // Importa las lecciones al activar, para que el alumno las encuentre listas.
   const grantedCourse = COURSES.find(course => course.id === courseId);
-  if (shouldGrant && grantedCourse?.bunny_collection_id) syncClassroomCourse(courseId, grantedCourse.title, null);
+  if (shouldGrant && (grantedCourse?.bunny_collection_id || COURSE_IDS_WITH_MODULES.has(courseId))) {
+    syncClassroomCourse(courseId, grantedCourse.title, null);
+  }
+}
+
+async function openAuditView(userId, email) {
+  if (!confirm(`Se preparará un enlace de un solo uso para ${email}. Ábrelo en una ventana incógnito para no mezclar sesiones. Esta entrada quedará registrada en el historial.`)) return;
+
+  try {
+    const { data: { session } } = await sp.auth.getSession();
+    const response = await fetch(CONFIG.adminAuditLoginUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token || ''}` },
+      body: JSON.stringify({ target_user_id: userId })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.action_link) throw new Error(result.error || 'No se pudo abrir la cuenta');
+    try {
+      await navigator.clipboard.writeText(result.action_link);
+      alert('Enlace copiado. Pulsa Ctrl+Shift+N para abrir una ventana incógnito, pega el enlace y pulsa Enter.');
+    } catch (clipboardError) {
+      prompt('Copia este enlace, abre una ventana incógnito con Ctrl+Shift+N, pégalo y pulsa Enter:', result.action_link);
+    }
+  } catch (error) {
+    Toastify({ text: `No se pudo preparar el acceso: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
+  }
 }
 
 async function adminSetPlan(uId, plan) {

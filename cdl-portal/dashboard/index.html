@@ -635,6 +635,10 @@
     .classroom-now h3 { margin: 5px 0 0; color: #fff; font-size: 17px; }
     .classroom-lessons { padding: 20px 22px 24px; }
     .classroom-lessons h3 { margin: 0 0 14px; color: #fff; font-size: 16px; }
+    .classroom-module + .classroom-module { margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); }
+    .classroom-module-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+    .classroom-module-head h4 { margin: 0; color: #fff; font-size: 15px; font-weight: 600; }
+    .classroom-module-head span { color: var(--muted); font-size: 11px; }
     .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
     .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
     .classroom-lesson-card:hover, .classroom-lesson-card.active { border-color: rgba(42,255,138,.65); background: rgba(42,255,138,.1); }
@@ -2804,6 +2808,7 @@
     }
 
     let classroomCoursesById = new Map();
+    let classroomModulesByCourseId = new Map();
     let classroomLessonsByCourseId = new Map();
 
     function escapeClassroomText(value) {
@@ -2812,7 +2817,7 @@
       }[character]));
     }
 
-    function renderClassroomLesson(course, lesson) {
+    function renderClassroomLesson(course, lesson, module) {
       const player = document.getElementById('classroomPlayer');
       const nowMeta = document.getElementById('classroomNowMeta');
       const nowTitle = document.getElementById('classroomNowTitle');
@@ -2821,7 +2826,7 @@
       } else {
         player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(lesson.title)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
-      nowMeta.textContent = `Lección ${lesson.position}`;
+      nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position}` : `Lección ${lesson.position}`;
       nowTitle.textContent = lesson.title;
       document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => card.classList.toggle('active', card.dataset.classroomLessonId === lesson.id));
     }
@@ -2837,7 +2842,8 @@
 
     function needsClassroomSync(courseId) {
       const course = classroomCoursesById.get(courseId);
-      return !!course?.bunny_collection_id && !(classroomLessonsByCourseId.get(courseId) || []).length;
+      const modules = classroomModulesByCourseId.get(courseId) || [];
+      return !!(course?.bunny_collection_id || modules.length) && !(classroomLessonsByCourseId.get(courseId) || []).length;
     }
 
     function classroomEmptyMessage(courseId) {
@@ -2895,26 +2901,38 @@
         document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
         lessonsWrap.innerHTML = '';
       } else {
-        lessonsWrap.innerHTML = lessons.map((lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`).join('');
+        const modules = classroomModulesByCourseId.get(courseId) || [];
+        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`;
+        lessonsWrap.innerHTML = modules.length
+          ? modules.map((module) => {
+              const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
+              return `<section class="classroom-module"><div class="classroom-module-head"><h4>${escapeClassroomText(module.title)}</h4><span>${moduleLessons.length} lecciones</span></div><div class="classroom-lesson-grid">${moduleLessons.map(lessonCard).join('')}</div></section>`;
+            }).join('')
+          : lessons.map(lessonCard).join('');
         lessonsWrap.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
           card.addEventListener('click', () => {
             const lesson = lessons.find((item) => item.id === card.dataset.classroomLessonId);
-            if (lesson) renderClassroomLesson(course, lesson);
+            const module = modules.find((item) => item.id === lesson?.module_id);
+            if (lesson) renderClassroomLesson(course, lesson, module);
           });
         });
-        renderClassroomLesson(course, lessons[0]);
+        renderClassroomLesson(course, lessons[0], modules.find((item) => item.id === lessons[0].module_id));
       }
     }
 
     async function fetchClassroomState(courseIds) {
-      const [coursesResponse, lessonsResponse] = await Promise.all([
+      const [coursesResponse, modulesResponse, lessonsResponse] = await Promise.all([
         sp.from('courses').select('id, title, bunny_library_id, bunny_collection_id').in('id', courseIds),
-        sp.from('course_lessons').select('id, course_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
+        sp.from('course_modules').select('id, course_id, title, position').in('course_id', courseIds).order('position'),
+        sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
       ]);
       if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
+      if (modulesResponse.error) console.error('No se pudieron cargar los módulos de Classroom:', modulesResponse.error);
       if (lessonsResponse.error) console.error('No se pudieron cargar las lecciones de Classroom:', lessonsResponse.error);
       (coursesResponse.data || []).forEach((course) => classroomCoursesById.set(course.id, course));
-      if (lessonsResponse.error) return;
+      if (modulesResponse.error || lessonsResponse.error) return;
+      courseIds.forEach((courseId) => classroomModulesByCourseId.set(courseId, []));
+      (modulesResponse.data || []).forEach((module) => classroomModulesByCourseId.get(module.course_id)?.push(module));
       courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
       (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
     }
