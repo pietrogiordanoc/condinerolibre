@@ -425,7 +425,7 @@
     .affiliate-panel { grid-area: affiliate; border: 1px solid #31505a; border-radius: 16px; background: #0b1519; overflow: hidden; }
     .affiliate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid #26383e; }
     .affiliate-head h2 { margin: 0; color: #f3f7f6; font-size: 21px; }
-    .affiliate-head p { margin: 7px 0 0; color: #d8e1df; font-size: 15px; font-weight: 600; line-height: 1.4; }
+    .affiliate-head p { margin: 7px 0 0; color: #d8e1df; font-size: 18px; font-weight: 600; line-height: 1.4; }
     .affiliate-head .metal-money { color: #dce344; font-weight: 600; text-shadow: none; }
     .affiliate-bonus { flex: 0 0 auto; border: 1px solid #8d8628; border-radius: 10px; padding: 10px 13px; color: #dce344; background: rgba(220,227,68,.08); font-size: 16px; font-weight: 600; text-shadow: none; box-shadow: none; }
     .affiliate-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); gap: 18px; padding: 22px 24px; }
@@ -638,24 +638,33 @@
       border-top: none;
       flex-direction: column;
       align-items: stretch;
-      gap: 8px;
+      gap: 10px;
     }
+    .course-card .course-purchase-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
     .course-card .btn-primary-link {
-      background: #fde047;
-      color: #000;
-      font-weight: 700;
-      border-radius: 8px;
-      padding: 12px 16px;
+      align-self: center;
+      color: rgba(255,255,255,.68);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.2;
+      padding: 2px 0;
       text-align: center;
-      transition: background 0.2s ease;
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,.3);
+      text-underline-offset: 3px;
+      transition: color .2s ease, text-decoration-color .2s ease;
     }
     .course-card .btn-primary-link:hover {
-      background: #facc15;
+      color: #fff;
+      text-decoration-color: #fde047;
     }
-    .course-card .course-buy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid rgba(253,224,71,.58); border-radius: 8px; background: transparent; color: #fde047; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .course-card .course-buy-btn:hover { border-color: #fde047; background: rgba(253,224,71,.1); }
-    .course-card .course-academy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid #ff8a00; border-radius: 8px; background: rgba(255,138,0,.12); color: #ffb45b; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .course-card .course-academy-btn:hover { background: #ff8a00; color: #17100a; }
+    .course-card .course-buy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid #fff28a; border-radius: 8px; background: #fde047; color: #181500; padding: 10px 8px; font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 0 #a89600; }
+    .course-card .course-buy-btn:hover { background: #fff06a; transform: translateY(-1px); }
+    .course-card .course-academy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid rgba(255,255,255,.32); border-radius: 8px; background: rgba(255,255,255,.035); color: #fff; padding: 10px 8px; font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .course-card .course-academy-btn:hover { border-color: #ffb45b; background: rgba(255,138,0,.12); color: #ffca86; }
+    .course-card .btn-primary-link.course-access-cta { align-self: stretch; border: 1px solid #fff28a; border-radius: 8px; background: #fde047; color: #181500; padding: 12px 16px; text-decoration: none; box-shadow: 0 3px 0 #a89600; }
+    .course-card .btn-primary-link.course-access-cta:hover { background: #fff06a; }
+    @media (max-width: 430px) { .course-card .course-purchase-actions { grid-template-columns: 1fr; } }
     .course-purchase-modal { position: fixed; inset: 0; z-index: 2500; display: none; place-items: center; padding: 20px; background: rgba(2,6,12,.78); }
     .course-purchase-modal.open { display: grid; }
     .course-purchase-dialog { width: min(510px, 100%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; background: #111923; box-shadow: 0 24px 60px rgba(0,0,0,.5); color: #fff; overflow: hidden; }
@@ -1953,9 +1962,11 @@
               <b>Master Pro Profesional Académico</b>
               <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" data-course-id="master-pro" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="master-pro">PAGO ÚNICO · $350 USD</button>
-                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
+                <div class="course-purchase-actions">
+                  <button type="button" class="course-buy-btn" data-course-purchase="master-pro">COMPRAR · $350 USD</button>
+                  <button type="button" class="course-academy-btn" data-course-academy>PLAN COMPLETO · $29/MES</button>
+                </div>
+                <a class="btn-primary-link" data-course-id="master-pro" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Previsualizar clase</a>
               </div>
             </div>
           </article>
@@ -1969,9 +1980,11 @@
               <b>Trading Prime Elite Profesional</b>
               <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" data-course-id="trading-prime" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="trading-prime">PAGO ÚNICO · $270 USD</button>
-                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
+                <div class="course-purchase-actions">
+                  <button type="button" class="course-buy-btn" data-course-purchase="trading-prime">COMPRAR · $270 USD</button>
+                  <button type="button" class="course-academy-btn" data-course-academy>PLAN COMPLETO · $29/MES</button>
+                </div>
+                <a class="btn-primary-link" data-course-id="trading-prime" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Previsualizar clase</a>
               </div>
             </div>
           </article>
@@ -1985,9 +1998,11 @@
               <b>Velas Japonesas desde Cero</b>
               <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" data-course-id="velas-japonesas" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="velas-japonesas">PAGO ÚNICO · $165 USD</button>
-                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
+                <div class="course-purchase-actions">
+                  <button type="button" class="course-buy-btn" data-course-purchase="velas-japonesas">COMPRAR · $165 USD</button>
+                  <button type="button" class="course-academy-btn" data-course-academy>PLAN COMPLETO · $29/MES</button>
+                </div>
+                <a class="btn-primary-link" data-course-id="velas-japonesas" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Previsualizar clase</a>
               </div>
             </div>
           </article>
@@ -2001,9 +2016,11 @@
               <b>TradingView Básico</b>
               <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" data-course-id="tradingview-basico" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="tradingview-basico">PAGO ÚNICO · $165 USD</button>
-                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
+                <div class="course-purchase-actions">
+                  <button type="button" class="course-buy-btn" data-course-purchase="tradingview-basico">COMPRAR · $165 USD</button>
+                  <button type="button" class="course-academy-btn" data-course-academy>PLAN COMPLETO · $29/MES</button>
+                </div>
+                <a class="btn-primary-link" data-course-id="tradingview-basico" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Previsualizar clase</a>
               </div>
             </div>
           </article>
@@ -3429,8 +3446,9 @@
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
         const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
-        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'PREVISUALIZAR' : 'Ver más';
-        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de dos minutos' : 'Ver información del curso');
+        cta.textContent = hasAccess ? 'Abrir mi curso' : hasPreview ? 'Previsualizar clase' : 'Ver más';
+        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir clase gratuita' : 'Ver información del curso');
+        cta.classList.toggle('course-access-cta', hasAccess);
         cta.onclick = null;
         if (status && hasAccess) {
           status.textContent = 'ACCESO ACTIVO';
@@ -4127,7 +4145,7 @@
       <div id="acmOffer" class="acm-offer acm-body">
         <h2>CDLRadar and ClassRoom</h2>
         <ul class="acm-list">
-          <li>Todos los cursos, los de hoy y los que lleguen después</li>
+          <li>Todos los cursos Incluidos</li>
           <li>CDL Radar Pro incluido, sin límite diario</li>
           <li>Acceso mientras tu suscripción esté activa</li>
           <li>Cancela cuando quieras desde tu cuenta de PayPal</li>
