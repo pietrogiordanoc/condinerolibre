@@ -32,6 +32,9 @@ async function init() {
   
   // Refrescar uso del radar cada 2 minutos
   setInterval(async () => { await refreshRadarUsage(); renderUsers(); }, 120000);
+
+  // Refresca cursos y progreso de alumnos cada minuto.
+  setInterval(refreshUsers, 60000);
 }
 
 // Función para cambiar entre tabs

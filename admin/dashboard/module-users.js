@@ -170,7 +170,7 @@ function renderUsers() {
     
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span><div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
+        <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
         <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? ` <button class="btn btn-danger" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">✕</button>` : ''}</td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
@@ -243,14 +243,34 @@ function timeAgo(isoDate) {
   return `hace ${Math.round(minutes / 1440)} d`;
 }
 
+function courseProgressStats(userId, course) {
+  const titles = LESSON_TITLES_BY_COURSE[course.id];
+  const rows = ((PROGRESS_BY_USER[userId] || {})[course.id] || []).filter((row) => !titles || titles.has(row.bunny_video_id));
+  const total = titles ? titles.size : 0;
+  const last = rows.reduce((best, row) => (!best || row.last_viewed_at > best.last_viewed_at ? row : best), null);
+  return { titles, seen: rows.length, total, pct: total ? Math.round((rows.length / total) * 100) : 0, last };
+}
+
+function progressBadge(userId, enrolledCourseIds) {
+  const stats = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => courseProgressStats(userId, course));
+  if (!stats.length) return '';
+  const seen = stats.reduce((sum, item) => sum + item.seen, 0);
+  const total = stats.reduce((sum, item) => sum + item.total, 0);
+  const pct = total ? Math.round((seen / total) * 100) : 0;
+  return `<span class="course-pct ${seen ? '' : 'zero'}" title="${seen} de ${total} lecciones vistas en ${stats.length} cursos">${pct}%</span>`;
+}
+
 function progressSummary(userId, enrolledCourseIds) {
   const lines = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => {
-    const titles = LESSON_TITLES_BY_COURSE[course.id];
-    const rows = ((PROGRESS_BY_USER[userId] || {})[course.id] || []).filter((row) => !titles || titles.has(row.bunny_video_id));
-    const last = rows.reduce((best, row) => (!best || row.last_viewed_at > best.last_viewed_at ? row : best), null);
-    const lastTitle = last ? escapeHtmlText((titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '')) : '';
-    const detail = last ? `Última: ${lastTitle} · ${timeAgo(last.last_viewed_at)}` : 'Sin empezar';
-    return `<div class="course-progress-line"><strong>${escapeHtmlText(course.title)}</strong><span>${rows.length} de ${titles ? titles.size : 0} vistas</span><span>${detail}</span></div>`;
+    const { titles, seen, total, pct, last } = courseProgressStats(userId, course);
+    let detail = 'Sin empezar';
+    if (last) {
+      const fullTitle = (titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '');
+      const shortTitle = fullTitle.length > 46 ? `${fullTitle.slice(0, 45)}…` : fullTitle;
+      const when = new Date(last.last_viewed_at).toLocaleString('es-ES');
+      detail = `<span class="progress-last" title="${escapeHtmlText(fullTitle)} · ${when}">Última: ${escapeHtmlText(shortTitle)} · ${timeAgo(last.last_viewed_at)}</span>`;
+    }
+    return `<div class="course-progress-line ${seen ? '' : 'is-idle'}"><strong>${escapeHtmlText(course.title)}</strong><span class="progress-bar" title="${seen} de ${total}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span><span>${seen} de ${total} vistas</span>${detail}</div>`;
   });
   return lines.length ? `<div class="course-progress">${lines.join('')}</div>` : '';
 }
