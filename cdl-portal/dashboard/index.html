@@ -636,7 +636,11 @@
     .classroom-player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #030303; }
     .classroom-player iframe { width: 100%; height: 100%; border: 0; }
     .classroom-player-empty { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; color: var(--muted); font-size: 14px; text-align: center; }
-    .classroom-now { padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-now { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-nav { display: flex; gap: 8px; }
+    .classroom-nav button:disabled { opacity: .35; cursor: default; }
+    .classroom-next { border: 0; border-radius: 8px; background: var(--green); color: #031108; padding: 9px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .classroom-next:hover:not(:disabled) { filter: brightness(1.08); }
     .classroom-now small { color: var(--green); font-size: 11px; font-weight: 600; text-transform: uppercase; }
     .classroom-now h3 { margin: 5px 0 0; color: #fff; font-size: 17px; }
     .classroom-lessons { padding: 20px 22px 24px; }
@@ -647,13 +651,16 @@
     .classroom-module:nth-child(3) { --module-accent: #f472b6; }
     .classroom-module + .classroom-module { margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); }
     .classroom-module-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
-    .classroom-module-head h4 { margin: 0; color: var(--module-accent); font-size: 15px; font-weight: 600; }
+    .classroom-module-head h4 { display: flex; align-items: center; gap: 8px; margin: 0; color: #fff; font-size: 15px; font-weight: 600; }
+    .classroom-module-head h4::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--module-accent); }
     .classroom-module-head span { color: var(--muted); font-size: 11px; }
     .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
-    .classroom-module .classroom-lesson-grid { display: flex; overflow-x: auto; gap: 12px; padding: 0 2px 10px; scroll-snap-type: x proximity; scrollbar-color: var(--module-accent) rgba(255,255,255,.08); }
-    .classroom-module .classroom-lesson-card { flex: 0 0 clamp(185px, 22vw, 250px); scroll-snap-align: start; border-top: 2px solid var(--module-accent); }
+    .classroom-module .classroom-lesson-grid { position: relative; display: flex; overflow-x: auto; gap: 12px; padding: 0 2px 10px; scroll-snap-type: x proximity; scrollbar-color: rgba(255,255,255,.28) rgba(255,255,255,.06); }
+    .classroom-module .classroom-lesson-card { flex: 0 0 clamp(185px, 22vw, 250px); scroll-snap-align: start; }
     .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
-    .classroom-lesson-card:hover, .classroom-lesson-card.active { border-color: rgba(42,255,138,.65); background: rgba(42,255,138,.1); }
+    .classroom-lesson-card:hover { border-color: rgba(255,255,255,.35); }
+    .classroom-lesson-card:not(.active) { opacity: .8; }
+    .classroom-lesson-card.active { opacity: 1; border-color: var(--green); background: rgba(42,255,138,.16); box-shadow: 0 0 0 1px var(--green); }
     .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
     .classroom-lesson-card strong { display: block; font-size: 13px; line-height: 1.35; font-weight: 600; }
     .classroom-empty { margin: 0; padding: 18px; border: 1px dashed rgba(255,255,255,.2); border-radius: 10px; color: var(--muted); font-size: 13px; }
@@ -1914,8 +1921,14 @@
           </div>
           <div id="classroomPlayer" class="classroom-player"><div class="classroom-player-empty">Selecciona una lección para empezar.</div></div>
           <div class="classroom-now">
-            <small id="classroomNowMeta">Curso activado</small>
-            <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
+            <div>
+              <small id="classroomNowMeta">Curso activado</small>
+              <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
+            </div>
+            <div class="classroom-nav">
+              <button id="classroomPrev" class="classroom-close" type="button" onclick="stepClassroom(-1)" disabled>← Anterior</button>
+              <button id="classroomNext" class="classroom-next" type="button" onclick="stepClassroom(1)" disabled>Siguiente lección →</button>
+            </div>
           </div>
           <div class="classroom-lessons">
             <h3>Lecciones del curso</h3>
@@ -2838,6 +2851,20 @@
       }[character]));
     }
 
+    function cleanLessonTitle(title) {
+      return String(title || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '').trim();
+    }
+
+    let classroomPlaylist = [];
+    let classroomCourse = null;
+    let classroomCurrentLessonId = null;
+
+    function stepClassroom(delta) {
+      const index = classroomPlaylist.findIndex((item) => item.lesson.id === classroomCurrentLessonId);
+      const target = classroomPlaylist[index + delta];
+      if (target) renderClassroomLesson(classroomCourse, target.lesson, target.module);
+    }
+
     function renderClassroomLesson(course, lesson, module) {
       const player = document.getElementById('classroomPlayer');
       const nowMeta = document.getElementById('classroomNowMeta');
@@ -2845,11 +2872,24 @@
       if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
         player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
       } else {
-        player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(lesson.title)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(cleanLessonTitle(lesson.title))}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
-      nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position}` : `Lección ${lesson.position}`;
-      nowTitle.textContent = lesson.title;
-      document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => card.classList.toggle('active', card.dataset.classroomLessonId === lesson.id));
+      classroomCurrentLessonId = lesson.id;
+      const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
+      const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
+      nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
+      nowTitle.textContent = cleanLessonTitle(lesson.title);
+      document.getElementById('classroomPrev').disabled = index <= 0;
+      document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
+      document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
+        const active = card.dataset.classroomLessonId === lesson.id;
+        card.classList.toggle('active', active);
+        card.querySelector('.classroom-lesson-number').textContent = active ? '▶ REPRODUCIENDO' : `LECCIÓN ${card.dataset.position}`;
+        if (active) {
+          const row = card.parentElement;
+          row.scrollTo({ left: card.offsetLeft - (row.clientWidth - card.clientWidth) / 2, behavior: 'smooth' });
+        }
+      });
     }
 
     let classroomReady = Promise.resolve();
@@ -2913,6 +2953,7 @@
         return;
       }
       const lessons = classroomLessonsByCourseId.get(courseId) || [];
+      classroomCourse = course;
       document.getElementById('classroomTitle').textContent = course.title;
 
       if (lessons.length === 0) {
@@ -2922,10 +2963,17 @@
         document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
         lessonsWrap.classList.remove('classroom-modules-list');
         lessonsWrap.innerHTML = '';
+        classroomPlaylist = [];
+        document.getElementById('classroomPrev').disabled = true;
+        document.getElementById('classroomNext').disabled = true;
       } else {
-        const modules = classroomModulesByCourseId.get(courseId) || [];
+        const allModules = classroomModulesByCourseId.get(courseId) || [];
+        const modules = lessons.some((lesson) => lesson.module_id) ? allModules : [];
+        classroomPlaylist = modules.length
+          ? modules.flatMap((module) => lessons.filter((lesson) => lesson.module_id === module.id).map((lesson) => ({ lesson, module })))
+          : lessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
-        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`;
+        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         lessonsWrap.innerHTML = modules.length
           ? modules.map((module) => {
               const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
@@ -2939,7 +2987,7 @@
             if (lesson) renderClassroomLesson(course, lesson, module);
           });
         });
-        renderClassroomLesson(course, lessons[0], modules.find((item) => item.id === lessons[0].module_id));
+        renderClassroomLesson(course, classroomPlaylist[0].lesson, classroomPlaylist[0].module);
       }
     }
 
