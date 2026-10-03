@@ -619,6 +619,28 @@
     .course-card .btn-primary-link:hover {
       background: #facc15;
     }
+    .classroom-section { margin-top: 24px; scroll-margin-top: 24px; }
+    .classroom-section[hidden] { display: none; }
+    .classroom-shell { overflow: hidden; border: 1px solid rgba(42,255,138,.25); border-radius: 18px; background: linear-gradient(145deg, rgba(12,24,22,.98), rgba(14,18,27,.98)); box-shadow: 0 20px 42px rgba(0,0,0,.28); }
+    .classroom-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-kicker { color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .classroom-head h2 { margin: 5px 0 0; color: #fff; font-size: 22px; }
+    .classroom-close { border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: #fff; padding: 8px 11px; font: inherit; font-size: 12px; cursor: pointer; }
+    .classroom-close:hover { border-color: rgba(42,255,138,.5); color: var(--green); }
+    .classroom-player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #030303; }
+    .classroom-player iframe { width: 100%; height: 100%; border: 0; }
+    .classroom-player-empty { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; color: var(--muted); font-size: 14px; text-align: center; }
+    .classroom-now { padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-now small { color: var(--green); font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .classroom-now h3 { margin: 5px 0 0; color: #fff; font-size: 17px; }
+    .classroom-lessons { padding: 20px 22px 24px; }
+    .classroom-lessons h3 { margin: 0 0 14px; color: #fff; font-size: 16px; }
+    .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
+    .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
+    .classroom-lesson-card:hover, .classroom-lesson-card.active { border-color: rgba(42,255,138,.65); background: rgba(42,255,138,.1); }
+    .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+    .classroom-lesson-card strong { display: block; font-size: 13px; line-height: 1.35; font-weight: 600; }
+    .classroom-empty { margin: 0; padding: 18px; border: 1px dashed rgba(255,255,255,.2); border-radius: 10px; color: var(--muted); font-size: 13px; }
     .courses-grid .account-link-card:not(.course-card) {
       align-items: center;
       text-align: center;
@@ -1864,6 +1886,27 @@
           </article>
         </div>
       </div>
+
+      <section id="classroomSection" class="classroom-section" hidden aria-live="polite">
+        <div class="classroom-shell">
+          <div class="classroom-head">
+            <div>
+              <span class="classroom-kicker">Mi Classroom</span>
+              <h2 id="classroomTitle">Mi curso</h2>
+            </div>
+            <button id="classroomClose" class="classroom-close" type="button">Volver a cursos</button>
+          </div>
+          <div id="classroomPlayer" class="classroom-player"><div class="classroom-player-empty">Selecciona una lección para empezar.</div></div>
+          <div class="classroom-now">
+            <small id="classroomNowMeta">Curso activado</small>
+            <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
+          </div>
+          <div class="classroom-lessons">
+            <h3>Lecciones del curso</h3>
+            <div id="classroomLessons" class="classroom-lesson-grid"></div>
+          </div>
+        </div>
+      </section>
     </section>
 
     <!-- VISTA METATRADER -->
@@ -2759,6 +2802,73 @@
       paypalRendered = true;
     }
 
+    let classroomCoursesById = new Map();
+    let classroomLessonsByCourseId = new Map();
+
+    function escapeClassroomText(value) {
+      return String(value || '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[character]));
+    }
+
+    function renderClassroomLesson(course, lesson) {
+      const player = document.getElementById('classroomPlayer');
+      const nowMeta = document.getElementById('classroomNowMeta');
+      const nowTitle = document.getElementById('classroomNowTitle');
+      if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
+        player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
+      } else {
+        player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(lesson.title)}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+      }
+      nowMeta.textContent = `Lección ${lesson.position}`;
+      nowTitle.textContent = lesson.title;
+      document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => card.classList.toggle('active', card.dataset.classroomLessonId === lesson.id));
+    }
+
+    function openClassroom(courseId) {
+      const course = classroomCoursesById.get(courseId);
+      if (!course) return;
+      const section = document.getElementById('classroomSection');
+      const lessons = classroomLessonsByCourseId.get(courseId) || [];
+      const lessonsWrap = document.getElementById('classroomLessons');
+      section.hidden = false;
+      document.getElementById('classroomTitle').textContent = course.title;
+
+      if (lessons.length === 0) {
+        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Las lecciones de este curso se están preparando.</div>';
+        document.getElementById('classroomNowMeta').textContent = 'Curso activado';
+        document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
+        lessonsWrap.innerHTML = '<p class="classroom-empty">Aún no hay lecciones publicadas para este curso.</p>';
+      } else {
+        lessonsWrap.innerHTML = lessons.map((lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`).join('');
+        lessonsWrap.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
+          card.addEventListener('click', () => {
+            const lesson = lessons.find((item) => item.id === card.dataset.classroomLessonId);
+            if (lesson) renderClassroomLesson(course, lesson);
+          });
+        });
+        renderClassroomLesson(course, lessons[0]);
+      }
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    async function loadClassroomContent(enrolledCourseIds) {
+      const courseIds = [...enrolledCourseIds];
+      if (courseIds.length === 0) return;
+      const [coursesResponse, lessonsResponse] = await Promise.all([
+        sp.from('courses').select('id, title, bunny_library_id').in('id', courseIds),
+        sp.from('course_lessons').select('id, course_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
+      ]);
+      if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
+      if (lessonsResponse.error) console.error('No se pudieron cargar las lecciones de Classroom:', lessonsResponse.error);
+      classroomCoursesById = new Map((coursesResponse.data || []).map((course) => [course.id, course]));
+      classroomLessonsByCourseId = (lessonsResponse.data || []).reduce((byCourse, lesson) => {
+        if (!byCourse.has(lesson.course_id)) byCourse.set(lesson.course_id, []);
+        byCourse.get(lesson.course_id).push(lesson);
+        return byCourse;
+      }, new Map());
+    }
+
     async function renderCourseAccessCtas(session) {
       const { data: enrollments, error } = await sp
         .from('course_enrollments')
@@ -2771,14 +2881,25 @@
       }
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
+      await loadClassroomContent(enrolledCourseIds);
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
         cta.textContent = hasAccess ? 'Ver curso' : 'Ver más';
         cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : 'Ver información del curso');
+        cta.onclick = null;
         if (status && hasAccess) {
           status.textContent = 'ACCESO ACTIVO';
           status.classList.add('course-access-active');
+        }
+        if (hasAccess) {
+          cta.removeAttribute('target');
+          cta.removeAttribute('rel');
+          cta.href = '#classroom';
+          cta.onclick = (event) => {
+            event.preventDefault();
+            openClassroom(cta.dataset.courseId);
+          };
         }
       });
     }
@@ -2930,6 +3051,7 @@
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
+    document.getElementById('classroomClose').onclick = () => document.getElementById('classroomSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
