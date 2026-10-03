@@ -4,7 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // Una sola función con dos entradas: webhook firmado de PayPal y confirmación del portal (con sesión).
 const env = (name: string) => Deno.env.get(name) || "";
 const supabaseAdmin = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"));
-const PAYPAL_BASE = env("PAYPAL_ENV") === "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+const PAYPAL_BASE = (env("PAYPAL_MODE") || env("PAYPAL_ENV")).toLowerCase() === "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
 
 const ALLOWED_ORIGINS = new Set([
   "https://condinerolibre.com",
