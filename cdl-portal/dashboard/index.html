@@ -636,6 +636,8 @@
     }
     .course-card .course-buy-btn { width: 100%; margin-top: 8px; border: 1px solid rgba(253,224,71,.58); border-radius: 8px; background: transparent; color: #fde047; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
     .course-card .course-buy-btn:hover { border-color: #fde047; background: rgba(253,224,71,.1); }
+    .course-card .course-academy-btn { width: 100%; margin-top: 8px; border: 1px solid #ff8a00; border-radius: 8px; background: rgba(255,138,0,.12); color: #ffb45b; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .course-card .course-academy-btn:hover { background: #ff8a00; color: #17100a; }
     .course-purchase-modal { position: fixed; inset: 0; z-index: 2500; display: none; place-items: center; padding: 20px; background: rgba(2,6,12,.78); }
     .course-purchase-modal.open { display: grid; }
     .course-purchase-dialog { width: min(510px, 100%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; background: #111923; box-shadow: 0 24px 60px rgba(0,0,0,.5); color: #fff; overflow: hidden; }
@@ -1918,7 +1920,8 @@
               <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="master-pro" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="master-pro">Comprar individual · $350 USD</button>
+                <button type="button" class="course-buy-btn" data-course-purchase="master-pro">PAGO ÚNICO · $350 USD</button>
+                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
               </div>
             </div>
           </article>
@@ -1933,7 +1936,8 @@
               <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="trading-prime" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="trading-prime">Comprar individual · $270 USD</button>
+                <button type="button" class="course-buy-btn" data-course-purchase="trading-prime">PAGO ÚNICO · $270 USD</button>
+                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
               </div>
             </div>
           </article>
@@ -1948,7 +1952,8 @@
               <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="velas-japonesas" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="velas-japonesas">Comprar individual · $165 USD</button>
+                <button type="button" class="course-buy-btn" data-course-purchase="velas-japonesas">PAGO ÚNICO · $165 USD</button>
+                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
               </div>
             </div>
           </article>
@@ -1963,7 +1968,8 @@
               <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="tradingview-basico" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Ver más</a>
-                <button type="button" class="course-buy-btn" data-course-purchase="tradingview-basico">Comprar individual · $165 USD</button>
+                <button type="button" class="course-buy-btn" data-course-purchase="tradingview-basico">PAGO ÚNICO · $165 USD</button>
+                <button type="button" class="course-academy-btn" data-course-academy>CDL + CLASSROOM · $29/MENS</button>
               </div>
             </div>
           </article>
@@ -3405,7 +3411,7 @@
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
         const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
-        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'Ver muestra' : 'Ver más';
+        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'PREVISUALIZAR · 2 MIN' : 'Ver más';
         cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de dos minutos' : 'Ver información del curso');
         cta.onclick = null;
         if (status && hasAccess) {
@@ -3429,6 +3435,10 @@
         const hasAccess = enrolledCourseIds.has(button.dataset.coursePurchase);
         button.hidden = hasAccess;
         button.onclick = () => openCoursePurchaseModal(button.dataset.coursePurchase);
+      });
+      document.querySelectorAll('[data-course-academy]').forEach((button) => {
+        button.hidden = hasAcademy;
+        button.onclick = openAcademyModal;
       });
     }
 
