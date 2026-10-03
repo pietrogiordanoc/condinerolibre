@@ -457,7 +457,7 @@
             </script>
           </div>
           <!-- EXTENDER button -->
-          <button onclick="document.getElementById('tv-modal').style.display='flex'"
+          <button onclick="openTvModal()"
             class="absolute bottom-3 right-3 bg-cta-yellow hover:bg-yellow-400 text-black text-[0.72rem] font-bold px-3 py-1.5 rounded z-10 transition-colors uppercase tracking-wide">
             EXTENDER
           </button>
@@ -468,54 +468,20 @@
   </section>
 
   <!-- ===== MODAL: Gráfico expandido ===== -->
-  <div id="tv-modal" style="display:none;" class="fixed inset-0 z-[100] flex flex-col bg-[#131722]" onclick="if(event.target===this)this.style.display='none'">
+  <div id="tv-modal" role="dialog" aria-modal="true" aria-label="Gráfico expandido" style="display:none; height:100vh; height:100dvh;" class="fixed inset-0 z-[100] flex flex-col bg-[#131722]" onclick="if(event.target===this)closeTvModal()">
     <div class="flex flex-col w-full h-full" style="max-height:100vh; overflow:hidden;">
 
-      <!-- Cerrar -->
-      <button onclick="document.getElementById('tv-modal').style.display='none'"
-        class="absolute top-3 right-4 text-white/40 hover:text-white text-2xl z-10 leading-none font-light">✕</button>
-
-      <!-- Chart area -->
-      <div style="height:65vh; flex-shrink:0;">
-        <div class="tradingview-widget-container" style="height:100%;width:100%">
-          <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-          <div class="tradingview-widget-copyright">
-            <a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank">
-              <span class="blue-text">EURUSD chart</span>
-            </a>
-            <span class="trademark"> by TradingView</span>
-          </div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-          {
-            "allow_symbol_change": true,
-            "calendar": false,
-            "details": false,
-            "hide_side_toolbar": false,
-            "hide_top_toolbar": false,
-            "hide_legend": false,
-            "hide_volume": false,
-            "hotlist": false,
-            "interval": "15",
-            "locale": "es",
-            "save_image": false,
-            "style": "1",
-            "symbol": "TICKMILL:EURUSD",
-            "theme": "dark",
-            "timezone": "Etc/UTC",
-            "backgroundColor": "#131722",
-            "gridColor": "rgba(242, 242, 242, 0.06)",
-            "watchlist": [],
-            "withdateranges": true,
-            "compareSymbols": [],
-            "studies": [],
-            "autosize": true
-          }
-          </script>
-        </div>
+      <!-- Barra superior con cerrar -->
+      <div class="flex shrink-0 items-center justify-between border-b border-white/10 px-4" style="height:48px;">
+        <span class="text-white/70 text-sm font-semibold">Gráfico ampliado</span>
+        <button onclick="closeTvModal()" aria-label="Cerrar gráfico" class="flex items-center gap-2 rounded-md bg-white/10 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white hover:text-black transition-colors"><span aria-hidden="true">✕</span> Cerrar</button>
       </div>
 
+      <!-- Chart area: el widget se crea al abrir para que mida bien -->
+      <div id="tv-modal-chart" style="flex:1 1 0; min-height:260px;"></div>
+
       <!-- Leyenda -->
-      <div class="flex-1 overflow-y-auto bg-[#151924] border-t border-white/10">
+      <div class="shrink-0 overflow-y-auto bg-[#151924] border-t border-white/10" style="max-height:34vh; max-height:34dvh;">
 
         <!-- Cabecera: título izq | link derecha -->
         <div class="flex items-start justify-between px-6 pt-4 pb-3 border-b border-white/[0.08]">
@@ -523,7 +489,7 @@
             <p class="text-[#f5c518] text-[0.82rem] font-semibold mb-1">Atajos rápidos en el gráfico (TradingView):</p>
             <p class="text-white/55 text-[0.72rem]">Tip: Haz clic en el gráfico y escribe directamente cualquier símbolo de abajo para verlo en tiempo real</p>
           </div>
-          <a href="#cursos" onclick="document.getElementById('tv-modal').style.display='none'"
+          <a href="#cursos" onclick="closeTvModal()"
             title="Ir a sección de cursos de trading"
             class="text-white/45 hover:text-white/75 text-[0.72rem] whitespace-nowrap ml-6 transition-colors">
             ¿Quieres aprender a leer estos gráficos como un profesional? → Empieza aquí
@@ -531,7 +497,7 @@
         </div>
 
         <!-- 6 columnas -->
-        <div class="grid grid-cols-6 gap-4 px-6 py-4 text-[0.71rem] leading-[1.65]">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-6 py-4 text-[0.71rem] leading-[1.65]">
 
           <!-- Time Frames -->
           <div>
@@ -620,6 +586,35 @@
     </div>
   </div>
   
+  <script>
+    function openTvModal() {
+      document.getElementById('tv-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      const host = document.getElementById('tv-modal-chart');
+      if (host.childElementCount) return;
+      host.innerHTML = '<div class="tradingview-widget-container" style="height:100%;width:100%"><div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div><div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank"><span class="blue-text">EURUSD chart</span></a><span class="trademark"> by TradingView</span></div></div>';
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.text = JSON.stringify({
+        allow_symbol_change: true, calendar: false, details: false, hide_side_toolbar: false,
+        hide_top_toolbar: false, hide_legend: false, hide_volume: false, hotlist: false,
+        interval: '15', locale: 'es', save_image: false, style: '1', symbol: 'TICKMILL:EURUSD',
+        theme: 'dark', timezone: 'Etc/UTC', backgroundColor: '#131722',
+        gridColor: 'rgba(242, 242, 242, 0.06)', watchlist: [], withdateranges: true,
+        compareSymbols: [], studies: [], autosize: true
+      });
+      host.firstChild.appendChild(script);
+    }
+
+    function closeTvModal() {
+      document.getElementById('tv-modal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeTvModal(); });
+  </script>
+
   <!-- CDLRADAR SECTION -->
   <section id="cdlradar" class="bg-bg-blue py-20">
     <div class="mx-auto px-4 sm:px-6 lg:px-8" style="max-width: 100rem;">
