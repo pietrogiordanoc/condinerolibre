@@ -912,6 +912,32 @@
     }
     .price-box { background: #f1f5f9; border-radius: 24px; padding: 32px; margin: 32px 0; border: 1px solid #e2e8f0; }
     .benefit-item { display: flex; align-items: center; gap: 10px; color: #475569; font-size: 15px; margin-bottom: 12px; justify-content: center; }
+    #viewUpgrade .upgrade-main-card.upgrade-catalog { max-width: 980px; }
+    .upgrade-catalog-heading { margin-bottom: 30px; }
+    .upgrade-catalog-heading h1 { margin: 0; color: #0f172a; font-size: 32px; font-weight: 600; }
+    .upgrade-catalog-heading p { margin: 8px 0 0; color: #64748b; font-size: 15px; }
+    .upgrade-plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; text-align: left; }
+    .upgrade-plan { position: relative; display: flex; flex-direction: column; padding: 28px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; }
+    .upgrade-plan.recommended { border: 2px solid #ff8a00; box-shadow: 0 14px 32px rgba(255,138,0,.16); }
+    .upgrade-plan-tag { min-height: 22px; margin: -3px 0 12px; color: #64748b; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+    .upgrade-plan.recommended .upgrade-plan-tag { color: #c96500; }
+    .upgrade-plan h2 { margin: 0; color: #0f172a; font-size: 22px; font-weight: 600; }
+    .upgrade-plan-summary { min-height: 43px; margin: 8px 0 18px; color: #64748b; font-size: 13.5px; line-height: 1.5; }
+    .upgrade-plan-price { display: flex; align-items: baseline; gap: 5px; margin-bottom: 18px; color: #0f172a; }
+    .upgrade-plan-price strong { font-size: 42px; font-weight: 600; }
+    .upgrade-plan-price span { color: #64748b; font-size: 14px; }
+    .upgrade-plan-old-price { margin: 0 0 3px; color: #94a3b8; font-size: 14px; text-decoration: line-through; }
+    .upgrade-plan-discount { margin: 0 0 3px; color: #c96500; font-size: 13px; font-weight: 600; }
+    .upgrade-plan-benefits { display: grid; gap: 10px; margin: 0 0 24px; padding: 0; list-style: none; color: #475569; font-size: 13.5px; line-height: 1.4; }
+    .upgrade-plan-benefits li::before { content: "\2713"; margin-right: 9px; color: #10b981; font-weight: 600; }
+    .academy-plan-cta { width: 100%; margin-top: auto; border: 0; border-radius: 10px; background: #ff8a00; color: #16110a; padding: 14px 16px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .academy-plan-cta:hover { filter: brightness(1.06); }
+    @media (max-width: 720px) {
+      .upgrade-plan-grid { grid-template-columns: 1fr; }
+      .upgrade-catalog-heading { margin-bottom: 20px; }
+      .upgrade-plan { padding: 22px; }
+      .upgrade-plan-summary { min-height: 0; }
+    }
 
     /* TOGGLE */
     .switch { position: relative; display: inline-block; width: 44px; height: 24px; margin: 0 10px; }
@@ -2052,27 +2078,48 @@
 
     <!-- VISTA UPGRADE -->
     <section id="viewUpgrade">
-      <div class="upgrade-main-card">
-        <h1 style="color: #0f172a; font-size: 32px; font-weight: 800; margin: 0;">Elige tu plan CDLRadar Pro</h1>
-        <div style="display:flex; align-items:center; justify-content:center; margin-top:30px;">
-          <span style="font-size:14px; font-weight:600;">Mensual</span>
-          <label class="switch"><input type="checkbox" id="planToggle"><span class="slider"></span></label>
-          <span style="font-size:14px; font-weight:600;">Anual <span style="color:#10b981">(Ahorra 20%)</span></span>
+      <div class="upgrade-main-card upgrade-catalog">
+        <div class="upgrade-catalog-heading">
+          <h1>Elige el acceso que necesitas</h1>
+          <p>Radar Pro para operar sin límite, o Academy para sumar toda la formación.</p>
         </div>
-        <div class="price-box">
-          <div style="display:flex; align-items:baseline; justify-content:center; gap:4px; margin-bottom:24px;">
-            <span id="priceDisplay" style="font-size:64px; font-weight:900; color:#0f172a;">$19.99</span>
-            <span id="periodDisplay" style="font-size:18px; color:#64748b;">/ mes</span>
-          </div>
-          <div style="margin-bottom:24px;">
-            <div class="benefit-item"><b style="color:#10b981">✓</b> Acceso Radar 24/7 sin límites</div>
-            <div class="benefit-item"><b style="color:#10b981">✓</b> Todas las señales Pro activadas</div>
-            <div class="benefit-item"><b style="color:#10b981">✓</b> Soporte prioritario por Email</div>
-          </div>
-          <div class="paypal-wrapper">
-            <div id="paypal-button-container-P-8WN86335RL7197925NFXDFTI"></div>
-            <div id="paypal-button-container-P-8RP24765AS427370MNHCOQ6Y" style="display:none;"></div>
-          </div>
+        <div class="upgrade-plan-grid">
+          <article class="upgrade-plan">
+            <div class="upgrade-plan-tag">RADAR PRO</div>
+            <h2>CDLRadar Pro</h2>
+            <p class="upgrade-plan-summary">Para seguir las señales y operar con el Radar sin límite diario.</p>
+            <div style="display:flex; align-items:center; margin-bottom:18px;">
+              <span style="font-size:14px; font-weight:600;">Mensual</span>
+              <label class="switch"><input type="checkbox" id="planToggle"><span class="slider"></span></label>
+              <span style="font-size:14px; font-weight:600;">Anual <span style="color:#10b981">20% menos</span></span>
+            </div>
+            <div class="upgrade-plan-price"><strong id="priceDisplay">$19.99</strong><span id="periodDisplay">/ mes</span></div>
+            <ul class="upgrade-plan-benefits">
+              <li>Acceso Radar 24/7 sin límites</li>
+              <li>Todas las señales Pro activadas</li>
+              <li>Soporte prioritario por email</li>
+            </ul>
+            <div class="paypal-wrapper">
+              <div id="paypal-button-container-P-8WN86335RL7197925NFXDFTI"></div>
+              <div id="paypal-button-container-P-8RP24765AS427370MNHCOQ6Y" style="display:none;"></div>
+            </div>
+          </article>
+
+          <article class="upgrade-plan recommended">
+            <div class="upgrade-plan-tag">MÁS COMPLETO · 78% OFF</div>
+            <h2>CDLRadar + ClassRoom</h2>
+            <p class="upgrade-plan-summary">El Radar Pro y todos los cursos actuales y futuros en una sola suscripción.</p>
+            <p class="upgrade-plan-old-price">$140 USD / mes</p>
+            <p class="upgrade-plan-discount">Precio promocional con código</p>
+            <div class="upgrade-plan-price"><strong>$29.99</strong><span>USD / mes</span></div>
+            <ul class="upgrade-plan-benefits">
+              <li>Todo lo incluido en CDLRadar Pro</li>
+              <li>Acceso a todos los cursos presentes</li>
+              <li>Nuevos cursos incluidos mientras sigas activo</li>
+              <li>Cancela cuando quieras desde PayPal</li>
+            </ul>
+            <button type="button" class="academy-plan-cta" onclick="openAcademyModal()">Ver oferta Academy</button>
+          </article>
         </div>
       </div>
     </section>
@@ -3766,18 +3813,20 @@
 
     .acm { position: fixed; inset: 0; z-index: 10060; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.8); overflow-y: auto; }
     .acm.open { display: flex; }
-    .acm-box { position: relative; width: min(760px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: #11151c; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.65); }
+    .acm-box { position: relative; width: min(1020px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: #11151c; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.65); }
     .acm-x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff; font: inherit; font-size: 15px; cursor: pointer; }
     .acm-x:hover { background: #fff; color: #000; }
-    .acm-media { position: relative; height: 128px; overflow: hidden; border-radius: 18px 18px 0 0; background: linear-gradient(135deg, #2a1700, #11151c 70%); border-bottom: 1px solid rgba(255,255,255,.1); }
+    .acm-media { position: relative; height: 140px; overflow: hidden; border-radius: 18px 18px 0 0; background: linear-gradient(135deg, #2a1700, #11151c 70%); border-bottom: 1px solid rgba(255,255,255,.1); }
     .acm-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .acm-media-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; text-align: center; color: #ff8a00; font-size: 22px; font-weight: 600; letter-spacing: .02em; }
-    .acm-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, .75fr); grid-template-areas: "title pay" "list pay" "price pay" "code pay"; column-gap: 22px; row-gap: 12px; padding: 18px 22px 22px; }
+    .acm-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "title pay" "list pay" "price pay" "code pay"; column-gap: 32px; row-gap: 14px; padding: 24px 28px 28px; }
     .acm-body h2 { grid-area: title; margin: 0; font-size: 21px; font-weight: 600; }
     .acm-list { grid-area: list; display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; color: rgba(255,255,255,.78); font-size: 13.5px; line-height: 1.45; }
     .acm-list li::before { content: "\2713"; margin-right: 8px; color: var(--green); font-weight: 600; }
-    .acm-price { grid-area: price; display: grid; gap: 4px; padding: 11px 14px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.04); }
+    .acm-price { grid-area: price; display: grid; gap: 4px; padding: 15px 18px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.04); }
     .acm-price-old { color: rgba(255,255,255,.55); font-size: 16px; text-decoration: line-through; }
+    .acm-price:not(.promo-applied) .acm-price-old { color: #fff; font-size: 42px; font-weight: 600; line-height: 1; text-decoration: none; }
+    .acm-price:not(.promo-applied) .acm-price-promo { color: #ffb347; font-size: 14px; }
     .acm-price-promo { color: #ffb347; font-size: 13.5px; font-weight: 600; }
     .acm-price-final { display: flex; align-items: baseline; gap: 8px; }
     .acm-price-final strong { color: #fff; font-size: 34px; font-weight: 600; }
@@ -3795,7 +3844,12 @@
     .acm-msg { min-height: 18px; margin: 0; font-size: 12.5px; color: rgba(255,255,255,.65); }
     .acm-msg.error { color: #ff6b6b; }
     .acm-msg.ok { color: var(--green); }
-    .acm-pay { grid-area: pay; align-self: stretch; display: grid; align-content: center; gap: 10px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,.12); }
+    .acm-pay { grid-area: pay; align-self: stretch; display: grid; align-content: center; gap: 12px; padding: 24px 0 24px 32px; border-left: 1px solid rgba(255,255,255,.12); }
+    .acm-pay-title { margin: 0; color: #fff; font-size: 19px; font-weight: 600; }
+    .acm-pay-subtitle { margin: -5px 0 8px; color: rgba(255,255,255,.6); font-size: 13px; line-height: 1.45; }
+    .acm-pay-locked { display: grid; gap: 10px; padding: 18px; border: 1px dashed rgba(255,138,0,.7); border-radius: 12px; background: rgba(255,138,0,.08); color: #ffbc6b; font-size: 13px; line-height: 1.45; }
+    .acm-pay-locked strong { color: #fff; font-size: 14px; font-weight: 600; }
+    .acm-payment-buttons[hidden] { display: none; }
     .acm-pay[hidden], .acm-stage[hidden], .acm-price-final[hidden], .acm-offer[hidden] { display: none; }
     .acm-stage { display: grid; gap: 12px; padding: 36px 22px; text-align: center; }
     .acm-stage h3 { margin: 0; font-size: 19px; font-weight: 600; }
@@ -3849,10 +3903,18 @@
           <p id="acmMsg" class="acm-msg" role="status"></p>
         </div>
 
-        <div id="acmPay" class="acm-pay" hidden>
-          <div id="acmCardBtn"></div>
-          <div id="acmPaypalBtn"></div>
-          <p class="acm-fine">Pago seguro con tarjeta o PayPal. Se renueva cada mes y puedes cancelar cuando quieras.</p>
+        <div id="acmPay" class="acm-pay">
+          <h3 class="acm-pay-title">Completa tu suscripción</h3>
+          <p class="acm-pay-subtitle">Tarjeta o PayPal. Se renueva cada mes y puedes cancelar cuando quieras.</p>
+          <div id="acmPayLocked" class="acm-pay-locked">
+            <strong>Aplica tu código promocional</strong>
+            Elige el precio especial de $29.99 para habilitar el pago seguro.
+          </div>
+          <div id="acmPaymentButtons" class="acm-payment-buttons" hidden>
+            <div id="acmCardBtn"></div>
+            <div id="acmPaypalBtn"></div>
+          </div>
+          <p class="acm-fine">Pago procesado de forma segura por PayPal.</p>
         </div>
       </div>
 
@@ -3941,12 +4003,14 @@
       document.getElementById('acmPricePromo').textContent = 'Descuento del 78% aplicado';
       document.getElementById('acmPriceValue').textContent = '$' + ACADEMY_CONFIG.price;
       document.getElementById('acmPriceFinal').hidden = false;
+      document.querySelector('.acm-price').classList.add('promo-applied');
       if (ACADEMY_CONFIG.planId.includes('REEMPLAZAR')) {
         setAcademyMessage('Descuento aplicado. El pago estará disponible muy pronto.', 'ok');
         return;
       }
       setAcademyMessage('Descuento aplicado. Elige cómo pagar.', 'ok');
-      document.getElementById('acmPay').hidden = false;
+      document.getElementById('acmPayLocked').hidden = true;
+      document.getElementById('acmPaymentButtons').hidden = false;
       renderAcademyButtons().catch((error) => {
         console.error('PayPal (academy):', error);
         setAcademyMessage('No se pudo cargar el pago. Recarga la página e inténtalo de nuevo.', 'error');
