@@ -219,7 +219,7 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
 async function editUserPhone(userId, currentPhone) {
   const input = prompt('Teléfono del alumno (déjalo vacío para borrarlo):', currentPhone);
   if (input === null) return;
-  const { error } = await sp.from('profiles').update({ phone: input.trim() }).eq('id', userId);
+  const { error } = await sp.from('profiles').update({ phone: input.trim() || null }).eq('id', userId);
   if (error) {
     Toastify({ text: `No se pudo guardar el teléfono: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
     return;

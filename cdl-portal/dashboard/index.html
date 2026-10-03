@@ -3259,7 +3259,7 @@
 
     function readPhoneFields(countryId, numberId) {
       const number = document.getElementById(numberId).value.trim();
-      return number ? `${document.getElementById(countryId).value} ${number}` : '';
+      return number ? `${document.getElementById(countryId).value} ${number}` : null;
     }
 
     function openCompleteProfileModal(profile) {
