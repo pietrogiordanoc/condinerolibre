@@ -2973,6 +2973,7 @@
     let classroomCourse = null;
     let classroomCurrentLessonId = null;
     const classroomPreviewCourseIds = new Set();
+    const classroomTimeLimitedPreviewCourseIds = new Set(['master-pro']);
     const CLASSROOM_PREVIEW_SECONDS = 120;
 
     function stepClassroom(delta) {
@@ -2986,6 +2987,7 @@
       const nowMeta = document.getElementById('classroomNowMeta');
       const nowTitle = document.getElementById('classroomNowTitle');
       const isPreview = classroomPreviewCourseIds.has(course?.id);
+      const isTimeLimitedPreview = isPreview && classroomTimeLimitedPreviewCourseIds.has(course?.id);
       if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
         player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
       } else {
@@ -2994,14 +2996,14 @@
       classroomCurrentLessonId = lesson.id;
       if (course?.id && lesson?.bunny_video_id) {
         if (!isPreview) saveClassroomProgress(course.id, lesson.bunny_video_id);
-        startLessonTracking(course, lesson, player.querySelector('iframe'), isPreview);
+        startLessonTracking(course, lesson, player.querySelector('iframe'), isPreview, isTimeLimitedPreview);
       } else {
         stopLessonTracking();
       }
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
       const lessonMeta = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
-      nowMeta.textContent = isPreview ? `${lessonMeta} · Muestra de 2 min` : lessonMeta;
+      nowMeta.textContent = isPreview ? `${lessonMeta} · ${isTimeLimitedPreview ? 'Muestra de 2 min' : 'Clase gratis completa'}` : lessonMeta;
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
@@ -3092,7 +3094,8 @@
         return;
       }
       const renumbered = new Map();
-      const lessons = (classroomLessonsByCourseId.get(courseId) || []).slice(CLASSROOM_SKIP_FIRST_LESSONS[courseId] || 0).map((lesson) => {
+      const skippedLessons = classroomPreviewCourseIds.has(courseId) ? 0 : (CLASSROOM_SKIP_FIRST_LESSONS[courseId] || 0);
+      const lessons = (classroomLessonsByCourseId.get(courseId) || []).slice(skippedLessons).map((lesson) => {
         const number = (renumbered.get(lesson.module_id || null) || 0) + 1;
         renumbered.set(lesson.module_id || null, number);
         return { ...lesson, position: number };
@@ -3119,9 +3122,10 @@
           : playableLessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
         const previewCourse = classroomPreviewCourseIds.has(courseId);
+        const timeLimitedPreview = previewCourse && classroomTimeLimitedPreviewCourseIds.has(courseId);
         const lessonCard = (lesson) => {
           const locked = lesson.locked === true;
-          const label = locked ? 'BLOQUEADA' : previewCourse ? 'MUESTRA · 2 MIN' : `LECCIÓN ${lesson.position}`;
+          const label = locked ? 'BLOQUEADA' : previewCourse ? (timeLimitedPreview ? 'MUESTRA · 2 MIN' : 'CLASE GRATIS') : `LECCIÓN ${lesson.position}`;
           return `<button type="button" class="classroom-lesson-card${locked ? ' locked' : ''}" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id || ''}" data-locked="${locked}"><span class="classroom-lesson-number">${label}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         };
         lessonsWrap.innerHTML = modules.length
@@ -3245,7 +3249,7 @@
       return merged;
     }
 
-    async function startLessonTracking(course, lesson, frame, isPreview = false) {
+    async function startLessonTracking(course, lesson, frame, isPreview = false, isTimeLimitedPreview = false) {
       const token = ++trackingToken;
       stopLessonTracking();
       if (sessionStorage.getItem('cdl_audit_session') || !frame) return;
@@ -3259,7 +3263,7 @@
         duration: saved.duration_seconds || lesson.duration_seconds || 0,
         furthest: saved.furthest_seconds || 0,
         position: saved.last_position_seconds || 0,
-        completedAt: saved.completed_at || null, isPreview,
+        completedAt: saved.completed_at || null, isPreview, isTimeLimitedPreview,
         lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, previewTimer: null, player: null
       };
       lessonTracker = tracker;
@@ -3279,7 +3283,7 @@
           tracker.player.on('pause', () => { tracker.lastT = null; flushLessonTracker(tracker); });
           tracker.player.on('seeked', () => { tracker.lastT = null; });
           tracker.player.on('ended', () => { tracker.lastT = null; flushLessonTracker(tracker); });
-          if (tracker.isPreview) {
+          if (tracker.isTimeLimitedPreview) {
             tracker.previewTimer = setInterval(() => {
               tracker.player?.getCurrentTime?.((seconds) => trackTimeUpdate(tracker, seconds));
             }, 500);
@@ -3294,7 +3298,7 @@
       if (lessonTracker !== tracker) return;
       const seconds = Number(typeof data === 'object' ? data?.seconds : data);
       if (!Number.isFinite(seconds)) return;
-      if (tracker.isPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
+      if (tracker.isTimeLimitedPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
         finishClassroomPreview(tracker);
         return;
       }
@@ -3422,7 +3426,7 @@
           status.classList.add('course-access-active');
         }
         if (status && hasPreview && !hasAccess) {
-          status.textContent = 'MUESTRA GRATIS · 2 MIN';
+          status.textContent = classroomTimeLimitedPreviewCourseIds.has(cta.dataset.courseId) ? 'MUESTRA GRATIS · 2 MIN' : 'CLASE GRATIS COMPLETA';
         }
         if (hasAccess || hasPreview) {
           cta.removeAttribute('target');
