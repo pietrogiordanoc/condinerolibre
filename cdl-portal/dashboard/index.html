@@ -635,11 +635,17 @@
     .classroom-now h3 { margin: 5px 0 0; color: #fff; font-size: 17px; }
     .classroom-lessons { padding: 20px 22px 24px; }
     .classroom-lessons h3 { margin: 0 0 14px; color: #fff; font-size: 16px; }
+    .classroom-lesson-grid.classroom-modules-list { display: block; }
+    .classroom-module { --module-accent: #38bdf8; }
+    .classroom-module:nth-child(2) { --module-accent: #fbbf24; }
+    .classroom-module:nth-child(3) { --module-accent: #f472b6; }
     .classroom-module + .classroom-module { margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); }
     .classroom-module-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
-    .classroom-module-head h4 { margin: 0; color: #fff; font-size: 15px; font-weight: 600; }
+    .classroom-module-head h4 { margin: 0; color: var(--module-accent); font-size: 15px; font-weight: 600; }
     .classroom-module-head span { color: var(--muted); font-size: 11px; }
     .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
+    .classroom-module .classroom-lesson-grid { display: flex; overflow-x: auto; gap: 12px; padding: 0 2px 10px; scroll-snap-type: x proximity; scrollbar-color: var(--module-accent) rgba(255,255,255,.08); }
+    .classroom-module .classroom-lesson-card { flex: 0 0 clamp(185px, 22vw, 250px); scroll-snap-align: start; border-top: 2px solid var(--module-accent); }
     .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
     .classroom-lesson-card:hover, .classroom-lesson-card.active { border-color: rgba(42,255,138,.65); background: rgba(42,255,138,.1); }
     .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
@@ -2910,9 +2916,11 @@
         document.getElementById('classroomRetry').onclick = () => openClassroom(courseId);
         document.getElementById('classroomNowMeta').textContent = 'Curso activado';
         document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
+        lessonsWrap.classList.remove('classroom-modules-list');
         lessonsWrap.innerHTML = '';
       } else {
         const modules = classroomModulesByCourseId.get(courseId) || [];
+        lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
         const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`;
         lessonsWrap.innerHTML = modules.length
           ? modules.map((module) => {
