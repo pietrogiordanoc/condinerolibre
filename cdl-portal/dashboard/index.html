@@ -669,6 +669,9 @@
     .classroom-lesson-card:not(.active) { opacity: .8; }
     .classroom-lesson-card.seen:not(.active) .classroom-lesson-number { color: #8aa397; }
     .classroom-lesson-card.active { opacity: 1; border-color: var(--green); background: rgba(42,255,138,.16); box-shadow: 0 0 0 1px var(--green); }
+    .classroom-lesson-card.locked { opacity: .36; border-color: rgba(255,255,255,.1); background: rgba(255,255,255,.018); cursor: pointer; }
+    .classroom-lesson-card.locked:hover { opacity: .62; border-color: rgba(255,255,255,.24); }
+    .classroom-lesson-card.locked .classroom-lesson-number { color: #aab5af; }
     .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
     .classroom-lesson-card strong { display: block; font-size: 13px; line-height: 1.35; font-weight: 600; }
     .classroom-empty { margin: 0; padding: 18px; border: 1px dashed rgba(255,255,255,.2); border-radius: 10px; color: var(--muted); font-size: 13px; }
@@ -2969,6 +2972,7 @@
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
       const progress = classroomProgressByCourseId.get(course?.id) || new Map();
       document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
+        if (card.dataset.locked === 'true') return;
         const active = card.dataset.classroomLessonId === lesson.id;
         const seen = progress.has(card.dataset.videoId);
         card.classList.toggle('active', active);
@@ -3041,7 +3045,7 @@
       player.innerHTML = '<div class="classroom-player-empty">Cargando lecciones…</div>';
 
       await classroomReady;
-      if (!classroomCoursesById.has(courseId)) await fetchClassroomState([courseId]);
+      if (!classroomCoursesById.has(courseId)) await fetchClassroomState([courseId], classroomPreviewCourseIds.has(courseId));
       if (needsClassroomSync(courseId) && !classroomPreviewCourseIds.has(courseId)) {
         await requestClassroomSync(courseId);
         await fetchClassroomState([courseId]);
@@ -3074,12 +3078,17 @@
       } else {
         const allModules = classroomModulesByCourseId.get(courseId) || [];
         const modules = lessons.some((lesson) => lesson.module_id) ? allModules : [];
+        const playableLessons = lessons.filter((lesson) => !lesson.locked);
         classroomPlaylist = modules.length
-          ? modules.flatMap((module) => lessons.filter((lesson) => lesson.module_id === module.id).map((lesson) => ({ lesson, module })))
-          : lessons.map((lesson) => ({ lesson, module: null }));
+          ? modules.flatMap((module) => playableLessons.filter((lesson) => lesson.module_id === module.id).map((lesson) => ({ lesson, module })))
+          : playableLessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
         const previewCourse = classroomPreviewCourseIds.has(courseId);
-        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id}"><span class="classroom-lesson-number">${previewCourse ? 'MUESTRA · 3 MIN' : `LECCIÓN ${lesson.position}`}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
+        const lessonCard = (lesson) => {
+          const locked = lesson.locked === true;
+          const label = locked ? 'BLOQUEADA' : previewCourse ? 'MUESTRA · 3 MIN' : `LECCIÓN ${lesson.position}`;
+          return `<button type="button" class="classroom-lesson-card${locked ? ' locked' : ''}" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id || ''}" data-locked="${locked}"><span class="classroom-lesson-number">${label}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
+        };
         lessonsWrap.innerHTML = modules.length
           ? modules.map((module) => {
               const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
@@ -3089,6 +3098,10 @@
         lessonsWrap.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
           card.addEventListener('click', () => {
             const lesson = lessons.find((item) => item.id === card.dataset.classroomLessonId);
+            if (lesson?.locked) {
+              openAcademyModal();
+              return;
+            }
             const module = modules.find((item) => item.id === lesson?.module_id);
             if (lesson) renderClassroomLesson(course, lesson, module);
           });
@@ -3103,15 +3116,17 @@
       }
     }
 
-    async function fetchClassroomState(courseIds) {
-      const [coursesResponse, modulesResponse, lessonsResponse] = await Promise.all([
+    async function fetchClassroomState(courseIds, includePreviewOutline = false) {
+      const [coursesResponse, modulesResponse, lessonsResponse, outlineResponse] = await Promise.all([
         sp.from('courses').select('id, title, bunny_library_id, bunny_collection_id').in('id', courseIds),
         sp.from('course_modules').select('id, course_id, title, position').in('course_id', courseIds).order('position'),
-        sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position, duration_seconds').in('course_id', courseIds).order('position')
+        sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position, duration_seconds').in('course_id', courseIds).order('position'),
+        includePreviewOutline ? sp.rpc('get_classroom_preview_outline', { target_course_ids: courseIds }) : Promise.resolve({ data: null, error: null })
       ]);
       if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
       if (modulesResponse.error) console.warn('Los módulos de Classroom aún no están disponibles:', modulesResponse.error);
       if (lessonsResponse.error) console.error('No se pudieron cargar las lecciones de Classroom:', lessonsResponse.error);
+      if (outlineResponse.error) console.warn('No se pudo cargar el índice de lecciones bloqueadas:', outlineResponse.error);
       (coursesResponse.data || []).forEach((course) => classroomCoursesById.set(course.id, course));
       if (lessonsResponse.error) return;
       courseIds.forEach((courseId) => classroomModulesByCourseId.set(courseId, []));
@@ -3119,7 +3134,17 @@
         (modulesResponse.data || []).forEach((module) => classroomModulesByCourseId.get(module.course_id)?.push(module));
       }
       courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
-      (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
+      const playableLessonIds = new Set((lessonsResponse.data || []).map((lesson) => lesson.id));
+      const lessonRows = outlineResponse.data || lessonsResponse.data || [];
+      lessonRows.forEach((lesson) => {
+        const playable = playableLessonIds.has(lesson.id);
+        classroomLessonsByCourseId.get(lesson.course_id)?.push({
+          ...lesson,
+          bunny_video_id: playable ? (lessonsResponse.data || []).find((item) => item.id === lesson.id)?.bunny_video_id : null,
+          duration_seconds: playable ? (lessonsResponse.data || []).find((item) => item.id === lesson.id)?.duration_seconds : null,
+          locked: includePreviewOutline && !playable
+        });
+      });
 
       const { data: { session } } = await sp.auth.getSession();
       const progressColumns = 'course_id, bunny_video_id, last_viewed_at, duration_seconds, watched_seconds, furthest_seconds, last_position_seconds, watched_ranges, completed_at';
@@ -3337,7 +3362,7 @@
         previewCourseIds.forEach((courseId) => classroomPreviewCourseIds.add(courseId));
       }
       const classroomCourseIds = new Set([...enrolledCourseIds, ...previewCourseIds]);
-      classroomReady = (isFreemium ? fetchClassroomState([...classroomCourseIds]) : loadClassroomContent(enrolledCourseIds))
+      classroomReady = (isFreemium ? fetchClassroomState([...classroomCourseIds], true) : loadClassroomContent(enrolledCourseIds))
         .catch((loadError) => console.error('Classroom:', loadError));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
