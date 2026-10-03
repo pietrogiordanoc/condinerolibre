@@ -2057,7 +2057,8 @@
     const CONFIG = {
       supabaseUrl: "https://yhgqmbexjscojlrzguvh.supabase.co",
       anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloZ3FtYmV4anNjb2pscnpndXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxNzA1NTcsImV4cCI6MjA4Mjc0NjU1N30.uXFLknfgsZ_3yH5t9cW0dfbwN_b3uOi6jcfM06inVu4",
-      radarAccessUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/radar-access"
+      radarAccessUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/radar-access",
+      classroomSyncUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/classroom-sync"
     };
     const COURSE_URLS = [
       "https://youtu.be/zuDoaXyotX8?si=z_VAH4J1NuWF1aQb",
@@ -2869,6 +2870,20 @@
       }, new Map());
     }
 
+    async function ensureClassroomLessons(session, enrolledCourseIds) {
+      await Promise.all([...enrolledCourseIds].map(async (courseId) => {
+        const response = await fetch(CONFIG.classroomSyncUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({ course_id: courseId })
+        });
+        if (!response.ok) {
+          const result = await response.json().catch(() => ({}));
+          console.error(`No se pudieron sincronizar las lecciones de ${courseId}:`, result.error || response.status);
+        }
+      }));
+    }
+
     async function renderCourseAccessCtas(session) {
       const { data: enrollments, error } = await sp
         .from('course_enrollments')
@@ -2881,6 +2896,7 @@
       }
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
+      await ensureClassroomLessons(session, enrolledCourseIds);
       await loadClassroomContent(enrolledCourseIds);
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);

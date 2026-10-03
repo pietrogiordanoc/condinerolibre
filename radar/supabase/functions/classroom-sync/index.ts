@@ -26,16 +26,33 @@ serve(async (request) => {
   const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
   if (authError || !authData.user) return response({ error: "Unauthorized" }, 401);
 
+  const body = await request.json().catch(() => ({}));
+  const courseId = body?.course_id;
+  if (!courseId) return response({ error: "Missing course_id" }, 400);
+
   const { data: adminUser } = await supabaseAdmin
     .from("admin_users")
     .select("user_id")
     .eq("user_id", authData.user.id)
     .maybeSingle();
-  if (!adminUser) return response({ error: "Forbidden" }, 403);
   if (!bunnyApiKey) return response({ error: "BUNNY_STREAM_API_KEY is not configured" }, 500);
 
-  const { course_id: courseId } = await request.json().catch(() => ({}));
-  if (!courseId) return response({ error: "Missing course_id" }, 400);
+  if (!adminUser) {
+    const { data: enrollment } = await supabaseAdmin
+      .from("course_enrollments")
+      .select("course_id")
+      .eq("user_id", authData.user.id)
+      .eq("course_id", courseId)
+      .maybeSingle();
+    if (!enrollment) return response({ error: "Forbidden" }, 403);
+
+    const { count, error: countError } = await supabaseAdmin
+      .from("course_lessons")
+      .select("id", { count: "exact", head: true })
+      .eq("course_id", courseId);
+    if (countError) return response({ error: countError.message }, 500);
+    if ((count || 0) > 0) return response({ ok: true, imported: count, cached: true, course_id: courseId });
+  }
 
   const { data: course, error: courseError } = await supabaseAdmin
     .from("courses")
