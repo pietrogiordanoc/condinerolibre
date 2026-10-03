@@ -3279,7 +3279,7 @@
         furthest: saved.furthest_seconds || 0,
         position: saved.last_position_seconds || 0,
         completedAt: saved.completed_at || null, isPreview, isTimeLimitedPreview,
-        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, previewTimer: null, player: null
+        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, previewTimer: null, previewHardStopTimer: null, player: null
       };
       lessonTracker = tracker;
 
@@ -3302,6 +3302,7 @@
             tracker.previewTimer = setInterval(() => {
               tracker.player?.getCurrentTime?.((seconds) => trackTimeUpdate(tracker, seconds));
             }, 500);
+            tracker.previewHardStopTimer = setTimeout(() => finishClassroomPreview(tracker), CLASSROOM_PREVIEW_SECONDS * 1000);
           }
         });
       }).catch((error) => console.warn('No se pudo cargar el seguimiento de reproducción:', error));
@@ -3374,6 +3375,7 @@
       lessonTracker = null;
       clearInterval(tracker.timer);
       clearInterval(tracker.previewTimer);
+      clearTimeout(tracker.previewHardStopTimer);
       flushLessonTracker(tracker);
     }
 
