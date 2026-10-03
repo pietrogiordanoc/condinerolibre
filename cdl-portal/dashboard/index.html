@@ -2132,7 +2132,9 @@
     }
 
     window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin || event.data?.type !== 'RADAR_SESSION_READY') return;
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === 'RADAR_NAVIGATE' && event.data.hash === '#upgrade') { navigateTo('#upgrade'); return; }
+      if (event.data?.type !== 'RADAR_SESSION_READY') return;
       sendRadarSession().catch((error) => console.error('[Portal] Error reenviando sesión al Radar:', error));
     });
 

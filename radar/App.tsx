@@ -43,6 +43,7 @@ const App: React.FC = () => {
   const [hasVerifiedAccess, setHasVerifiedAccess] = useState(false);
   const [affiliateBalanceCents, setAffiliateBalanceCents] = useState(0);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
+  const [portalSessionReady, setPortalSessionReady] = useState(() => window.self === window.top);
   
   const analysesRef = useRef<Record<string, MultiTimeframeAnalysis>>({});
   const [forceUpdateTrigger, forceUpdate] = useState(0);
@@ -157,14 +158,39 @@ const App: React.FC = () => {
     };
   }, [audioReady]);
 
+  // Dentro del portal, esperar la sesión que envía la página contenedora.
+  useEffect(() => {
+    if (window.self === window.top) return;
+
+    const receivePortalSession = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin || event.data?.type !== 'PORTAL_SESSION') return;
+      const session = event.data.session;
+      if (!session?.access_token || !session?.refresh_token) return;
+
+      const { error } = await supabase.auth.setSession(session);
+      if (error) {
+        console.error('[Radar] No se pudo restaurar la sesión del portal:', error);
+        return;
+      }
+      setPortalSessionReady(true);
+    };
+
+    window.addEventListener('message', receivePortalSession);
+    window.parent.postMessage({ type: 'RADAR_SESSION_READY' }, window.location.origin);
+    return () => window.removeEventListener('message', receivePortalSession);
+  }, []);
+
   // Validar acceso al radar (protección contra acceso directo sin autenticación)
   useEffect(() => {
+    if (!portalSessionReady) return;
+
     const validateAccess = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
-        // Sin sesión → redirigir a login
+        // Sin sesión → redirigir a login (el portal contenedor ya gestiona su propia sesión)
         if (!session) {
+          if (window.self !== window.top) return;
           console.log('[Radar] Sin sesión - redirigiendo a login');
           window.location.href = '/login?next=/radar';
           return;
@@ -201,6 +227,8 @@ const App: React.FC = () => {
         const hasPhone = !!(profile?.phone && profile.phone.trim());
         setExperimentalSlEnabled(profile?.experimental_sl_enabled !== false);
         if (!hasName || !hasPhone) {
+          // Embebido: el portal ya pide el perfil; redirigir aquí anidaría el portal dentro del iframe.
+          if (window.self !== window.top) return;
           console.log('[Radar] Perfil incompleto - redirigiendo al portal');
           window.location.href = '/dashboard#radar';
           return;
@@ -222,6 +250,10 @@ const App: React.FC = () => {
         // Sin acceso → redirigir a upgrade
         if (!data.allowed) {
           console.log('[Radar] Sin tiempo freemium - redirigiendo a upgrade');
+          if (window.self !== window.top) {
+            window.parent.postMessage({ type: 'RADAR_NAVIGATE', hash: '#upgrade' }, window.location.origin);
+            return;
+          }
           window.location.href = '/dashboard#upgrade';
         } else {
           console.log('[Radar] Acceso validado ✅');
@@ -233,7 +265,7 @@ const App: React.FC = () => {
     };
     
     validateAccess();
-  }, []);
+  }, [portalSessionReady]);
 
   const handleRefreshComplete = useCallback(() => {
     setRefreshTrigger(t => t + 1);
