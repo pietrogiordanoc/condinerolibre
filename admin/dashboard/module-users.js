@@ -160,12 +160,19 @@ function renderUsers() {
 
     const enrolledCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
     const coursesDisplay = COURSES.length
-      ? COURSES.map(course => `
-          <label class="course-access-option">
-            <input type="checkbox" ${enrolledCourseIds.has(course.id) ? 'checked' : ''}
-              onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
-            <span>${course.title}</span>
-          </label>`).join('')
+      ? COURSES.map(course => {
+          const enrolled = enrolledCourseIds.has(course.id);
+          const started = enrolled && courseProgressStats(u.id, course).seen > 0;
+          return `
+          <div class="course-row ${started ? '' : 'is-idle'}">
+            <label class="course-access-option">
+              <input type="checkbox" ${enrolled ? 'checked' : ''}
+                onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
+              <span>${course.title}</span>
+            </label>
+            <div class="course-metrics">${enrolled ? courseMetrics(u.id, course) : '<span class="course-metrics-empty">Sin acceso</span>'}</div>
+          </div>`;
+        }).join('')
       : '<span class="course-access-empty">Aún no hay cursos configurados.</span>';
     
     return `
@@ -187,9 +194,8 @@ function renderUsers() {
           <div class="course-access-line">
             <strong>La Classroom</strong>
             <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
-            <div class="course-access-options">${coursesDisplay}</div>
+            <div class="course-list">${coursesDisplay}</div>
           </div>
-          ${progressSummary(u.id, enrolledCourseIds)}
         </td>
       </tr>`;
   }).join("");
@@ -260,19 +266,16 @@ function progressBadge(userId, enrolledCourseIds) {
   return `<span class="course-pct ${seen ? '' : 'zero'}" title="${seen} de ${total} lecciones vistas en ${stats.length} cursos">${pct}%</span>`;
 }
 
-function progressSummary(userId, enrolledCourseIds) {
-  const lines = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => {
-    const { titles, seen, total, pct, last } = courseProgressStats(userId, course);
-    let detail = 'Sin empezar';
-    if (last) {
-      const fullTitle = (titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '');
-      const shortTitle = fullTitle.length > 46 ? `${fullTitle.slice(0, 45)}…` : fullTitle;
-      const when = new Date(last.last_viewed_at).toLocaleString('es-ES');
-      detail = `<span class="progress-last" title="${escapeHtmlText(fullTitle)} · ${when}">Última: ${escapeHtmlText(shortTitle)} · ${timeAgo(last.last_viewed_at)}</span>`;
-    }
-    return `<div class="course-progress-line ${seen ? '' : 'is-idle'}"><strong>${escapeHtmlText(course.title)}</strong><span class="progress-bar" title="${seen} de ${total}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span><span>${seen} de ${total} vistas</span>${detail}</div>`;
-  });
-  return lines.length ? `<div class="course-progress">${lines.join('')}</div>` : '';
+function courseMetrics(userId, course) {
+  const { titles, seen, total, pct, last } = courseProgressStats(userId, course);
+  let detail = '<span>Sin empezar</span>';
+  if (last) {
+    const fullTitle = (titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '');
+    const shortTitle = fullTitle.length > 46 ? `${fullTitle.slice(0, 45)}…` : fullTitle;
+    const when = new Date(last.last_viewed_at).toLocaleString('es-ES');
+    detail = `<span class="progress-last" title="${escapeHtmlText(fullTitle)} · ${when}">Última: ${escapeHtmlText(shortTitle)} · ${timeAgo(last.last_viewed_at)}</span>`;
+  }
+  return `<span class="progress-bar" title="${seen} de ${total}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span><span>${seen} de ${total} vistas</span>${detail}`;
 }
 
 function toggleCourseRow(userId) {
