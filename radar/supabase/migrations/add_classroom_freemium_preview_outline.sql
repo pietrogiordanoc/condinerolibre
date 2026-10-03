@@ -6,7 +6,7 @@ RETURNS TABLE (
   course_id text,
   module_id uuid,
   title text,
-  position integer,
+  "position" integer,
   preview_available boolean
 )
 LANGUAGE sql STABLE SECURITY DEFINER
