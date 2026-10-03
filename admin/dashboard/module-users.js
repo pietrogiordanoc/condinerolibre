@@ -12,7 +12,7 @@ const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 async function refreshUsers() {
   const [profilesResponse, coursesResponse, enrollmentsResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
-    sp.from("courses").select("id, title").eq("active", true).order("title", { ascending: true }),
+    sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
     sp.from("course_enrollments").select("user_id, course_id")
   ]);
 
@@ -27,28 +27,50 @@ async function refreshUsers() {
   if (coursesResponse.error || enrollmentsResponse.error) {
     console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error || enrollmentsResponse.error);
   }
+  renderClassroomSyncActions();
   renderUsers();
 }
 
-async function syncClassroomCourse(courseId, courseLabel, button) {
-  const originalLabel = button.textContent;
-  button.disabled = true;
-  button.textContent = 'Sincronizando...';
-  const { data: { session } } = await sp.auth.getSession();
-  const response = await fetch(CONFIG.classroomSyncUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-    body: JSON.stringify({ course_id: courseId })
+function renderClassroomSyncActions() {
+  const container = document.getElementById('classroomSyncActions');
+  if (!container) return;
+  container.innerHTML = '';
+  COURSES.filter(course => course.bunny_collection_id).forEach(course => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn';
+    button.textContent = `Actualizar ${course.title}`;
+    button.onclick = () => syncClassroomCourse(course.id, course.title, button);
+    container.appendChild(button);
   });
-  const result = await response.json().catch(() => ({}));
-  button.disabled = false;
-  button.textContent = originalLabel;
+}
 
-  if (!response.ok) {
-    Toastify({ text: `No se pudo sincronizar ${courseLabel}: ${result.error || 'Error desconocido'}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
-    return;
+async function syncClassroomCourse(courseId, courseLabel, button) {
+  const originalLabel = button?.textContent;
+  if (button) { button.disabled = true; button.textContent = 'Sincronizando...'; }
+  let response;
+  let result = {};
+  try {
+    const { data: { session } } = await sp.auth.getSession();
+    response = await fetch(CONFIG.classroomSyncUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+      body: JSON.stringify({ course_id: courseId })
+    });
+    result = await response.json().catch(() => ({}));
+  } catch (error) {
+    result = { error: error.message, code: 'network_error' };
+  }
+  if (button) { button.disabled = false; button.textContent = originalLabel; }
+
+  if (!response?.ok) {
+    const reason = [result.code, result.error, result.detail].filter(Boolean).join(' · ') || 'Error desconocido';
+    console.error(`classroom-sync ${courseId}:`, result);
+    Toastify({ text: `No se pudo sincronizar ${courseLabel}: ${reason}`, duration: 9000, backgroundColor: '#e74c3c' }).showToast();
+    return false;
   }
   Toastify({ text: `${courseLabel}: ${result.imported || 0} lecciones sincronizadas`, duration: 3000, backgroundColor: '#10b981' }).showToast();
+  return true;
 }
 
 async function refreshRadarUsage() {
@@ -198,6 +220,10 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
     backgroundColor: shouldGrant ? '#10b981' : '#475569'
   }).showToast();
   checkbox.disabled = false;
+
+  // Importa las lecciones al activar, para que el alumno las encuentre listas.
+  const grantedCourse = COURSES.find(course => course.id === courseId);
+  if (shouldGrant && grantedCourse?.bunny_collection_id) syncClassroomCourse(courseId, grantedCourse.title, null);
 }
 
 async function adminSetPlan(uId, plan) {

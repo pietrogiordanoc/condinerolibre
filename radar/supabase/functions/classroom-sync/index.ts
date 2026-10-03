@@ -6,93 +6,173 @@ const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const bunnyApiKey = Deno.env.get("BUNNY_STREAM_API_KEY") || "";
 const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://condinerolibre.com",
-  "Access-Control-Allow-Headers": "authorization, content-type",
-  "Content-Type": "application/json"
+const ALLOWED_ORIGINS = new Set([
+  "https://condinerolibre.com",
+  "https://www.condinerolibre.com",
+  "http://localhost:8888",
+  "http://127.0.0.1:5500"
+]);
+
+// Bunny video status 3 = transcoding (already playable), 4 = finished.
+const PLAYABLE_STATUSES = new Set([3, 4]);
+const PAGE_SIZE = 100;
+const MAX_PAGES = 10;
+
+function corsHeaders(request: Request) {
+  const origin = request.headers.get("Origin") || "";
+  return {
+    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://condinerolibre.com",
+    "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info",
+    "Vary": "Origin",
+    "Content-Type": "application/json"
+  };
+}
+
+type Lesson = {
+  course_id: string;
+  title: string;
+  bunny_video_id: string;
+  duration_seconds: number;
+  position: number;
+  published: boolean;
 };
 
-function response(body: Record<string, unknown>, status = 200) {
-  return new Response(JSON.stringify(body), { status, headers: corsHeaders });
+async function fetchBunnyVideos(libraryId: number, collectionId: string) {
+  const videos: Record<string, unknown>[] = [];
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const url = new URL(`https://video.bunnycdn.com/library/${libraryId}/videos`);
+    url.searchParams.set("collection", collectionId);
+    url.searchParams.set("page", String(page));
+    url.searchParams.set("itemsPerPage", String(PAGE_SIZE));
+    const res = await fetch(url, { headers: { AccessKey: bunnyApiKey, Accept: "application/json" } });
+    if (!res.ok) return { error: { status: res.status, detail: (await res.text()).slice(0, 300) } };
+
+    const payload = await res.json();
+    const items = Array.isArray(payload?.items) ? payload.items : [];
+    videos.push(...items);
+    if (videos.length >= Number(payload?.totalItems || 0) || items.length < PAGE_SIZE) break;
+  }
+  return { videos };
 }
 
 serve(async (request) => {
-  if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
-  if (request.method !== "POST") return response({ error: "Method not allowed" }, 405);
+  const headers = corsHeaders(request);
+  const reply = (body: Record<string, unknown>, status = 200) =>
+    new Response(JSON.stringify(body), { status, headers });
 
-  const token = (request.headers.get("Authorization") || "").replace("Bearer ", "").trim();
-  if (!token) return response({ error: "Unauthorized" }, 401);
+  if (request.method === "OPTIONS") return new Response("ok", { headers });
+  if (request.method !== "POST") return reply({ error: "Method not allowed", code: "method_not_allowed" }, 405);
 
-  const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
-  if (authError || !authData.user) return response({ error: "Unauthorized" }, 401);
+  try {
+    const token = (request.headers.get("Authorization") || "").replace("Bearer ", "").trim();
+    if (!token) return reply({ error: "Unauthorized", code: "unauthorized" }, 401);
 
-  const body = await request.json().catch(() => ({}));
-  const courseId = body?.course_id;
-  if (!courseId) return response({ error: "Missing course_id" }, 400);
+    const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
+    if (authError || !authData.user) return reply({ error: "Unauthorized", code: "unauthorized" }, 401);
+    const userId = authData.user.id;
 
-  const { data: adminUser } = await supabaseAdmin
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", authData.user.id)
-    .maybeSingle();
-  if (!bunnyApiKey) return response({ error: "BUNNY_STREAM_API_KEY is not configured" }, 500);
+    const body = await request.json().catch(() => ({}));
+    const courseId = typeof body?.course_id === "string" ? body.course_id : "";
+    if (!courseId) return reply({ error: "Missing course_id", code: "bad_request" }, 400);
 
-  if (!adminUser) {
-    const { data: enrollment } = await supabaseAdmin
-      .from("course_enrollments")
-      .select("course_id")
-      .eq("user_id", authData.user.id)
-      .eq("course_id", courseId)
-      .maybeSingle();
-    if (!enrollment) return response({ error: "Forbidden" }, 403);
+    const { data: adminUser } = await supabaseAdmin
+      .from("admin_users").select("user_id").eq("user_id", userId).maybeSingle();
+    const isAdmin = !!adminUser;
+
+    if (!isAdmin) {
+      const { data: enrollment } = await supabaseAdmin
+        .from("course_enrollments").select("course_id")
+        .eq("user_id", userId).eq("course_id", courseId).maybeSingle();
+      if (!enrollment) return reply({ error: "Forbidden", code: "forbidden" }, 403);
+    }
 
     const { count, error: countError } = await supabaseAdmin
-      .from("course_lessons")
-      .select("id", { count: "exact", head: true })
-      .eq("course_id", courseId);
-    if (countError) return response({ error: countError.message }, 500);
-    if ((count || 0) > 0) return response({ ok: true, imported: count, cached: true, course_id: courseId });
+      .from("course_lessons").select("id", { count: "exact", head: true }).eq("course_id", courseId);
+    if (countError) {
+      console.error("course_lessons count failed:", countError);
+      return reply({ error: "Lessons table is not available", code: "lessons_table_error" }, 500);
+    }
+    // Students only trigger a first import; admins can force a refresh.
+    if (!isAdmin && (count || 0) > 0) return reply({ ok: true, cached: true, imported: count, course_id: courseId });
+
+    if (!bunnyApiKey) return reply({ error: "BUNNY_STREAM_API_KEY is not configured", code: "bunny_key_missing" }, 500);
+
+    const { data: course } = await supabaseAdmin
+      .from("courses").select("id, bunny_library_id, bunny_collection_id").eq("id", courseId).maybeSingle();
+    if (!course) return reply({ error: "Course not found", code: "course_not_found" }, 404);
+    if (!course.bunny_library_id || !course.bunny_collection_id) {
+      return reply({ error: "Course has no Bunny collection configured", code: "course_not_configured" }, 400);
+    }
+
+    const result = await fetchBunnyVideos(Number(course.bunny_library_id), course.bunny_collection_id);
+    if (result.error) {
+      console.error("Bunny request failed:", result.error);
+      const code = result.error.status === 401 || result.error.status === 403 ? "bunny_unauthorized" : "bunny_error";
+      return reply({
+        error: code === "bunny_unauthorized"
+          ? "Bunny rejected the API key. Use the API key of library " + course.bunny_library_id
+          : "Bunny could not return the collection videos",
+        code,
+        bunny_status: result.error.status,
+        ...(isAdmin ? { detail: result.error.detail } : {})
+      }, 502);
+    }
+
+    const allVideos = result.videos || [];
+    const lessons: Lesson[] = allVideos
+      .filter((video) => video.guid && video.title && PLAYABLE_STATUSES.has(Number(video.status)))
+      .sort((a, b) => String(a.title).localeCompare(String(b.title), "es", { numeric: true, sensitivity: "base" }))
+      .map((video, index) => ({
+        course_id: course.id,
+        title: String(video.title),
+        bunny_video_id: String(video.guid),
+        duration_seconds: Math.round(Number(video.length) || 0),
+        position: index + 1,
+        published: true
+      }));
+
+    // An empty or still-processing collection must never wipe lessons that already exist.
+    if (lessons.length === 0) {
+      return reply({
+        error: allVideos.length === 0 ? "The Bunny collection has no videos" : "The Bunny videos are still processing",
+        code: allVideos.length === 0 ? "collection_empty" : "videos_processing",
+        bunny_total: allVideos.length
+      }, 422);
+    }
+
+    // Keep unchanged lessons (stable ids); replace only rows that differ, then insert the rest.
+    const { data: existing, error: existingError } = await supabaseAdmin
+      .from("course_lessons").select("id, bunny_video_id, title, position, duration_seconds").eq("course_id", course.id);
+    if (existingError) return reply({ error: existingError.message, code: "lessons_read_error" }, 500);
+
+    const wanted = new Map(lessons.map((lesson) => [lesson.bunny_video_id, lesson]));
+    const unchangedVideoIds = new Set<string>();
+    const staleIds: string[] = [];
+    for (const row of existing || []) {
+      const lesson = wanted.get(row.bunny_video_id);
+      const same = lesson && lesson.position === row.position && lesson.title === row.title &&
+        lesson.duration_seconds === row.duration_seconds;
+      if (same) unchangedVideoIds.add(row.bunny_video_id); else staleIds.push(row.id);
+    }
+
+    if (staleIds.length > 0) {
+      const { error: deleteError } = await supabaseAdmin.from("course_lessons").delete().in("id", staleIds);
+      if (deleteError) return reply({ error: deleteError.message, code: "lessons_delete_error" }, 500);
+    }
+    const toInsert = lessons.filter((lesson) => !unchangedVideoIds.has(lesson.bunny_video_id));
+    if (toInsert.length > 0) {
+      const { error: insertError } = await supabaseAdmin.from("course_lessons").insert(toInsert);
+      if (insertError) return reply({ error: insertError.message, code: "lessons_insert_error" }, 500);
+    }
+
+    return reply({
+      ok: true,
+      imported: lessons.length,
+      skipped_unplayable: allVideos.length - lessons.length,
+      course_id: course.id
+    });
+  } catch (error) {
+    console.error("classroom-sync failed:", error);
+    return reply({ error: "Internal error", code: "internal_error" }, 500);
   }
-
-  const { data: course, error: courseError } = await supabaseAdmin
-    .from("courses")
-    .select("id, bunny_library_id, bunny_collection_id")
-    .eq("id", courseId)
-    .maybeSingle();
-  if (courseError || !course?.bunny_library_id || !course.bunny_collection_id) {
-    return response({ error: "Course does not have a Bunny library and collection configured" }, 400);
-  }
-
-  const bunnyUrl = new URL(`https://video.bunnycdn.com/library/${course.bunny_library_id}/videos`);
-  bunnyUrl.searchParams.set("collection", course.bunny_collection_id);
-  bunnyUrl.searchParams.set("page", "1");
-  bunnyUrl.searchParams.set("itemsPerPage", "100");
-  bunnyUrl.searchParams.set("orderBy", "date");
-  const bunnyResponse = await fetch(bunnyUrl, { headers: { AccessKey: bunnyApiKey } });
-  if (!bunnyResponse.ok) {
-    return response({ error: "Bunny could not return the collection videos", detail: await bunnyResponse.text() }, 502);
-  }
-
-  const bunnyPayload = await bunnyResponse.json();
-  const videos = Array.isArray(bunnyPayload?.items) ? bunnyPayload.items : [];
-  const lessons = videos
-    .filter((video) => video?.guid && video?.title)
-    .reverse()
-    .map((video, index) => ({
-      course_id: course.id,
-      title: video.title,
-      bunny_video_id: video.guid,
-      duration_seconds: Math.round(Number(video.length) || 0),
-      position: index + 1,
-      published: true
-    }));
-
-  const { error: deleteError } = await supabaseAdmin.from("course_lessons").delete().eq("course_id", course.id);
-  if (deleteError) return response({ error: deleteError.message }, 500);
-  if (lessons.length > 0) {
-    const { error: insertError } = await supabaseAdmin.from("course_lessons").insert(lessons);
-    if (insertError) return response({ error: insertError.message }, 500);
-  }
-
-  return response({ ok: true, imported: lessons.length, course_id: course.id });
 });

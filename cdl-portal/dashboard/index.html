@@ -2826,20 +2826,74 @@
       document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => card.classList.toggle('active', card.dataset.classroomLessonId === lesson.id));
     }
 
-    function openClassroom(courseId) {
+    let classroomReady = Promise.resolve();
+    const classroomSyncErrors = new Map();
+    const CLASSROOM_ERROR_MESSAGES = {
+      collection_empty: 'Este curso aún no tiene vídeos publicados.',
+      videos_processing: 'Los vídeos se están procesando. Inténtalo de nuevo en unos minutos.',
+      forbidden: 'Tu cuenta no tiene este curso activado.',
+      unauthorized: 'Tu sesión ha caducado. Vuelve a iniciar sesión.'
+    };
+
+    function needsClassroomSync(courseId) {
       const course = classroomCoursesById.get(courseId);
-      if (!course) return;
+      return !!course?.bunny_collection_id && !(classroomLessonsByCourseId.get(courseId) || []).length;
+    }
+
+    function classroomEmptyMessage(courseId) {
+      const code = classroomSyncErrors.get(courseId);
+      if (!code) return 'Aún no hay lecciones publicadas para este curso.';
+      return `${CLASSROOM_ERROR_MESSAGES[code] || 'No pudimos cargar las lecciones. Inténtalo de nuevo en un momento.'} (${code})`;
+    }
+
+    async function requestClassroomSync(courseId) {
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        const response = await fetch(CONFIG.classroomSyncUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token || ''}` },
+          body: JSON.stringify({ course_id: courseId })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (response.ok) { classroomSyncErrors.delete(courseId); return true; }
+        classroomSyncErrors.set(courseId, result.code || `http_${response.status}`);
+        console.error(`Classroom sync (${courseId}):`, result);
+      } catch (error) {
+        classroomSyncErrors.set(courseId, 'network_error');
+        console.error(`Classroom sync (${courseId}):`, error);
+      }
+      return false;
+    }
+
+    async function openClassroom(courseId) {
       const section = document.getElementById('classroomSection');
-      const lessons = classroomLessonsByCourseId.get(courseId) || [];
+      const player = document.getElementById('classroomPlayer');
       const lessonsWrap = document.getElementById('classroomLessons');
       section.hidden = false;
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      player.innerHTML = '<div class="classroom-player-empty">Cargando lecciones…</div>';
+
+      await classroomReady;
+      if (!classroomCoursesById.has(courseId)) await fetchClassroomState([courseId]);
+      if (needsClassroomSync(courseId)) {
+        await requestClassroomSync(courseId);
+        await fetchClassroomState([courseId]);
+      }
+
+      const course = classroomCoursesById.get(courseId);
+      if (!course) {
+        player.innerHTML = '<div class="classroom-player-empty">No se pudo cargar este curso. Recarga la página.</div>';
+        return;
+      }
+      const lessons = classroomLessonsByCourseId.get(courseId) || [];
       document.getElementById('classroomTitle').textContent = course.title;
 
       if (lessons.length === 0) {
-        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Las lecciones de este curso se están preparando.</div>';
+        player.innerHTML = `<div class="classroom-player-empty"><div>${escapeClassroomText(classroomEmptyMessage(courseId))}<br><br><button type="button" class="classroom-close" id="classroomRetry">Reintentar</button></div></div>`;
+        document.getElementById('classroomRetry').onclick = () => openClassroom(courseId);
         document.getElementById('classroomNowMeta').textContent = 'Curso activado';
         document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
-        lessonsWrap.innerHTML = '<p class="classroom-empty">Aún no hay lecciones publicadas para este curso.</p>';
+        lessonsWrap.innerHTML = '';
       } else {
         lessonsWrap.innerHTML = lessons.map((lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(lesson.title)}</strong></button>`).join('');
         lessonsWrap.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
@@ -2850,38 +2904,30 @@
         });
         renderClassroomLesson(course, lessons[0]);
       }
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    async function loadClassroomContent(enrolledCourseIds) {
-      const courseIds = [...enrolledCourseIds];
-      if (courseIds.length === 0) return;
+    async function fetchClassroomState(courseIds) {
       const [coursesResponse, lessonsResponse] = await Promise.all([
-        sp.from('courses').select('id, title, bunny_library_id').in('id', courseIds),
+        sp.from('courses').select('id, title, bunny_library_id, bunny_collection_id').in('id', courseIds),
         sp.from('course_lessons').select('id, course_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
       ]);
       if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
       if (lessonsResponse.error) console.error('No se pudieron cargar las lecciones de Classroom:', lessonsResponse.error);
-      classroomCoursesById = new Map((coursesResponse.data || []).map((course) => [course.id, course]));
-      classroomLessonsByCourseId = (lessonsResponse.data || []).reduce((byCourse, lesson) => {
-        if (!byCourse.has(lesson.course_id)) byCourse.set(lesson.course_id, []);
-        byCourse.get(lesson.course_id).push(lesson);
-        return byCourse;
-      }, new Map());
+      (coursesResponse.data || []).forEach((course) => classroomCoursesById.set(course.id, course));
+      if (lessonsResponse.error) return;
+      courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
+      (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
     }
 
-    async function ensureClassroomLessons(session, enrolledCourseIds) {
-      await Promise.all([...enrolledCourseIds].map(async (courseId) => {
-        const response = await fetch(CONFIG.classroomSyncUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-          body: JSON.stringify({ course_id: courseId })
-        });
-        if (!response.ok) {
-          const result = await response.json().catch(() => ({}));
-          console.error(`No se pudieron sincronizar las lecciones de ${courseId}:`, result.error || response.status);
-        }
-      }));
+    // Warms up lessons for enrolled courses in the background so the player opens instantly.
+    async function loadClassroomContent(enrolledCourseIds) {
+      const courseIds = [...enrolledCourseIds];
+      if (courseIds.length === 0) return;
+      await fetchClassroomState(courseIds);
+      const pending = courseIds.filter(needsClassroomSync);
+      if (pending.length === 0) return;
+      await Promise.all(pending.map((courseId) => requestClassroomSync(courseId)));
+      await fetchClassroomState(courseIds);
     }
 
     async function renderCourseAccessCtas(session) {
@@ -2896,8 +2942,7 @@
       }
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
-      await ensureClassroomLessons(session, enrolledCourseIds);
-      await loadClassroomContent(enrolledCourseIds);
+      classroomReady = loadClassroomContent(enrolledCourseIds).catch((loadError) => console.error('Classroom:', loadError));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
@@ -3067,7 +3112,10 @@
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
-    document.getElementById('classroomClose').onclick = () => document.getElementById('classroomSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('classroomClose').onclick = () => {
+      document.getElementById('classroomSection').hidden = true;
+      document.getElementById('viewCourses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
