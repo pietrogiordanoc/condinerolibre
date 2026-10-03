@@ -1830,7 +1830,7 @@
         <!-- Plan CDLRadar and ClassRoom -->
         <div id="academyBanner" class="academy-banner">
           <div class="academy-banner-text">
-            <span class="academy-banner-tag">75% OFF · OFERTA PROMO</span>
+            <span class="academy-banner-tag">78% OFF · OFERTA PROMO</span>
             <strong>CDLRadar + ClassRoom</strong>
             <span>Todos los cursos, presentes y futuros, y el Radar Pro en un solo plan.</span>
           </div>
@@ -3826,8 +3826,8 @@
 
         <div class="acm-price">
           <div id="acmPriceOld" class="acm-price-old">$140 USD / mes</div>
-          <div id="acmPricePromo" class="acm-price-promo">Aplica el 75% de descuento promo</div>
-          <div id="acmPriceFinal" class="acm-price-final" hidden><strong id="acmPriceValue">$34.99</strong><span>USD / mes</span></div>
+          <div id="acmPricePromo" class="acm-price-promo">Aplica el 78% de descuento promo</div>
+          <div id="acmPriceFinal" class="acm-price-final" hidden><strong id="acmPriceValue">$29.99</strong><span>USD / mes</span></div>
         </div>
 
         <div class="acm-codebox">
@@ -3875,7 +3875,7 @@
       planId: 'P-REEMPLAZAR',
       clientId: 'ATeQqFo-1rpKLpkSsABudZfD5nPLEeFEX44Cq84qFkvvDHY8OohSadLVzvjXubX6sqhtwwGPVDyUJ51K',
       promoCode: 'CDL75',
-      price: '34.99',
+      price: '29.99',
       imageUrl: '../../images/cdlradar-classroom.webp',
       confirmUrl: 'https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/paypal-webhook'
     };
@@ -3933,7 +3933,7 @@
       if (typed !== ACADEMY_CONFIG.promoCode.toUpperCase()) { setAcademyMessage('Ese código no es válido. Copia el código naranja y pégalo aquí.', 'error'); return; }
 
       document.getElementById('acmPriceOld').textContent = '$140 USD / mes';
-      document.getElementById('acmPricePromo').textContent = 'Descuento del 75% aplicado';
+      document.getElementById('acmPricePromo').textContent = 'Descuento del 78% aplicado';
       document.getElementById('acmPriceValue').textContent = '$' + ACADEMY_CONFIG.price;
       document.getElementById('acmPriceFinal').hidden = false;
       if (ACADEMY_CONFIG.planId.includes('REEMPLAZAR')) {
