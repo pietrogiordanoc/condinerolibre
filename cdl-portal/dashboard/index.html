@@ -621,6 +621,9 @@
       margin-top: 0;
       padding-top: 0;
       border-top: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
     }
     .course-card .btn-primary-link {
       background: #fde047;
@@ -634,9 +637,9 @@
     .course-card .btn-primary-link:hover {
       background: #facc15;
     }
-    .course-card .course-buy-btn { width: 100%; margin-top: 8px; border: 1px solid rgba(253,224,71,.58); border-radius: 8px; background: transparent; color: #fde047; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .course-card .course-buy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid rgba(253,224,71,.58); border-radius: 8px; background: transparent; color: #fde047; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
     .course-card .course-buy-btn:hover { border-color: #fde047; background: rgba(253,224,71,.1); }
-    .course-card .course-academy-btn { width: 100%; margin-top: 8px; border: 1px solid #ff8a00; border-radius: 8px; background: rgba(255,138,0,.12); color: #ffb45b; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .course-card .course-academy-btn { width: 100%; min-height: 44px; margin-top: 0; border: 1px solid #ff8a00; border-radius: 8px; background: rgba(255,138,0,.12); color: #ffb45b; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
     .course-card .course-academy-btn:hover { background: #ff8a00; color: #17100a; }
     .course-purchase-modal { position: fixed; inset: 0; z-index: 2500; display: none; place-items: center; padding: 20px; background: rgba(2,6,12,.78); }
     .course-purchase-modal.open { display: grid; }
