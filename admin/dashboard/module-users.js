@@ -1,7 +1,7 @@
 let PROFILES = [];
 let RADAR_USAGE_BY_ID = {};
-let LATEST_AUDIT_BY_USER = {};
-let LATEST_AUDIT_BY_EMAIL = {};
+let COURSES = [];
+let COURSE_ENROLLMENTS_BY_USER = {};
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
@@ -10,37 +10,23 @@ let sortOrder = 'asc';
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
 async function refreshUsers() {
-  const [profilesResponse, auditResponse] = await Promise.all([
+  const [profilesResponse, coursesResponse, enrollmentsResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
-    sp.from("audit_events").select("id, user_id, created_at, metadata").order("created_at", { ascending: false }).order("id", { ascending: false }).limit(10000)
+    sp.from("courses").select("id, title").eq("active", true).order("title", { ascending: true }),
+    sp.from("course_enrollments").select("user_id, course_id")
   ]);
-  const { data } = profilesResponse;
-  updateLatestAuditMaps(auditResponse.data || []);
-  PROFILES = data || [];
-  renderUsers();
-}
 
-function updateLatestAuditMaps(events) {
-  LATEST_AUDIT_BY_USER = {};
-  LATEST_AUDIT_BY_EMAIL = {};
-  events.forEach(event => {
-    const email = event.metadata?.email;
-    if (event.user_id && !LATEST_AUDIT_BY_USER[event.user_id]) LATEST_AUDIT_BY_USER[event.user_id] = event;
-    if (email && !LATEST_AUDIT_BY_EMAIL[email]) LATEST_AUDIT_BY_EMAIL[email] = event;
-  });
-}
+  PROFILES = profilesResponse.data || [];
+  COURSES = coursesResponse.data || [];
+  COURSE_ENROLLMENTS_BY_USER = (enrollmentsResponse.data || []).reduce((byUser, enrollment) => {
+    if (!byUser[enrollment.user_id]) byUser[enrollment.user_id] = new Set();
+    byUser[enrollment.user_id].add(enrollment.course_id);
+    return byUser;
+  }, {});
 
-async function refreshLatestUserLogs() {
-  const { data, error } = await sp.from("audit_events")
-    .select("id, user_id, created_at, metadata")
-    .order("created_at", { ascending: false })
-    .order("id", { ascending: false })
-    .limit(10000);
-  if (error) {
-    console.error('[Usuarios] Error cargando último log:', error);
-    return;
+  if (coursesResponse.error || enrollmentsResponse.error) {
+    console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error || enrollmentsResponse.error);
   }
-  updateLatestAuditMaps(data || []);
   renderUsers();
 }
 
@@ -99,10 +85,6 @@ function renderUsers() {
     const nextPlan = u.plan === 'paid' ? 'free' : 'paid';
     const notePreview = u.notas_admin ? (u.notas_admin.substring(0, 50) + (u.notas_admin.length > 50 ? '...' : '')) : 'Añadir nota...';
     const noteEscaped = escapeJS(u.notas_admin || '');
-    const latestAudit = LATEST_AUDIT_BY_USER[u.id] || LATEST_AUDIT_BY_EMAIL[u.email];
-    const latestAuditDate = latestAudit
-      ? `${new Date(latestAudit.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })} ${new Date(latestAudit.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
-      : 'Sin actividad registrada';
     
     const ipDup = u.pres.ip_address && ipCounts[u.pres.ip_address] > 1;
     const fpDup = u.pres.fingerprint && fpCounts[u.pres.fingerprint] > 1;
@@ -130,10 +112,20 @@ function renderUsers() {
     } else {
       radarDisplay = `<span style="color:#64748b;">— / ${RADAR_FREE_DAILY_LIMIT_MINUTES} min</span>`;
     }
+
+    const enrolledCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
+    const coursesDisplay = COURSES.length
+      ? COURSES.map(course => `
+          <label class="course-access-option">
+            <input type="checkbox" ${enrolledCourseIds.has(course.id) ? 'checked' : ''}
+              onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
+            <span>${course.title}</span>
+          </label>`).join('')
+      : '<span class="course-access-empty">Aún no hay cursos configurados.</span>';
     
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div><div style="margin-top:3px; color:#64748b; font-size:10px;">Último log: ${latestAuditDate}</div></td>
+        <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></td>
         <td data-label="Teléfono">${u.phone || "—"}</td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
@@ -144,8 +136,47 @@ function renderUsers() {
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
         <td data-label="Acción">${blockBtn}</td>
         <td data-label="Notas"><button class="btn-note-view" onclick="openNoteModal('${u.id}', '${escapeJS(u.displayName)}', '${noteEscaped}')" title="${u.notas_admin ? 'Ver/editar nota' : 'Añadir nota'}">${notePreview}</button></td>
+      </tr>
+      <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''}">
+        <td colspan="11">
+          <div class="course-access-line">
+            <strong>La Classroom</strong>
+            <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
+            <div class="course-access-options">${coursesDisplay}</div>
+          </div>
+        </td>
       </tr>`;
   }).join("");
+}
+
+async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
+  checkbox.disabled = true;
+  const { error } = await sp.rpc('admin_set_course_access', {
+    target_user_id: userId,
+    target_course_id: courseId,
+    should_grant: shouldGrant
+  });
+
+  if (error) {
+    checkbox.checked = !shouldGrant;
+    Toastify({ text: `No se pudo guardar el curso: ${error.message}`, duration: 4000, backgroundColor: '#e74c3c' }).showToast();
+    checkbox.disabled = false;
+    return;
+  }
+
+  if (!COURSE_ENROLLMENTS_BY_USER[userId]) COURSE_ENROLLMENTS_BY_USER[userId] = new Set();
+  if (shouldGrant) {
+    COURSE_ENROLLMENTS_BY_USER[userId].add(courseId);
+  } else {
+    COURSE_ENROLLMENTS_BY_USER[userId].delete(courseId);
+  }
+
+  Toastify({
+    text: shouldGrant ? 'Curso activado para el alumno' : 'Curso retirado del alumno',
+    duration: 2000,
+    backgroundColor: shouldGrant ? '#10b981' : '#475569'
+  }).showToast();
+  checkbox.disabled = false;
 }
 
 async function adminSetPlan(uId, plan) {

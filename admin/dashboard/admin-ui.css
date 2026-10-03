@@ -25,6 +25,16 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .btn-note-view:hover { background: rgba(24,195,107,0.1); border-color: #18c36b; color: #18c36b; }
 .btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
 .btn-primary { background:#18c36b; color:#0b0b0b; }
+.course-access-row td { padding: 0 14px 12px; background: #161616; border-bottom: 1px solid #2a2a2a; }
+.course-access-row.is-blocked td { background: #291616; }
+.course-access-line { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 10px; }
+.course-access-line strong { color: #18c36b; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.course-access-help, .course-access-empty { color: #8f9aa3; font-size: 11px; }
+.course-access-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.course-access-option { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid #3a3a3a; border-radius: 6px; color: #cfd8dc; font-size: 11px; cursor: pointer; }
+.course-access-option:has(input:checked) { background: rgba(24, 195, 107, .12); border-color: rgba(24, 195, 107, .65); color: #67e8a5; }
+.course-access-option input { accent-color: #18c36b; margin: 0; cursor: pointer; }
+.course-access-option input:disabled { cursor: wait; }
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index: 9999; padding: 20px; overflow-y: auto; }
 .modal { width: min(1400px, 98vw); max-height: 95vh; background:#121212; border-radius: 20px; border: 1px solid #333; display: flex; flex-direction: column; overflow: hidden; }
 .modal-header { display:flex; justify-content:space-between; align-items:center; padding: 20px; background:#1a1a1a; border-bottom:1px solid #333; flex-shrink: 0; }
@@ -175,6 +185,11 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
     padding: 5px 10px;
     font-size: 9px;
   }
+
+  .course-access-row td { position: static; min-width: 0; max-width: none; white-space: normal; padding: 0 8px 10px; }
+  .course-access-line { align-items: flex-start; gap: 7px; }
+  .course-access-options { width: 100%; gap: 6px; }
+  .course-access-option { font-size: 10px; }
   
   /* Pills más compactos */
   .pill { 
