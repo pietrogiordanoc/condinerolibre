@@ -3232,7 +3232,7 @@
         furthest: saved.furthest_seconds || 0,
         position: saved.last_position_seconds || 0,
         completedAt: saved.completed_at || null, isPreview,
-        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, player: null
+        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, previewTimer: null, player: null
       };
       lessonTracker = tracker;
 
@@ -3251,6 +3251,11 @@
           tracker.player.on('pause', () => { tracker.lastT = null; flushLessonTracker(tracker); });
           tracker.player.on('seeked', () => { tracker.lastT = null; });
           tracker.player.on('ended', () => { tracker.lastT = null; flushLessonTracker(tracker); });
+          if (tracker.isPreview) {
+            tracker.previewTimer = setInterval(() => {
+              tracker.player?.getCurrentTime?.((seconds) => trackTimeUpdate(tracker, seconds));
+            }, 500);
+          }
         });
       }).catch((error) => console.warn('No se pudo cargar el seguimiento de reproducción:', error));
 
@@ -3259,12 +3264,10 @@
 
     function trackTimeUpdate(tracker, data) {
       if (lessonTracker !== tracker) return;
-      const seconds = Number(data?.seconds);
+      const seconds = Number(typeof data === 'object' ? data?.seconds : data);
       if (!Number.isFinite(seconds)) return;
       if (tracker.isPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
-        tracker.player?.pause?.();
-        stopLessonTracking();
-        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 2 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
+        finishClassroomPreview(tracker);
         return;
       }
       if (data.duration) tracker.duration = Math.round(Number(data.duration));
@@ -3277,6 +3280,13 @@
       tracker.position = Math.round(seconds);
       tracker.furthest = Math.max(tracker.furthest, Math.round(seconds));
       tracker.dirty = true;
+    }
+
+    function finishClassroomPreview(tracker) {
+      if (lessonTracker !== tracker) return;
+      tracker.player?.pause?.();
+      stopLessonTracking();
+      document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 2 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
     }
 
     async function flushLessonTracker(tracker) {
@@ -3316,6 +3326,7 @@
       if (!tracker) return;
       lessonTracker = null;
       clearInterval(tracker.timer);
+      clearInterval(tracker.previewTimer);
       flushLessonTracker(tracker);
     }
 
