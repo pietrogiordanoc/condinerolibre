@@ -2846,6 +2846,8 @@
     let classroomModulesByCourseId = new Map();
     let classroomLessonsByCourseId = new Map();
     const classroomProgressByCourseId = new Map();
+    // Lecciones iniciales que no se muestran al alumno (p. ej. la intro de Prime Elite).
+    const CLASSROOM_SKIP_FIRST_LESSONS = { 'trading-prime': 1 };
 
     function escapeClassroomText(value) {
       return String(value || '').replace(/[&<>'"]/g, (character) => ({
@@ -2969,7 +2971,12 @@
         player.innerHTML = '<div class="classroom-player-empty">No se pudo cargar este curso. Recarga la página.</div>';
         return;
       }
-      const lessons = classroomLessonsByCourseId.get(courseId) || [];
+      const renumbered = new Map();
+      const lessons = (classroomLessonsByCourseId.get(courseId) || []).slice(CLASSROOM_SKIP_FIRST_LESSONS[courseId] || 0).map((lesson) => {
+        const number = (renumbered.get(lesson.module_id || null) || 0) + 1;
+        renumbered.set(lesson.module_id || null, number);
+        return { ...lesson, position: number };
+      });
       classroomCourse = course;
       document.getElementById('classroomTitle').textContent = course.title;
 
