@@ -2938,7 +2938,7 @@
     let classroomCourse = null;
     let classroomCurrentLessonId = null;
     const classroomPreviewCourseIds = new Set();
-    const CLASSROOM_PREVIEW_SECONDS = 180;
+    const CLASSROOM_PREVIEW_SECONDS = 120;
 
     function stepClassroom(delta) {
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === classroomCurrentLessonId);
@@ -2966,7 +2966,7 @@
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
       const lessonMeta = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
-      nowMeta.textContent = isPreview ? `${lessonMeta} · Muestra de 3 min` : lessonMeta;
+      nowMeta.textContent = isPreview ? `${lessonMeta} · Muestra de 2 min` : lessonMeta;
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
@@ -3086,7 +3086,7 @@
         const previewCourse = classroomPreviewCourseIds.has(courseId);
         const lessonCard = (lesson) => {
           const locked = lesson.locked === true;
-          const label = locked ? 'BLOQUEADA' : previewCourse ? 'MUESTRA · 3 MIN' : `LECCIÓN ${lesson.position}`;
+          const label = locked ? 'BLOQUEADA' : previewCourse ? 'MUESTRA · 2 MIN' : `LECCIÓN ${lesson.position}`;
           return `<button type="button" class="classroom-lesson-card${locked ? ' locked' : ''}" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id || ''}" data-locked="${locked}"><span class="classroom-lesson-number">${label}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         };
         lessonsWrap.innerHTML = modules.length
@@ -3257,7 +3257,7 @@
       if (tracker.isPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
         tracker.player?.pause?.();
         stopLessonTracking();
-        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 3 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
+        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 2 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
         return;
       }
       if (data.duration) tracker.duration = Math.round(Number(data.duration));
@@ -3369,14 +3369,14 @@
         const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
         cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'Ver muestra' : 'Ver más';
-        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de tres minutos' : 'Ver información del curso');
+        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de dos minutos' : 'Ver información del curso');
         cta.onclick = null;
         if (status && hasAccess) {
           status.textContent = 'ACCESO ACTIVO';
           status.classList.add('course-access-active');
         }
         if (status && hasPreview && !hasAccess) {
-          status.textContent = 'MUESTRA GRATIS · 3 MIN';
+          status.textContent = 'MUESTRA GRATIS · 2 MIN';
         }
         if (hasAccess || hasPreview) {
           cta.removeAttribute('target');
