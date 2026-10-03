@@ -229,8 +229,6 @@ async function editUserPhone(userId, currentPhone) {
 }
 
 async function openAuditView(userId, email) {
-  if (!confirm(`Se preparará un enlace de un solo uso para ${email}. Ábrelo en una ventana incógnito para no mezclar sesiones. Esta entrada quedará registrada en el historial.`)) return;
-
   try {
     const { data: { session } } = await sp.auth.getSession();
     const response = await fetch(CONFIG.adminAuditLoginUrl, {
@@ -244,9 +242,18 @@ async function openAuditView(userId, email) {
     auditUrl.searchParams.set('audit_token_hash', result.token_hash);
     try {
       await navigator.clipboard.writeText(auditUrl.toString());
-      alert('Enlace copiado. Pulsa Ctrl+Shift+N para abrir una ventana incógnito, pega el enlace y pulsa Enter.');
+      Toastify({ text: `Enlace de ${email} copiado. Abre incógnito (Ctrl+Shift+N) y pégalo.`, duration: 6000, backgroundColor: '#10b981' }).showToast();
     } catch (clipboardError) {
-      prompt('Copia este enlace, abre una ventana incógnito con Ctrl+Shift+N, pégalo y pulsa Enter:', auditUrl.toString());
+      const field = document.createElement('input');
+      field.readOnly = true;
+      field.value = auditUrl.toString();
+      field.style.cssText = 'width:260px;margin-top:6px;padding:6px;border-radius:6px;border:0;color:#000;';
+      field.onfocus = () => field.select();
+      const box = document.createElement('div');
+      box.textContent = 'No se pudo copiar solo. Copia el enlace (Ctrl+C):';
+      box.appendChild(field);
+      Toastify({ node: box, duration: -1, close: true, backgroundColor: '#475569' }).showToast();
+      field.focus();
     }
   } catch (error) {
     Toastify({ text: `No se pudo preparar el acceso: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
