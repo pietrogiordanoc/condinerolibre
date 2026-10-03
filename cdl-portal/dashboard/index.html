@@ -1827,24 +1827,19 @@
           <p>Selecciona un curso y abre la página completa en nueva pestaña.</p>
         </div>
 
-        <!-- Nota de beneficio CDL Radar -->
-        <div style="background: linear-gradient(135deg, #0c4a6e 0%, #075985 100%); border-radius: 12px; padding: 16px 20px; border: 2px solid rgba(14, 165, 233, 0.3); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25); display: flex; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
-            <div style="display: flex; align-items: center; justify-content: center; min-width: 32px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-              </svg>
-            </div>
-            <div style="flex: 1;">
-              <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: #f0f9ff;">¡Acceso GRATIS a Todos los Cursos!</h3>
-              <p style="margin: 0 0 8px 0; font-size: 12px; color: #bae6fd; line-height: 1.4;">
-                Con el <strong>Plan Anual CDL Radar Pro</strong> obtienes acceso completo gratuito.
-              </p>
-              <a href="#" onclick="(async () => { await showView('upgrade'); setTimeout(() => { const toggle = document.getElementById('planToggle'); toggle.checked = true; toggle.dispatchEvent(new Event('change')); }, 100); })(); return false;" style="display: inline-block; background: #10b981; color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                Ver Planes →
-              </a>
-            </div>
+        <!-- Plan CDLRadar and ClassRoom -->
+        <div id="academyBanner" class="academy-banner">
+          <div class="academy-banner-text">
+            <span class="academy-banner-tag">75% OFF · OFERTA PROMO</span>
+            <strong>CDLRadar + ClassRoom</strong>
+            <span>Todos los cursos, presentes y futuros, y el Radar Pro en un solo plan.</span>
+          </div>
+          <button type="button" class="academy-banner-btn" onclick="openAcademyModal()">Ver oferta</button>
+        </div>
+        <div id="academyActiveChip" class="academy-banner academy-banner-active" hidden>
+          <div class="academy-banner-text">
+            <strong>CDLRadar + ClassRoom activo</strong>
+            <span>Tienes acceso a todos los cursos y al Radar Pro mientras tu suscripción siga vigente.</span>
           </div>
         </div>
       </div>
@@ -3239,6 +3234,17 @@
       }
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
+
+      // Suscripción CDLRadar and ClassRoom: acceso a todos los cursos activos, presentes y futuros.
+      const { data: academyAccess, error: academyError } = await sp.rpc('academy_has_access', { target_user: session.user.id });
+      const hasAcademy = !academyError && academyAccess === true;
+      document.getElementById('academyBanner').hidden = hasAcademy;
+      document.getElementById('academyActiveChip').hidden = !hasAcademy;
+      if (hasAcademy) {
+        const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
+        (activeCourses || []).forEach((course) => enrolledCourseIds.add(course.id));
+      }
+
       classroomReady = loadClassroomContent(enrolledCourseIds).catch((loadError) => console.error('Classroom:', loadError));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
@@ -3742,6 +3748,275 @@
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
       if (document.getElementById('tv-modal').classList.contains('full')) setTvFull(false); else closeTvModal();
+    });
+  </script>
+
+  <style>
+    .academy-banner { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 2px solid rgba(255,138,0,.55); border-radius: 12px; background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(255,255,255,.03)); }
+    .academy-banner[hidden] { display: none; }
+    .academy-banner-active { border-color: rgba(42,255,138,.4); background: linear-gradient(135deg, rgba(42,255,138,.1), rgba(255,255,255,.02)); }
+    .academy-banner-text { flex: 1; display: grid; gap: 3px; min-width: 0; }
+    .academy-banner-text strong { color: #fff; font-size: 15px; font-weight: 600; }
+    .academy-banner-text span { color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+    .academy-banner-text .academy-banner-tag { color: #ff8a00; font-size: 11px; font-weight: 600; letter-spacing: .06em; }
+    .academy-banner-btn { flex: 0 0 auto; border: 0; border-radius: 9px; background: #ff8a00; color: #111; padding: 11px 18px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .academy-banner-btn:hover { filter: brightness(1.08); }
+    @media (max-width: 900px) { .courses-header-grid { grid-template-columns: 1fr !important; } }
+    @media (max-width: 560px) { .academy-banner { flex-wrap: wrap; } .academy-banner-btn { width: 100%; } }
+
+    .acm { position: fixed; inset: 0; z-index: 10060; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.8); overflow-y: auto; }
+    .acm.open { display: flex; }
+    .acm-box { position: relative; width: min(520px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: #11151c; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.65); }
+    .acm-x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff; font: inherit; font-size: 15px; cursor: pointer; }
+    .acm-x:hover { background: #fff; color: #000; }
+    .acm-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 18px 18px 0 0; background: linear-gradient(135deg, #2a1700, #11151c 70%); border-bottom: 1px solid rgba(255,255,255,.1); }
+    .acm-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .acm-media-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; text-align: center; color: #ff8a00; font-size: 22px; font-weight: 600; letter-spacing: .02em; }
+    .acm-body { display: grid; gap: 14px; padding: 20px 22px 24px; }
+    .acm-body h2 { margin: 0; font-size: 21px; font-weight: 600; }
+    .acm-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; color: rgba(255,255,255,.78); font-size: 13.5px; line-height: 1.45; }
+    .acm-list li::before { content: "\2713"; margin-right: 8px; color: var(--green); font-weight: 600; }
+    .acm-price { display: grid; gap: 4px; padding: 14px 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.04); }
+    .acm-price-old { color: rgba(255,255,255,.55); font-size: 16px; text-decoration: line-through; }
+    .acm-price-promo { color: #ffb347; font-size: 13.5px; font-weight: 600; }
+    .acm-price-final { display: flex; align-items: baseline; gap: 8px; }
+    .acm-price-final strong { color: #fff; font-size: 34px; font-weight: 600; }
+    .acm-price-final span { color: rgba(255,255,255,.6); font-size: 14px; }
+    .acm-codebox { display: grid; gap: 8px; }
+    .acm-codebox > small { color: rgba(255,255,255,.65); font-size: 12px; }
+    .acm-code-row { display: flex; align-items: stretch; gap: 8px; }
+    .acm-code { flex: 1; display: grid; place-items: center; padding: 12px 14px; border: 4px solid #000; border-radius: 10px; background: #ff8a00; color: #000; font-size: 28px; font-weight: 600; letter-spacing: .12em; user-select: all; box-shadow: 0 0 0 2px #ff8a00, 0 6px 18px rgba(255,138,0,.35); }
+    .acm-copy { flex: 0 0 auto; border: 2px solid #000; border-radius: 10px; background: #fff; color: #000; padding: 0 16px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .acm-copy:hover { background: #ffd9a8; }
+    .acm-input-row { display: flex; gap: 8px; }
+    .acm-input-row input { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; background: #0b0e13; color: #fff; font: inherit; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; }
+    .acm-input-row input:focus { outline: 2px solid #ff8a00; outline-offset: 1px; }
+    .acm-apply { flex: 0 0 auto; border: 0; border-radius: 10px; background: #ff8a00; color: #111; padding: 0 18px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .acm-msg { min-height: 18px; margin: 0; font-size: 12.5px; color: rgba(255,255,255,.65); }
+    .acm-msg.error { color: #ff6b6b; }
+    .acm-msg.ok { color: var(--green); }
+    .acm-pay { display: grid; gap: 10px; }
+    .acm-pay[hidden], .acm-stage[hidden], .acm-price-final[hidden], .acm-offer[hidden] { display: none; }
+    .acm-stage { display: grid; gap: 12px; padding: 36px 22px; text-align: center; }
+    .acm-stage h3 { margin: 0; font-size: 19px; font-weight: 600; }
+    .acm-stage p { margin: 0; color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.5; }
+    .acm-stage .acm-apply { justify-self: center; padding: 12px 22px; }
+    .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
+    @keyframes acm-spin { to { transform: rotate(360deg); } }
+    .acm-fine { margin: 0; color: rgba(255,255,255,.45); font-size: 11.5px; line-height: 1.5; text-align: center; }
+  </style>
+
+  <!-- MODAL: plan CDLRadar and ClassRoom -->
+  <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDLRadar and ClassRoom" onclick="if(event.target===this)closeAcademyModal()">
+    <div class="acm-box">
+      <button type="button" class="acm-x" onclick="closeAcademyModal()" aria-label="Cerrar">✕</button>
+      <div class="acm-media">
+        <div class="acm-media-fallback">CDLRadar + ClassRoom</div>
+        <img id="acmImage" alt="CDLRadar and ClassRoom" hidden>
+      </div>
+
+      <div id="acmOffer" class="acm-offer acm-body">
+        <h2>CDLRadar and ClassRoom</h2>
+        <ul class="acm-list">
+          <li>Todos los cursos, los de hoy y los que lleguen después</li>
+          <li>CDL Radar Pro incluido, sin límite diario</li>
+          <li>Acceso mientras tu suscripción esté activa</li>
+          <li>Cancela cuando quieras desde tu cuenta de PayPal</li>
+        </ul>
+
+        <div class="acm-price">
+          <div id="acmPriceOld" class="acm-price-old">$140 USD / mes</div>
+          <div id="acmPricePromo" class="acm-price-promo">Aplica el 75% de descuento promo</div>
+          <div id="acmPriceFinal" class="acm-price-final" hidden><strong id="acmPriceValue">$34.99</strong><span>USD / mes</span></div>
+        </div>
+
+        <div class="acm-codebox">
+          <small>Tu código promocional</small>
+          <div class="acm-code-row">
+            <div id="acmCode" class="acm-code">CDL75</div>
+            <button type="button" class="acm-copy" id="acmCopy">Copiar</button>
+          </div>
+          <small>Pega el código aquí para aplicar el descuento</small>
+          <div class="acm-input-row">
+            <input id="acmInput" type="text" autocomplete="off" spellcheck="false" placeholder="Pega tu código" aria-label="Código promocional">
+            <button type="button" class="acm-apply" id="acmApply">Aplicar</button>
+          </div>
+          <p id="acmMsg" class="acm-msg" role="status"></p>
+        </div>
+
+        <div id="acmPay" class="acm-pay" hidden>
+          <div id="acmCardBtn"></div>
+          <div id="acmPaypalBtn"></div>
+          <p class="acm-fine">Pago seguro con tarjeta o PayPal. Se renueva cada mes y puedes cancelar cuando quieras.</p>
+        </div>
+      </div>
+
+      <div id="acmBusy" class="acm-stage" hidden>
+        <div class="acm-spinner"></div>
+        <h3>Activando tu acceso</h3>
+        <p>Estamos confirmando tu pago. No cierres esta ventana.</p>
+      </div>
+      <div id="acmDone" class="acm-stage" hidden>
+        <h3>Listo, ya eres parte de CDLRadar and ClassRoom</h3>
+        <p>Tu acceso a todos los cursos y al Radar Pro está activo.</p>
+        <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Ir a mis cursos</button>
+      </div>
+      <div id="acmLate" class="acm-stage" hidden>
+        <h3>Pago recibido</h3>
+        <p>Tu acceso se activa automáticamente en unos minutos. Si no lo ves después de recargar, escríbenos y lo resolvemos.</p>
+        <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Para activar el cobro, reemplaza planId (P-...) y, si pruebas en sandbox, clientId por el de sandbox.
+    const ACADEMY_CONFIG = {
+      planId: 'P-REEMPLAZAR',
+      clientId: 'ATeQqFo-1rpKLpkSsABudZfD5nPLEeFEX44Cq84qFkvvDHY8OohSadLVzvjXubX6sqhtwwGPVDyUJ51K',
+      promoCode: 'CDL75',
+      price: '34.99',
+      imageUrl: '../../images/cdlradar-classroom.webp',
+      confirmUrl: 'https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/paypal-webhook'
+    };
+
+    let academySdkPromise = null;
+    let academyButtonsRendered = false;
+
+    function setAcademyStage(stage) {
+      document.getElementById('acmOffer').hidden = stage !== 'offer';
+      document.getElementById('acmBusy').hidden = stage !== 'busy';
+      document.getElementById('acmDone').hidden = stage !== 'done';
+      document.getElementById('acmLate').hidden = stage !== 'late';
+    }
+
+    function setAcademyMessage(text, kind) {
+      const message = document.getElementById('acmMsg');
+      message.textContent = text || '';
+      message.className = 'acm-msg' + (kind ? ' ' + kind : '');
+    }
+
+    function openAcademyModal() {
+      document.getElementById('acmCode').textContent = ACADEMY_CONFIG.promoCode;
+      const image = document.getElementById('acmImage');
+      if (!image.getAttribute('src') && ACADEMY_CONFIG.imageUrl) {
+        image.onload = () => { image.hidden = false; };
+        image.onerror = () => { image.hidden = true; };
+        image.src = ACADEMY_CONFIG.imageUrl;
+      }
+      setAcademyStage('offer');
+      document.getElementById('academy-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAcademyModal() {
+      if (!document.getElementById('acmBusy').hidden) return;
+      document.getElementById('academy-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function finishAcademyPurchase() {
+      location.hash = '#courses';
+      location.reload();
+    }
+
+    document.getElementById('acmCopy').onclick = async () => {
+      const button = document.getElementById('acmCopy');
+      try { await navigator.clipboard.writeText(ACADEMY_CONFIG.promoCode); button.textContent = 'Copiado'; }
+      catch (error) { button.textContent = 'Selecciona y copia'; }
+      setTimeout(() => { button.textContent = 'Copiar'; }, 1800);
+    };
+
+    function applyAcademyCode() {
+      const typed = document.getElementById('acmInput').value.trim().toUpperCase();
+      if (!typed) { setAcademyMessage('Pega el código promocional para aplicar el descuento.', 'error'); return; }
+      if (typed !== ACADEMY_CONFIG.promoCode.toUpperCase()) { setAcademyMessage('Ese código no es válido. Copia el código naranja y pégalo aquí.', 'error'); return; }
+
+      document.getElementById('acmPriceOld').textContent = '$140 USD / mes';
+      document.getElementById('acmPricePromo').textContent = 'Descuento del 75% aplicado';
+      document.getElementById('acmPriceValue').textContent = '$' + ACADEMY_CONFIG.price;
+      document.getElementById('acmPriceFinal').hidden = false;
+      if (ACADEMY_CONFIG.planId.includes('REEMPLAZAR')) {
+        setAcademyMessage('Descuento aplicado. El pago estará disponible muy pronto.', 'ok');
+        return;
+      }
+      setAcademyMessage('Descuento aplicado. Elige cómo pagar.', 'ok');
+      document.getElementById('acmPay').hidden = false;
+      renderAcademyButtons().catch((error) => {
+        console.error('PayPal (academy):', error);
+        setAcademyMessage('No se pudo cargar el pago. Recarga la página e inténtalo de nuevo.', 'error');
+      });
+    }
+
+    document.getElementById('acmApply').onclick = applyAcademyCode;
+    document.getElementById('acmInput').addEventListener('keydown', (event) => { if (event.key === 'Enter') applyAcademyCode(); });
+
+    function loadAcademySdk() {
+      if (window.paypalAcademy) return Promise.resolve(window.paypalAcademy);
+      if (!academySdkPromise) {
+        academySdkPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(ACADEMY_CONFIG.clientId) + '&vault=true&intent=subscription';
+          script.dataset.namespace = 'paypalAcademy';
+          script.onload = () => (window.paypalAcademy ? resolve(window.paypalAcademy) : reject(new Error('sdk_missing')));
+          script.onerror = () => { academySdkPromise = null; reject(new Error('sdk_load_failed')); };
+          document.head.appendChild(script);
+        });
+      }
+      return academySdkPromise;
+    }
+
+    async function renderAcademyButtons() {
+      if (academyButtonsRendered) return;
+      const sdk = await loadAcademySdk();
+      const handlers = {
+        createSubscription: async (data, actions) => {
+          const { data: { session } } = await sp.auth.getSession();
+          return actions.subscription.create({
+            plan_id: ACADEMY_CONFIG.planId,
+            custom_id: session.user.id,
+            application_context: { shipping_preference: 'NO_SHIPPING', user_action: 'SUBSCRIBE_NOW' }
+          });
+        },
+        onApprove: (data) => confirmAcademyPurchase(data.subscriptionID),
+        onError: (error) => {
+          console.error('PayPal (academy):', error);
+          setAcademyMessage('Hubo un problema con el pago. Inténtalo de nuevo o contáctanos.', 'error');
+        }
+      };
+      const cardButton = sdk.Buttons({ ...handlers, fundingSource: sdk.FUNDING.CARD, style: { shape: 'rect', color: 'black', layout: 'vertical', label: 'subscribe', tagline: false } });
+      const paypalButton = sdk.Buttons({ ...handlers, fundingSource: sdk.FUNDING.PAYPAL, style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe', tagline: false } });
+      let rendered = false;
+      if (cardButton.isEligible()) { await cardButton.render('#acmCardBtn'); rendered = true; }
+      if (paypalButton.isEligible()) { await paypalButton.render('#acmPaypalBtn'); rendered = true; }
+      if (!rendered) throw new Error('no_funding_available');
+      academyButtonsRendered = true;
+    }
+
+    async function confirmAcademyPurchase(subscriptionId) {
+      setAcademyStage('busy');
+      for (let attempt = 0; attempt < 6; attempt++) {
+        try {
+          const { data: { session } } = await sp.auth.getSession();
+          const response = await fetch(ACADEMY_CONFIG.confirmUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + (session?.access_token || '') },
+            body: JSON.stringify({ action: 'confirm', subscription_id: subscriptionId })
+          });
+          const result = await response.json().catch(() => ({}));
+          if (response.ok && result.status === 'active') { setAcademyStage('done'); return; }
+          if (response.status >= 400 && response.status < 500 && response.status !== 409) break;
+        } catch (error) {
+          console.error('Confirmación de suscripción:', error);
+        }
+        await new Promise((resolve) => setTimeout(resolve, 2500));
+      }
+      // El webhook de PayPal activa el acceso aunque esta confirmación no llegue.
+      setAcademyStage('late');
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && document.getElementById('academy-modal').classList.contains('open')) closeAcademyModal();
     });
   </script>
 

@@ -8,6 +8,7 @@ let PROGRESS_BY_USER = {};
 let LESSONS_BY_COURSE = {};
 let LESSON_INDEX_BY_COURSE = {};
 let SESSIONS_BY_USER_COURSE = {};
+let ACADEMY_BY_USER = {};
 let MODULE_POSITION_BY_ID = {};
 let EXPANDED_DETAIL = new Set();
 let sortKey = 'displayName';
@@ -48,15 +49,20 @@ function loadSessionRows() {
 }
 
 async function refreshUsers() {
-  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse, sessionsResponse] = await Promise.all([
+  // Devuelve el plan previo a quien canceló y ya agotó su periodo pagado (ignora errores si el SQL no existe).
+  await sp.rpc("academy_expire_overdue").then(() => {}, () => {});
+  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse, sessionsResponse, academyResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
     sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
     sp.from("course_modules").select("id, course_id, position"),
     sp.from("course_enrollments").select("user_id, course_id"),
     loadProgressRows(),
     fetchAllRows(() => sp.from("course_lessons").select("id, course_id, module_id, position, bunny_video_id, title, duration_seconds").order("id")),
-    loadSessionRows()
+    loadSessionRows(),
+    sp.from("academy_subscriptions").select("user_id, status, access_until, paypal_subscription_id, activated_at")
   ]);
+
+  ACADEMY_BY_USER = Object.fromEntries((academyResponse.data || []).map((row) => [row.user_id, row]));
 
   PROGRESS_BY_USER = (progressResponse.data || []).reduce((byUser, row) => {
     ((byUser[row.user_id] ||= {})[row.course_id] ||= []).push(row);
@@ -209,18 +215,21 @@ function renderUsers() {
       radarDisplay = `<span style="color:#64748b;">— / ${RADAR_FREE_DAILY_LIMIT_MINUTES} min</span>`;
     }
 
-    const enrolledCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
+    const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
+    const academyOn = academyHasAccess(u.id);
+    const enrolledCourseIds = academyOn ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)]) : ownCourseIds;
     const coursesDisplay = COURSES.length
       ? COURSES.map(course => {
           const enrolled = enrolledCourseIds.has(course.id);
+          const viaAcademy = academyOn && !ownCourseIds.has(course.id);
           const started = enrolled && courseProgressStats(u.id, course).seen > 0;
           return `
           <div class="course-block">
           <div class="course-row ${started ? '' : 'is-idle'}">
             <label class="course-access-option">
-              <input type="checkbox" ${enrolled ? 'checked' : ''}
+              <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''}
                 onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
-              <span>${course.title}</span>
+              <span>${course.title}${viaAcademy ? ' <small style="color:#f59e0b">(por suscripción)</small>' : ''}</span>
             </label>
             <div class="course-metrics">${enrolled ? courseMetrics(u.id, course) : '<span class="course-metrics-empty">Sin acceso</span>'}</div>
           </div>
@@ -246,6 +255,7 @@ function renderUsers() {
       <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''} ${EXPANDED_COURSE_ROWS.has(u.id) ? '' : 'is-collapsed'}" id="course-row-${u.id}">
         <td colspan="11">
           <div class="course-access-line">
+            ${academyBlock(u.id)}
             <strong>La Classroom</strong>
             <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
             <div class="course-list">${coursesDisplay}</div>
@@ -253,6 +263,44 @@ function renderUsers() {
         </td>
       </tr>`;
   }).join("");
+}
+
+const ACADEMY_STATUS_LABELS = {
+  active: ['Activo', '#10b981'],
+  payment_failed: ['Pago fallido (en gracia)', '#f59e0b'],
+  cancelled: ['Cancelado', '#f59e0b'],
+  suspended: ['Suspendido', '#e74c3c'],
+  expired: ['Expirado', '#e74c3c'],
+  revoked: ['Revocado', '#e74c3c']
+};
+
+function academyHasAccess(userId) {
+  const sub = ACADEMY_BY_USER[userId];
+  if (!sub) return false;
+  if (sub.status === 'active' || sub.status === 'payment_failed') return true;
+  return sub.status === 'cancelled' && !!sub.access_until && new Date(sub.access_until).getTime() > Date.now();
+}
+
+function academyBlock(userId) {
+  const sub = ACADEMY_BY_USER[userId];
+  const on = academyHasAccess(userId);
+  const [label, color] = sub ? (ACADEMY_STATUS_LABELS[sub.status] || [sub.status, '#94a3b8']) : ['Sin plan', '#64748b'];
+  const until = sub?.status === 'cancelled' && sub.access_until ? ` · hasta ${new Date(sub.access_until).toLocaleDateString('es')}` : '';
+  const source = sub?.paypal_subscription_id ? ' · PayPal' : (sub ? ' · manual' : '');
+  const button = on
+    ? `<button class="btn btn-danger" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
+    : `<button class="btn" style="background:#10b981;" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
+  return `<div class="academy-line"><strong>CDLRadar and ClassRoom</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
+}
+
+async function setAcademyAccess(userId, shouldGrant) {
+  const { error } = await sp.rpc('admin_set_academy_access', { target_user_id: userId, should_grant: shouldGrant });
+  if (error) {
+    Toastify({ text: `No se pudo cambiar el plan: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+  Toastify({ text: shouldGrant ? 'Plan CDLRadar and ClassRoom activado' : 'Plan CDLRadar and ClassRoom revocado', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
+  await refreshUsers();
 }
 
 async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {

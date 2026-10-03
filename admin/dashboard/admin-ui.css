@@ -80,6 +80,8 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .course-access-line { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding-top: 10px; }
 .course-access-line strong { color: #18c36b; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
 .course-access-help, .course-access-empty { color: #8f9aa3; font-size: 11px; }
+.academy-line { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; flex: 1 0 100%; padding: 8px 12px; border: 1px solid rgba(255,138,0,.35); border-radius: 8px; background: rgba(255,138,0,.07); font-size: 12px; }
+.academy-line strong { color: #ff8a00; }
 .course-access-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .course-access-option { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid #3a3a3a; border-radius: 6px; color: #cfd8dc; font-size: 11px; cursor: pointer; }
 .course-access-option:has(input:checked) { background: rgba(24, 195, 107, .12); border-color: rgba(24, 195, 107, .65); color: #67e8a5; }

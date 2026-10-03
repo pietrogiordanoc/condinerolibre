@@ -84,7 +84,10 @@ serve(async (request) => {
       const { data: enrollment } = await supabaseAdmin
         .from("course_enrollments").select("course_id")
         .eq("user_id", userId).eq("course_id", courseId).maybeSingle();
-      if (!enrollment) return reply({ error: "Forbidden", code: "forbidden" }, 403);
+      if (!enrollment) {
+        const { data: hasAcademy } = await supabaseAdmin.rpc("academy_has_access", { target_user: userId });
+        if (hasAcademy !== true) return reply({ error: "Forbidden", code: "forbidden" }, 403);
+      }
     }
 
     const { count, error: countError } = await supabaseAdmin
