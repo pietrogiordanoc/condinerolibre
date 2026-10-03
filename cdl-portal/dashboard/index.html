@@ -2988,8 +2988,6 @@
     let classroomCourse = null;
     let classroomCurrentLessonId = null;
     const classroomPreviewCourseIds = new Set();
-    const classroomTimeLimitedPreviewCourseIds = new Set(['master-pro']);
-    const CLASSROOM_PREVIEW_SECONDS = 120;
 
     function stepClassroom(delta) {
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === classroomCurrentLessonId);
@@ -3002,7 +3000,6 @@
       const nowMeta = document.getElementById('classroomNowMeta');
       const nowTitle = document.getElementById('classroomNowTitle');
       const isPreview = classroomPreviewCourseIds.has(course?.id);
-      const isTimeLimitedPreview = isPreview && classroomTimeLimitedPreviewCourseIds.has(course?.id);
       if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
         player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
       } else {
@@ -3011,14 +3008,14 @@
       classroomCurrentLessonId = lesson.id;
       if (course?.id && lesson?.bunny_video_id) {
         if (!isPreview) saveClassroomProgress(course.id, lesson.bunny_video_id);
-        startLessonTracking(course, lesson, player.querySelector('iframe'), isPreview, isTimeLimitedPreview);
+        startLessonTracking(course, lesson, player.querySelector('iframe'), isPreview);
       } else {
         stopLessonTracking();
       }
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
       const lessonMeta = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
-      nowMeta.textContent = isPreview ? `${lessonMeta} · ${isTimeLimitedPreview ? 'Muestra de 2 min' : 'Clase gratis completa'}` : lessonMeta;
+      nowMeta.textContent = isPreview ? `${lessonMeta} · Clase gratis completa` : lessonMeta;
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
@@ -3137,10 +3134,9 @@
           : playableLessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
         const previewCourse = classroomPreviewCourseIds.has(courseId);
-        const timeLimitedPreview = previewCourse && classroomTimeLimitedPreviewCourseIds.has(courseId);
         const lessonCard = (lesson) => {
           const locked = lesson.locked === true;
-          const label = locked ? 'BLOQUEADA' : previewCourse ? (timeLimitedPreview ? 'MUESTRA · 2 MIN' : 'CLASE GRATIS') : `LECCIÓN ${lesson.position}`;
+          const label = locked ? 'BLOQUEADA' : previewCourse ? 'CLASE GRATIS' : `LECCIÓN ${lesson.position}`;
           return `<button type="button" class="classroom-lesson-card${locked ? ' locked' : ''}" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id || ''}" data-locked="${locked}"><span class="classroom-lesson-number">${label}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         };
         lessonsWrap.innerHTML = modules.length
@@ -3264,7 +3260,7 @@
       return merged;
     }
 
-    async function startLessonTracking(course, lesson, frame, isPreview = false, isTimeLimitedPreview = false) {
+    async function startLessonTracking(course, lesson, frame, isPreview = false) {
       const token = ++trackingToken;
       stopLessonTracking();
       if (sessionStorage.getItem('cdl_audit_session') || !frame) return;
@@ -3278,8 +3274,8 @@
         duration: saved.duration_seconds || lesson.duration_seconds || 0,
         furthest: saved.furthest_seconds || 0,
         position: saved.last_position_seconds || 0,
-        completedAt: saved.completed_at || null, isPreview, isTimeLimitedPreview,
-        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, previewTimer: null, previewHardStopTimer: null, player: null
+        completedAt: saved.completed_at || null, isPreview,
+        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, player: null
       };
       lessonTracker = tracker;
 
@@ -3298,12 +3294,6 @@
           tracker.player.on('pause', () => { tracker.lastT = null; flushLessonTracker(tracker); });
           tracker.player.on('seeked', () => { tracker.lastT = null; });
           tracker.player.on('ended', () => { tracker.lastT = null; flushLessonTracker(tracker); });
-          if (tracker.isTimeLimitedPreview) {
-            tracker.previewTimer = setInterval(() => {
-              tracker.player?.getCurrentTime?.((seconds) => trackTimeUpdate(tracker, seconds));
-            }, 500);
-            tracker.previewHardStopTimer = setTimeout(() => finishClassroomPreview(tracker), CLASSROOM_PREVIEW_SECONDS * 1000);
-          }
         });
       }).catch((error) => console.warn('No se pudo cargar el seguimiento de reproducción:', error));
 
@@ -3314,10 +3304,6 @@
       if (lessonTracker !== tracker) return;
       const seconds = Number(typeof data === 'object' ? data?.seconds : data);
       if (!Number.isFinite(seconds)) return;
-      if (tracker.isTimeLimitedPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
-        finishClassroomPreview(tracker);
-        return;
-      }
       if (data.duration) tracker.duration = Math.round(Number(data.duration));
       // Un salto mayor a ~2 s es un cambio de posición, no tiempo visto.
       if (tracker.lastT !== null && seconds >= tracker.lastT && seconds - tracker.lastT <= 2.5) {
@@ -3328,13 +3314,6 @@
       tracker.position = Math.round(seconds);
       tracker.furthest = Math.max(tracker.furthest, Math.round(seconds));
       tracker.dirty = true;
-    }
-
-    function finishClassroomPreview(tracker) {
-      if (lessonTracker !== tracker) return;
-      tracker.player?.pause?.();
-      stopLessonTracking();
-      document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 2 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
     }
 
     async function flushLessonTracker(tracker) {
@@ -3374,8 +3353,6 @@
       if (!tracker) return;
       lessonTracker = null;
       clearInterval(tracker.timer);
-      clearInterval(tracker.previewTimer);
-      clearTimeout(tracker.previewHardStopTimer);
       flushLessonTracker(tracker);
     }
 
@@ -3435,7 +3412,7 @@
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
         const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
-        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'PREVISUALIZAR · 2 MIN' : 'Ver más';
+        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'PREVISUALIZAR' : 'Ver más';
         cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de dos minutos' : 'Ver información del curso');
         cta.onclick = null;
         if (status && hasAccess) {
@@ -3443,7 +3420,7 @@
           status.classList.add('course-access-active');
         }
         if (status && hasPreview && !hasAccess) {
-          status.textContent = classroomTimeLimitedPreviewCourseIds.has(cta.dataset.courseId) ? 'MUESTRA GRATIS · 2 MIN' : 'CLASE GRATIS COMPLETA';
+          status.textContent = 'CLASE GRATIS COMPLETA';
         }
         if (hasAccess || hasPreview) {
           cta.removeAttribute('target');
