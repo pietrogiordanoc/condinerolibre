@@ -1849,6 +1849,17 @@
         </div>
       </div>
 
+      <div class="tool-banner">
+        <div class="tool-banner-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+        </div>
+        <div class="tool-banner-text">
+          <strong>Herramienta de práctica: gráfico en vivo</strong>
+          <span>Abre un gráfico de TradingView sin salir del portal, con la lista de símbolos y atajos, para practicar lo que aprendes en los cursos.</span>
+        </div>
+        <button type="button" class="tool-banner-btn" onclick="openTvModal()">Abrir gráfico</button>
+      </div>
+
       <div class="accounts-tier">
         <div class="accounts-tier-grid courses-grid">
           <article class="account-link-card course-card">
@@ -1925,6 +1936,7 @@
               <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
             </div>
             <div class="classroom-nav">
+              <button class="classroom-close" type="button" onclick="openTvModal()" title="Abrir gráfico de práctica">Gráfico</button>
               <button id="classroomPrev" class="classroom-close" type="button" onclick="stepClassroom(-1)" disabled>← Anterior</button>
               <button id="classroomNext" class="classroom-next" type="button" onclick="stepClassroom(1)" disabled>Siguiente lección →</button>
             </div>
@@ -3484,6 +3496,88 @@
       </div>
     </div>
   </div>
+  <style>
+    .tool-banner { display: flex; align-items: center; gap: 14px; margin: 0 0 24px; padding: 14px 18px; border: 1px solid rgba(42,255,138,.28); border-radius: 14px; background: linear-gradient(135deg, rgba(42,255,138,.08), rgba(255,255,255,.02)); }
+    .tool-banner-icon { flex: 0 0 auto; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: rgba(42,255,138,.12); color: var(--green); }
+    .tool-banner-text { flex: 1; display: grid; gap: 2px; min-width: 0; }
+    .tool-banner-text strong { color: #fff; font-size: 14px; font-weight: 600; }
+    .tool-banner-text span { color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+    .tool-banner-btn { flex: 0 0 auto; border: 0; border-radius: 9px; background: var(--green); color: #031108; padding: 10px 16px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .tool-banner-btn:hover { filter: brightness(1.08); }
+    @media (max-width: 640px) { .tool-banner { flex-wrap: wrap; } .tool-banner-btn { width: 100%; } }
+    .tvm { position: fixed; inset: 0; z-index: 10050; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.78); }
+    .tvm.open { display: flex; }
+    .tvm-box { display: flex; flex-direction: column; width: min(1180px, 100%); height: min(88vh, 860px); height: min(88dvh, 860px); overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; background: #131722; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    .tvm-head { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.1); color: #fff; font-size: 14px; }
+    .tvm-head a { color: #4a9eff; }
+    .tvm-close { flex: 0 0 auto; border: 0; border-radius: 8px; background: #fff; color: #000; padding: 7px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+    .tvm-close:hover { background: var(--green); }
+    .tvm-chart { flex: 1 1 auto; min-height: 220px; }
+    .tvm-chart iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .tvm-legend { flex: 0 0 auto; max-height: 32%; overflow-y: auto; border-top: 1px solid rgba(255,255,255,.1); background: #151924; }
+    .tvm-lhead { padding: 14px 20px 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .tvm-lhead p { margin: 0; }
+    .tvm-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; padding: 14px 20px; font-size: 11.5px; line-height: 1.65; }
+    .tvm-grid p { margin: 0; color: rgba(255,255,255,.65); }
+    .tvm-grid .tvm-title { margin-bottom: 6px; color: #4a9eff; font-weight: 600; }
+    @media (max-width: 900px) { .tvm-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .tvm { padding: 8px; } .tvm-box { height: 94vh; height: 94dvh; } .tvm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+
+  <!-- MODAL: gráfico de práctica (TradingView) -->
+  <div id="tv-modal" class="tvm" role="dialog" aria-modal="true" aria-label="Gráfico de práctica" onclick="if(event.target===this)closeTvModal()">
+    <div class="tvm-box">
+      <div class="tvm-head">
+        <span><strong>Gráfico de práctica · EUR/USD</strong> · <a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank">EURUSD chart</a> <span style="opacity:.6">by TradingView</span></span>
+        <button class="tvm-close" type="button" onclick="closeTvModal()" aria-label="Cerrar gráfico">✕ Cerrar</button>
+      </div>
+      <div id="tv-modal-chart" class="tvm-chart"></div>
+      <div class="tvm-legend">
+        <div class="tvm-lhead">
+          <p style="color:#f5c518; font-size:13px; font-weight:600; margin-bottom:4px;">Atajos rápidos en el gráfico (TradingView):</p>
+          <p style="color:rgba(255,255,255,.55); font-size:12px;">Tip: haz clic en el gráfico y escribe directamente cualquier símbolo de abajo para verlo en tiempo real.</p>
+        </div>
+        <div class="tvm-grid">
+          <div><p class="tvm-title">Time Frames</p><p>1 (1m)</p><p>15 (15m)</p><p>60 (1h)</p><p>D (día)</p><p>W (semana)</p><p>M (mes)</p></div>
+          <div><p class="tvm-title">Forex</p><p>• EURUSD</p><p>• GBPUSD</p><p>• USDJPY</p><p>• USDCAD</p><p>• AUDUSD</p><p>• NZDUSD</p><p>• USDCHF</p><p>• EURGBP</p><p>• EURJPY</p><p>• GBPJPY</p></div>
+          <div><p class="tvm-title">Índices Bursátiles</p><p>• SPX500 (S&amp;P 500)</p><p>• NAS100 (Nasdaq 100)</p><p>• US30 (Dow Jones)</p><p>• DAX (Alemania 40)</p><p>• FTSE100 (UK 100)</p><p>• EURO50 (Euro Stoxx 50)</p><p>• FRA40 (CAC 40)</p><p>• ESP35 (IBEX 35)</p><p>• JP225 (Nikkei 225)</p><p>• ASX200 (Australia 200)</p></div>
+          <div><p class="tvm-title">Commodities (Materias primas)</p><p>• GOLD (Oro)</p><p>• XAUUSD (Oro vs USD)</p><p>• SILVER (Plata)</p><p>• XAGUSD (Plata vs USD)</p><p>• OIL (WTI Crude Oil)</p><p>• USOIL</p><p>• UKOIL (Brent Crude Oil)</p><p>• NGAS (Gas Natural)</p><p>• COPPER (Cobre)</p><p>• COFFEE (Café)</p></div>
+          <div><p class="tvm-title">Acciones populares</p><p>• AAPL (Apple)</p><p>• TSLA (Tesla)</p><p>• NVDA (Nvidia)</p><p>• AMZN (Amazon)</p><p>• META (Facebook)</p><p>• GOOGL (Google)</p><p>• MSFT (Microsoft)</p><p>• NFLX (Netflix)</p><p>• AMD (Advanced Micro)</p><p>• BABA (Alibaba)</p></div>
+          <div><p class="tvm-title">Atajos esenciales</p><p>• Alt + R → Resetear gráfico (vuelve a vista inicial)</p><p>• Alt + I → Invertir escala (logarítmica ↔ lineal)</p><p>• Alt + H → Dibujar línea horizontal</p><p>• Alt + V → Dibujar línea vertical</p><p>• Ctrl + Z → Deshacer último dibujo</p><p>• Ctrl + clic → Mover dibujo sin seleccionarlo</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTvModal() {
+      document.getElementById('tv-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      const host = document.getElementById('tv-modal-chart');
+      if (host.childElementCount) return;
+      const config = {
+        allow_symbol_change: true, calendar: false, details: false, hide_side_toolbar: false,
+        hide_top_toolbar: false, hide_legend: false, hide_volume: false, hotlist: false,
+        interval: '15', locale: 'es', save_image: false, style: '1', symbol: 'TICKMILL:EURUSD',
+        theme: 'dark', timezone: 'Etc/UTC', backgroundColor: '#131722',
+        gridColor: 'rgba(242, 242, 242, 0.06)', watchlist: [], withdateranges: true,
+        compareSymbols: [], studies: [], autosize: true
+      };
+      // El iframe aísla el widget de los estilos del portal y le da un tamaño propio.
+      const frame = document.createElement('iframe');
+      frame.title = 'Gráfico EUR/USD';
+      frame.setAttribute('allowfullscreen', '');
+      frame.srcdoc = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#131722}.tradingview-widget-container,.tradingview-widget-container__widget{height:100%;width:100%}</style></head><body><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' + JSON.stringify(config) + '<' + '/script></div></body></html>';
+      host.appendChild(frame);
+    }
+
+    function closeTvModal() {
+      document.getElementById('tv-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeTvModal(); });
+  </script>
 
 </body>
 </html>
