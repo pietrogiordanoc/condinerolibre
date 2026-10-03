@@ -1808,7 +1808,7 @@
               <b>Master Pro Profesional Académico</b>
               <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Ver curso</a>
+                <a class="btn-primary-link" data-course-id="master-pro" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Ver más</a>
               </div>
             </div>
           </article>
@@ -1822,7 +1822,7 @@
               <b>Trading Prime Elite Profesional</b>
               <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Ver curso</a>
+                <a class="btn-primary-link" data-course-id="trading-prime" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Ver más</a>
               </div>
             </div>
           </article>
@@ -1836,7 +1836,7 @@
               <b>Velas Japonesas desde Cero</b>
               <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Ver curso</a>
+                <a class="btn-primary-link" data-course-id="velas-japonesas" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Ver más</a>
               </div>
             </div>
           </article>
@@ -1850,7 +1850,7 @@
               <b>TradingView Básico</b>
               <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
               <div class="account-link-actions">
-                <a class="btn-primary-link" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Ver curso</a>
+                <a class="btn-primary-link" data-course-id="tradingview-basico" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Ver más</a>
               </div>
             </div>
           </article>
@@ -2751,6 +2751,25 @@
       paypalRendered = true;
     }
 
+    async function renderCourseAccessCtas(session) {
+      const { data: enrollments, error } = await sp
+        .from('course_enrollments')
+        .select('course_id')
+        .eq('user_id', session.user.id);
+
+      if (error) {
+        console.error('No se pudieron cargar los accesos de Classroom:', error);
+        return;
+      }
+
+      const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
+      document.querySelectorAll('[data-course-id]').forEach((cta) => {
+        const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
+        cta.textContent = hasAccess ? 'Ver curso' : 'Ver más';
+        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : 'Ver información del curso');
+      });
+    }
+
     // --- INICIALIZACIÓN ---
     async function init() {
       let { data: { session } } = await sp.auth.getSession();
@@ -2835,6 +2854,7 @@
       const isPremium = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
 
       renderProfileView(session, profile);
+      await renderCourseAccessCtas(session);
       await loadAffiliatePortal(session);
       
       if (isPremium) {

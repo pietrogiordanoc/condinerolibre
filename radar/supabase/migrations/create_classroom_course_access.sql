@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS public.courses (
 INSERT INTO public.courses (id, title, bunny_library_id, bunny_collection_id) VALUES
   ('master-pro', 'Master Pro Profesional Académico', NULL, NULL),
   ('trading-prime', 'Trading Prime Elite Profesional', NULL, NULL),
-  ('velas-japonesas', 'Velas Japonesas desde Cero', 769072, NULL),
-  ('tradingview-basico', 'TradingView Básico', NULL, NULL)
+  ('velas-japonesas', 'Velas Japonesas desde Cero', 769072, '8382e70a-1bbb-44a4-805a-14a3694cc4c0'),
+  ('tradingview-basico', 'TradingView Básico', 769072, '1e3a102f-d724-4fcc-a7c0-3e339dbb4ce0')
 ON CONFLICT (id) DO UPDATE
 SET title = EXCLUDED.title,
     bunny_library_id = EXCLUDED.bunny_library_id,
