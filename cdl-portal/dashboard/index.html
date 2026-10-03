@@ -2938,12 +2938,14 @@
         sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
       ]);
       if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
-      if (modulesResponse.error) console.error('No se pudieron cargar los módulos de Classroom:', modulesResponse.error);
+      if (modulesResponse.error) console.warn('Los módulos de Classroom aún no están disponibles:', modulesResponse.error);
       if (lessonsResponse.error) console.error('No se pudieron cargar las lecciones de Classroom:', lessonsResponse.error);
       (coursesResponse.data || []).forEach((course) => classroomCoursesById.set(course.id, course));
-      if (modulesResponse.error || lessonsResponse.error) return;
+      if (lessonsResponse.error) return;
       courseIds.forEach((courseId) => classroomModulesByCourseId.set(courseId, []));
-      (modulesResponse.data || []).forEach((module) => classroomModulesByCourseId.get(module.course_id)?.push(module));
+      if (!modulesResponse.error) {
+        (modulesResponse.data || []).forEach((module) => classroomModulesByCourseId.get(module.course_id)?.push(module));
+      }
       courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
       (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
     }

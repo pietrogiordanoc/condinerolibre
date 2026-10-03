@@ -30,22 +30,7 @@ async function refreshUsers() {
   if (coursesResponse.error || modulesResponse.error || enrollmentsResponse.error) {
     console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error || modulesResponse.error || enrollmentsResponse.error);
   }
-  renderClassroomSyncActions();
   renderUsers();
-}
-
-function renderClassroomSyncActions() {
-  const container = document.getElementById('classroomSyncActions');
-  if (!container) return;
-  container.innerHTML = '';
-  COURSES.filter(course => course.bunny_collection_id || COURSE_IDS_WITH_MODULES.has(course.id)).forEach(course => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'btn';
-    button.textContent = `Actualizar ${course.title}`;
-    button.onclick = () => syncClassroomCourse(course.id, course.title, button);
-    container.appendChild(button);
-  });
 }
 
 async function syncClassroomCourse(courseId, courseLabel, button) {
