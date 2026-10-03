@@ -350,13 +350,15 @@
       grid-template-areas:
         "summary affiliate"
         "details affiliate"
-        "access affiliate";
+        "access affiliate"
+        "academy-upgrade affiliate";
       gap: 18px;
       align-items: start;
     }
     .profile-summary,
     .profile-form-card,
-    .profile-access-card {
+    .profile-access-card,
+    .profile-academy-upgrade {
       border: 1px solid var(--border);
       border-radius: 16px;
       background: linear-gradient(160deg, rgba(25,28,32,.94), rgba(12,15,18,.96));
@@ -404,6 +406,13 @@
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
+    .profile-academy-upgrade[hidden] { display: none; }
+    .profile-academy-upgrade-copy { display: grid; gap: 4px; }
+    .profile-academy-upgrade-tag { color: #ff9d2b; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+    .profile-academy-upgrade h3 { margin: 0; color: #fff; font-size: 16px; font-weight: 600; }
+    .profile-academy-upgrade p { margin: 0; color: rgba(255,255,255,.7); font-size: 12.5px; line-height: 1.45; }
+    .profile-academy-upgrade button { flex: 0 0 auto; border: 2px solid #111; border-radius: 9px; background: #ff8a00; color: #16110a; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 0 #111; }
     .affiliate-panel { grid-area: affiliate; border: 1px solid #31505a; border-radius: 16px; background: #0b1519; overflow: hidden; }
     .affiliate-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid #26383e; }
     .affiliate-head h2 { margin: 0; color: #f3f7f6; font-size: 21px; }
@@ -904,7 +913,7 @@
     }
 
     /* VISTA UPGRADE (MODO LIGHT PRO) */
-    #viewUpgrade { background-color: #f8fafc !important; color: #1e293b; display: none; align-items: center; justify-content: center; padding: 40px; }
+    #viewUpgrade { background: linear-gradient(135deg, #fffaf2 0%, #f8fafc 44%, #f5f7fb 100%) !important; color: #1e293b; display: none; align-items: center; justify-content: center; padding: 40px; }
     .upgrade-main-card {
       width: 100%; max-width: 580px; background: white; border-radius: 32px;
       padding: 48px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
@@ -918,7 +927,7 @@
     .upgrade-catalog-heading p { margin: 8px 0 0; color: #64748b; font-size: 15px; }
     .upgrade-plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; text-align: left; }
     .upgrade-plan { position: relative; display: flex; flex-direction: column; padding: 28px; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; }
-    .upgrade-plan.recommended { border: 2px solid #ff8a00; box-shadow: 0 14px 32px rgba(255,138,0,.16); }
+    .upgrade-plan.recommended { border: 2px solid #ff8a00; background: linear-gradient(180deg, #fffaf3 0%, #fff 42%); box-shadow: 0 14px 32px rgba(255,138,0,.16); }
     .upgrade-plan-tag { min-height: 22px; margin: -3px 0 12px; color: #64748b; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
     .upgrade-plan.recommended .upgrade-plan-tag { color: #c96500; }
     .upgrade-plan h2 { margin: 0; color: #0f172a; font-size: 22px; font-weight: 600; }
@@ -930,7 +939,7 @@
     .upgrade-plan-discount { margin: 0 0 3px; color: #c96500; font-size: 13px; font-weight: 600; }
     .upgrade-plan-benefits { display: grid; gap: 10px; margin: 0 0 24px; padding: 0; list-style: none; color: #475569; font-size: 13.5px; line-height: 1.4; }
     .upgrade-plan-benefits li::before { content: "\2713"; margin-right: 9px; color: #10b981; font-weight: 600; }
-    .academy-plan-cta { width: 100%; margin-top: auto; border: 0; border-radius: 10px; background: #ff8a00; color: #16110a; padding: 14px 16px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .academy-plan-cta { width: 100%; margin-top: auto; border: 2px solid #111; border-radius: 10px; background: #ff8a00; color: #16110a; padding: 14px 16px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 0 #111; }
     .academy-plan-cta:hover { filter: brightness(1.06); }
     @media (max-width: 720px) {
       .upgrade-plan-grid { grid-template-columns: 1fr; }
@@ -1283,7 +1292,7 @@
         max-width: 100%;
       }
 
-      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "summary" "details" "access" "affiliate"; }
+      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "summary" "details" "access" "academy-upgrade" "affiliate"; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1440,7 +1449,8 @@
       .profile-form-grid { grid-template-columns: 1fr; }
       .profile-field.full { grid-column: auto; }
       .profile-save-row,
-      .profile-access-card { align-items: stretch; flex-direction: column; }
+      .profile-access-card,
+      .profile-academy-upgrade { align-items: stretch; flex-direction: column; }
       .profile-access-card { display: flex; }
       .profile-access-actions { flex-direction: column; }
       .affiliate-head, .affiliate-grid { padding: 18px; }
@@ -1592,6 +1602,15 @@
             <button id="profileAffiliateAction" type="button">Portal de afiliados</button>
             <a href="/contacto/privacidad.html" target="_blank" rel="noreferrer">Privacidad</a>
           </div>
+        </section>
+
+        <section id="profileAcademyUpgrade" class="profile-academy-upgrade" hidden>
+          <div class="profile-academy-upgrade-copy">
+            <span class="profile-academy-upgrade-tag">MEJORA TU PLAN</span>
+            <h3>Suma ClassRoom a tu CDLRadar Pro</h3>
+            <p>Conserva tu Radar Pro y añade todos los cursos presentes y futuros por $10 más al mes.</p>
+          </div>
+          <button type="button" onclick="openAcademyUpgradeModal()">Mejorar mi plan</button>
         </section>
 
         <section id="affiliatePanel" class="affiliate-panel" aria-labelledby="affiliate-title">
@@ -2273,6 +2292,7 @@
       const planAction = document.getElementById('profilePlanAction');
       planAction.href = isPremium ? '#subscription' : '#upgrade';
       planAction.textContent = isPremium ? 'Gestionar suscripción' : 'Desbloquear Pro';
+      document.getElementById('profileAcademyUpgrade').hidden = !isPremium;
     }
 
     const AFFILIATE_PAYOUT_MINIMUM_CENTS = 5000;
@@ -2914,6 +2934,8 @@
     let classroomPlaylist = [];
     let classroomCourse = null;
     let classroomCurrentLessonId = null;
+    const classroomPreviewCourseIds = new Set();
+    const CLASSROOM_PREVIEW_SECONDS = 180;
 
     function stepClassroom(delta) {
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === classroomCurrentLessonId);
@@ -2925,6 +2947,7 @@
       const player = document.getElementById('classroomPlayer');
       const nowMeta = document.getElementById('classroomNowMeta');
       const nowTitle = document.getElementById('classroomNowTitle');
+      const isPreview = classroomPreviewCourseIds.has(course?.id);
       if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
         player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
       } else {
@@ -2932,14 +2955,15 @@
       }
       classroomCurrentLessonId = lesson.id;
       if (course?.id && lesson?.bunny_video_id) {
-        saveClassroomProgress(course.id, lesson.bunny_video_id);
-        startLessonTracking(course, lesson, player.querySelector('iframe'));
+        if (!isPreview) saveClassroomProgress(course.id, lesson.bunny_video_id);
+        startLessonTracking(course, lesson, player.querySelector('iframe'), isPreview);
       } else {
         stopLessonTracking();
       }
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
-      nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
+      const lessonMeta = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
+      nowMeta.textContent = isPreview ? `${lessonMeta} · Muestra de 3 min` : lessonMeta;
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
@@ -3018,7 +3042,7 @@
 
       await classroomReady;
       if (!classroomCoursesById.has(courseId)) await fetchClassroomState([courseId]);
-      if (needsClassroomSync(courseId)) {
+      if (needsClassroomSync(courseId) && !classroomPreviewCourseIds.has(courseId)) {
         await requestClassroomSync(courseId);
         await fetchClassroomState([courseId]);
       }
@@ -3054,7 +3078,8 @@
           ? modules.flatMap((module) => lessons.filter((lesson) => lesson.module_id === module.id).map((lesson) => ({ lesson, module })))
           : lessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
-        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
+        const previewCourse = classroomPreviewCourseIds.has(courseId);
+        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id}"><span class="classroom-lesson-number">${previewCourse ? 'MUESTRA · 3 MIN' : `LECCIÓN ${lesson.position}`}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         lessonsWrap.innerHTML = modules.length
           ? modules.map((module) => {
               const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
@@ -3160,7 +3185,7 @@
       return merged;
     }
 
-    async function startLessonTracking(course, lesson, frame) {
+    async function startLessonTracking(course, lesson, frame, isPreview = false) {
       const token = ++trackingToken;
       stopLessonTracking();
       if (sessionStorage.getItem('cdl_audit_session') || !frame) return;
@@ -3174,15 +3199,17 @@
         duration: saved.duration_seconds || lesson.duration_seconds || 0,
         furthest: saved.furthest_seconds || 0,
         position: saved.last_position_seconds || 0,
-        completedAt: saved.completed_at || null,
+        completedAt: saved.completed_at || null, isPreview,
         lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, player: null
       };
       lessonTracker = tracker;
 
-      sp.from('course_sessions')
-        .insert({ user_id: tracker.userId, course_id: tracker.courseId, bunny_video_id: tracker.videoId })
-        .select('id').single()
-        .then(({ data, error }) => { if (!error && data) tracker.sessionId = data.id; });
+      if (!isPreview) {
+        sp.from('course_sessions')
+          .insert({ user_id: tracker.userId, course_id: tracker.courseId, bunny_video_id: tracker.videoId })
+          .select('id').single()
+          .then(({ data, error }) => { if (!error && data) tracker.sessionId = data.id; });
+      }
 
       loadPlayerJs().then(() => {
         if (lessonTracker !== tracker || !window.playerjs) return;
@@ -3202,6 +3229,12 @@
       if (lessonTracker !== tracker) return;
       const seconds = Number(data?.seconds);
       if (!Number.isFinite(seconds)) return;
+      if (tracker.isPreview && seconds >= CLASSROOM_PREVIEW_SECONDS) {
+        tracker.player?.pause?.();
+        stopLessonTracking();
+        document.getElementById('classroomPlayer').innerHTML = '<div class="classroom-player-empty">Esta muestra terminó a los 3 minutos.<br><br><button type="button" class="classroom-close" onclick="openAcademyModal()">Ver CDLRadar + ClassRoom</button></div>';
+        return;
+      }
       if (data.duration) tracker.duration = Math.round(Number(data.duration));
       // Un salto mayor a ~2 s es un cambio de posición, no tiempo visto.
       if (tracker.lastT !== null && seconds >= tracker.lastT && seconds - tracker.lastT <= 2.5) {
@@ -3217,6 +3250,7 @@
     async function flushLessonTracker(tracker) {
       if (!tracker.dirty) return;
       tracker.dirty = false;
+      if (tracker.isPreview) return;
       const ranges = mergeWatchedRanges(tracker.ranges, true);
       const watched = Math.round(ranges.reduce((sum, [start, end]) => sum + (end - start), 0));
       if (tracker.duration > 0 && watched / tracker.duration >= WATCH_COMPLETE_RATIO && !tracker.completedAt) {
@@ -3287,23 +3321,39 @@
       const hasAcademy = !academyError && academyAccess === true;
       document.getElementById('academyBanner').hidden = hasAcademy;
       document.getElementById('academyActiveChip').hidden = !hasAcademy;
+      if (hasAcademy) document.getElementById('profileAcademyUpgrade').hidden = true;
       if (hasAcademy) {
         const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
         (activeCourses || []).forEach((course) => enrolledCourseIds.add(course.id));
       }
 
-      classroomReady = loadClassroomContent(enrolledCourseIds).catch((loadError) => console.error('Classroom:', loadError));
+      const { data: profile } = await getProfileForSession(session, 'plan');
+      const isFreemium = (profile?.plan || 'free').toLowerCase() === 'free';
+      classroomPreviewCourseIds.clear();
+      let previewCourseIds = new Set();
+      if (isFreemium) {
+        const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
+        previewCourseIds = new Set((activeCourses || []).map((course) => course.id));
+        previewCourseIds.forEach((courseId) => classroomPreviewCourseIds.add(courseId));
+      }
+      const classroomCourseIds = new Set([...enrolledCourseIds, ...previewCourseIds]);
+      classroomReady = (isFreemium ? fetchClassroomState([...classroomCourseIds]) : loadClassroomContent(enrolledCourseIds))
+        .catch((loadError) => console.error('Classroom:', loadError));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
+        const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
-        cta.textContent = hasAccess ? 'Ver curso' : 'Ver más';
-        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : 'Ver información del curso');
+        cta.textContent = hasAccess ? 'Ver curso' : hasPreview ? 'Ver muestra' : 'Ver más';
+        cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir muestra gratuita de tres minutos' : 'Ver información del curso');
         cta.onclick = null;
         if (status && hasAccess) {
           status.textContent = 'ACCESO ACTIVO';
           status.classList.add('course-access-active');
         }
-        if (hasAccess) {
+        if (status && hasPreview && !hasAccess) {
+          status.textContent = 'MUESTRA GRATIS · 3 MIN';
+        }
+        if (hasAccess || hasPreview) {
           cta.removeAttribute('target');
           cta.removeAttribute('rel');
           cta.href = '#classroom';
@@ -3799,21 +3849,21 @@
   </script>
 
   <style>
-    .academy-banner { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 2px solid rgba(255,138,0,.55); border-radius: 12px; background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(255,255,255,.03)); }
+    .academy-banner { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 2px solid #ff8a00; border-radius: 12px; background: linear-gradient(135deg, rgba(255,138,0,.2), rgba(255,255,255,.03)); box-shadow: 0 8px 24px rgba(255,138,0,.12); }
     .academy-banner[hidden] { display: none; }
     .academy-banner-active { border-color: rgba(42,255,138,.4); background: linear-gradient(135deg, rgba(42,255,138,.1), rgba(255,255,255,.02)); }
     .academy-banner-text { flex: 1; display: grid; gap: 3px; min-width: 0; }
     .academy-banner-text strong { color: #fff; font-size: 15px; font-weight: 600; }
     .academy-banner-text span { color: var(--muted); font-size: 12.5px; line-height: 1.45; }
     .academy-banner-text .academy-banner-tag { color: #ff8a00; font-size: 11px; font-weight: 600; letter-spacing: .06em; }
-    .academy-banner-btn { flex: 0 0 auto; border: 0; border-radius: 9px; background: #ff8a00; color: #111; padding: 11px 18px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .academy-banner-btn { flex: 0 0 auto; border: 2px solid #111; border-radius: 9px; background: #ff8a00; color: #111; padding: 10px 18px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 0 #111; }
     .academy-banner-btn:hover { filter: brightness(1.08); }
     @media (max-width: 900px) { .courses-header-grid { grid-template-columns: 1fr !important; } }
     @media (max-width: 560px) { .academy-banner { flex-wrap: wrap; } .academy-banner-btn { width: 100%; } }
 
     .acm { position: fixed; inset: 0; z-index: 10060; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.8); overflow-y: auto; }
     .acm.open { display: flex; }
-    .acm-box { position: relative; width: min(1020px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: #11151c; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.65); }
+    .acm-box { position: relative; width: min(1440px, 100%); max-height: 94vh; max-height: 94dvh; overflow-y: auto; border: 1px solid rgba(255,138,0,.55); border-radius: 18px; background: #11151c; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.65); }
     .acm-x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff; font: inherit; font-size: 15px; cursor: pointer; }
     .acm-x:hover { background: #fff; color: #000; }
     .acm-media { position: relative; height: 140px; overflow: hidden; border-radius: 18px 18px 0 0; background: linear-gradient(135deg, #2a1700, #11151c 70%); border-bottom: 1px solid rgba(255,255,255,.1); }
@@ -3858,7 +3908,7 @@
     .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
     @keyframes acm-spin { to { transform: rotate(360deg); } }
     .acm-fine { margin: 0; color: rgba(255,255,255,.45); font-size: 11.5px; line-height: 1.5; text-align: center; }
-    @media (max-width: 640px) {
+    @media (max-width: 900px) {
       .acm-media { height: 190px; }
       .acm-body { grid-template-columns: 1fr; grid-template-areas: "title" "list" "price" "code" "pay"; gap: 14px; padding: 20px 22px 24px; }
       .acm-pay { padding: 0; border-left: 0; }
@@ -3933,6 +3983,11 @@
         <p>Tu acceso se activa automáticamente en unos minutos. Si no lo ves después de recargar, escríbenos y lo resolvemos.</p>
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
+      <div id="acmUpgrade" class="acm-stage" hidden>
+        <h3>Mejorar a CDLRadar + ClassRoom</h3>
+        <p>Tu mejora suma $10 al mes y conserva una única suscripción. Estamos preparando la migración directa de tu plan actual para evitar cualquier cobro duplicado.</p>
+        <button type="button" class="acm-apply" onclick="closeAcademyModal()">Entendido</button>
+      </div>
     </div>
   </div>
 
@@ -3955,6 +4010,7 @@
       document.getElementById('acmBusy').hidden = stage !== 'busy';
       document.getElementById('acmDone').hidden = stage !== 'done';
       document.getElementById('acmLate').hidden = stage !== 'late';
+      document.getElementById('acmUpgrade').hidden = stage !== 'upgrade';
     }
 
     function setAcademyMessage(text, kind) {
@@ -3980,6 +4036,12 @@
       if (!document.getElementById('acmBusy').hidden) return;
       document.getElementById('academy-modal').classList.remove('open');
       document.body.style.overflow = '';
+    }
+
+    function openAcademyUpgradeModal() {
+      setAcademyStage('upgrade');
+      document.getElementById('academy-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
     function finishAcademyPurchase() {
