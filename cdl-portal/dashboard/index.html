@@ -2886,10 +2886,15 @@
       if (!course?.bunny_library_id || !lesson?.bunny_video_id) {
         player.innerHTML = '<div class="classroom-player-empty">Esta lección todavía no tiene un vídeo disponible.</div>';
       } else {
-        player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(cleanLessonTitle(lesson.title))}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        player.innerHTML = `<iframe src="https://player.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(cleanLessonTitle(lesson.title))}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
       }
       classroomCurrentLessonId = lesson.id;
-      if (course?.id && lesson?.bunny_video_id) saveClassroomProgress(course.id, lesson.bunny_video_id);
+      if (course?.id && lesson?.bunny_video_id) {
+        saveClassroomProgress(course.id, lesson.bunny_video_id);
+        startLessonTracking(course, lesson, player.querySelector('iframe'));
+      } else {
+        stopLessonTracking();
+      }
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
       nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
@@ -3023,7 +3028,7 @@
         });
         const progress = classroomProgressByCourseId.get(courseId) || new Map();
         const resume = classroomPlaylist.reduce((best, item) => {
-          const at = Date.parse(progress.get(item.lesson.bunny_video_id) || '');
+          const at = Date.parse(progress.get(item.lesson.bunny_video_id)?.last_viewed_at || '');
           return at && (!best || at > best.at) ? { item, at } : best;
         }, null);
         const start = resume ? resume.item : classroomPlaylist[0];
@@ -3035,7 +3040,7 @@
       const [coursesResponse, modulesResponse, lessonsResponse] = await Promise.all([
         sp.from('courses').select('id, title, bunny_library_id, bunny_collection_id').in('id', courseIds),
         sp.from('course_modules').select('id, course_id, title, position').in('course_id', courseIds).order('position'),
-        sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position').in('course_id', courseIds).order('position')
+        sp.from('course_lessons').select('id, course_id, module_id, title, bunny_video_id, position, duration_seconds').in('course_id', courseIds).order('position')
       ]);
       if (coursesResponse.error) console.error('No se pudieron cargar los cursos de Classroom:', coursesResponse.error);
       if (modulesResponse.error) console.warn('Los módulos de Classroom aún no están disponibles:', modulesResponse.error);
@@ -3050,12 +3055,16 @@
       (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
 
       const { data: { session } } = await sp.auth.getSession();
-      const progressResponse = session
-        ? await sp.from('course_progress').select('course_id, bunny_video_id, last_viewed_at').eq('user_id', session.user.id).in('course_id', courseIds)
-        : { data: [] };
+      const progressColumns = 'course_id, bunny_video_id, last_viewed_at, duration_seconds, watched_seconds, furthest_seconds, last_position_seconds, watched_ranges, completed_at';
+      let progressResponse = { data: [] };
+      if (session) {
+        progressResponse = await sp.from('course_progress').select(progressColumns).eq('user_id', session.user.id).in('course_id', courseIds);
+        // Si el SQL de seguimiento aún no está aplicado, se usa el progreso básico.
+        if (progressResponse.error) progressResponse = await sp.from('course_progress').select('course_id, bunny_video_id, last_viewed_at').eq('user_id', session.user.id).in('course_id', courseIds);
+      }
       if (progressResponse.error) console.warn('El progreso de Classroom aún no está disponible:', progressResponse.error);
       courseIds.forEach((courseId) => classroomProgressByCourseId.set(courseId, new Map()));
-      (progressResponse.data || []).forEach((row) => classroomProgressByCourseId.get(row.course_id)?.set(row.bunny_video_id, row.last_viewed_at));
+      (progressResponse.data || []).forEach((row) => classroomProgressByCourseId.get(row.course_id)?.set(row.bunny_video_id, row));
     }
 
     async function saveClassroomProgress(courseId, videoId) {
@@ -3063,7 +3072,8 @@
       if (sessionStorage.getItem('cdl_audit_session')) return;
       if (!classroomProgressByCourseId.has(courseId)) classroomProgressByCourseId.set(courseId, new Map());
       const now = new Date().toISOString();
-      classroomProgressByCourseId.get(courseId).set(videoId, now);
+      const progress = classroomProgressByCourseId.get(courseId);
+      progress.set(videoId, { ...(progress.get(videoId) || {}), last_viewed_at: now });
       const { data: { session } } = await sp.auth.getSession();
       if (!session) return;
       const { error } = await sp.from('course_progress').upsert(
@@ -3072,6 +3082,139 @@
       );
       if (error) console.warn('No se pudo guardar el progreso:', error);
     }
+
+    // --- Seguimiento real de reproducción (API Player.js de Bunny) ---
+    const PLAYERJS_SRC = 'https://assets.mediadelivery.net/playerjs/playerjs-latest.min.js';
+    const WATCH_COMPLETE_RATIO = 0.9;
+    let playerJsPromise = null;
+    let lessonTracker = null;
+    let trackingToken = 0;
+    let trackingColumnsMissing = false;
+
+    function loadPlayerJs() {
+      if (window.playerjs) return Promise.resolve();
+      if (!playerJsPromise) {
+        playerJsPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = PLAYERJS_SRC;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+      return playerJsPromise;
+    }
+
+    function mergeWatchedRanges(ranges, round = false) {
+      const prepared = ranges
+        .map(([start, end]) => (round ? [Math.floor(start), Math.ceil(end)] : [start, end]))
+        .filter(([start, end]) => end > start)
+        .sort((a, b) => a[0] - b[0]);
+      const merged = [];
+      for (const range of prepared) {
+        const last = merged[merged.length - 1];
+        if (last && range[0] <= last[1] + 1) last[1] = Math.max(last[1], range[1]); else merged.push([...range]);
+      }
+      return merged;
+    }
+
+    async function startLessonTracking(course, lesson, frame) {
+      const token = ++trackingToken;
+      stopLessonTracking();
+      if (sessionStorage.getItem('cdl_audit_session') || !frame) return;
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session || token !== trackingToken) return;
+
+      const saved = classroomProgressByCourseId.get(course.id)?.get(lesson.bunny_video_id) || {};
+      const tracker = {
+        userId: session.user.id, courseId: course.id, videoId: lesson.bunny_video_id,
+        ranges: Array.isArray(saved.watched_ranges) ? saved.watched_ranges.map((range) => [...range]) : [],
+        duration: saved.duration_seconds || lesson.duration_seconds || 0,
+        furthest: saved.furthest_seconds || 0,
+        position: saved.last_position_seconds || 0,
+        completedAt: saved.completed_at || null,
+        lastT: null, sessionId: null, sessionSeconds: 0, dirty: false, timer: null, player: null
+      };
+      lessonTracker = tracker;
+
+      sp.from('course_sessions')
+        .insert({ user_id: tracker.userId, course_id: tracker.courseId, bunny_video_id: tracker.videoId })
+        .select('id').single()
+        .then(({ data, error }) => { if (!error && data) tracker.sessionId = data.id; });
+
+      loadPlayerJs().then(() => {
+        if (lessonTracker !== tracker || !window.playerjs) return;
+        tracker.player = new playerjs.Player(frame);
+        tracker.player.on('ready', () => {
+          tracker.player.on('timeupdate', (data) => trackTimeUpdate(tracker, data));
+          tracker.player.on('pause', () => { tracker.lastT = null; flushLessonTracker(tracker); });
+          tracker.player.on('seeked', () => { tracker.lastT = null; });
+          tracker.player.on('ended', () => { tracker.lastT = null; flushLessonTracker(tracker); });
+        });
+      }).catch((error) => console.warn('No se pudo cargar el seguimiento de reproducción:', error));
+
+      tracker.timer = setInterval(() => flushLessonTracker(tracker), 15000);
+    }
+
+    function trackTimeUpdate(tracker, data) {
+      if (lessonTracker !== tracker) return;
+      const seconds = Number(data?.seconds);
+      if (!Number.isFinite(seconds)) return;
+      if (data.duration) tracker.duration = Math.round(Number(data.duration));
+      // Un salto mayor a ~2 s es un cambio de posición, no tiempo visto.
+      if (tracker.lastT !== null && seconds >= tracker.lastT && seconds - tracker.lastT <= 2.5) {
+        tracker.ranges = mergeWatchedRanges([...tracker.ranges, [tracker.lastT, seconds]]);
+        tracker.sessionSeconds += seconds - tracker.lastT;
+      }
+      tracker.lastT = seconds;
+      tracker.position = Math.round(seconds);
+      tracker.furthest = Math.max(tracker.furthest, Math.round(seconds));
+      tracker.dirty = true;
+    }
+
+    async function flushLessonTracker(tracker) {
+      if (!tracker.dirty) return;
+      tracker.dirty = false;
+      const ranges = mergeWatchedRanges(tracker.ranges, true);
+      const watched = Math.round(ranges.reduce((sum, [start, end]) => sum + (end - start), 0));
+      if (tracker.duration > 0 && watched / tracker.duration >= WATCH_COMPLETE_RATIO && !tracker.completedAt) {
+        tracker.completedAt = new Date().toISOString();
+      }
+      const now = new Date().toISOString();
+      const entry = {
+        duration_seconds: tracker.duration || null, watched_seconds: watched, furthest_seconds: tracker.furthest,
+        last_position_seconds: tracker.position, watched_ranges: ranges, completed_at: tracker.completedAt
+      };
+      const progress = classroomProgressByCourseId.get(tracker.courseId);
+      if (progress) progress.set(tracker.videoId, { ...(progress.get(tracker.videoId) || {}), ...entry, last_viewed_at: now });
+
+      if (!trackingColumnsMissing) {
+        const { error } = await sp.from('course_progress').upsert(
+          { user_id: tracker.userId, course_id: tracker.courseId, bunny_video_id: tracker.videoId, last_viewed_at: now, ...entry },
+          { onConflict: 'user_id,bunny_video_id' }
+        );
+        if (error) {
+          console.warn('No se pudo guardar el seguimiento:', error);
+          if (/column|schema cache/i.test(error.message || '')) trackingColumnsMissing = true;
+        }
+      }
+      if (tracker.sessionId) {
+        sp.from('course_sessions').update({ seconds_watched: Math.round(tracker.sessionSeconds) }).eq('id', tracker.sessionId).then(() => {});
+      }
+    }
+
+    function stopLessonTracking() {
+      const tracker = lessonTracker;
+      if (!tracker) return;
+      lessonTracker = null;
+      clearInterval(tracker.timer);
+      flushLessonTracker(tracker);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && lessonTracker) { lessonTracker.lastT = null; flushLessonTracker(lessonTracker); }
+    });
+    window.addEventListener('pagehide', stopLessonTracking);
 
     // Warms up lessons for enrolled courses in the background so the player opens instantly.
     async function loadClassroomContent(enrolledCourseIds) {
@@ -3268,6 +3411,7 @@
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
     document.getElementById('classroomClose').onclick = () => {
+      stopLessonTracking();
       document.getElementById('classroomSection').hidden = true;
       document.getElementById('viewCourses').scrollIntoView({ behavior: 'smooth', block: 'start' });
     };

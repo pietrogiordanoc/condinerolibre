@@ -5,7 +5,11 @@ let COURSE_IDS_WITH_MODULES = new Set();
 let COURSE_ENROLLMENTS_BY_USER = {};
 let EXPANDED_COURSE_ROWS = new Set();
 let PROGRESS_BY_USER = {};
-let LESSON_TITLES_BY_COURSE = {};
+let LESSONS_BY_COURSE = {};
+let LESSON_INDEX_BY_COURSE = {};
+let SESSIONS_BY_USER_COURSE = {};
+let MODULE_POSITION_BY_ID = {};
+let EXPANDED_DETAIL = new Set();
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
@@ -13,24 +17,71 @@ let sortOrder = 'asc';
 // aplicado por la Edge Function `radar-access` (radar/supabase/functions/radar-access).
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
+async function fetchAllRows(buildQuery) {
+  const rows = [];
+  for (let from = 0; from < 50000; from += 1000) {
+    const { data, error } = await buildQuery().range(from, from + 999);
+    if (error) return { data: rows, error };
+    rows.push(...data);
+    if (data.length < 1000) break;
+  }
+  return { data: rows, error: null };
+}
+
+async function loadProgressRows() {
+  const full = await fetchAllRows(() => sp.from("course_progress")
+    .select("user_id, course_id, bunny_video_id, first_viewed_at, last_viewed_at, duration_seconds, watched_seconds, furthest_seconds, last_position_seconds, watched_ranges, completed_at")
+    .order("user_id").order("bunny_video_id"));
+  if (!full.error) return full;
+  // Sin el SQL de seguimiento solo hay progreso básico (lección abierta).
+  return fetchAllRows(() => sp.from("course_progress")
+    .select("user_id, course_id, bunny_video_id, first_viewed_at, last_viewed_at")
+    .order("user_id").order("bunny_video_id"));
+}
+
+function loadSessionRows() {
+  const since = new Date(Date.now() - 90 * 86400000).toISOString();
+  return fetchAllRows(() => sp.from("course_sessions")
+    .select("id, user_id, course_id, started_at, seconds_watched")
+    .gte("started_at", since)
+    .order("started_at", { ascending: false }).order("id"));
+}
+
 async function refreshUsers() {
-  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse] = await Promise.all([
+  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse, sessionsResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
     sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
-    sp.from("course_modules").select("course_id"),
+    sp.from("course_modules").select("id, course_id, position"),
     sp.from("course_enrollments").select("user_id, course_id"),
-    sp.from("course_progress").select("user_id, course_id, bunny_video_id, last_viewed_at"),
-    sp.from("course_lessons").select("course_id, bunny_video_id, title")
+    loadProgressRows(),
+    fetchAllRows(() => sp.from("course_lessons").select("id, course_id, module_id, position, bunny_video_id, title, duration_seconds").order("id")),
+    loadSessionRows()
   ]);
 
   PROGRESS_BY_USER = (progressResponse.data || []).reduce((byUser, row) => {
     ((byUser[row.user_id] ||= {})[row.course_id] ||= []).push(row);
     return byUser;
   }, {});
-  LESSON_TITLES_BY_COURSE = (lessonsResponse.data || []).reduce((byCourse, lesson) => {
-    (byCourse[lesson.course_id] ||= new Map()).set(lesson.bunny_video_id, lesson.title);
-    return byCourse;
-  }, {});
+  MODULE_POSITION_BY_ID = Object.fromEntries((modulesResponse.data || []).map((module) => [module.id, module.position]));
+  const lessonsByCourse = {};
+  (lessonsResponse.data || []).forEach((lesson) => {
+    (lessonsByCourse[lesson.course_id] ||= []).push({
+      videoId: lesson.bunny_video_id, title: lesson.title, duration: lesson.duration_seconds || 0,
+      order: (MODULE_POSITION_BY_ID[lesson.module_id] ?? 0) * 100000 + lesson.position
+    });
+  });
+  LESSONS_BY_COURSE = {};
+  LESSON_INDEX_BY_COURSE = {};
+  Object.entries(lessonsByCourse).forEach(([courseId, lessons]) => {
+    lessons.sort((a, b) => a.order - b.order);
+    LESSONS_BY_COURSE[courseId] = lessons;
+    LESSON_INDEX_BY_COURSE[courseId] = new Map(lessons.map((lesson) => [lesson.videoId, lesson]));
+  });
+  SESSIONS_BY_USER_COURSE = {};
+  (sessionsResponse.data || []).forEach((session) => {
+    (SESSIONS_BY_USER_COURSE[`${session.user_id}|${session.course_id}`] ||= [])
+      .push({ t: new Date(session.started_at).getTime(), seconds: session.seconds_watched || 0 });
+  });
 
   PROFILES = profilesResponse.data || [];
   COURSES = coursesResponse.data || [];
@@ -164,6 +215,7 @@ function renderUsers() {
           const enrolled = enrolledCourseIds.has(course.id);
           const started = enrolled && courseProgressStats(u.id, course).seen > 0;
           return `
+          <div class="course-block">
           <div class="course-row ${started ? '' : 'is-idle'}">
             <label class="course-access-option">
               <input type="checkbox" ${enrolled ? 'checked' : ''}
@@ -171,6 +223,8 @@ function renderUsers() {
               <span>${course.title}</span>
             </label>
             <div class="course-metrics">${enrolled ? courseMetrics(u.id, course) : '<span class="course-metrics-empty">Sin acceso</span>'}</div>
+          </div>
+          ${enrolled && EXPANDED_DETAIL.has(`${u.id}|${course.id}`) ? lessonDetail(u.id, course) : ''}
           </div>`;
         }).join('')
       : '<span class="course-access-empty">Aún no hay cursos configurados.</span>';
@@ -249,33 +303,138 @@ function timeAgo(isoDate) {
   return `hace ${Math.round(minutes / 1440)} d`;
 }
 
+const COMPLETE_RATIO = 0.9;
+const STOP_WORDS_EXT = /\.(mp4|m4v|mov|mkv|webm)$/i;
+
+function fmtDuration(totalSeconds) {
+  const seconds = Math.max(0, Math.round(totalSeconds || 0));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  if (hours) return `${hours} h ${String(minutes).padStart(2, '0')} min`;
+  return minutes ? `${minutes} min` : `${seconds} s`;
+}
+
+function fmtClock(totalSeconds) {
+  const seconds = Math.max(0, Math.round(totalSeconds || 0));
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+function fmtDateTime(ms) {
+  return new Date(ms).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
+// none | opened (sin datos de reproducción) | done | skips | partial
+function lessonStatus(row, duration) {
+  if (!row) return 'none';
+  const watched = row.watched_seconds || 0;
+  if (row.duration_seconds == null && !watched) return 'opened';
+  if (!duration) return 'opened';
+  if (row.completed_at || watched / duration >= COMPLETE_RATIO) return 'done';
+  if ((row.furthest_seconds || 0) - watched > Math.max(30, duration * 0.15)) return 'skips';
+  return 'partial';
+}
+
 function courseProgressStats(userId, course) {
-  const titles = LESSON_TITLES_BY_COURSE[course.id];
-  const rows = ((PROGRESS_BY_USER[userId] || {})[course.id] || []).filter((row) => !titles || titles.has(row.bunny_video_id));
-  const total = titles ? titles.size : 0;
+  const lessons = LESSONS_BY_COURSE[course.id] || [];
+  const index = LESSON_INDEX_BY_COURSE[course.id];
+  const rows = ((PROGRESS_BY_USER[userId] || {})[course.id] || []).filter((row) => !index || index.has(row.bunny_video_id));
+  const total = lessons.length;
+  const totalDuration = lessons.reduce((sum, lesson) => sum + lesson.duration, 0);
+  let watched = 0, completed = 0, skipped = 0, tracked = 0;
+  rows.forEach((row) => {
+    const duration = row.duration_seconds || index?.get(row.bunny_video_id)?.duration || 0;
+    const status = lessonStatus(row, duration);
+    watched += row.watched_seconds || 0;
+    if (row.duration_seconds != null) tracked++;
+    if (status === 'done') completed++;
+    if (status === 'skips') skipped++;
+  });
   const last = rows.reduce((best, row) => (!best || row.last_viewed_at > best.last_viewed_at ? row : best), null);
-  return { titles, seen: rows.length, total, pct: total ? Math.round((rows.length / total) * 100) : 0, last };
+  const first = rows.reduce((best, row) => (row.first_viewed_at && (!best || row.first_viewed_at < best) ? row.first_viewed_at : best), null);
+  const pct = tracked && totalDuration
+    ? Math.min(100, Math.round((watched / totalDuration) * 100))
+    : (total ? Math.round((rows.length / total) * 100) : 0);
+  return { index, seen: rows.length, total, pct, last, first, watched, completed, skipped, tracked };
+}
+
+function visitStats(userId, courseId) {
+  const sessions = SESSIONS_BY_USER_COURSE[`${userId}|${courseId}`] || [];
+  const times = sessions.map((session) => session.t).sort((a, b) => a - b);
+  // Una visita = sesiones separadas por más de 30 min.
+  let visits = 0, previous = -Infinity;
+  times.forEach((t) => { if (t - previous > 30 * 60000) visits++; previous = t; });
+  const recent = new Set(times.filter((t) => t >= Date.now() - 28 * 86400000).map((t) => new Date(t).toDateString()));
+  return { visits, activeDays: recent.size, perWeek: recent.size / 4, lastVisit: times[times.length - 1] || null };
 }
 
 function progressBadge(userId, enrolledCourseIds) {
-  const stats = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => courseProgressStats(userId, course));
+  const stats = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => ({ course, ...courseProgressStats(userId, course) }));
   if (!stats.length) return '';
-  const seen = stats.reduce((sum, item) => sum + item.seen, 0);
-  const total = stats.reduce((sum, item) => sum + item.total, 0);
-  const pct = total ? Math.round((seen / total) * 100) : 0;
-  return `<span class="course-pct ${seen ? '' : 'zero'}" title="${seen} de ${total} lecciones vistas en ${stats.length} cursos">${pct}%</span>`;
+  const trackedAny = stats.some((item) => item.tracked);
+  let pct;
+  if (trackedAny) {
+    const totalDuration = stats.reduce((sum, item) => sum + (LESSONS_BY_COURSE[item.course.id] || []).reduce((s, l) => s + l.duration, 0), 0);
+    pct = totalDuration ? Math.min(100, Math.round(stats.reduce((sum, item) => sum + item.watched, 0) / totalDuration * 100)) : 0;
+  } else {
+    const total = stats.reduce((sum, item) => sum + item.total, 0);
+    pct = total ? Math.round(stats.reduce((sum, item) => sum + item.seen, 0) / total * 100) : 0;
+  }
+  const opened = stats.reduce((sum, item) => sum + item.seen, 0);
+  return `<span class="course-pct ${opened ? '' : 'zero'}" title="${trackedAny ? 'Porcentaje del vídeo total visto' : 'Lecciones abiertas'} en ${stats.length} cursos">${pct}%</span>`;
 }
 
 function courseMetrics(userId, course) {
-  const { titles, seen, total, pct, last } = courseProgressStats(userId, course);
-  let detail = '<span>Sin empezar</span>';
-  if (last) {
-    const fullTitle = (titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '');
-    const shortTitle = fullTitle.length > 46 ? `${fullTitle.slice(0, 45)}…` : fullTitle;
-    const when = new Date(last.last_viewed_at).toLocaleString('es-ES');
-    detail = `<span class="progress-last" title="${escapeHtmlText(fullTitle)} · ${when}">Última: ${escapeHtmlText(shortTitle)} · ${timeAgo(last.last_viewed_at)}</span>`;
+  const stats = courseProgressStats(userId, course);
+  const { index, seen, total, pct, last, first, watched, completed, skipped, tracked } = stats;
+  const visit = visitStats(userId, course.id);
+  const chips = [`<span class="mchip" title="Lecciones que ha abierto">${seen}/${total} abiertas</span>`];
+  if (tracked) {
+    chips.push(`<span class="mchip ok" title="Lecciones vistas al 90% o más">✓ ${completed} completas</span>`);
+    if (skipped) chips.push(`<span class="mchip warn" title="Lecciones en las que avanzó saltando partes">↷ ${skipped} con saltos</span>`);
+    chips.push(`<span class="mchip" title="Tiempo de vídeo realmente visto (sin contar repeticiones)">⏱ ${fmtDuration(watched)}</span>`);
   }
-  return `<span class="progress-bar" title="${seen} de ${total}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span><span>${seen} de ${total} vistas</span>${detail}`;
+  if (visit.visits) {
+    chips.push(`<span class="mchip" title="Visitas en los últimos 90 días (sesiones separadas por más de 30 min)">${visit.visits} visitas</span>`);
+    chips.push(`<span class="mchip" title="Días distintos con actividad en las últimas 4 semanas">${visit.activeDays} días/4 sem · ${visit.perWeek.toFixed(1)}/sem</span>`);
+  }
+  if (first) chips.push(`<span class="mchip" title="Primera lección abierta">Desde ${new Date(first).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span>`);
+  if (last) {
+    const fullTitle = (index?.get(last.bunny_video_id)?.title || '').replace(STOP_WORDS_EXT, '');
+    const shortTitle = fullTitle.length > 40 ? `${fullTitle.slice(0, 39)}…` : fullTitle;
+    chips.push(`<span class="mchip" title="${fmtDateTime(new Date(last.last_viewed_at).getTime())}">Última visita ${timeAgo(last.last_viewed_at)}</span>`);
+    chips.push(`<span class="mchip last" title="${escapeHtmlText(fullTitle)}">${escapeHtmlText(shortTitle)}</span>`);
+  } else {
+    chips.push('<span class="mchip">Sin empezar</span>');
+  }
+  const detailOpen = EXPANDED_DETAIL.has(`${userId}|${course.id}`);
+  return `<span class="progress-bar" title="${tracked ? 'Tiempo de vídeo visto sobre el total del curso' : 'Lecciones abiertas'}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span>${chips.join('')}<button type="button" class="detail-toggle" onclick="toggleLessonDetail('${userId}', '${course.id}')">${detailOpen ? 'Ocultar' : 'Detalle'}</button>`;
+}
+
+function toggleLessonDetail(userId, courseId) {
+  const key = `${userId}|${courseId}`;
+  if (EXPANDED_DETAIL.has(key)) EXPANDED_DETAIL.delete(key); else EXPANDED_DETAIL.add(key);
+  renderUsers();
+}
+
+const LESSON_STATUS_LABELS = { none: 'Sin ver', opened: 'Abierta', done: 'Completa', skips: 'Saltó partes', partial: 'Parcial' };
+
+function lessonDetail(userId, course) {
+  const lessons = LESSONS_BY_COURSE[course.id] || [];
+  const rows = new Map(((PROGRESS_BY_USER[userId] || {})[course.id] || []).map((row) => [row.bunny_video_id, row]));
+  const items = lessons.map((lesson, position) => {
+    const row = rows.get(lesson.videoId);
+    const duration = row?.duration_seconds || lesson.duration || 0;
+    const status = lessonStatus(row, duration);
+    const watched = row?.watched_seconds || 0;
+    const pct = duration ? Math.min(100, Math.round((watched / duration) * 100)) : 0;
+    const ranges = Array.isArray(row?.watched_ranges) && duration
+      ? row.watched_ranges.map(([start, end]) => `<i style="left:${((start / duration) * 100).toFixed(2)}%;width:${Math.max(0.6, ((end - start) / duration) * 100).toFixed(2)}%"></i>`).join('')
+      : '';
+    const title = lesson.title.replace(STOP_WORDS_EXT, '');
+    const shortTitle = title.length > 52 ? `${title.slice(0, 51)}…` : title;
+    return `<div class="ld-row"><span class="ld-n">${position + 1}</span><span class="ld-title" title="${escapeHtmlText(title)}">${escapeHtmlText(shortTitle)}</span><span class="ld-dur">${duration ? fmtClock(duration) : '—'}</span><span class="ld-ranges" title="Tramos vistos del vídeo">${ranges}</span><span class="ld-pct">${status === 'none' || status === 'opened' ? '—' : `${pct}%`}</span><span class="ld-status st-${status}">${LESSON_STATUS_LABELS[status]}</span><span class="ld-when">${row ? timeAgo(row.last_viewed_at) : '—'}</span></div>`;
+  });
+  return `<div class="lesson-detail">${items.join('') || '<span class="course-metrics-empty">Este curso aún no tiene lecciones importadas.</span>'}</div>`;
 }
 
 function toggleCourseRow(userId) {
