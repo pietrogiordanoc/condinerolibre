@@ -33,6 +33,9 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .course-led { flex:0 0 auto; width:9px; height:9px; border-radius:50%; background:#444; }
 .course-led.on { background:#18c36b; box-shadow:0 0 8px #18c36b; }
 .course-access-row.is-collapsed { display:none; }
+.course-progress { display:grid; gap:4px; margin-top:10px; padding-top:8px; border-top:1px dashed #2f2f2f; }
+.course-progress-line { display:flex; flex-wrap:wrap; gap:6px 14px; font-size:11px; color:#9aa5ad; }
+.course-progress-line strong { color:#cfd8dc; }
 .phone-input { width:100%; box-sizing:border-box; background:#080808; border:1px solid #333; color:#e8e8e8; padding:12px; border-radius:10px; font-size:15px; }
 .phone-input:focus { outline:2px solid #18c36b; border-color:#18c36b; }
 .course-access-row td { padding: 0 14px 12px; background: #161616; border-bottom: 1px solid #2a2a2a; }

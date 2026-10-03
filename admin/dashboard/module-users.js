@@ -4,6 +4,8 @@ let COURSES = [];
 let COURSE_IDS_WITH_MODULES = new Set();
 let COURSE_ENROLLMENTS_BY_USER = {};
 let EXPANDED_COURSE_ROWS = new Set();
+let PROGRESS_BY_USER = {};
+let LESSON_TITLES_BY_COURSE = {};
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
@@ -12,12 +14,23 @@ let sortOrder = 'asc';
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
 async function refreshUsers() {
-  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse] = await Promise.all([
+  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse] = await Promise.all([
     sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
     sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
     sp.from("course_modules").select("course_id"),
-    sp.from("course_enrollments").select("user_id, course_id")
+    sp.from("course_enrollments").select("user_id, course_id"),
+    sp.from("course_progress").select("user_id, course_id, bunny_video_id, last_viewed_at"),
+    sp.from("course_lessons").select("course_id, bunny_video_id, title")
   ]);
+
+  PROGRESS_BY_USER = (progressResponse.data || []).reduce((byUser, row) => {
+    ((byUser[row.user_id] ||= {})[row.course_id] ||= []).push(row);
+    return byUser;
+  }, {});
+  LESSON_TITLES_BY_COURSE = (lessonsResponse.data || []).reduce((byCourse, lesson) => {
+    (byCourse[lesson.course_id] ||= new Map()).set(lesson.bunny_video_id, lesson.title);
+    return byCourse;
+  }, {});
 
   PROFILES = profilesResponse.data || [];
   COURSES = coursesResponse.data || [];
@@ -176,6 +189,7 @@ function renderUsers() {
             <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
             <div class="course-access-options">${coursesDisplay}</div>
           </div>
+          ${progressSummary(u.id, enrolledCourseIds)}
         </td>
       </tr>`;
   }).join("");
@@ -216,6 +230,29 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
   if (shouldGrant && (grantedCourse?.bunny_collection_id || COURSE_IDS_WITH_MODULES.has(courseId))) {
     syncClassroomCourse(courseId, grantedCourse.title, null);
   }
+}
+
+function escapeHtmlText(value) {
+  return String(value || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function timeAgo(isoDate) {
+  const minutes = Math.max(0, Math.round((Date.now() - new Date(isoDate).getTime()) / 60000));
+  if (minutes < 60) return `hace ${minutes} min`;
+  if (minutes < 1440) return `hace ${Math.round(minutes / 60)} h`;
+  return `hace ${Math.round(minutes / 1440)} d`;
+}
+
+function progressSummary(userId, enrolledCourseIds) {
+  const lines = COURSES.filter((course) => enrolledCourseIds.has(course.id)).map((course) => {
+    const titles = LESSON_TITLES_BY_COURSE[course.id];
+    const rows = ((PROGRESS_BY_USER[userId] || {})[course.id] || []).filter((row) => !titles || titles.has(row.bunny_video_id));
+    const last = rows.reduce((best, row) => (!best || row.last_viewed_at > best.last_viewed_at ? row : best), null);
+    const lastTitle = last ? escapeHtmlText((titles?.get(last.bunny_video_id) || '').replace(/\.(mp4|m4v|mov|mkv|webm)$/i, '')) : '';
+    const detail = last ? `Última: ${lastTitle} · ${timeAgo(last.last_viewed_at)}` : 'Sin empezar';
+    return `<div class="course-progress-line"><strong>${escapeHtmlText(course.title)}</strong><span>${rows.length} de ${titles ? titles.size : 0} vistas</span><span>${detail}</span></div>`;
+  });
+  return lines.length ? `<div class="course-progress">${lines.join('')}</div>` : '';
 }
 
 function toggleCourseRow(userId) {

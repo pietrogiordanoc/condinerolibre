@@ -660,6 +660,7 @@
     .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
     .classroom-lesson-card:hover { border-color: rgba(255,255,255,.35); }
     .classroom-lesson-card:not(.active) { opacity: .8; }
+    .classroom-lesson-card.seen:not(.active) .classroom-lesson-number { color: #8aa397; }
     .classroom-lesson-card.active { opacity: 1; border-color: var(--green); background: rgba(42,255,138,.16); box-shadow: 0 0 0 1px var(--green); }
     .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
     .classroom-lesson-card strong { display: block; font-size: 13px; line-height: 1.35; font-weight: 600; }
@@ -1931,7 +1932,7 @@
             </div>
           </div>
           <div class="classroom-lessons">
-            <h3>Lecciones del curso</h3>
+            <h3 id="classroomLessonsHeading">Lecciones del curso</h3>
             <div id="classroomLessons" class="classroom-lesson-grid"></div>
           </div>
         </div>
@@ -2120,7 +2121,7 @@
       const url = new URL(window.location.href);
       const tokenHash = url.searchParams.get('audit_token_hash');
       if (!tokenHash) return;
-
+      sessionStorage.setItem('cdl_audit_session', '1');
       const { error } = await sp.auth.verifyOtp({ type: 'magiclink', token_hash: tokenHash });
       url.searchParams.delete('audit_token_hash');
       window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
@@ -2844,6 +2845,7 @@
     let classroomCoursesById = new Map();
     let classroomModulesByCourseId = new Map();
     let classroomLessonsByCourseId = new Map();
+    const classroomProgressByCourseId = new Map();
 
     function escapeClassroomText(value) {
       return String(value || '').replace(/[&<>'"]/g, (character) => ({
@@ -2875,20 +2877,35 @@
         player.innerHTML = `<iframe src="https://iframe.mediadelivery.net/embed/${encodeURIComponent(course.bunny_library_id)}/${encodeURIComponent(lesson.bunny_video_id)}?autoplay=true" title="${escapeClassroomText(cleanLessonTitle(lesson.title))}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
       classroomCurrentLessonId = lesson.id;
+      if (course?.id && lesson?.bunny_video_id) saveClassroomProgress(course.id, lesson.bunny_video_id);
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === lesson.id);
       const siblings = classroomPlaylist.filter((item) => (item.module?.id || null) === (module?.id || null)).length;
       nowMeta.textContent = module ? `${module.title} · Lección ${lesson.position} de ${siblings}` : `Lección ${lesson.position} de ${siblings}`;
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
+      const progress = classroomProgressByCourseId.get(course?.id) || new Map();
       document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
         const active = card.dataset.classroomLessonId === lesson.id;
+        const seen = progress.has(card.dataset.videoId);
         card.classList.toggle('active', active);
-        card.querySelector('.classroom-lesson-number').textContent = active ? '▶ REPRODUCIENDO' : `LECCIÓN ${card.dataset.position}`;
+        card.classList.toggle('seen', seen);
+        card.querySelector('.classroom-lesson-number').textContent = active ? '▶ REPRODUCIENDO' : `${seen ? '✓ ' : ''}LECCIÓN ${card.dataset.position}`;
         if (active) {
           const row = card.parentElement;
           row.scrollTo({ left: card.offsetLeft - (row.clientWidth - card.clientWidth) / 2, behavior: 'smooth' });
         }
+      });
+      updateClassroomProgressUi();
+    }
+
+    function updateClassroomProgressUi() {
+      const progress = classroomProgressByCourseId.get(classroomCourse?.id) || new Map();
+      const seenIn = (items) => items.filter((item) => progress.has(item.lesson.bunny_video_id)).length;
+      document.getElementById('classroomLessonsHeading').textContent = `Lecciones del curso · ${seenIn(classroomPlaylist)} de ${classroomPlaylist.length} vistas`;
+      document.querySelectorAll('[data-module-count]').forEach((el) => {
+        const items = classroomPlaylist.filter((item) => item.module?.id === el.dataset.moduleCount);
+        el.textContent = `${seenIn(items)} de ${items.length} vistas`;
       });
     }
 
@@ -2973,11 +2990,11 @@
           ? modules.flatMap((module) => lessons.filter((lesson) => lesson.module_id === module.id).map((lesson) => ({ lesson, module })))
           : lessons.map((lesson) => ({ lesson, module: null }));
         lessonsWrap.classList.toggle('classroom-modules-list', modules.length > 0);
-        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
+        const lessonCard = (lesson) => `<button type="button" class="classroom-lesson-card" data-classroom-lesson-id="${lesson.id}" data-position="${lesson.position}" data-video-id="${lesson.bunny_video_id}"><span class="classroom-lesson-number">LECCIÓN ${lesson.position}</span><strong>${escapeClassroomText(cleanLessonTitle(lesson.title))}</strong></button>`;
         lessonsWrap.innerHTML = modules.length
           ? modules.map((module) => {
               const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
-              return `<section class="classroom-module"><div class="classroom-module-head"><h4>${escapeClassroomText(module.title)}</h4><span>${moduleLessons.length} lecciones</span></div><div class="classroom-lesson-grid">${moduleLessons.map(lessonCard).join('')}</div></section>`;
+              return `<section class="classroom-module"><div class="classroom-module-head"><h4>${escapeClassroomText(module.title)}</h4><span data-module-count="${module.id}">${moduleLessons.length} lecciones</span></div><div class="classroom-lesson-grid">${moduleLessons.map(lessonCard).join('')}</div></section>`;
             }).join('')
           : lessons.map(lessonCard).join('');
         lessonsWrap.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
@@ -2987,7 +3004,13 @@
             if (lesson) renderClassroomLesson(course, lesson, module);
           });
         });
-        renderClassroomLesson(course, classroomPlaylist[0].lesson, classroomPlaylist[0].module);
+        const progress = classroomProgressByCourseId.get(courseId) || new Map();
+        const resume = classroomPlaylist.reduce((best, item) => {
+          const at = Date.parse(progress.get(item.lesson.bunny_video_id) || '');
+          return at && (!best || at > best.at) ? { item, at } : best;
+        }, null);
+        const start = resume ? resume.item : classroomPlaylist[0];
+        renderClassroomLesson(course, start.lesson, start.module);
       }
     }
 
@@ -3008,6 +3031,29 @@
       }
       courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
       (lessonsResponse.data || []).forEach((lesson) => classroomLessonsByCourseId.get(lesson.course_id)?.push(lesson));
+
+      const { data: { session } } = await sp.auth.getSession();
+      const progressResponse = session
+        ? await sp.from('course_progress').select('course_id, bunny_video_id, last_viewed_at').eq('user_id', session.user.id).in('course_id', courseIds)
+        : { data: [] };
+      if (progressResponse.error) console.warn('El progreso de Classroom aún no está disponible:', progressResponse.error);
+      courseIds.forEach((courseId) => classroomProgressByCourseId.set(courseId, new Map()));
+      (progressResponse.data || []).forEach((row) => classroomProgressByCourseId.get(row.course_id)?.set(row.bunny_video_id, row.last_viewed_at));
+    }
+
+    async function saveClassroomProgress(courseId, videoId) {
+      // Ver como alumno desde el admin no debe contar como avance del alumno.
+      if (sessionStorage.getItem('cdl_audit_session')) return;
+      if (!classroomProgressByCourseId.has(courseId)) classroomProgressByCourseId.set(courseId, new Map());
+      const now = new Date().toISOString();
+      classroomProgressByCourseId.get(courseId).set(videoId, now);
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) return;
+      const { error } = await sp.from('course_progress').upsert(
+        { user_id: session.user.id, course_id: courseId, bunny_video_id: videoId, last_viewed_at: now },
+        { onConflict: 'user_id,bunny_video_id' }
+      );
+      if (error) console.warn('No se pudo guardar el progreso:', error);
     }
 
     // Warms up lessons for enrolled courses in the background so the player opens instantly.
