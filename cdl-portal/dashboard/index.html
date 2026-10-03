@@ -655,8 +655,6 @@
     .classroom-module-head h4::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--module-accent); }
     .classroom-module-head span { color: var(--muted); font-size: 11px; }
     .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
-    .classroom-module .classroom-lesson-grid { position: relative; display: flex; overflow-x: auto; gap: 12px; padding: 0 2px 10px; scroll-snap-type: x proximity; scrollbar-color: rgba(255,255,255,.28) rgba(255,255,255,.06); }
-    .classroom-module .classroom-lesson-card { flex: 0 0 clamp(185px, 22vw, 250px); scroll-snap-align: start; }
     .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
     .classroom-lesson-card:hover { border-color: rgba(255,255,255,.35); }
     .classroom-lesson-card:not(.active) { opacity: .8; }
