@@ -3,6 +3,7 @@ let RADAR_USAGE_BY_ID = {};
 let COURSES = [];
 let COURSE_IDS_WITH_MODULES = new Set();
 let COURSE_ENROLLMENTS_BY_USER = {};
+let EXPANDED_COURSE_ROWS = new Set();
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 
@@ -156,19 +157,19 @@ function renderUsers() {
     
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></td>
-        <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="editUserPhone('${u.id}', '${escapeJS(u.phone || '')}')">✎</button></td>
+        <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span><div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
+        <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? ` <button class="btn btn-danger" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">✕</button>` : ''}</td>
         <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
-        <td data-label="Historial"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="btn" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Ver como alumno</button></td>
+        <td data-label="Historial"><div class="row-actions"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="btn" title="Ver como alumno" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Abrir</button></div></td>
         <td data-label="SL Experimental"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:${u.experimental_sl_enabled ? '#fbbf24' : '#64748b'};"><input type="checkbox" ${u.experimental_sl_enabled ? 'checked' : ''} onchange="toggleExperimentalSl('${u.id}', this.checked)"> ${u.experimental_sl_enabled ? 'Activo' : 'Inactivo'}</label></td>
         <td data-label="Ubicación">${u.pres.ciudad || "—"}, ${u.pres.pais || "—"}</td>
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
         <td data-label="Acción">${blockBtn}</td>
         <td data-label="Notas"><button class="btn-note-view" onclick="openNoteModal('${u.id}', '${escapeJS(u.displayName)}', '${noteEscaped}')" title="${u.notas_admin ? 'Ver/editar nota' : 'Añadir nota'}">${notePreview}</button></td>
       </tr>
-      <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''}">
+      <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''} ${EXPANDED_COURSE_ROWS.has(u.id) ? '' : 'is-collapsed'}" id="course-row-${u.id}">
         <td colspan="11">
           <div class="course-access-line">
             <strong>La Classroom</strong>
@@ -201,6 +202,7 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
   } else {
     COURSE_ENROLLMENTS_BY_USER[userId].delete(courseId);
   }
+  updateCourseLed(userId);
 
   Toastify({
     text: shouldGrant ? 'Curso activado para el alumno' : 'Curso retirado del alumno',
@@ -216,17 +218,57 @@ async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
   }
 }
 
-async function editUserPhone(userId, currentPhone) {
-  const input = prompt('Teléfono del alumno (déjalo vacío para borrarlo):', currentPhone);
-  if (input === null) return;
-  const { error } = await sp.from('profiles').update({ phone: input.trim() || null }).eq('id', userId);
+function toggleCourseRow(userId) {
+  const open = !EXPANDED_COURSE_ROWS.has(userId);
+  if (open) EXPANDED_COURSE_ROWS.add(userId); else EXPANDED_COURSE_ROWS.delete(userId);
+  document.getElementById(`course-row-${userId}`)?.classList.toggle('is-collapsed', !open);
+  document.querySelector(`[data-course-toggle="${userId}"]`)?.classList.toggle('open', open);
+}
+
+function updateCourseLed(userId) {
+  const count = (COURSE_ENROLLMENTS_BY_USER[userId] || new Set()).size;
+  const led = document.querySelector(`[data-course-led="${userId}"]`);
+  if (!led) return;
+  led.classList.toggle('on', count > 0);
+  led.title = `${count} cursos activos`;
+}
+
+let phoneEditingUserId = null;
+
+function openPhoneModal(userId, name, phone) {
+  phoneEditingUserId = userId;
+  document.getElementById('phoneModalUser').textContent = name;
+  const input = document.getElementById('phoneInput');
+  input.value = phone;
+  document.getElementById('modalPhone').style.display = 'flex';
+  setTimeout(() => input.focus(), 50);
+}
+
+function closePhoneModal() {
+  document.getElementById('modalPhone').style.display = 'none';
+}
+
+async function savePhone(userId, value) {
+  const { error } = await sp.from('profiles').update({ phone: value.trim() || null }).eq('id', userId);
   if (error) {
     Toastify({ text: `No se pudo guardar el teléfono: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
-    return;
+    return false;
   }
-  Toastify({ text: 'Teléfono actualizado', duration: 2000, backgroundColor: '#10b981' }).showToast();
+  Toastify({ text: value.trim() ? 'Teléfono actualizado' : 'Teléfono borrado', duration: 2000, backgroundColor: '#10b981' }).showToast();
   refreshUsers();
+  return true;
 }
+
+document.getElementById('savePhoneBtn').onclick = async () => {
+  if (await savePhone(phoneEditingUserId, document.getElementById('phoneInput').value)) closePhoneModal();
+};
+document.getElementById('clearPhoneBtn').onclick = async () => {
+  if (await savePhone(phoneEditingUserId, '')) closePhoneModal();
+};
+document.getElementById('phoneInput').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') document.getElementById('savePhoneBtn').click();
+  if (event.key === 'Escape') closePhoneModal();
+});
 
 async function openAuditView(userId, email) {
   try {

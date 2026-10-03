@@ -137,6 +137,22 @@
     </div>
   </div>
 
+  <div id="modalPhone" class="modal-backdrop" onclick="if(event.target===this) closePhoneModal()">
+    <div class="modal" style="width:min(420px, 96vw);">
+      <div class="modal-header">
+        <div><div style="font-weight:900;">Teléfono</div><div id="phoneModalUser" class="muted">...</div></div>
+        <button onclick="closePhoneModal()" class="btn">✕ Cerrar</button>
+      </div>
+      <div style="padding:24px; display:grid; gap:16px;">
+        <input id="phoneInput" class="phone-input" type="tel" placeholder="+52 5512345678" maxlength="40" />
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button id="clearPhoneBtn" class="btn btn-danger">Borrar</button>
+          <button id="savePhoneBtn" class="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="modalBackdrop" class="modal-backdrop">
     <div class="modal" style="width: min(1200px, 98vw);">
       <div class="modal-header">
