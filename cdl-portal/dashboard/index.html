@@ -634,6 +634,20 @@
     .course-card .btn-primary-link:hover {
       background: #facc15;
     }
+    .course-card .course-buy-btn { width: 100%; margin-top: 8px; border: 1px solid rgba(253,224,71,.58); border-radius: 8px; background: transparent; color: #fde047; padding: 10px 14px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .course-card .course-buy-btn:hover { border-color: #fde047; background: rgba(253,224,71,.1); }
+    .course-purchase-modal { position: fixed; inset: 0; z-index: 2500; display: none; place-items: center; padding: 20px; background: rgba(2,6,12,.78); }
+    .course-purchase-modal.open { display: grid; }
+    .course-purchase-dialog { width: min(510px, 100%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; background: #111923; box-shadow: 0 24px 60px rgba(0,0,0,.5); color: #fff; overflow: hidden; }
+    .course-purchase-body { display: grid; gap: 14px; padding: 26px; }
+    .course-purchase-tag { color: #fde047; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+    .course-purchase-body h3 { margin: 0; font-size: 23px; font-weight: 600; }
+    .course-purchase-body p { margin: 0; color: rgba(255,255,255,.72); font-size: 14px; line-height: 1.5; }
+    .course-purchase-academy { display: grid; gap: 8px; padding: 17px; border: 1px solid #ff8a00; border-radius: 9px; background: rgba(255,138,0,.09); }
+    .course-purchase-academy strong { color: #ffb45b; font-size: 15px; font-weight: 600; }
+    .course-purchase-academy button { border: 2px solid #111; border-radius: 8px; background: #ff8a00; color: #17100a; padding: 11px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 3px 0 #111; }
+    .course-purchase-individual { border: 1px solid rgba(255,255,255,.24); border-radius: 8px; background: transparent; color: #fff; padding: 11px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .course-purchase-individual:disabled { opacity: .55; cursor: wait; }
     .classroom-section { margin-top: 24px; scroll-margin-top: 24px; }
     .classroom-section[hidden] { display: none; }
     .classroom-shell { overflow: hidden; border: 1px solid rgba(42,255,138,.25); border-radius: 18px; background: linear-gradient(145deg, rgba(12,24,22,.98), rgba(14,18,27,.98)); box-shadow: 0 20px 42px rgba(0,0,0,.28); }
@@ -1904,6 +1918,7 @@
               <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="master-pro" href="/cursos/curso-de-trading-master-pro-profesional-academico/" target="_blank" rel="noopener noreferrer">Ver más</a>
+                <button type="button" class="course-buy-btn" data-course-purchase="master-pro">Comprar individual · $350 USD</button>
               </div>
             </div>
           </article>
@@ -1918,6 +1933,7 @@
               <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="trading-prime" href="/cursos/curso-de-trading-prime-elite-profesional/" target="_blank" rel="noopener noreferrer">Ver más</a>
+                <button type="button" class="course-buy-btn" data-course-purchase="trading-prime">Comprar individual · $270 USD</button>
               </div>
             </div>
           </article>
@@ -1932,6 +1948,7 @@
               <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="velas-japonesas" href="/cursos/curso-de-trading-de-velas-japonesas-desde-cero/" target="_blank" rel="noopener noreferrer">Ver más</a>
+                <button type="button" class="course-buy-btn" data-course-purchase="velas-japonesas">Comprar individual · $165 USD</button>
               </div>
             </div>
           </article>
@@ -1946,6 +1963,7 @@
               <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
               <div class="account-link-actions">
                 <a class="btn-primary-link" data-course-id="tradingview-basico" href="/cursos/curso-de-trading-tradingview-basico/" target="_blank" rel="noopener noreferrer">Ver más</a>
+                <button type="button" class="course-buy-btn" data-course-purchase="tradingview-basico">Comprar individual · $165 USD</button>
               </div>
             </div>
           </article>
@@ -2162,7 +2180,8 @@
       supabaseUrl: "https://yhgqmbexjscojlrzguvh.supabase.co",
       anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloZ3FtYmV4anNjb2pscnpndXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxNzA1NTcsImV4cCI6MjA4Mjc0NjU1N30.uXFLknfgsZ_3yH5t9cW0dfbwN_b3uOi6jcfM06inVu4",
       radarAccessUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/radar-access",
-      classroomSyncUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/classroom-sync"
+      classroomSyncUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/classroom-sync",
+      courseCheckoutUrl: "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/paypal-course-checkout"
     };
     const COURSE_URLS = [
       "https://youtu.be/zuDoaXyotX8?si=z_VAH4J1NuWF1aQb",
@@ -3406,6 +3425,83 @@
           };
         }
       });
+      document.querySelectorAll('[data-course-purchase]').forEach((button) => {
+        const hasAccess = enrolledCourseIds.has(button.dataset.coursePurchase);
+        button.hidden = hasAccess;
+        button.onclick = () => openCoursePurchaseModal(button.dataset.coursePurchase);
+      });
+    }
+
+    const COURSE_PURCHASE_OFFERS = {
+      'master-pro': { title: 'Master Pro Profesional Académico', price: '$350 USD' },
+      'trading-prime': { title: 'Trading Prime Elite Profesional', price: '$270 USD' },
+      'velas-japonesas': { title: 'Velas Japonesas desde Cero', price: '$165 USD' },
+      'tradingview-basico': { title: 'TradingView Básico', price: '$165 USD' }
+    };
+    let selectedCoursePurchaseId = null;
+
+    function openCoursePurchaseModal(courseId) {
+      const offer = COURSE_PURCHASE_OFFERS[courseId];
+      if (!offer) return;
+      selectedCoursePurchaseId = courseId;
+      document.getElementById('coursePurchaseTitle').textContent = offer.title;
+      document.getElementById('coursePurchaseIndividual').disabled = false;
+      document.getElementById('coursePurchaseIndividual').textContent = `Comprar solo este curso · ${offer.price}`;
+      document.getElementById('coursePurchaseModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCoursePurchaseModal() {
+      document.getElementById('coursePurchaseModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function chooseAcademyFromCoursePurchase() {
+      closeCoursePurchaseModal();
+      openAcademyModal();
+    }
+
+    async function startIndividualCoursePurchase() {
+      const offer = COURSE_PURCHASE_OFFERS[selectedCoursePurchaseId];
+      if (!offer) return;
+      const button = document.getElementById('coursePurchaseIndividual');
+      button.disabled = true;
+      button.textContent = 'Abriendo pago seguro...';
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('unauthorized');
+        const response = await fetch(CONFIG.courseCheckoutUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({ action: 'create', course_id: selectedCoursePurchaseId })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.approval_url) throw new Error(result.code || `http_${response.status}`);
+        window.location.assign(result.approval_url);
+      } catch (error) {
+        console.error('Pago individual:', error);
+        button.disabled = false;
+        button.textContent = `Comprar solo este curso · ${offer.price}`;
+        alert('No pudimos iniciar el pago. Recarga la página e inténtalo de nuevo.');
+      }
+    }
+
+    async function processCoursePurchaseReturn(session) {
+      const orderId = new URLSearchParams(window.location.search).get('token');
+      if (!orderId) return;
+      history.replaceState(null, '', `${location.pathname}${location.hash || '#courses'}`);
+      try {
+        const response = await fetch(CONFIG.courseCheckoutUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({ action: 'capture', order_id: orderId })
+        });
+        if (!response.ok) throw new Error(`capture_${response.status}`);
+        location.hash = '#courses';
+        setTimeout(() => location.reload(), 1800);
+      } catch (error) {
+        console.error('Confirmación de compra individual:', error);
+      }
     }
 
     // --- INICIALIZACIÓN ---
@@ -3419,6 +3515,7 @@
         ({ data: { session } } = await sp.auth.getSession());
       }
       if (!session) { window.location.href = isLocal ? "../login/" : "/login"; return; }
+      await processCoursePurchaseReturn(session);
       
       // Verificar si el usuario está bloqueado
       const { data: profile } = await getProfileForSession(session, "plan, full_name, phone, blocked");
@@ -3957,6 +4054,23 @@
       .acm-pay { padding: 0; border-left: 0; }
     }
   </style>
+
+  <div id="coursePurchaseModal" class="course-purchase-modal" role="dialog" aria-modal="true" aria-labelledby="coursePurchaseTitle" onclick="if(event.target===this)closeCoursePurchaseModal()">
+    <div class="course-purchase-dialog">
+      <div class="course-purchase-body">
+        <span class="course-purchase-tag">ACCESO INDIVIDUAL</span>
+        <h3 id="coursePurchaseTitle">Curso</h3>
+        <p>Antes de continuar, aprovecha todos los cursos y CDLRadar Pro por $29.99 USD al mes.</p>
+        <div class="course-purchase-academy">
+          <strong>CDLRadar + ClassRoom</strong>
+          <span>Todos los cursos actuales y futuros, más Radar Pro.</span>
+          <button type="button" onclick="chooseAcademyFromCoursePurchase()">Ver oferta Academy · $29.99/mes</button>
+        </div>
+        <button id="coursePurchaseIndividual" type="button" class="course-purchase-individual" onclick="startIndividualCoursePurchase()">Comprar solo este curso</button>
+        <button type="button" class="course-purchase-individual" onclick="closeCoursePurchaseModal()">Volver a cursos</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: plan CDLRadar and ClassRoom -->
   <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDLRadar and ClassRoom" onclick="if(event.target===this)closeAcademyModal()">

@@ -32,6 +32,13 @@ type Subscription = {
   billing_info?: { next_billing_time?: string; last_payment?: { time?: string; amount?: { value?: string } } };
 };
 
+type Capture = {
+  id?: string;
+  status?: string;
+  amount?: { currency_code?: string; value?: string };
+  supplementary_data?: { related_ids?: { order_id?: string } };
+};
+
 let cachedToken: { value: string; expires: number } | null = null;
 
 function paypalConfigured() {
@@ -64,6 +71,13 @@ async function fetchSubscription(subscriptionId: string): Promise<Subscription |
   const response = await paypalRequest(`/v1/billing/subscriptions/${encodeURIComponent(subscriptionId)}`);
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`paypal_subscription_${response.status}`);
+  return await response.json();
+}
+
+async function fetchOrder(orderId: string): Promise<Record<string, unknown> | null> {
+  const response = await paypalRequest(`/v2/checkout/orders/${encodeURIComponent(orderId)}`);
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`paypal_order_${response.status}`);
   return await response.json();
 }
 
@@ -198,6 +212,40 @@ async function applyState(userId: string, subscription: Subscription, state: str
   return { changed: true };
 }
 
+function moneyToCents(value: unknown): number | null {
+  if (typeof value !== "string" || !/^\d+(\.\d{1,2})?$/.test(value)) return null;
+  return Math.round(Number(value) * 100);
+}
+
+async function applyCourseCapture(capture: Capture) {
+  const orderId = capture.supplementary_data?.related_ids?.order_id;
+  if (!orderId || capture.status !== "COMPLETED") return { result: "ignored_capture" };
+  const { data: purchase } = await supabaseAdmin.from("course_purchase_orders")
+    .select("user_id, course_id, amount_cents, currency_code, status")
+    .eq("paypal_order_id", orderId).maybeSingle();
+  if (!purchase) return { result: "unknown_course_order" };
+  if (purchase.status === "paid") return { result: "course_already_paid", userId: purchase.user_id };
+
+  const order = await fetchOrder(orderId);
+  const unit = Array.isArray(order?.purchase_units) ? order.purchase_units[0] as Record<string, unknown> : null;
+  const orderUserId = unit?.custom_id;
+  const orderCourseId = unit?.reference_id;
+  const amount = capture.amount || (unit?.amount as Capture["amount"]);
+  const amountCents = moneyToCents(amount?.value);
+  if (orderUserId !== purchase.user_id || orderCourseId !== purchase.course_id || amount?.currency_code !== purchase.currency_code || amountCents !== purchase.amount_cents) {
+    throw new Error("course_capture_verification_failed");
+  }
+
+  const { error: enrollmentError } = await supabaseAdmin.from("course_enrollments")
+    .upsert({ user_id: purchase.user_id, course_id: purchase.course_id }, { onConflict: "user_id,course_id", ignoreDuplicates: true });
+  if (enrollmentError) throw enrollmentError;
+  const { error: purchaseError } = await supabaseAdmin.from("course_purchase_orders")
+    .update({ status: "paid", paypal_capture_id: capture.id || null, paid_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq("paypal_order_id", orderId);
+  if (purchaseError) throw purchaseError;
+  return { result: "course_enrolled", userId: purchase.user_id };
+}
+
 async function handleWebhook(request: Request, reply: (body: Record<string, unknown>, status?: number) => Response) {
   if (!paypalConfigured() || !env("PAYPAL_WEBHOOK_ID")) return reply({ error: "PayPal is not configured", code: "paypal_not_configured" }, 503);
 
@@ -209,7 +257,8 @@ async function handleWebhook(request: Request, reply: (body: Record<string, unkn
   const subscriptionId: string | null = eventType === "PAYMENT.SALE.COMPLETED"
     ? resource.billing_agreement_id || null
     : eventType.startsWith("BILLING.SUBSCRIPTION.") ? resource.id || null : null;
-  if (!subscriptionId) return reply({ ok: true, ignored: true });
+  const isCourseCapture = eventType === "PAYMENT.CAPTURE.COMPLETED";
+  if (!subscriptionId && !isCourseCapture) return reply({ ok: true, ignored: true });
 
   // Cada evento se procesa una sola vez, aunque PayPal lo reenvíe.
   const { error: insertError } = await supabaseAdmin.from("paypal_events")
@@ -218,10 +267,15 @@ async function handleWebhook(request: Request, reply: (body: Record<string, unkn
   if (insertError) throw insertError;
 
   try {
-    const subscription = await fetchSubscription(subscriptionId);
     let result = "ignored_other_plan";
     let userId: string | null = null;
-    if (subscription && subscription.plan_id === env("PAYPAL_ACADEMY_PLAN_ID")) {
+    if (isCourseCapture) {
+      const outcome = await applyCourseCapture(resource as Capture);
+      result = outcome.result;
+      userId = outcome.userId || null;
+    } else {
+      const subscription = await fetchSubscription(subscriptionId as string);
+      if (subscription && subscription.plan_id === env("PAYPAL_ACADEMY_PLAN_ID")) {
       userId = subscription.custom_id && UUID_PATTERN.test(subscription.custom_id) ? subscription.custom_id : null;
       const state = stateFor(eventType, subscription.status);
       if (!userId) result = "no_user";
@@ -229,6 +283,7 @@ async function handleWebhook(request: Request, reply: (body: Record<string, unkn
       else {
         const outcome = await applyState(userId, subscription, state, eventType);
         result = outcome.changed ? `applied_${state}` : `unchanged_${outcome.skipped || state}`;
+      }
       }
     }
     await supabaseAdmin.from("paypal_events").update({ result, user_id: userId }).eq("id", event.id);
