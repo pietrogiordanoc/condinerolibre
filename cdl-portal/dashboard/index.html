@@ -54,8 +54,10 @@
     .logo-txt b { font-size: 18px; letter-spacing: .01em; }
     .logo-txt span { color: var(--muted); font-size: 12px; display: block; }
     
-    .nav { flex: 1; }
+    .nav { flex: 1; overflow-y: auto; scrollbar-width: none; }
+    .nav::-webkit-scrollbar { display: none; }
     .nav-label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin: 0 8px 10px; letter-spacing: .08em; }
+    .nav-category { margin: 15px 8px 7px; color: #7f908d; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
     .nav-item {
       display: flex; align-items: center; gap: 9px; padding: 10px 11px; border-radius: 12px;
       text-decoration: none; color: var(--muted); font-size: 13px; cursor: pointer; margin-bottom: 4px;
@@ -64,6 +66,13 @@
     .nav-item i { width: 14px; height: 14px; stroke-width: 1.8; }
     .nav-item.active { background: rgba(42,255,138,.12); color: var(--green); border: 1px solid rgba(42,255,138,.25); }
     .nav-item:hover { color: #fff; background: rgba(255,255,255,.05); }
+    .sidebar-funds { width: calc(100% - 16px); margin: 8px; padding: 10px 11px; border: 1px solid rgba(42,255,138,.36); border-radius: 9px; background: linear-gradient(135deg, rgba(42,255,138,.13), rgba(24,195,107,.04)); color: #fff; font: inherit; text-align: left; cursor: pointer; }
+    .sidebar-funds:hover { border-color: var(--green); background: rgba(42,255,138,.18); }
+    .sidebar-funds-label { display: block; color: #a7c9bb; font-size: 9px; font-weight: 600; letter-spacing: .08em; }
+    .sidebar-funds-value { display: block; margin-top: 3px; color: var(--green); font-size: 18px; font-weight: 600; }
+    .sidebar-funds-note { display: block; margin-top: 2px; color: #c5e5d7; font-size: 10px; line-height: 1.25; }
+    .nav-affiliate { color: #83e9b5; border: 1px solid rgba(42,255,138,.2); background: rgba(42,255,138,.05); }
+    .nav-affiliate:hover { color: #fff; border-color: rgba(42,255,138,.55); background: rgba(42,255,138,.12); }
     .status-dot {
       margin-left: auto;
       width: 8px;
@@ -1551,13 +1560,21 @@
       <div class="logo-txt"><span>Portal privado</span></div>
     </div>
     <nav class="nav">
-      <div class="nav-label">Menú</div>
       <a id="navRadar" class="nav-item active"><i data-lucide="activity"></i> CDL Radar <span class="status-dot"></span></a>
-      <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
-      <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
-      <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Aprende</a>
       <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Cursos</a>
+      <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Academia</a>
+      <div class="nav-category">Invertir</div>
+      <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
+      <div class="nav-category">Descargas</div>
+      <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
+      <div class="nav-category">Admin</div>
       <a id="navProfile" class="nav-item"><i data-lucide="circle-user-round"></i> Mi cuenta</a>
+      <button id="navAffiliateFunds" class="sidebar-funds" type="button">
+        <span class="sidebar-funds-label">FONDOS DISPONIBLES</span>
+        <strong id="sidebarAffiliateBalance" class="sidebar-funds-value">$0.00</strong>
+        <span class="sidebar-funds-note">Comparte y acumula para retirar.</span>
+      </button>
+      <a id="navAffiliate" class="nav-item nav-affiliate"><i data-lucide="hand-coins"></i> Afiliados</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
     </nav>
@@ -2398,6 +2415,7 @@
         document.getElementById('affiliateCode').textContent = `Código: ${code}`;
         document.getElementById('affiliateMessagePreview').textContent = message;
         document.getElementById('affiliateBalance').textContent = formatAffiliateMoney(availableCents);
+        document.getElementById('sidebarAffiliateBalance').textContent = formatAffiliateMoney(availableCents);
         document.getElementById('affiliateProgress').style.width = `${progress}%`;
         document.getElementById('affiliateTotalEarned').textContent = `Ganancias históricas: ${formatAffiliateMoney(totalEarnedCents)}`;
         document.getElementById('affiliatePaypalEmail').value = account.paypal_email || session.user.email || '';
@@ -3666,6 +3684,12 @@
     document.getElementById("navAprende").onclick = () => navigateTo("#aprende");
     document.getElementById("navCourses").onclick = () => navigateTo("#courses");
     document.getElementById("navProfile").onclick = () => navigateTo("#profile");
+    function openAffiliatePortal() {
+      navigateTo("#profile");
+      setTimeout(() => document.getElementById('affiliatePanel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+    }
+    document.getElementById("navAffiliate").onclick = openAffiliatePortal;
+    document.getElementById("navAffiliateFunds").onclick = openAffiliatePortal;
     document.getElementById("openProfileCard").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
@@ -3678,7 +3702,7 @@
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
-    document.getElementById("profileAffiliateAction").onclick = () => document.getElementById('affiliatePanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById("profileAffiliateAction").onclick = openAffiliatePortal;
     document.getElementById("affiliateCopyLink").onclick = () => copyAffiliateText(affiliatePortalState.link, 'Enlace copiado. Ya puedes compartirlo.');
     document.getElementById("affiliateCopyMessage").onclick = () => copyAffiliateText(affiliatePortalState.message, 'Mensaje copiado para compartir.');
     document.getElementById("affiliateShare").onclick = async () => {
