@@ -2091,6 +2091,17 @@
     const sp = supabase.createClient(CONFIG.supabaseUrl, CONFIG.anonKey);
     let currentCourseIndex = 0;
 
+    async function restoreAuditSessionFromUrl() {
+      const url = new URL(window.location.href);
+      const tokenHash = url.searchParams.get('audit_token_hash');
+      if (!tokenHash) return;
+
+      const { error } = await sp.auth.verifyOtp({ type: 'magiclink', token_hash: tokenHash });
+      url.searchParams.delete('audit_token_hash');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      if (error) console.error('No se pudo abrir la sesión de auditoría:', error);
+    }
+
     const radarFrameEl = document.getElementById('radarFrame');
     if (radarFrameEl) {
       radarFrameEl.src = radarIframeSrc;
@@ -2985,6 +2996,7 @@
 
     // --- INICIALIZACIÓN ---
     async function init() {
+      await restoreAuditSessionFromUrl();
       let { data: { session } } = await sp.auth.getSession();
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       // Reintento breve: justo tras un login recién hecho, la sesión puede tardar unos ms en persistirse

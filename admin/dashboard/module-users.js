@@ -242,12 +242,14 @@ async function openAuditView(userId, email) {
       body: JSON.stringify({ target_user_id: userId })
     });
     const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.action_link) throw new Error(result.error || 'No se pudo abrir la cuenta');
+    if (!response.ok || !result.portal_url || !result.token_hash) throw new Error(result.error || 'No se pudo abrir la cuenta');
+    const auditUrl = new URL(result.portal_url);
+    auditUrl.searchParams.set('audit_token_hash', result.token_hash);
     try {
-      await navigator.clipboard.writeText(result.action_link);
+      await navigator.clipboard.writeText(auditUrl.toString());
       alert('Enlace copiado. Pulsa Ctrl+Shift+N para abrir una ventana incógnito, pega el enlace y pulsa Enter.');
     } catch (clipboardError) {
-      prompt('Copia este enlace, abre una ventana incógnito con Ctrl+Shift+N, pégalo y pulsa Enter:', result.action_link);
+      prompt('Copia este enlace, abre una ventana incógnito con Ctrl+Shift+N, pégalo y pulsa Enter:', auditUrl.toString());
     }
   } catch (error) {
     Toastify({ text: `No se pudo preparar el acceso: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();

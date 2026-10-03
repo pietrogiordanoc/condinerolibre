@@ -59,11 +59,10 @@ serve(async (request) => {
 
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: "magiclink",
-      email: target.email,
-      options: { redirectTo: portalUrl }
+      email: target.email
     });
-    const actionLink = linkData?.properties?.action_link;
-    if (linkError || !actionLink) {
+    const tokenHash = linkData?.properties?.hashed_token;
+    if (linkError || !tokenHash) {
       console.error("Could not generate audit login link:", linkError);
       return reply({ error: "Could not generate the student session" }, 500);
     }
@@ -83,7 +82,7 @@ serve(async (request) => {
     });
     if (auditError) console.error("Could not record audit login:", auditError);
 
-    return reply({ ok: true, action_link: actionLink });
+    return reply({ ok: true, portal_url: portalUrl, token_hash: tokenHash });
   } catch (error) {
     console.error("admin-audit-login failed:", error);
     return reply({ error: "Internal error" }, 500);
