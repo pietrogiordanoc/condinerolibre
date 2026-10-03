@@ -2341,7 +2341,7 @@
       status.textContent = 'Guardando cambios...';
       const { error } = await updateProfileForSession(session, { full_name: fullName, phone });
       saveButton.disabled = false;
-      if (error) { status.textContent = 'No se pudieron guardar los cambios. Inténtalo de nuevo.'; console.error(error); return; }
+      if (error) { status.textContent = `No se pudieron guardar los cambios (${error.code || error.message}).`; console.error(error); return; }
 
       document.getElementById('username').textContent = fullName;
       document.getElementById('userNameDisplay').textContent = fullName;
@@ -3258,8 +3258,8 @@
     }
 
     function readPhoneFields(countryId, numberId) {
-      const number = document.getElementById(numberId).value.trim();
-      return number ? `${document.getElementById(countryId).value} ${number}` : null;
+      const digits = document.getElementById(numberId).value.replace(/\D/g, '');
+      return digits ? `${document.getElementById(countryId).value}${digits}` : null;
     }
 
     function openCompleteProfileModal(profile) {
@@ -3286,7 +3286,7 @@
       if (!session) return;
 
       const { error } = await updateProfileForSession(session, { full_name: name, phone });
-      if (error) { msgEl.textContent = 'No se pudo guardar. Intenta nuevamente.'; console.error(error); return; }
+      if (error) { msgEl.textContent = `No se pudo guardar (${error.code || error.message}). Intenta nuevamente.`; console.error(error); return; }
 
       document.getElementById('username').textContent = name;
       const userNameDisplayEl = document.getElementById('userNameDisplay');
