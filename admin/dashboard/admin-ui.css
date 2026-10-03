@@ -43,6 +43,8 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .note-counter { text-align: right; color: #666; font-size: 11px; margin-top: 8px; }
 .filters { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px; margin-bottom: 14px; display: flex; gap: 10px; }
 .filters input, .filters select { background: #0f0f0f; border: 1px solid #333; color: #e0e0e0; padding: 10px; border-radius: 10px; font-size: 13px; }
+.classroom-sync-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; padding: 10px 12px; border: 1px solid rgba(24,195,107,.32); border-radius: 10px; background: rgba(24,195,107,.07); }
+.classroom-sync-bar span { margin-right: 4px; color: #76f3ae; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 /* TABS */
 .tab-btn { background: transparent; border: none; border-bottom: 3px solid transparent; color: #888; padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
 .tab-btn:hover { color: #e0e0e0; }
@@ -101,6 +103,9 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
     font-size: 13px;
     padding: 8px;
   }
+
+  .classroom-sync-bar { align-items: stretch; flex-direction: column; }
+  .classroom-sync-bar .btn { width: 100%; min-height: 34px; }
   
   /* Tabla compacta con scroll horizontal suave */
   .table-container { 

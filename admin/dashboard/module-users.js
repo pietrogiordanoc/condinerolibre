@@ -30,6 +30,27 @@ async function refreshUsers() {
   renderUsers();
 }
 
+async function syncClassroomCourse(courseId, courseLabel, button) {
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = 'Sincronizando...';
+  const { data: { session } } = await sp.auth.getSession();
+  const response = await fetch(CONFIG.classroomSyncUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+    body: JSON.stringify({ course_id: courseId })
+  });
+  const result = await response.json().catch(() => ({}));
+  button.disabled = false;
+  button.textContent = originalLabel;
+
+  if (!response.ok) {
+    Toastify({ text: `No se pudo sincronizar ${courseLabel}: ${result.error || 'Error desconocido'}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+  Toastify({ text: `${courseLabel}: ${result.imported || 0} lecciones sincronizadas`, duration: 3000, backgroundColor: '#10b981' }).showToast();
+}
+
 async function refreshRadarUsage() {
   // Obtener uso del radar de HOY para todos los usuarios
   const today = new Date().toISOString().split('T')[0];
