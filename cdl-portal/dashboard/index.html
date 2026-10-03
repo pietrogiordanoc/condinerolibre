@@ -2590,6 +2590,13 @@
       el.textContent = `Tiempo restante hoy: ${mins}:${secs.toString().padStart(2, '0')}`;
     }
 
+    function showRadarLimitReached() {
+      const banner = document.getElementById('radarBanner');
+      const el = document.getElementById('radarTimeRemaining');
+      if (banner) banner.style.display = 'block';
+      if (el) el.textContent = 'Límite diario alcanzado. Vuelve mañana o elige Desbloquear PRO cuando quieras.';
+    }
+
     function startRadarCountdown() {
       if (radarCountdownTimer) return;
       radarCountdownTimer = setInterval(() => {
@@ -2616,7 +2623,7 @@
         body: JSON.stringify({ action: "check" }) 
       });
       const data = await res.json();
-      if (!data.allowed) { location.hash = "#upgrade"; return false; }
+      if (!data.allowed) { showRadarLimitReached(); return false; }
       
       // Actualizar tiempo restante
       if (data.secondsRemaining !== undefined) {
@@ -2647,7 +2654,7 @@
           updateRadarTimeDisplay();
         }
         
-        if (!data.allowed) { location.hash = "#upgrade"; stopRadarTick(); stopRadarCountdown(); }
+        if (!data.allowed) { showRadarLimitReached(); stopRadarTick(); stopRadarCountdown(); }
       }, 60000);
     }
 
