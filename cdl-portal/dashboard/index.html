@@ -578,6 +578,14 @@
       color: #60a5fa;
       margin-bottom: 2px;
     }
+    .course-label.course-access-active {
+      align-self: flex-start;
+      padding: 4px 7px;
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      border-radius: 5px;
+      background: rgba(34, 197, 94, 0.14);
+      color: #86efac;
+    }
     .course-card b {
       font-size: 15px;
       font-weight: 600;
@@ -1446,7 +1454,7 @@
       <a id="navAccounts" class="nav-item"><i data-lucide="badge-dollar-sign"></i> Abrir Cuenta</a>
       <a id="navDownload" class="nav-item"><i data-lucide="download"></i> MetaTrader</a>
       <a id="navAprende" class="nav-item"><i data-lucide="book-open"></i> Aprende</a>
-      <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Ver más cursos</a>
+      <a id="navCourses" class="nav-item"><i data-lucide="graduation-cap"></i> Cursos</a>
       <a id="navProfile" class="nav-item"><i data-lucide="circle-user-round"></i> Mi cuenta</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
       <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
@@ -1804,7 +1812,7 @@
               <img src="../../images/curso01.avif" alt="Master Pro Academico">
             </div>
             <div class="course-content">
-              <span class="course-label">CURSO DE TRADING</span>
+              <span class="course-label" data-course-status>CURSO DE TRADING</span>
               <b>Master Pro Profesional Académico</b>
               <p>Domina el análisis técnico avanzado para tomar decisiones estratégicas y operar con la precisión de un trader profesional.</p>
               <div class="account-link-actions">
@@ -1818,7 +1826,7 @@
               <img src="../../images/curso02.avif" alt="Trading Prime Elite Profesional">
             </div>
             <div class="course-content">
-              <span class="course-label">CURSO DE TRADING</span>
+              <span class="course-label" data-course-status>CURSO DE TRADING</span>
               <b>Trading Prime Elite Profesional</b>
               <p>Curso de Trading Prime Elite Profesional: Domina FTMO, MetaTrader, TradingView y las Estrategias Clave en Forex, Nasdaq y Acciones.</p>
               <div class="account-link-actions">
@@ -1832,7 +1840,7 @@
               <img src="../../images/curso03.avif" alt="Velas Japonesas desde Cero">
             </div>
             <div class="course-content">
-              <span class="course-label">CURSO DE TRADING</span>
+              <span class="course-label" data-course-status>CURSO DE TRADING</span>
               <b>Velas Japonesas desde Cero</b>
               <p>Aprende a interpretar patrones de velas y domina la acción del precio para mejorar tu trading.</p>
               <div class="account-link-actions">
@@ -1846,7 +1854,7 @@
               <img src="../../images/curso04.avif" alt="TradingView Basico">
             </div>
             <div class="course-content">
-              <span class="course-label">CURSO DE TRADING</span>
+              <span class="course-label" data-course-status>CURSO DE TRADING</span>
               <b>TradingView Básico</b>
               <p>Domina TradingView paso a paso con tutoriales prácticos: indicadores, análisis técnico y estrategias simples.</p>
               <div class="account-link-actions">
@@ -2765,8 +2773,13 @@
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
+        const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
         cta.textContent = hasAccess ? 'Ver curso' : 'Ver más';
         cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : 'Ver información del curso');
+        if (status && hasAccess) {
+          status.textContent = 'ACCESO ACTIVO';
+          status.classList.add('course-access-active');
+        }
       });
     }
 
