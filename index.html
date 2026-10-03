@@ -468,23 +468,39 @@
   </section>
 
   <!-- ===== MODAL: Gráfico expandido ===== -->
-  <div id="tv-modal" role="dialog" aria-modal="true" aria-label="Gráfico expandido" style="display:none; height:100vh; height:100dvh;" class="fixed inset-0 z-[100] flex flex-col bg-[#131722]" onclick="if(event.target===this)closeTvModal()">
-    <div class="flex flex-col w-full h-full" style="max-height:100vh; overflow:hidden;">
+  <style>
+    .tvm { position: fixed; inset: 0; z-index: 2147483000; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.78); }
+    .tvm.open { display: flex; }
+    .tvm-box { display: flex; flex-direction: column; width: min(1180px, 100%); height: min(88vh, 860px); height: min(88dvh, 860px); overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; background: #131722; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    .tvm-head { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.1); color: #fff; font-size: 14px; }
+    .tvm-head a { color: #4a9eff; }
+    .tvm-close { flex: 0 0 auto; border: 0; border-radius: 8px; background: #fff; color: #000; padding: 7px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+    .tvm-close:hover { background: #f5c518; }
+    .tvm-chart { flex: 1 1 auto; min-height: 220px; }
+    .tvm-chart iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .tvm-legend { flex: 0 0 auto; max-height: 32%; overflow-y: auto; border-top: 1px solid rgba(255,255,255,.1); background: #151924; }
+    .tvm-lhead { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 24px; padding: 14px 20px 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .tvm-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; padding: 14px 20px; font-size: 11.5px; line-height: 1.65; }
+    @media (max-width: 900px) { .tvm-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .tvm { padding: 8px; } .tvm-box { height: 94vh; height: 94dvh; } .tvm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+  <div id="tv-modal" class="tvm" role="dialog" aria-modal="true" aria-label="Gráfico ampliado" onclick="if(event.target===this)closeTvModal()">
+    <div class="tvm-box">
 
       <!-- Barra superior con cerrar -->
-      <div class="flex shrink-0 items-center justify-between border-b border-white/10 px-4" style="height:48px;">
-        <span class="text-white/70 text-sm font-semibold">Gráfico ampliado</span>
-        <button onclick="closeTvModal()" aria-label="Cerrar gráfico" class="flex items-center gap-2 rounded-md bg-white/10 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white hover:text-black transition-colors"><span aria-hidden="true">✕</span> Cerrar</button>
+      <div class="tvm-head">
+        <span><strong>EUR/USD · Gráfico ampliado</strong> · <a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank">EURUSD chart</a> <span style="opacity:.6">by TradingView</span></span>
+        <button class="tvm-close" onclick="closeTvModal()" aria-label="Cerrar gráfico">✕ Cerrar</button>
       </div>
 
-      <!-- Chart area: el widget se crea al abrir para que mida bien -->
-      <div id="tv-modal-chart" style="flex:1 1 0; min-height:260px;"></div>
+      <!-- Chart area: el widget vive en un iframe que se crea al abrir -->
+      <div id="tv-modal-chart" class="tvm-chart"></div>
 
       <!-- Leyenda -->
-      <div class="shrink-0 overflow-y-auto bg-[#151924] border-t border-white/10" style="max-height:34vh; max-height:34dvh;">
+      <div class="tvm-legend">
 
         <!-- Cabecera: título izq | link derecha -->
-        <div class="flex items-start justify-between px-6 pt-4 pb-3 border-b border-white/[0.08]">
+        <div class="tvm-lhead">
           <div>
             <p class="text-[#f5c518] text-[0.82rem] font-semibold mb-1">Atajos rápidos en el gráfico (TradingView):</p>
             <p class="text-white/55 text-[0.72rem]">Tip: Haz clic en el gráfico y escribe directamente cualquier símbolo de abajo para verlo en tiempo real</p>
@@ -497,7 +513,7 @@
         </div>
 
         <!-- 6 columnas -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 px-6 py-4 text-[0.71rem] leading-[1.65]">
+        <div class="tvm-grid">
 
           <!-- Time Frames -->
           <div>
@@ -588,27 +604,28 @@
   
   <script>
     function openTvModal() {
-      document.getElementById('tv-modal').style.display = 'flex';
+      document.getElementById('tv-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
       const host = document.getElementById('tv-modal-chart');
       if (host.childElementCount) return;
-      host.innerHTML = '<div class="tradingview-widget-container" style="height:100%;width:100%"><div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div><div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/TICKMILL-EURUSD/?affiliates=4054" rel="noopener nofollow" target="_blank"><span class="blue-text">EURUSD chart</span></a><span class="trademark"> by TradingView</span></div></div>';
-      const script = document.createElement('script');
-      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-      script.async = true;
-      script.text = JSON.stringify({
+      const config = {
         allow_symbol_change: true, calendar: false, details: false, hide_side_toolbar: false,
         hide_top_toolbar: false, hide_legend: false, hide_volume: false, hotlist: false,
         interval: '15', locale: 'es', save_image: false, style: '1', symbol: 'TICKMILL:EURUSD',
         theme: 'dark', timezone: 'Etc/UTC', backgroundColor: '#131722',
         gridColor: 'rgba(242, 242, 242, 0.06)', watchlist: [], withdateranges: true,
         compareSymbols: [], studies: [], autosize: true
-      });
-      host.firstChild.appendChild(script);
+      };
+      // El iframe aisla el widget de los estilos de la página y le da un tamaño propio.
+      const frame = document.createElement('iframe');
+      frame.title = 'Gráfico EUR/USD';
+      frame.setAttribute('allowfullscreen', '');
+      frame.srcdoc = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#131722}.tradingview-widget-container,.tradingview-widget-container__widget{height:100%;width:100%}</style></head><body><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>' + JSON.stringify(config) + '<' + '/script></div></body></html>';
+      host.appendChild(frame);
     }
 
     function closeTvModal() {
-      document.getElementById('tv-modal').style.display = 'none';
+      document.getElementById('tv-modal').classList.remove('open');
       document.body.style.overflow = '';
     }
 
