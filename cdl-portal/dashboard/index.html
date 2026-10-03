@@ -500,6 +500,12 @@
       color: var(--muted);
       font-size: 14px;
     }
+    .courses-identity { display: flex; flex-direction: column; justify-content: center; background: linear-gradient(120deg, rgba(255,138,0,.08), rgba(255,255,255,.02) 58%); }
+    .courses-identity-title { display: flex; align-items: center; gap: 12px; }
+    .courses-identity-icon { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 40px; border: 1px solid #ffad45; border-radius: 8px; background: #ff8a00; color: #181006; box-shadow: 0 3px 0 #8f4700, 0 0 16px rgba(255,138,0,.16); }
+    .courses-identity-icon svg { width: 21px; height: 21px; stroke-width: 2.25; }
+    .courses-identity-kicker { display: block; margin-bottom: 2px; color: #86ffd0; font-size: 10px; font-weight: 600; letter-spacing: .12em; }
+    .courses-identity h2 { font-size: 24px; }
     .accounts-xs-banner {
       display: block;
       width: 100%;
@@ -1903,14 +1909,20 @@
     <!-- VISTA CURSOS -->
     <section id="viewCourses">
       <div class="courses-header-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
-        <div class="accounts-head" style="margin-bottom: 0;">
-          <h2>Ver Más Cursos</h2>
-          <p>Selecciona un curso y abre la página completa en nueva pestaña.</p>
+        <div class="accounts-head courses-identity" style="margin-bottom: 0;">
+          <div class="courses-identity-title">
+            <span class="courses-identity-icon" aria-hidden="true"><i data-lucide="graduation-cap"></i></span>
+            <div>
+              <span class="courses-identity-kicker">CURSOS</span>
+              <h2>ClassRoom</h2>
+            </div>
+          </div>
+          <p>Explora tus cursos y continúa tu aprendizaje.</p>
         </div>
 
         <!-- Plan CDLRadar and ClassRoom -->
         <div id="academyBanner" class="academy-banner">
-          <div class="academy-banner-discount" aria-label="78 por ciento off">
+          <div class="academy-banner-discount" aria-label="Cupón: 78 por ciento off">
             <span class="academy-banner-coupon-label">CUPÓN</span>
             <span class="academy-banner-discount-value">78<span>%</span></span>
             <span class="academy-banner-discount-label">OFF</span>
@@ -1918,7 +1930,7 @@
           <div class="academy-banner-text">
             <span class="academy-banner-tag">OFERTA PROMO</span>
             <strong>CDLRadar + ClassRoom</strong>
-            <span>Todos los cursos, presentes y futuros, y el Radar Pro en un solo plan.</span>
+            <span>Todos los cursos incluidos + Radar</span>
           </div>
           <button type="button" class="academy-banner-btn" onclick="openAcademyModal()">Ver oferta</button>
         </div>
@@ -4019,9 +4031,9 @@
     .academy-banner-active::before, .academy-banner-active::after { display: none; }
     .academy-banner-discount { grid-row: 1 / span 2; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; padding-right: 18px; border-right: 1px solid rgba(255,255,255,.16); text-align: center; text-shadow: 0 0 22px rgba(255,138,0,.32); }
     .academy-banner-coupon-label { margin-bottom: 7px; color: #d8ab78; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
-    .academy-banner-discount-value { color: #fff; font-size: clamp(42px, 4.2vw, 64px); font-weight: 600; line-height: .78; letter-spacing: 0; }
+    .academy-banner-discount-value { color: #fff; font-size: clamp(50px, 5.6vw, 78px); font-weight: 600; line-height: .8; letter-spacing: 0; }
     .academy-banner-discount-value span { color: #ff970f; font-size: .5em; vertical-align: top; }
-    .academy-banner-discount-label { margin-top: 8px; color: #ff970f; font-size: 11px; font-weight: 600; letter-spacing: .18em; }
+    .academy-banner-discount-label { margin-top: 8px; color: #d8ab78; font-size: 11px; font-weight: 600; letter-spacing: .18em; }
     .academy-banner-text { grid-column: 2; display: grid; align-content: end; gap: 3px; min-width: 0; }
     .academy-banner-active .academy-banner-text { grid-column: auto; flex: 1; }
     .academy-banner-text strong { color: #fff; font-size: 15px; font-weight: 600; }
@@ -4030,7 +4042,7 @@
     .academy-banner-btn { grid-column: 2; width: 100%; border: 1px solid #ffad45; border-radius: 7px; background: #ff8a00; color: #15100a; padding: 11px 18px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 0 #8f4700, 0 0 20px rgba(255,138,0,.2); transition: transform .16s ease, filter .16s ease; }
     .academy-banner-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
     @media (max-width: 900px) { .courses-header-grid { grid-template-columns: 1fr !important; } }
-    @media (max-width: 560px) { .academy-banner { grid-template-columns: 104px minmax(0, 1fr); gap: 10px 14px; padding: 16px; } .academy-banner-discount { padding-right: 14px; } .academy-banner-discount-value { font-size: 42px; } .academy-banner-text strong { font-size: 14px; } .academy-banner-text span { font-size: 11.5px; } }
+    @media (max-width: 560px) { .academy-banner { grid-template-columns: 104px minmax(0, 1fr); gap: 10px 14px; padding: 16px; } .academy-banner-discount { padding-right: 14px; } .academy-banner-discount-value { font-size: 50px; } .academy-banner-text strong { font-size: 14px; } .academy-banner-text span { font-size: 11.5px; } }
 
     .acm { position: fixed; inset: 0; z-index: 10060; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.8); overflow-y: auto; }
     .acm.open { display: flex; }
