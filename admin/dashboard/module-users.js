@@ -179,7 +179,21 @@ function renderUsers() {
     const name = [p.display_name, p.full_name, p.name].find(n => n && String(n).trim() !== "") || p.email.split("@")[0];
     const radarUsage = RADAR_USAGE_BY_ID[p.id] || null;
     const tier = commercialTierFor(p.id, p.plan);
-    return { ...p, displayName: name, online, pres, radarUsage, tier, tierRank: tier.rank };
+    const hasRadarPro = p.plan === 'paid' || p.plan === 'pro';
+    return {
+      ...p,
+      displayName: name,
+      online,
+      pres,
+      radarUsage,
+      tier,
+      tierRank: tier.rank,
+      phoneSort: p.phone || '',
+      radarUsageSort: hasRadarPro ? Number.MAX_SAFE_INTEGER : (radarUsage?.seconds_used || 0),
+      blockedSort: p.blocked ? 1 : 0,
+      noteSort: p.notas_admin || '',
+      location: `${pres.ciudad || ''}, ${pres.pais || ''}`
+    };
   });
 
   if (q) rows = rows.filter(r => r.email.toLowerCase().includes(q) || r.displayName.toLowerCase().includes(q));
@@ -192,8 +206,11 @@ function renderUsers() {
       return b.online - a.online; // online=true (1) primero que online=false (0)
     }
     // Luego por el sortKey seleccionado
-    let valA = a[sortKey], valB = b[sortKey];
-    return sortOrder === 'asc' ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
+    const valA = a[sortKey] ?? '', valB = b[sortKey] ?? '';
+    const comparison = typeof valA === 'number' && typeof valB === 'number'
+      ? valA - valB
+      : String(valA).localeCompare(String(valB), 'es', { numeric: true });
+    return sortOrder === 'asc' ? comparison : -comparison;
   });
 
   // Detectar IPs y fingerprints duplicados

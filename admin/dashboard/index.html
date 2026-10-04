@@ -57,16 +57,16 @@
         <thead>
           <tr>
             <th onclick="handleSort('displayName')">Usuario ↕</th>
-            <th>Teléfono</th>
+            <th onclick="handleSort('phoneSort')">Teléfono ↕</th>
             <th onclick="handleSort('tierRank')">Nivel ↕</th>
             <th onclick="handleSort('online')">Estado ↕</th>
-            <th>Uso Radar Hoy</th>
+            <th onclick="handleSort('radarUsageSort')">Uso Radar Hoy ↕</th>
             <th>Historial</th>
             <th>SL Experimental</th>
             <th onclick="handleSort('location')">Ubicación ↕</th>
             <th>IP / Fingerprint</th>
-            <th>Acción</th>
-            <th>Notas Admin</th>
+            <th onclick="handleSort('blockedSort')">Acción ↕</th>
+            <th onclick="handleSort('noteSort')">Notas Admin ↕</th>
           </tr>
         </thead>
         <tbody id="usersTbody"></tbody>
