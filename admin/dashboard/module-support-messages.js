@@ -32,7 +32,7 @@ function supportMessageUserLabel(userId) {
 
 async function refreshSupportMessages() {
   const [messagesResponse, usersResponse] = await Promise.all([
-    sp.from('user_support_messages').select('*').eq('status', 'pending').order('created_at', { ascending: false }),
+    sp.from('user_support_messages').select('*').order('created_at', { ascending: false }),
     sp.from('profiles').select('id, full_name, email')
   ]);
   const error = messagesResponse.error || usersResponse.error;
@@ -54,8 +54,9 @@ function renderSupportMessages() {
       <td>${supportMessageUserLabel(message.user_id)}</td>
       <td style="min-width:360px; white-space:pre-wrap;">${escapeStudyText(message.message)}</td>
       <td>${formatStudyDate(message.created_at)}</td>
-      <td><button class="btn btn-primary" onclick="completeSupportMessage('${message.id}')">Email respondido</button></td>
-    </tr>`).join('') : '<tr><td colspan="4" class="muted" style="text-align:center; padding:28px;">No hay mensajes pendientes.</td></tr>';
+      <td><span class="tier-badge ${message.status === 'pending' ? 'tier-freemium' : 'tier-ultra'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span></td>
+      <td><div class="row-actions">${message.status === 'pending' ? `<button class="btn btn-primary" onclick="completeSupportMessage('${message.id}')">Email respondido</button>` : ''}<button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></div></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="muted" style="text-align:center; padding:28px;">No hay conversaciones.</td></tr>';
 }
 
 window.completeSupportMessage = async function(messageId) {
@@ -75,5 +76,19 @@ window.completeSupportMessage = async function(messageId) {
     return;
   }
   Toastify({ text: 'Mensaje marcado como respondido por email.', duration: 3500, backgroundColor: '#10b981' }).showToast();
+  await refreshSupportMessages();
+};
+
+window.deleteSupportMessage = async function(messageId) {
+  const message = SUPPORT_MESSAGES.find((item) => item.id === messageId);
+  if (!message) return;
+  if (!window.confirm('¿Eliminar este mensaje permanentemente? Esta acción no se puede deshacer.')) return;
+  const { error } = await sp.from('user_support_messages').delete().eq('id', messageId);
+  if (error) {
+    console.error('No se pudo eliminar el mensaje de usuario:', error);
+    Toastify({ text: `No se pudo eliminar el mensaje: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+  Toastify({ text: 'Mensaje eliminado.', duration: 3000, backgroundColor: '#10b981' }).showToast();
   await refreshSupportMessages();
 };

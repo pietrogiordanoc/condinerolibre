@@ -357,10 +357,9 @@
       display: grid;
       grid-template-columns: minmax(300px, .68fr) minmax(0, 1.32fr);
       grid-template-areas:
-        "summary affiliate"
-        "details affiliate"
+        "summary support"
+        "details support"
         "access affiliate"
-        "support affiliate"
         "academy-upgrade affiliate";
       gap: 18px;
       align-items: start;
@@ -417,16 +416,23 @@
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .profile-support-card { grid-area: support; display:grid; gap:12px; padding:18px 20px; }
-    .profile-support-card h3 { margin:0; color:#fff; font-size:16px; }
-    .profile-support-card p { margin:5px 0 0; color:var(--muted); font-size:12.5px; line-height:1.45; }
-    .profile-support-card textarea { width:100%; min-height:104px; resize:vertical; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:rgba(255,255,255,.04); color:#fff; padding:11px; font:inherit; font-size:13px; line-height:1.45; }
-    .profile-support-card textarea:focus { outline:2px solid rgba(42,255,138,.45); border-color:var(--green); }
-    .profile-support-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .profile-support-status { color:var(--muted); font-size:12px; line-height:1.4; }
+    .profile-support-card { grid-area: support; display:grid; grid-template-rows:auto minmax(230px, 1fr) auto; gap:14px; min-height:440px; padding:22px; background:linear-gradient(160deg, rgba(11,29,24,.98), rgba(9,17,19,.98)); border-color:rgba(42,255,138,.28); }
+    .profile-support-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .profile-support-card h3 { margin:0; color:#f2fffa; font-size:18px; font-weight:500; }
+    .profile-support-card p { margin:5px 0 0; color:#a8bbb4; font-size:12.5px; line-height:1.45; }
+    .profile-support-email { flex:0 0 auto; color:#75e6ae; font-size:11px; font-weight:500; letter-spacing:.05em; text-transform:uppercase; }
+    .profile-support-thread { display:flex; flex-direction:column; gap:12px; min-height:0; overflow-y:auto; padding:6px 2px 6px 18%; }
+    .profile-support-empty { margin:auto 0; color:#9aaea6; font-size:13px; line-height:1.5; text-align:center; }
+    .profile-support-bubble { align-self:flex-end; max-width:92%; border-radius:12px 4px 12px 12px; background:#145c46; color:#ecfff5; padding:10px 12px 8px; box-shadow:0 4px 12px rgba(0,0,0,.18); font-size:13px; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .profile-support-bubble small { display:block; margin-top:5px; color:#b8e8d1; font-size:10px; text-align:right; }
+    .profile-support-compose { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:10px; align-items:end; padding-top:14px; border-top:1px solid rgba(255,255,255,.08); }
+    .profile-support-card textarea { width:100%; min-height:52px; max-height:120px; resize:vertical; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:#0a1414; color:#fff; padding:11px 12px; font:inherit; font-size:13px; line-height:1.45; }
+    .profile-support-card textarea:focus { outline:2px solid rgba(42,255,138,.36); border-color:var(--green); }
+    .profile-support-actions { display:grid; gap:7px; }
+    .profile-support-status { color:#9aaea6; font-size:11px; line-height:1.35; }
     .profile-support-status.success { color:#86efac; }
     .profile-support-status.error { color:#fca5a5; }
-    .profile-support-send { border:0; border-radius:8px; background:var(--green); color:#041108; padding:10px 14px; font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+    .profile-support-send { border:0; border-radius:8px; background:#29c879; color:#041108; padding:11px 15px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-send:disabled { opacity:.55; cursor:wait; }
     .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
     .profile-academy-upgrade[hidden] { display: none; }
@@ -1623,7 +1629,6 @@
       .profile-field.full { grid-column: auto; }
       .profile-save-row,
       .profile-access-card,
-      .profile-support-card,
       .profile-academy-upgrade { align-items: stretch; flex-direction: column; }
       .profile-access-card { display: flex; }
       .profile-access-actions { flex-direction: column; }
@@ -1784,14 +1789,22 @@
         </section>
 
         <section class="profile-support-card" aria-labelledby="profile-support-title">
-          <div>
-            <h3 id="profile-support-title">Envíanos un mensaje</h3>
-            <p>Cuéntanos tu pregunta o solicitud. Nuestro equipo responderá por email.</p>
+          <div class="profile-support-head">
+            <div>
+              <h3 id="profile-support-title">Centro de Mensajes</h3>
+              <p>Déjanos tu mensaje. Te responderemos por email en cuanto lo revisemos.</p>
+            </div>
+            <span class="profile-support-email">Respuesta por email</span>
           </div>
-          <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe tu mensaje..." aria-label="Tu mensaje para soporte"></textarea>
-          <div class="profile-support-actions">
-            <span id="profileSupportStatus" class="profile-support-status">Tu mensaje llegará directamente a nuestro equipo.</span>
-            <button id="profileSupportSend" class="profile-support-send" type="button">Enviar mensaje</button>
+          <div id="profileSupportThread" class="profile-support-thread" aria-live="polite">
+            <span class="profile-support-empty">Aún no has enviado mensajes. Estamos aquí cuando nos necesites.</span>
+          </div>
+          <div class="profile-support-compose">
+            <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe un mensaje..." aria-label="Tu mensaje para soporte"></textarea>
+            <div class="profile-support-actions">
+              <button id="profileSupportSend" class="profile-support-send" type="button">Enviar</button>
+              <span id="profileSupportStatus" class="profile-support-status">Se responderá por email.</span>
+            </div>
           </div>
         </section>
 
@@ -2702,6 +2715,40 @@
       document.getElementById('profileAcademyUpgrade').hidden = !hasRadarPro || hasClassroom;
     }
 
+    let profileSupportMessages = [];
+
+    function escapeProfileSupportText(value) {
+      return String(value || '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[character]));
+    }
+
+    function renderProfileSupportMessages() {
+      const thread = document.getElementById('profileSupportThread');
+      if (!profileSupportMessages.length) {
+        thread.innerHTML = '<span class="profile-support-empty">Aún no has enviado mensajes. Estamos aquí cuando nos necesites.</span>';
+        return;
+      }
+      thread.innerHTML = profileSupportMessages.map((item) => {
+        const sentAt = new Date(item.created_at).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
+        return `<div class="profile-support-bubble">${escapeProfileSupportText(item.message)}<small>Enviado · ${sentAt}</small></div>`;
+      }).join('');
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    async function loadProfileSupportMessages(session) {
+      const { data, error } = await sp.from('user_support_messages')
+        .select('id, message, created_at, status')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: true });
+      if (error) {
+        console.error('No se pudo cargar el Centro de Mensajes:', error);
+        return;
+      }
+      profileSupportMessages = data || [];
+      renderProfileSupportMessages();
+    }
+
     async function sendProfileSupportMessage() {
       const input = document.getElementById('profileSupportMessage');
       const status = document.getElementById('profileSupportStatus');
@@ -2723,6 +2770,7 @@
         const { error } = await sp.from('user_support_messages').insert({ user_id: session.user.id, message });
         if (error) throw error;
         input.value = '';
+        await loadProfileSupportMessages(session);
         status.textContent = 'Tu mensaje fue enviado. Recibirás un email con tu respuesta en breve.';
         status.className = 'profile-support-status success';
       } catch (error) {
@@ -4256,6 +4304,7 @@
       renderSubscriptionView(hasClassroom);
       renderProfileView(session, profile, hasClassroom);
       await renderCourseAccessCtas(session, hasClassroom, hasRadarPro);
+      await loadProfileSupportMessages(session);
       await loadAffiliatePortal(session);
       
       if (hasRadarPro || hasClassroom) {

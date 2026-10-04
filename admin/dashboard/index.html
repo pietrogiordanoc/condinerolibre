@@ -27,7 +27,7 @@
     <!-- Tabs de navegación -->
     <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
       <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
-      <button id="tabSupportMessages" class="tab-btn" onclick="switchTab('support-messages')">✉️ Mensajes <span id="supportMessageBadge" class="study-question-badge" hidden>0</span></button>
+      <button id="tabSupportMessages" class="tab-btn" onclick="switchTab('support-messages')">💬 Centro de Mensajes <span id="supportMessageBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabPlanChanges" class="tab-btn" onclick="switchTab('plan-changes')">💳 Cambios de plan <span id="planChangeBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
       <button id="tabStudyCenter" class="tab-btn" onclick="switchTab('study-center')">🎓 Centro de Estudio <span id="studyQuestionBadge" class="study-question-badge" hidden>0</span></button>
@@ -41,7 +41,7 @@
     </button>
     <button id="supportMessageAlert" class="study-question-alert admin-critical-alert" type="button" hidden onclick="switchTab('support-messages')">
       <span class="study-question-alert-dot" aria-hidden="true"></span>
-      <span><strong id="supportMessageAlertCount">0</strong> mensajes de usuarios pendientes de respuesta</span>
+      <span><strong id="supportMessageAlertCount">0</strong> conversaciones pendientes de respuesta</span>
       <span class="study-question-alert-action">Abrir mensajes →</span>
     </button>
     <button id="planChangeAlert" class="study-question-alert admin-critical-alert" type="button" hidden onclick="switchTab('plan-changes')">
@@ -95,13 +95,13 @@
 
     <div id="viewSupportMessages" style="display:none;">
       <div class="filters" style="justify-content:space-between; align-items:center;">
-        <span style="font-weight:800; color:#fbbf24;">MENSAJES DE USUARIOS · RESPONDER POR EMAIL</span>
+        <span style="font-weight:800; color:#fbbf24;">CENTRO DE MENSAJES · RESPONDER POR EMAIL</span>
         <button id="refreshSupportMessagesBtn" class="btn btn-primary">Refrescar</button>
       </div>
-      <div class="section-title"><span>✉️</span> MENSAJES PENDIENTES</div>
+      <div class="section-title"><span>💬</span> CONVERSACIONES</div>
       <div class="table-container">
         <table>
-          <thead><tr><th>Usuario</th><th>Mensaje</th><th>Enviado</th><th>Acción</th></tr></thead>
+          <thead><tr><th>Usuario</th><th>Mensaje</th><th>Enviado</th><th>Estado</th><th>Acción</th></tr></thead>
           <tbody id="supportMessagesTbody"></tbody>
         </table>
       </div>
