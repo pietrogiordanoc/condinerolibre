@@ -28,9 +28,15 @@
     <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
       <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
-      <button id="tabStudyCenter" class="tab-btn" onclick="switchTab('study-center')">🎓 Centro de Estudio</button>
+      <button id="tabStudyCenter" class="tab-btn" onclick="switchTab('study-center')">🎓 Centro de Estudio <span id="studyQuestionBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabAffiliates" class="tab-btn" onclick="switchTab('affiliates')">💸 Afiliados</button>
     </div>
+
+    <button id="studyQuestionAlert" class="study-question-alert" type="button" hidden onclick="switchTab('study-center')">
+      <span class="study-question-alert-dot" aria-hidden="true"></span>
+      <span><strong id="studyQuestionAlertCount">0</strong> consultas pendientes de respuesta</span>
+      <span class="study-question-alert-action">Abrir Centro de Estudio →</span>
+    </button>
 
     <!-- Vista de Usuarios -->
     <div id="viewUsers">

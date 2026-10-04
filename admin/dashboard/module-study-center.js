@@ -4,6 +4,28 @@ let STUDY_USERS_BY_ID = new Map();
 let STUDY_COURSES_BY_ID = new Map();
 let STUDY_LESSONS_BY_ID = new Map();
 
+function setStudyQuestionAlert(count) {
+  const hasPending = count > 0;
+  const banner = document.getElementById('studyQuestionAlert');
+  const badge = document.getElementById('studyQuestionBadge');
+  banner.hidden = !hasPending;
+  badge.hidden = !hasPending;
+  if (!hasPending) return;
+  document.getElementById('studyQuestionAlertCount').textContent = count;
+  badge.textContent = count > 99 ? '99+' : count;
+}
+
+async function refreshStudyQuestionAlert() {
+  const { count, error } = await sp.from('course_study_questions')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'open');
+  if (error) {
+    console.error('No se pudo cargar el contador de consultas pendientes:', error);
+    return;
+  }
+  setStudyQuestionAlert(count || 0);
+}
+
 function escapeStudyText(value) {
   return String(value || '').replace(/[&<>'"]/g, (character) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
@@ -44,6 +66,7 @@ async function refreshStudyCenter() {
   STUDY_USERS_BY_ID = new Map((usersResponse.data || []).map((user) => [user.id, user]));
   STUDY_COURSES_BY_ID = new Map((coursesResponse.data || []).map((course) => [course.id, course]));
   STUDY_LESSONS_BY_ID = new Map((lessonsResponse.data || []).map((lesson) => [lesson.id, lesson]));
+  setStudyQuestionAlert(STUDY_QUESTIONS.filter((question) => question.status === 'open').length);
   renderStudyCenter();
 }
 

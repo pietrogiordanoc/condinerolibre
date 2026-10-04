@@ -26,6 +26,7 @@ async function init() {
   await refreshRadarUsage();
   await refreshUsers();
   await refreshLogs();
+  await refreshStudyQuestionAlert();
 
   // Bucles de refresco (solo presencia, los eventos son en tiempo real con WebSockets)
   setInterval(async () => { await refreshPresence(); renderUsers(); }, 5000);
@@ -35,6 +36,7 @@ async function init() {
 
   // Refresca cursos y progreso de alumnos cada minuto.
   setInterval(refreshUsers, 60000);
+  setInterval(refreshStudyQuestionAlert, 30000);
 }
 
 // Función para cambiar entre tabs
