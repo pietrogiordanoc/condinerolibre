@@ -3517,7 +3517,7 @@
         button.onclick = () => openCoursePurchaseModal(button.dataset.coursePurchase);
       });
       document.querySelectorAll('[data-course-academy]').forEach((button) => {
-        button.hidden = hasClassroom;
+        button.hidden = hasClassroom || enrolledCourseIds.has(button.closest('.course-content')?.querySelector('[data-course-id]')?.dataset.courseId);
         button.onclick = openAcademyModal;
       });
     }
