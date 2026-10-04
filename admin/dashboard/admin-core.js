@@ -179,6 +179,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (refreshPlanChangesBtn) refreshPlanChangesBtn.onclick = refreshPlanChanges;
   const refreshSupportMessagesBtn = document.getElementById("refreshSupportMessagesBtn");
   if (refreshSupportMessagesBtn) refreshSupportMessagesBtn.onclick = refreshSupportMessages;
+  const connectTelegramBtn = document.getElementById("connectTelegramBtn");
+  if (connectTelegramBtn) {
+    connectTelegramBtn.onclick = async () => {
+      connectTelegramBtn.disabled = true;
+      try {
+        const { data, error } = await sp.functions.invoke("telegram-admin-connect");
+        if (error) throw error;
+        if (!data?.url) throw new Error("No se recibió el enlace de Telegram.");
+        window.open(data.url, "_blank", "noopener,noreferrer");
+        Toastify({ text: "En Telegram, pulsa Start para activar los avisos y responder desde el móvil.", duration: 7000, backgroundColor: "#10b981" }).showToast();
+      } catch (error) {
+        console.error("No se pudo abrir la conexión de Telegram:", error);
+        Toastify({ text: "No se pudo abrir Telegram. Inténtalo de nuevo o revisa que la función esté publicada.", duration: 7000, backgroundColor: "#e74c3c" }).showToast();
+      } finally {
+        connectTelegramBtn.disabled = false;
+      }
+    };
+  }
   const studyQuestionFilter = document.getElementById("studyQuestionFilter");
   if (studyQuestionFilter) studyQuestionFilter.onchange = renderStudyCenter;
 });

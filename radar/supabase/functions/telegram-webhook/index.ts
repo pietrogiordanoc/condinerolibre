@@ -29,6 +29,61 @@ serve(async (req) => {
 
     const chatId = message.chat.id;
     const text = message.text;
+    const replyToMessageId = message.reply_to_message?.message_id;
+
+    if (replyToMessageId) {
+      const { data: alert, error: alertError } = await supabase
+        .from("user_support_message_telegram_alerts")
+        .select("support_message_id, admin_user_id")
+        .eq("telegram_chat_id", chatId.toString())
+        .eq("telegram_message_id", replyToMessageId)
+        .maybeSingle();
+
+      if (alertError) throw alertError;
+      if (alert) {
+        const { data: connection, error: connectionError } = await supabase
+          .from("telegram_connections")
+          .select("user_id")
+          .eq("user_id", alert.admin_user_id)
+          .eq("telegram_chat_id", chatId.toString())
+          .maybeSingle();
+        if (connectionError) throw connectionError;
+        if (!connection) {
+          await sendTelegramMessage(chatId, "⛔ Esta cuenta de Telegram no está autorizada para responder mensajes de soporte.");
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        const adminReply = text.trim();
+        if (!adminReply) {
+          await sendTelegramMessage(chatId, "✍️ Escribe una respuesta para publicar en el chat del usuario.");
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        const { data: updatedMessage, error: replyError } = await supabase
+          .from("user_support_messages")
+          .update({
+            admin_reply: adminReply,
+            replied_at: new Date().toISOString(),
+            replied_by: alert.admin_user_id,
+            status: "completed",
+            completed_at: new Date().toISOString(),
+            completed_by: alert.admin_user_id,
+          })
+          .eq("id", alert.support_message_id)
+          .is("admin_reply", null)
+          .select("id")
+          .maybeSingle();
+        if (replyError) throw replyError;
+
+        await sendTelegramMessage(
+          chatId,
+          updatedMessage
+            ? "✅ Respuesta publicada. El usuario la verá de inmediato en su Centro de Mensajes."
+            : "ℹ️ Este mensaje ya fue respondido desde Admin o Telegram."
+        );
+        return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      }
+    }
 
     // Comando /start con userId
     if (text.startsWith("/start")) {
@@ -45,12 +100,65 @@ serve(async (req) => {
 
       // Decodificar userId del parámetro
       const encodedUserId = parts[1];
+      if (encodedUserId.startsWith("admin_")) {
+        const token = encodedUserId.slice("admin_".length);
+        const { data: connectionToken, error: tokenError } = await supabase
+          .from("telegram_admin_connection_tokens")
+          .select("admin_user_id, expires_at, consumed_at")
+          .eq("token", token)
+          .maybeSingle();
+        if (tokenError) throw tokenError;
+        if (!connectionToken || connectionToken.consumed_at || new Date(connectionToken.expires_at) <= new Date()) {
+          await sendTelegramMessage(chatId, "❌ Este enlace de conexión ya venció. Genera uno nuevo desde Admin.");
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        const { data: consumedToken, error: consumeError } = await supabase
+          .from("telegram_admin_connection_tokens")
+          .update({ consumed_at: new Date().toISOString() })
+          .eq("token", token)
+          .is("consumed_at", null)
+          .select("admin_user_id")
+          .maybeSingle();
+        if (consumeError) throw consumeError;
+        if (!consumedToken) {
+          await sendTelegramMessage(chatId, "❌ Este enlace de conexión ya fue utilizado. Genera uno nuevo desde Admin.");
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        const { error: connectionError } = await supabase
+          .from("telegram_connections")
+          .upsert({
+            user_id: consumedToken.admin_user_id,
+            telegram_chat_id: chatId.toString(),
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "user_id" });
+        if (connectionError) throw connectionError;
+
+        await sendTelegramMessage(
+          chatId,
+          "✅ Telegram conectado a tu cuenta Admin de CDL.\n\nRecibirás los mensajes nuevos del Centro de Mensajes aquí. Responde directamente al aviso para publicar tu respuesta en el chat del usuario."
+        );
+        return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      }
+
       let userId: string;
       
       try {
         userId = atob(encodedUserId);
       } catch {
         await sendTelegramMessage(chatId, "❌ Código QR inválido. Genera uno nuevo desde el Radar.");
+        return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      }
+
+      const { data: adminUser, error: adminLookupError } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (adminLookupError) throw adminLookupError;
+      if (adminUser) {
+        await sendTelegramMessage(chatId, "⛔ Las cuentas Admin deben conectarse desde el botón Conectar Telegram del panel Admin.");
         return new Response(JSON.stringify({ ok: true }), { status: 200 });
       }
 
