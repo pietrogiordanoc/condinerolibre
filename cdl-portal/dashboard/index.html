@@ -3418,15 +3418,18 @@
         (modulesResponse.data || []).forEach((module) => classroomModulesByCourseId.get(module.course_id)?.push(module));
       }
       courseIds.forEach((courseId) => classroomLessonsByCourseId.set(courseId, []));
-      const playableLessonIds = new Set((lessonsResponse.data || []).map((lesson) => lesson.id));
+      const playableLessonsById = new Map((lessonsResponse.data || []).map((lesson) => [lesson.id, lesson]));
       const lessonRows = outlineResponse.data || lessonsResponse.data || [];
       lessonRows.forEach((lesson) => {
-        const playable = playableLessonIds.has(lesson.id);
+        const playable = includePreviewOutline
+          ? lesson.preview_available === true
+          : playableLessonsById.has(lesson.id);
+        const playableLesson = playableLessonsById.get(lesson.id);
         classroomLessonsByCourseId.get(lesson.course_id)?.push({
           ...lesson,
-          bunny_video_id: playable ? (lessonsResponse.data || []).find((item) => item.id === lesson.id)?.bunny_video_id : null,
-          duration_seconds: playable ? (lessonsResponse.data || []).find((item) => item.id === lesson.id)?.duration_seconds : null,
-          locked: includePreviewOutline && !playable
+          bunny_video_id: playable ? playableLesson?.bunny_video_id : null,
+          duration_seconds: playable ? playableLesson?.duration_seconds : null,
+          locked: !playable
         });
       });
 
