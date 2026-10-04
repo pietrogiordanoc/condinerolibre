@@ -17,6 +17,26 @@ let sortOrder = 'asc';
 // Límite diario gratuito de CDLRadar en minutos. Debe coincidir con el límite real
 // aplicado por la Edge Function `radar-access` (radar/supabase/functions/radar-access).
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
+const COMMERCIAL_TIERS = {
+  freemium: { label: 'CDL Freemium', description: 'Radar Free · 10 min/día', rank: 1, className: 'tier-freemium' },
+  'freemium-class': { label: 'CDL Freemium Class', description: 'Radar Free + cursos individuales', rank: 2, className: 'tier-freemium-class' },
+  premium: { label: 'CDL Premium', description: 'Radar Pro · sin cursos', rank: 3, className: 'tier-premium' },
+  'premium-class': { label: 'CDL Premium Class', description: 'Radar Pro + cursos individuales', rank: 4, className: 'tier-premium-class' },
+  ultra: { label: 'CDL Ultra', description: 'Radar Pro + Classroom completo', rank: 5, className: 'tier-ultra' }
+};
+
+function commercialTierFor(userId, plan) {
+  if (academyHasAccess(userId)) return { id: 'ultra', ...COMMERCIAL_TIERS.ultra };
+
+  const hasRadarPro = plan === 'paid' || plan === 'pro';
+  const hasIndividualCourses = (COURSE_ENROLLMENTS_BY_USER[userId] || new Set()).size > 0;
+  if (hasRadarPro) return hasIndividualCourses
+    ? { id: 'premium-class', ...COMMERCIAL_TIERS['premium-class'] }
+    : { id: 'premium', ...COMMERCIAL_TIERS.premium };
+  return hasIndividualCourses
+    ? { id: 'freemium-class', ...COMMERCIAL_TIERS['freemium-class'] }
+    : { id: 'freemium', ...COMMERCIAL_TIERS.freemium };
+}
 
 async function fetchAllRows(buildQuery) {
   const rows = [];
@@ -150,7 +170,7 @@ function handleSort(key) {
 
 function renderUsers() {
   const q = (document.getElementById("q").value || "").toLowerCase();
-  const planF = document.getElementById("planFilter").value;
+  const tierF = document.getElementById("tierFilter").value;
   const statF = document.getElementById("statusFilter").value;
 
   let rows = PROFILES.map(p => {
@@ -158,11 +178,12 @@ function renderUsers() {
     const online = (pres.online === true) && (Math.abs(Date.now() - new Date(pres.last_seen).getTime()) <= 120000);
     const name = [p.display_name, p.full_name, p.name].find(n => n && String(n).trim() !== "") || p.email.split("@")[0];
     const radarUsage = RADAR_USAGE_BY_ID[p.id] || null;
-    return { ...p, displayName: name, online, pres, radarUsage };
+    const tier = commercialTierFor(p.id, p.plan);
+    return { ...p, displayName: name, online, pres, radarUsage, tier, tierRank: tier.rank };
   });
 
   if (q) rows = rows.filter(r => r.email.toLowerCase().includes(q) || r.displayName.toLowerCase().includes(q));
-  if (planF !== "all") rows = rows.filter(r => r.plan === planF);
+  if (tierF !== "all") rows = rows.filter(r => r.tier.id === tierF);
   if (statF !== "all") rows = rows.filter(r => (statF === "online" ? r.online : !r.online));
 
   rows.sort((a, b) => {
@@ -184,7 +205,8 @@ function renderUsers() {
   });
 
   document.getElementById("usersTbody").innerHTML = rows.map(u => {
-    const nextPlan = u.plan === 'paid' ? 'free' : 'paid';
+    const hasRadarPro = u.plan === 'paid' || u.plan === 'pro';
+    const nextPlan = hasRadarPro ? 'free' : 'paid';
     const notePreview = u.notas_admin ? (u.notas_admin.substring(0, 50) + (u.notas_admin.length > 50 ? '...' : '')) : 'Añadir nota...';
     const noteEscaped = escapeJS(u.notas_admin || '');
     
@@ -218,6 +240,9 @@ function renderUsers() {
     const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
     const academyOn = academyHasAccess(u.id);
     const enrolledCourseIds = academyOn ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)]) : ownCourseIds;
+    const radarControl = u.tier.id === 'ultra'
+      ? '<span class="tier-radar-included">Radar Pro incluido</span>'
+      : `<button type="button" class="tier-radar-toggle" onclick="adminSetPlan('${u.id}', '${nextPlan}')" title="Cambiar solo el acceso a CDLRadar">Radar: ${hasRadarPro ? 'Pro' : 'Free'}</button>`;
     const coursesDisplay = COURSES.length
       ? COURSES.map(course => {
           const enrolled = enrolledCourseIds.has(course.id);
@@ -242,7 +267,7 @@ function renderUsers() {
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
         <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
         <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? ` <button class="btn btn-danger" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">✕</button>` : ''}</td>
-        <td data-label="Plan"><span class="pill ${u.plan === 'paid' ? 'pill-paid' : 'pill-free'}" onclick="adminSetPlan('${u.id}','${nextPlan}')">${u.plan || "free"}</span></td>
+        <td data-label="Nivel"><div class="tier-cell"><span class="pill tier-pill ${u.tier.className}">${u.tier.label}</span><small>${u.tier.description}</small>${radarControl}</div></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
         <td data-label="Historial"><div class="row-actions"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="btn" title="Ver como alumno" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Abrir</button></div></td>

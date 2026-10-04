@@ -88,11 +88,11 @@ document.getElementById("logoutBtn").onclick = async () => {
 };
 
 document.getElementById("q").oninput = renderUsers;
-document.getElementById("planFilter").onchange = renderUsers;
+document.getElementById("tierFilter").onchange = renderUsers;
 document.getElementById("statusFilter").onchange = renderUsers;
 document.getElementById("clearBtn").onclick = () => { 
   document.getElementById("q").value=""; 
-  document.getElementById("planFilter").value="all";
+  document.getElementById("tierFilter").value="all";
   document.getElementById("statusFilter").value="all";
   renderUsers(); 
 };

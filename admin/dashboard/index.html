@@ -35,10 +35,13 @@
     <div id="viewUsers">
     <div class="filters">
       <input id="q" placeholder="Buscar por nombre o email..." />
-      <select id="planFilter">
-        <option value="all">Todos los Planes</option>
-        <option value="free">Solo Free</option>
-        <option value="paid">Solo Paid</option>
+      <select id="tierFilter">
+        <option value="all">Todos los niveles</option>
+        <option value="freemium">CDL Freemium</option>
+        <option value="freemium-class">CDL Freemium Class</option>
+        <option value="premium">CDL Premium</option>
+        <option value="premium-class">CDL Premium Class</option>
+        <option value="ultra">CDL Ultra</option>
       </select>
       <select id="statusFilter">
         <option value="all">Todos los Estados</option>
@@ -55,7 +58,7 @@
           <tr>
             <th onclick="handleSort('displayName')">Usuario ↕</th>
             <th>Teléfono</th>
-            <th onclick="handleSort('plan')">Plan ↕</th>
+            <th onclick="handleSort('tierRank')">Nivel ↕</th>
             <th onclick="handleSort('online')">Estado ↕</th>
             <th>Uso Radar Hoy</th>
             <th>Historial</th>

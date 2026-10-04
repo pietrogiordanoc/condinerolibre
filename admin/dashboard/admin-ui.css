@@ -21,6 +21,17 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .pill { display:inline-block; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; cursor: pointer; }
 .pill-free { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: rgba(245, 158, 11, 0.4); }
 .pill-paid { background: rgba(24, 195, 107, 0.2); color: #18c36b; border-color: rgba(24, 195, 107, 0.4); }
+.tier-cell { display: grid; gap: 4px; min-width: 150px; }
+.tier-pill { width: fit-content; cursor: default; }
+.tier-cell small { color: #aab6b1; font-size: 10px; line-height: 1.25; }
+.tier-freemium { background: rgba(148, 163, 184, .16); color: #cbd5e1; }
+.tier-freemium-class { background: rgba(56, 189, 248, .14); color: #7dd3fc; }
+.tier-premium { background: rgba(245, 158, 11, .18); color: #fbbf24; }
+.tier-premium-class { background: rgba(168, 85, 247, .18); color: #d8b4fe; }
+.tier-ultra { background: rgba(24, 195, 107, .2); color: #5eea9b; }
+.tier-radar-toggle { width: fit-content; border: 0; background: transparent; color: #8f9aa3; padding: 0; font: inherit; font-size: 10px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.tier-radar-toggle:hover { color: #18c36b; }
+.tier-radar-included { color: #5eea9b; font-size: 10px; }
 .btn-note-view { background: rgba(255,255,255,0.05); border: 1px solid #333; color: #bbb; padding: 8px 14px; border-radius: 8px; width: 100%; text-align: left; font-size: 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; transition: all 0.2s; }
 .btn-note-view:hover { background: rgba(24,195,107,0.1); border-color: #18c36b; color: #18c36b; }
 .btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
