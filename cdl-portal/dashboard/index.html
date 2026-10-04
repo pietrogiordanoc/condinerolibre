@@ -4192,6 +4192,8 @@
       const navSubscription = document.getElementById("navSubscription");
       
       const hasRadarPro = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
+      academyUpgradeEligible = hasRadarPro && !hasClassroom;
+      await loadAcademyUpgradeRequest(session, academyUpgradeEligible);
 
       renderSubscriptionView(hasClassroom);
       renderProfileView(session, profile, hasClassroom);
@@ -4796,10 +4798,10 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3>Añade Classroom por solo $10 más al mes</h3>
-        <p>Tu CDL Radar Pro actual cuesta $19.99 al mes. Con Premium Class pagarás $29.99 al mes: solo $10 más.</p>
-        <p>Conservas una única suscripción. La migración segura de tu plan se habilitará aquí antes de cobrarte, para evitar pagos duplicados.</p>
-        <button type="button" class="acm-apply" onclick="closeAcademyModal()">Volver a mi cuenta</button>
+        <h3 id="acmUpgradeTitle">Añade Classroom por solo $10 más al mes</h3>
+        <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con Premium Class pagarás $29.99 al mes: solo $10 más.</p>
+        <p id="acmUpgradeDetail">Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.</p>
+        <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()">Solicitar cambio de plan</button>
       </div>
     </div>
   </div>
@@ -4818,6 +4820,7 @@
     let academySdkPromise = null;
     let academyButtonsRendered = false;
     let academyUpgradeEligible = false;
+    let academyUpgradePending = false;
 
     function setAcademyStage(stage) {
       document.getElementById('acmOffer').hidden = stage !== 'offer';
@@ -4831,6 +4834,57 @@
       const message = document.getElementById('acmMsg');
       message.textContent = text || '';
       message.className = 'acm-msg' + (kind ? ' ' + kind : '');
+    }
+
+    function renderAcademyUpgradeRequest() {
+      document.getElementById('acmUpgradeTitle').textContent = academyUpgradePending
+        ? 'Solicitud de cambio de plan enviada'
+        : 'Añade Classroom por solo $10 más al mes';
+      document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
+        ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a Premium Class por $29.99 al mes.'
+        : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con Premium Class pagarás $29.99 al mes: solo $10 más.';
+      document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
+        ? 'El equipo ajustará tu suscripción de PayPal y activará Classroom cuando el cambio quede aplicado.'
+        : 'Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.';
+      const button = document.getElementById('acmUpgradeRequest');
+      button.textContent = academyUpgradePending ? 'Solicitud pendiente' : 'Solicitar cambio de plan';
+      button.disabled = academyUpgradePending;
+    }
+
+    async function loadAcademyUpgradeRequest(session, eligible) {
+      academyUpgradePending = false;
+      if (!eligible) return;
+      const { data, error } = await sp
+        .from('plan_change_requests')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('status', 'pending')
+        .maybeSingle();
+      if (error) {
+        console.error('No se pudo comprobar la solicitud de cambio de plan:', error);
+        return;
+      }
+      academyUpgradePending = Boolean(data);
+    }
+
+    async function requestAcademyPlanChange() {
+      if (!academyUpgradeEligible || academyUpgradePending) return;
+      const button = document.getElementById('acmUpgradeRequest');
+      button.disabled = true;
+      button.textContent = 'Enviando solicitud...';
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('unauthorized');
+        const { error } = await sp.from('plan_change_requests').insert({ user_id: session.user.id });
+        if (error && error.code !== '23505') throw error;
+        academyUpgradePending = true;
+        renderAcademyUpgradeRequest();
+      } catch (error) {
+        console.error('No se pudo solicitar el cambio de plan:', error);
+        button.disabled = false;
+        button.textContent = 'Solicitar cambio de plan';
+        document.getElementById('acmUpgradeDetail').textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o contacta a soporte.';
+      }
     }
 
     function openAcademyModal() {
@@ -4857,6 +4911,7 @@
     }
 
     function openAcademyUpgradeModal() {
+      renderAcademyUpgradeRequest();
       setAcademyStage('upgrade');
       document.getElementById('academy-modal').classList.add('open');
       document.body.style.overflow = 'hidden';

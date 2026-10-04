@@ -27,6 +27,7 @@ async function init() {
   await refreshUsers();
   await refreshLogs();
   await refreshStudyQuestionAlert();
+  await refreshPlanChangeAlert();
 
   // Bucles de refresco (solo presencia, los eventos son en tiempo real con WebSockets)
   setInterval(async () => { await refreshPresence(); renderUsers(); }, 5000);
@@ -37,45 +38,66 @@ async function init() {
   // Refresca cursos y progreso de alumnos cada minuto.
   setInterval(refreshUsers, 60000);
   setInterval(refreshStudyQuestionAlert, 30000);
+  setInterval(refreshPlanChangeAlert, 30000);
 }
 
 // Función para cambiar entre tabs
 window.switchTab = function(tab) {
   if (tab === 'users') {
     document.getElementById('viewUsers').style.display = 'block';
+    document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.add('active');
+    document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
     document.getElementById('tabAffiliates').classList.remove('active');
+  } else if (tab === 'plan-changes') {
+    document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewPlanChanges').style.display = 'block';
+    document.getElementById('viewHistory').style.display = 'none';
+    document.getElementById('viewStudyCenter').style.display = 'none';
+    document.getElementById('viewAffiliates').style.display = 'none';
+    document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabPlanChanges').classList.add('active');
+    document.getElementById('tabHistory').classList.remove('active');
+    document.getElementById('tabStudyCenter').classList.remove('active');
+    document.getElementById('tabAffiliates').classList.remove('active');
+    refreshPlanChanges();
   } else if (tab === 'history') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'block';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.add('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
     document.getElementById('tabAffiliates').classList.remove('active');
     refreshGlobalHistory();
   } else if (tab === 'study-center') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'block';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.add('active');
     document.getElementById('tabAffiliates').classList.remove('active');
     refreshStudyCenter();
   } else if (tab === 'affiliates') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'block';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
     document.getElementById('tabAffiliates').classList.add('active');
@@ -127,6 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const refreshStudyCenterBtn = document.getElementById("refreshStudyCenterBtn");
   if (refreshStudyCenterBtn) refreshStudyCenterBtn.onclick = refreshStudyCenter;
+  const refreshPlanChangesBtn = document.getElementById("refreshPlanChangesBtn");
+  if (refreshPlanChangesBtn) refreshPlanChangesBtn.onclick = refreshPlanChanges;
   const studyQuestionFilter = document.getElementById("studyQuestionFilter");
   if (studyQuestionFilter) studyQuestionFilter.onchange = renderStudyCenter;
 });
