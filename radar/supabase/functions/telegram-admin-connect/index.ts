@@ -54,11 +54,11 @@ serve(async (req) => {
     return new Response("No se pudo configurar el webhook de Telegram.", { status: 502, headers: corsHeaders });
   }
 
-  const token = crypto.randomUUID();
+  const connectionToken = crypto.randomUUID();
   const { error: tokenError } = await supabase
     .from("telegram_admin_connection_tokens")
     .insert({
-      token,
+      token: connectionToken,
       admin_user_id: user.id,
       expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
     });
@@ -68,7 +68,7 @@ serve(async (req) => {
   }
 
   return new Response(JSON.stringify({
-    url: `https://t.me/${bot.result.username}?start=admin_${token}`,
+    url: `https://t.me/${bot.result.username}?start=admin_${connectionToken}`,
   }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
