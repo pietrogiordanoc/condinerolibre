@@ -730,7 +730,16 @@
       border-radius: 0;
     }
     .classroom-shell { overflow: hidden; border: 1px solid rgba(42,255,138,.25); border-radius: 18px; background: linear-gradient(145deg, rgba(12,24,22,.98), rgba(14,18,27,.98)); box-shadow: 0 20px 42px rgba(0,0,0,.28); }
-    .classroom-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .classroom-head-brand { display: flex; align-items: center; min-width: 0; gap: 14px; }
+    .classroom-head-logo { width: 124px; height: 34px; flex: 0 0 auto; object-fit: contain; object-position: left center; }
+    .classroom-head-actions { display: flex; align-items: center; gap: 14px; }
+    .classroom-head-account { min-width: 0; text-align: right; }
+    .classroom-head-account span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+    .classroom-head-account strong,
+    .classroom-head-account small { display: block; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .classroom-head-account strong { color: #fff; font-size: 12px; }
+    .classroom-head-account small { color: var(--muted); font-size: 11px; }
     .classroom-kicker { color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
     .classroom-head h2 { margin: 5px 0 0; color: #fff; font-size: 22px; }
     .classroom-close { border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: #fff; padding: 8px 11px; font: inherit; font-size: 12px; cursor: pointer; }
@@ -801,6 +810,8 @@
     @media (max-width: 680px) {
       .study-center-panels { grid-template-columns: 1fr; padding: 16px; }
       .classroom-head { padding: 16px; }
+      .classroom-head-logo { width: 94px; }
+      .classroom-head-account { display: none; }
       .classroom-now { padding: 14px 16px; }
     }
     .courses-grid .account-link-card:not(.course-card) {
@@ -2225,11 +2236,21 @@
       <section id="classroomSection" class="classroom-section" hidden aria-live="polite">
         <div class="classroom-shell">
           <div class="classroom-head">
-            <div>
-              <span class="classroom-kicker">Centro de Estudio</span>
-              <h2 id="classroomTitle">Mi curso</h2>
+            <div class="classroom-head-brand">
+              <img class="classroom-head-logo" src="../../images/logocdl.avif" alt="ConDineroLibre">
+              <div>
+                <span class="classroom-kicker">Centro de Estudio</span>
+                <h2 id="classroomTitle">Mi curso</h2>
+              </div>
             </div>
-            <button id="classroomClose" class="classroom-close" type="button">Volver a cursos</button>
+            <div class="classroom-head-actions">
+              <div class="classroom-head-account" aria-label="Cuenta activa">
+                <span>Cuenta activa</span>
+                <strong id="classroomUserName">Cargando...</strong>
+                <small id="classroomUserEmail">...</small>
+              </div>
+              <button id="classroomClose" class="classroom-close" type="button">Volver a cursos</button>
+            </div>
           </div>
           <div class="classroom-study-layout">
             <div class="classroom-study-main">
@@ -4060,6 +4081,8 @@
                        session.user.user_metadata?.display_name ||
                        session.user.email.split('@')[0];
       document.getElementById("username").textContent = userName;
+      document.getElementById("classroomUserName").textContent = userName;
+      document.getElementById("classroomUserEmail").textContent = session.user.email;
       
       // Poblar el KPI de cuenta
       const emailDisplayEl = document.getElementById("emailDisplay");
@@ -4337,6 +4360,7 @@
       const userNameDisplayEl = document.getElementById('userNameDisplay');
       if (userNameDisplayEl) userNameDisplayEl.textContent = newName;
       document.getElementById('username').textContent = newName;
+      document.getElementById('classroomUserName').textContent = newName;
       
       closeEditNameModal();
     }
