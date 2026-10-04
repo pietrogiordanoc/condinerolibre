@@ -3622,7 +3622,12 @@
         await new Promise(r => setTimeout(r, 500));
         ({ data: { session } } = await sp.auth.getSession());
       }
-      if (!session) { window.location.href = isLocal ? "../login/" : "/login"; return; }
+      if (!session) {
+        const classroomPath = '/cdl-portal/dashboard/#courses';
+        const loginPath = isLocal ? '../login/' : '/login';
+        window.location.href = `${loginPath}?next=${encodeURIComponent(classroomPath)}`;
+        return;
+      }
       await processCoursePurchaseReturn(session);
       
       // Verificar si el usuario está bloqueado
