@@ -76,6 +76,13 @@ serve(async (request) => {
     const courseId = typeof body?.course_id === "string" ? body.course_id : "";
     if (!courseId) return reply({ error: "Missing course_id", code: "bad_request" }, 400);
 
+    const { data: course } = await supabaseAdmin
+      .from("courses")
+      .select("id, active, bunny_library_id, bunny_collection_id")
+      .eq("id", courseId)
+      .maybeSingle();
+    if (!course || !course.active) return reply({ error: "Course not found", code: "course_not_found" }, 404);
+
     const { data: adminUser } = await supabaseAdmin
       .from("admin_users").select("user_id").eq("user_id", userId).maybeSingle();
     const isAdmin = !!adminUser;
@@ -86,7 +93,10 @@ serve(async (request) => {
         .eq("user_id", userId).eq("course_id", courseId).maybeSingle();
       if (!enrollment) {
         const { data: hasAcademy } = await supabaseAdmin.rpc("academy_has_access", { target_user: userId });
-        if (hasAcademy !== true) return reply({ error: "Forbidden", code: "forbidden" }, 403);
+        const canImportPublicPreview = course.active;
+        // An active course may be imported by a visitor who is opening its free preview.
+        // The course_lessons RLS policies still limit playback to the preview entitlement.
+        if (hasAcademy !== true && !canImportPublicPreview) return reply({ error: "Forbidden", code: "forbidden" }, 403);
       }
     }
 
@@ -101,9 +111,6 @@ serve(async (request) => {
 
     if (!bunnyApiKey) return reply({ error: "BUNNY_STREAM_API_KEY is not configured", code: "bunny_key_missing" }, 500);
 
-    const { data: course } = await supabaseAdmin
-      .from("courses").select("id, bunny_library_id, bunny_collection_id").eq("id", courseId).maybeSingle();
-    if (!course) return reply({ error: "Course not found", code: "course_not_found" }, 404);
     if (!course.bunny_library_id) {
       return reply({ error: "Course has no Bunny collection configured", code: "course_not_configured" }, 400);
     }

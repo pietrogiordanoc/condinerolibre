@@ -3328,7 +3328,7 @@
 
       await classroomReady;
       if (!classroomCoursesById.has(courseId)) await fetchClassroomState([courseId], classroomPreviewCourseIds.has(courseId));
-      if (needsClassroomSync(courseId) && !classroomPreviewCourseIds.has(courseId)) {
+      if (needsClassroomSync(courseId)) {
         await requestClassroomSync(courseId);
         await fetchClassroomState([courseId]);
       }
