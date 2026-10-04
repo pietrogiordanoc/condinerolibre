@@ -4694,6 +4694,11 @@
     #acmUpgrade h3 { font-size: 38px; line-height: 1.1; }
     #acmUpgrade p { font-size: 28px; line-height: 1.35; }
     #acmUpgrade .acm-apply { padding: 16px 28px; font-size: 16px; }
+    .acm-upgrade-consent { display:grid; gap:12px; width:min(100%, 760px); margin:0 auto; padding:18px; border:1px solid rgba(255,138,0,.55); border-radius:6px; background:rgba(255,138,0,.07); text-align:left; }
+    .acm-upgrade-consent label { display:flex; align-items:flex-start; gap:10px; color:#fff; font-size:15px; font-weight:600; line-height:1.45; }
+    .acm-upgrade-consent input[type="checkbox"] { width:18px; height:18px; flex:0 0 auto; margin:2px 0 0; accent-color:#ff8a00; }
+    .acm-upgrade-consent input[type="text"] { width:100%; border:1px solid rgba(255,255,255,.3); border-radius:5px; background:#0c1118; color:#fff; padding:10px 12px; font:inherit; font-size:15px; text-transform:uppercase; }
+    .acm-upgrade-consent small { color:rgba(255,255,255,.68); font-size:12px; line-height:1.45; }
     .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
     @keyframes acm-spin { to { transform: rotate(360deg); } }
     .acm-fine { margin: 0; color: rgba(255,255,255,.45); font-size: 11.5px; line-height: 1.5; text-align: center; }
@@ -4704,6 +4709,7 @@
       #acmUpgrade { padding: 36px 22px; }
       #acmUpgrade h3 { font-size: 28px; }
       #acmUpgrade p { font-size: 18px; }
+      .acm-upgrade-consent { padding:14px; }
     }
   </style>
 
@@ -4805,10 +4811,15 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3 id="acmUpgradeTitle">ACCESO A TODOS LOS CURSOS</h3>
-        <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.</p>
-        <p id="acmUpgradeDetail">Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.</p>
-        <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()">Solicitar cambio de plan</button>
+        <h3 id="acmUpgradeTitle">Obtén acceso ilimitado a todo el contenido de ClassRoom</h3>
+        <p id="acmUpgradeDescription">Con solo +$10 extra a tu plan actual.</p>
+        <p id="acmUpgradeDetail">Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio.</p>
+        <div id="acmUpgradeConsent" class="acm-upgrade-consent">
+          <label><input id="acmUpgradeTerms" type="checkbox">Acepto voluntariamente cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes y autorizo el ajuste de mi suscripción actual.</label>
+          <label>Escribe <strong>ACEPTO</strong> para confirmar:<input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
+          <small>Tu acceso a CDL Ultra se activa inmediatamente. El equipo ajustará después el importe de tu suscripción activa en PayPal.</small>
+        </div>
+        <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()" disabled>CAMBIAR MI PLAN</button>
       </div>
     </div>
   </div>
@@ -4846,16 +4857,27 @@
     function renderAcademyUpgradeRequest() {
       document.getElementById('acmUpgradeTitle').textContent = academyUpgradePending
         ? 'Solicitud de cambio de plan enviada'
-        : 'ACCESO A TODOS LOS CURSOS';
+        : 'Obtén acceso ilimitado a todo el contenido de ClassRoom';
       document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
-        ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a CDL Ultra por $29.99 al mes.'
-        : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.';
+        ? 'CDL Ultra ya fue activado para tu cuenta.'
+        : 'Con solo +$10 extra a tu plan actual.';
       document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
-        ? 'El equipo ajustará tu suscripción de PayPal y activará CDL Ultra, con todos los cursos actuales y futuros, cuando el cambio quede aplicado.'
-        : 'Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.';
+        ? 'El equipo ajustará el importe de tu suscripción actual en PayPal.'
+        : 'Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio.';
+      document.getElementById('acmUpgradeConsent').hidden = academyUpgradePending;
       const button = document.getElementById('acmUpgradeRequest');
-      button.textContent = academyUpgradePending ? 'Solicitud pendiente' : 'Solicitar cambio de plan';
-      button.disabled = academyUpgradePending;
+      button.textContent = academyUpgradePending ? 'CDL ULTRA ACTIVADO' : 'CAMBIAR MI PLAN';
+      button.disabled = academyUpgradePending || !canRequestAcademyPlanChange();
+    }
+
+    function canRequestAcademyPlanChange() {
+      return document.getElementById('acmUpgradeTerms').checked
+        && document.getElementById('acmUpgradeAcceptance').value.trim().toUpperCase() === 'ACEPTO';
+    }
+
+    function updateAcademyUpgradeRequestButton() {
+      if (academyUpgradePending) return;
+      document.getElementById('acmUpgradeRequest').disabled = !canRequestAcademyPlanChange();
     }
 
     async function loadAcademyUpgradeRequest(session, eligible) {
@@ -4875,21 +4897,22 @@
     }
 
     async function requestAcademyPlanChange() {
-      if (!academyUpgradeEligible || academyUpgradePending) return;
+      if (!academyUpgradeEligible || academyUpgradePending || !canRequestAcademyPlanChange()) return;
       const button = document.getElementById('acmUpgradeRequest');
       button.disabled = true;
-      button.textContent = 'Enviando solicitud...';
+      button.textContent = 'ACTIVANDO CDL ULTRA...';
       try {
         const { data: { session } } = await sp.auth.getSession();
         if (!session) throw new Error('unauthorized');
-        const { error } = await sp.from('plan_change_requests').insert({ user_id: session.user.id, target_plan: 'ultra' });
-        if (error && error.code !== '23505') throw error;
+        const { error } = await sp.rpc('request_ultra_plan_change');
+        if (error) throw error;
         academyUpgradePending = true;
-        renderAcademyUpgradeRequest();
+        academyUpgradeEligible = false;
+        setAcademyStage('done');
       } catch (error) {
         console.error('No se pudo solicitar el cambio de plan:', error);
         button.disabled = false;
-        button.textContent = 'Solicitar cambio de plan';
+        button.textContent = 'CAMBIAR MI PLAN';
         document.getElementById('acmUpgradeDetail').textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o contacta a soporte.';
       }
     }
@@ -4961,6 +4984,8 @@
 
     document.getElementById('acmApply').onclick = applyAcademyCode;
     document.getElementById('acmInput').addEventListener('keydown', (event) => { if (event.key === 'Enter') applyAcademyCode(); });
+    document.getElementById('acmUpgradeTerms').addEventListener('change', updateAcademyUpgradeRequestButton);
+    document.getElementById('acmUpgradeAcceptance').addEventListener('input', updateAcademyUpgradeRequestButton);
 
     function loadAcademySdk() {
       if (window.paypalAcademy) return Promise.resolve(window.paypalAcademy);

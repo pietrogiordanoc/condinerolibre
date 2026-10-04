@@ -61,7 +61,7 @@ function renderPlanChanges() {
 window.completePlanChangeRequest = async function(requestId) {
   const request = PLAN_CHANGE_REQUESTS.find((item) => item.id === requestId);
   if (!request) return;
-  if (!window.confirm('Confirma que ya ajustaste la suscripción en PayPal y activaste Classroom para este usuario.')) return;
+  if (!window.confirm('Confirma que ya ajustaste la suscripción en PayPal. CDL Ultra ya fue activado automáticamente para este usuario.')) return;
   const { data: { session } } = await sp.auth.getSession();
   if (!session) return;
   const { error } = await sp.from('plan_change_requests').update({
