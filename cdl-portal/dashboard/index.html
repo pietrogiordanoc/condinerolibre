@@ -4800,7 +4800,7 @@
       <div id="acmUpgrade" class="acm-stage" hidden>
         <h3 id="acmUpgradeTitle">Añade Classroom por solo $10 más al mes</h3>
         <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.</p>
-        <p id="acmUpgradeDetail">Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.</p>
+        <p id="acmUpgradeDetail">CDL Ultra desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.</p>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()">Solicitar cambio de plan</button>
       </div>
     </div>
@@ -4844,8 +4844,8 @@
         ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a CDL Ultra por $29.99 al mes.'
         : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.';
       document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
-        ? 'El equipo ajustará tu suscripción de PayPal y activará Classroom cuando el cambio quede aplicado.'
-        : 'Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.';
+        ? 'El equipo ajustará tu suscripción de PayPal y activará CDL Ultra, con todos los cursos actuales y futuros, cuando el cambio quede aplicado.'
+        : 'CDL Ultra desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.';
       const button = document.getElementById('acmUpgradeRequest');
       button.textContent = academyUpgradePending ? 'Solicitud pendiente' : 'Solicitar cambio de plan';
       button.disabled = academyUpgradePending;
