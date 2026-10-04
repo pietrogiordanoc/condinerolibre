@@ -28,6 +28,7 @@
     <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
       <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
+      <button id="tabStudyCenter" class="tab-btn" onclick="switchTab('study-center')">🎓 Centro de Estudio</button>
       <button id="tabAffiliates" class="tab-btn" onclick="switchTab('affiliates')">💸 Afiliados</button>
     </div>
 
@@ -121,6 +122,34 @@
       <div class="table-container"><table><thead><tr><th>Usuario</th><th>Importe</th><th>Email PayPal</th><th>Solicitud</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="affiliatePayoutsTbody"></tbody></table></div>
     </div>
 
+    <div id="viewStudyCenter" style="display:none;">
+      <div class="filters" style="justify-content:space-between; align-items:center;">
+        <span style="font-weight:800; color:#86ffd0;">CENTRO DE ESTUDIO · ACOMPAÑAMIENTO DOCENTE</span>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select id="studyQuestionFilter">
+            <option value="all">Todas las consultas</option>
+            <option value="open">Pendientes</option>
+            <option value="answered">Respondidas</option>
+          </select>
+          <button id="refreshStudyCenterBtn" class="btn btn-primary">Refrescar</button>
+        </div>
+      </div>
+      <div class="section-title"><span>💬</span> CONSULTAS DE LOS ALUMNOS</div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Alumno</th><th>Curso · Lección</th><th>Consulta</th><th>Estado</th><th>Respuesta del mentor</th></tr></thead>
+          <tbody id="studyQuestionsTbody"></tbody>
+        </table>
+      </div>
+      <div class="section-title"><span>📝</span> ANOTACIONES DE ESTUDIO</div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Alumno</th><th>Curso · Lección</th><th>Anotación</th><th>Actualizada</th></tr></thead>
+          <tbody id="studyNotesTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   <!-- Modales -->
@@ -187,6 +216,7 @@
   <script src="/admin/dashboard/module-notes.js"></script>
   <script src="/admin/dashboard/module-users.js"></script>
   <script src="/admin/dashboard/module-affiliates.js"></script>
+  <script src="/admin/dashboard/module-study-center.js"></script>
   <script src="/admin/dashboard/admin-core.js"></script>
 </body>
 </html>

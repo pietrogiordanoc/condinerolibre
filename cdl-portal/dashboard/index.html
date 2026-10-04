@@ -735,6 +735,12 @@
     .classroom-head h2 { margin: 5px 0 0; color: #fff; font-size: 22px; }
     .classroom-close { border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: #fff; padding: 8px 11px; font: inherit; font-size: 12px; cursor: pointer; }
     .classroom-close:hover { border-color: rgba(42,255,138,.5); color: var(--green); }
+    .classroom-study-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 360px); align-items: start; }
+    .classroom-study-main { min-width: 0; }
+    .classroom-playlist { position: sticky; top: 0; max-height: calc(100vh - 93px); max-height: calc(100dvh - 93px); overflow-y: auto; border-left: 1px solid rgba(255,255,255,.1); background: rgba(2,7,10,.38); }
+    .classroom-playlist-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 18px 18px 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .classroom-playlist-head h3 { margin: 0; color: #fff; font-size: 15px; }
+    .classroom-playlist-head span { color: var(--muted); font-size: 11px; }
     .classroom-player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #030303; }
     .classroom-player iframe { width: 100%; height: 100%; border: 0; }
     .classroom-player-empty { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; color: var(--muted); font-size: 14px; text-align: center; }
@@ -745,19 +751,19 @@
     .classroom-next:hover:not(:disabled) { filter: brightness(1.08); }
     .classroom-now small { color: var(--green); font-size: 11px; font-weight: 600; text-transform: uppercase; }
     .classroom-now h3 { margin: 5px 0 0; color: #fff; font-size: 17px; }
-    .classroom-lessons { padding: 20px 22px 24px; }
+    .classroom-lessons { padding: 16px; }
     .classroom-lessons h3 { margin: 0 0 14px; color: #fff; font-size: 16px; }
     .classroom-lesson-grid.classroom-modules-list { display: block; }
     .classroom-module { --module-accent: #38bdf8; }
     .classroom-module:nth-child(2) { --module-accent: #fbbf24; }
     .classroom-module:nth-child(3) { --module-accent: #f472b6; }
-    .classroom-module + .classroom-module { margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); }
-    .classroom-module-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+    .classroom-module + .classroom-module { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); }
+    .classroom-module-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 10px; }
     .classroom-module-head h4 { display: flex; align-items: center; gap: 8px; margin: 0; color: #fff; font-size: 15px; font-weight: 600; }
     .classroom-module-head h4::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--module-accent); }
     .classroom-module-head span { color: var(--muted); font-size: 11px; }
-    .classroom-lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 12px; }
-    .classroom-lesson-card { min-height: 108px; padding: 14px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
+    .classroom-lesson-grid { display: grid; gap: 8px; }
+    .classroom-lesson-card { min-height: 0; padding: 12px; border: 1px solid rgba(255,255,255,.13); border-radius: 8px; background: rgba(255,255,255,.04); color: #fff; text-align: left; font: inherit; cursor: pointer; }
     .classroom-lesson-card:hover { border-color: rgba(255,255,255,.35); }
     .classroom-lesson-card:not(.active) { opacity: .8; }
     .classroom-lesson-card.seen:not(.active) .classroom-lesson-number { color: #8aa397; }
@@ -768,6 +774,30 @@
     .classroom-lesson-number { display: block; color: var(--green); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
     .classroom-lesson-card strong { display: block; font-size: 13px; line-height: 1.35; font-weight: 600; }
     .classroom-empty { margin: 0; padding: 18px; border: 1px dashed rgba(255,255,255,.2); border-radius: 10px; color: var(--muted); font-size: 13px; }
+    .study-center-panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding: 20px 22px 24px; }
+    .study-center-panel { display: grid; gap: 12px; padding: 16px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.025); }
+    .study-center-panel-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .study-center-panel h3 { margin: 0; color: #fff; font-size: 15px; }
+    .study-center-panel p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .study-center-panel textarea { width: 100%; min-height: 112px; resize: vertical; box-sizing: border-box; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; background: rgba(0,0,0,.22); color: #fff; padding: 11px; font: inherit; font-size: 13px; line-height: 1.45; }
+    .study-center-panel textarea:focus { outline: 0; border-color: rgba(42,255,138,.65); box-shadow: 0 0 0 3px rgba(42,255,138,.1); }
+    .study-center-action { justify-self: end; border: 0; border-radius: 8px; background: var(--green); color: #031108; padding: 9px 12px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .study-center-action:disabled { opacity: .5; cursor: wait; }
+    .study-center-status { min-height: 17px; color: var(--muted); font-size: 11px; }
+    .study-question-list { display: grid; gap: 8px; max-height: 220px; overflow-y: auto; }
+    .study-question-item { padding: 10px; border-left: 3px solid #fbbf24; background: rgba(251,191,36,.06); color: #fff; font-size: 12px; line-height: 1.45; }
+    .study-question-item.answered { border-left-color: var(--green); background: rgba(42,255,138,.06); }
+    .study-question-item strong { display: block; margin-top: 7px; color: #a7f3d0; font-size: 11px; }
+    @media (max-width: 980px) {
+      .classroom-study-layout { grid-template-columns: 1fr; }
+      .classroom-playlist { position: static; max-height: none; border-top: 1px solid rgba(255,255,255,.1); border-left: 0; }
+      .classroom-lesson-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .study-center-panels { grid-template-columns: 1fr; padding: 16px; }
+      .classroom-head { padding: 16px; }
+      .classroom-now { padding: 14px 16px; }
+    }
     .courses-grid .account-link-card:not(.course-card) {
       align-items: center;
       text-align: center;
@@ -2191,26 +2221,58 @@
         <div class="classroom-shell">
           <div class="classroom-head">
             <div>
-              <span class="classroom-kicker">Mi Classroom</span>
+              <span class="classroom-kicker">Centro de Estudio</span>
               <h2 id="classroomTitle">Mi curso</h2>
             </div>
             <button id="classroomClose" class="classroom-close" type="button">Volver a cursos</button>
           </div>
-          <div id="classroomPlayer" class="classroom-player"><div class="classroom-player-empty">Selecciona una lección para empezar.</div></div>
-          <div class="classroom-now">
-            <div>
-              <small id="classroomNowMeta">Curso activado</small>
-              <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
+          <div class="classroom-study-layout">
+            <div class="classroom-study-main">
+              <div id="classroomPlayer" class="classroom-player"><div class="classroom-player-empty">Selecciona una lección para empezar.</div></div>
+              <div class="classroom-now">
+                <div>
+                  <small id="classroomNowMeta">Curso activado</small>
+                  <h3 id="classroomNowTitle">Tus lecciones aparecerán aquí.</h3>
+                </div>
+                <div class="classroom-nav">
+                  <button class="classroom-close" type="button" onclick="openTvModal()" title="Abrir gráfico de práctica">Gráfico</button>
+                  <button id="classroomPrev" class="classroom-close" type="button" onclick="stepClassroom(-1)" disabled>← Anterior</button>
+                  <button id="classroomNext" class="classroom-next" type="button" onclick="stepClassroom(1)" disabled>Siguiente lección →</button>
+                </div>
+              </div>
+              <div class="study-center-panels">
+                <section class="study-center-panel">
+                  <div class="study-center-panel-head">
+                    <div>
+                      <h3>Mis anotaciones</h3>
+                      <p>Notas de esta lección, visibles para tu mentor.</p>
+                    </div>
+                  </div>
+                  <textarea id="studyNoteInput" maxlength="5000" placeholder="Escribe lo que quieres recordar de esta lección..."></textarea>
+                  <span id="studyNoteStatus" class="study-center-status"></span>
+                  <button id="studyNoteSave" type="button" class="study-center-action">Guardar nota</button>
+                </section>
+                <section class="study-center-panel">
+                  <div>
+                    <h3>Consulta al mentor</h3>
+                    <p>Pregunta sobre esta lección. Recibirás la respuesta aquí.</p>
+                  </div>
+                  <div id="studyQuestionList" class="study-question-list"></div>
+                  <textarea id="studyQuestionInput" maxlength="3000" placeholder="Escribe tu duda concreta sobre esta lección..."></textarea>
+                  <span id="studyQuestionStatus" class="study-center-status"></span>
+                  <button id="studyQuestionSend" type="button" class="study-center-action">Enviar consulta</button>
+                </section>
+              </div>
             </div>
-            <div class="classroom-nav">
-              <button class="classroom-close" type="button" onclick="openTvModal()" title="Abrir gráfico de práctica">Gráfico</button>
-              <button id="classroomPrev" class="classroom-close" type="button" onclick="stepClassroom(-1)" disabled>← Anterior</button>
-              <button id="classroomNext" class="classroom-next" type="button" onclick="stepClassroom(1)" disabled>Siguiente lección →</button>
-            </div>
-          </div>
-          <div class="classroom-lessons">
-            <h3 id="classroomLessonsHeading">Lecciones del curso</h3>
-            <div id="classroomLessons" class="classroom-lesson-grid"></div>
+            <aside class="classroom-playlist" aria-label="Lecciones del curso">
+              <div class="classroom-playlist-head">
+                <h3>Contenido del curso</h3>
+                <span id="classroomLessonsHeading">0 lecciones</span>
+              </div>
+              <div class="classroom-lessons">
+                <div id="classroomLessons" class="classroom-lesson-grid"></div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
@@ -3193,11 +3255,133 @@
     let classroomCourse = null;
     let classroomCurrentLessonId = null;
     const classroomPreviewCourseIds = new Set();
+    const classroomStudyNotesByLessonId = new Map();
+    const classroomStudyQuestionsByLessonId = new Map();
 
     function stepClassroom(delta) {
       const index = classroomPlaylist.findIndex((item) => item.lesson.id === classroomCurrentLessonId);
       const target = classroomPlaylist[index + delta];
       if (target) renderClassroomLesson(classroomCourse, target.lesson, target.module);
+    }
+
+    function setStudyCenterStatus(elementId, message, isError = false) {
+      const element = document.getElementById(elementId);
+      element.textContent = message;
+      element.style.color = isError ? '#fca5a5' : '';
+    }
+
+    function renderStudyCenterLesson(course, lesson) {
+      const noteInput = document.getElementById('studyNoteInput');
+      const noteSave = document.getElementById('studyNoteSave');
+      const questionInput = document.getElementById('studyQuestionInput');
+      const questionSend = document.getElementById('studyQuestionSend');
+      const questionList = document.getElementById('studyQuestionList');
+      const canStudy = Boolean(course?.id && lesson?.id && !lesson?.locked);
+
+      noteInput.disabled = !canStudy;
+      noteSave.disabled = !canStudy;
+      questionInput.disabled = !canStudy;
+      questionSend.disabled = !canStudy;
+      noteInput.value = canStudy ? (classroomStudyNotesByLessonId.get(lesson.id)?.content || '') : '';
+      questionInput.value = '';
+      setStudyCenterStatus('studyNoteStatus', canStudy ? '' : 'Selecciona una lección disponible.');
+      setStudyCenterStatus('studyQuestionStatus', canStudy ? '' : 'Selecciona una lección disponible.');
+
+      const questions = canStudy ? (classroomStudyQuestionsByLessonId.get(lesson.id) || []) : [];
+      questionList.innerHTML = questions.length
+        ? questions.map((question) => {
+            const answered = question.status === 'answered' && question.teacher_response;
+            return `<article class="study-question-item${answered ? ' answered' : ''}"><span>${escapeClassroomText(question.question)}</span>${answered ? `<strong>Respuesta del mentor</strong><span>${escapeClassroomText(question.teacher_response)}</span>` : '<strong>Consulta enviada · pendiente de respuesta</strong>'}</article>`;
+          }).join('')
+        : '<p class="classroom-empty">Aún no has enviado consultas sobre esta lección.</p>';
+    }
+
+    async function loadStudyCenterData(courseId) {
+      classroomStudyNotesByLessonId.clear();
+      classroomStudyQuestionsByLessonId.clear();
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) return;
+      const [notesResponse, questionsResponse] = await Promise.all([
+        sp.from('course_study_notes').select('lesson_id, content, updated_at').eq('user_id', session.user.id).eq('course_id', courseId),
+        sp.from('course_study_questions').select('id, lesson_id, question, status, teacher_response, created_at, responded_at').eq('user_id', session.user.id).eq('course_id', courseId).order('created_at', { ascending: true })
+      ]);
+      if (notesResponse.error || questionsResponse.error) {
+        const error = notesResponse.error || questionsResponse.error;
+        console.error('No se pudo cargar el Centro de Estudio:', error);
+        setStudyCenterStatus('studyNoteStatus', 'No pudimos cargar tus anotaciones. Inténtalo de nuevo.', true);
+        setStudyCenterStatus('studyQuestionStatus', 'No pudimos cargar tus consultas. Inténtalo de nuevo.', true);
+        return;
+      }
+      (notesResponse.data || []).forEach((note) => classroomStudyNotesByLessonId.set(note.lesson_id, note));
+      (questionsResponse.data || []).forEach((question) => {
+        const questions = classroomStudyQuestionsByLessonId.get(question.lesson_id) || [];
+        questions.push(question);
+        classroomStudyQuestionsByLessonId.set(question.lesson_id, questions);
+      });
+    }
+
+    async function saveStudyNote() {
+      const lessonId = classroomCurrentLessonId;
+      const courseId = classroomCourse?.id;
+      const content = document.getElementById('studyNoteInput').value.trim();
+      if (!lessonId || !courseId) return;
+      const button = document.getElementById('studyNoteSave');
+      button.disabled = true;
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('Tu sesión ha caducado. Vuelve a iniciar sesión.');
+        if (!content) {
+          const { error } = await sp.from('course_study_notes').delete().eq('user_id', session.user.id).eq('lesson_id', lessonId);
+          if (error) throw error;
+          classroomStudyNotesByLessonId.delete(lessonId);
+          setStudyCenterStatus('studyNoteStatus', 'Nota eliminada.');
+          return;
+        }
+        const note = { user_id: session.user.id, course_id: courseId, lesson_id: lessonId, content, updated_at: new Date().toISOString() };
+        const { data, error } = await sp.from('course_study_notes').upsert(note, { onConflict: 'user_id,lesson_id' }).select('lesson_id, content, updated_at').single();
+        if (error) throw error;
+        classroomStudyNotesByLessonId.set(lessonId, data);
+        setStudyCenterStatus('studyNoteStatus', 'Nota guardada.');
+      } catch (error) {
+        console.error('No se pudo guardar la nota:', error);
+        setStudyCenterStatus('studyNoteStatus', error.message || 'No pudimos guardar la nota.', true);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function submitStudyQuestion() {
+      const lessonId = classroomCurrentLessonId;
+      const courseId = classroomCourse?.id;
+      const input = document.getElementById('studyQuestionInput');
+      const question = input.value.trim();
+      if (!lessonId || !courseId || !question) {
+        setStudyCenterStatus('studyQuestionStatus', 'Escribe tu consulta antes de enviarla.', true);
+        return;
+      }
+      const button = document.getElementById('studyQuestionSend');
+      button.disabled = true;
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('Tu sesión ha caducado. Vuelve a iniciar sesión.');
+        const { data, error } = await sp.from('course_study_questions')
+          .insert({ user_id: session.user.id, course_id: courseId, lesson_id: lessonId, question })
+          .select('id, lesson_id, question, status, teacher_response, created_at, responded_at')
+          .single();
+        if (error) throw error;
+        const questions = classroomStudyQuestionsByLessonId.get(lessonId) || [];
+        questions.push(data);
+        classroomStudyQuestionsByLessonId.set(lessonId, questions);
+        input.value = '';
+        const currentLesson = classroomPlaylist.find((item) => item.lesson.id === lessonId)?.lesson;
+        renderStudyCenterLesson(classroomCourse, currentLesson);
+        setStudyCenterStatus('studyQuestionStatus', 'Consulta enviada al mentor.');
+      } catch (error) {
+        console.error('No se pudo enviar la consulta:', error);
+        setStudyCenterStatus('studyQuestionStatus', error.message || 'No pudimos enviar la consulta.', true);
+      } finally {
+        button.disabled = false;
+      }
     }
 
     function renderClassroomLesson(course, lesson, module) {
@@ -3224,6 +3408,7 @@
       nowTitle.textContent = cleanLessonTitle(lesson.title);
       document.getElementById('classroomPrev').disabled = index <= 0;
       document.getElementById('classroomNext').disabled = index < 0 || index >= classroomPlaylist.length - 1;
+      renderStudyCenterLesson(course, lesson);
       const progress = classroomProgressByCourseId.get(course?.id) || new Map();
       document.querySelectorAll('[data-classroom-lesson-id]').forEach((card) => {
         if (card.dataset.locked === 'true') return;
@@ -3352,6 +3537,7 @@
       });
       classroomCourse = course;
       document.getElementById('classroomTitle').textContent = course.title;
+      await loadStudyCenterData(courseId);
 
       if (lessons.length === 0) {
         player.innerHTML = `<div class="classroom-player-empty"><div>${escapeClassroomText(classroomEmptyMessage(courseId))}<br><br><button type="button" class="classroom-close" id="classroomRetry">Reintentar</button></div></div>`;
@@ -3363,6 +3549,7 @@
         classroomPlaylist = [];
         document.getElementById('classroomPrev').disabled = true;
         document.getElementById('classroomNext').disabled = true;
+        renderStudyCenterLesson(null, null);
       } else {
         const allModules = classroomModulesByCourseId.get(courseId) || [];
         const modules = lessons.some((lesson) => lesson.module_id) ? allModules : [];
@@ -3956,6 +4143,8 @@
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
     document.getElementById('classroomClose').onclick = closeClassroom;
+    document.getElementById('studyNoteSave').onclick = saveStudyNote;
+    document.getElementById('studyQuestionSend').onclick = submitStudyQuestion;
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
