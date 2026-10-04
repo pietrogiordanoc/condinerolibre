@@ -200,7 +200,7 @@ async function applyState(userId: string, subscription: Subscription, state: str
   if (restoreNow && currentPlan === "paid" && prevPlan !== "paid") await updateProfilePlan(userId, prevPlan);
 
   const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(userId);
-  await notifyAdmin(`${STATE_SUBJECTS[state] || "Cambio de suscripcion"} · CDLRadar and ClassRoom`, [
+  await notifyAdmin(`${STATE_SUBJECTS[state] || "Cambio de suscripcion"} · CDLRadar + Classroom`, [
     ["Alumno", profile?.full_name || "-"],
     ["Email", authUser?.user?.email || "-"],
     ["Estado", state],

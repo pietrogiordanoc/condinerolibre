@@ -1675,7 +1675,7 @@
         <section id="profileAcademyUpgrade" class="profile-academy-upgrade" hidden>
           <div class="profile-academy-upgrade-copy">
             <span class="profile-academy-upgrade-tag">MEJORA TU PLAN</span>
-            <h3>Suma ClassRoom a tu CDLRadar Pro</h3>
+            <h3>Suma Classroom a tu CDLRadar Pro</h3>
             <p>Conserva tu Radar Pro y añade todos los cursos presentes y futuros por $10 más al mes.</p>
           </div>
           <button type="button" onclick="openAcademyUpgradeModal()">Mejorar mi plan</button>
@@ -1946,7 +1946,7 @@
           <p>Explora tus cursos y continúa tu aprendizaje.</p>
         </div>
 
-        <!-- Plan CDLRadar and ClassRoom -->
+        <!-- Plan CDLRadar + Classroom -->
         <div id="academyBanner" class="academy-banner">
           <div class="academy-banner-discount" aria-label="Cupón: 78 por ciento off">
             <span class="academy-banner-coupon-label">CUPÓN</span>
@@ -1955,14 +1955,14 @@
           </div>
           <div class="academy-banner-text">
             <span class="academy-banner-tag">OFERTA PROMO</span>
-            <strong>CDLRadar + ClassRoom</strong>
+            <strong>CDLRadar + Classroom</strong>
             <span>Todos los cursos incluidos + Radar</span>
           </div>
           <button type="button" class="academy-banner-btn" onclick="openAcademyModal()">Ver oferta</button>
         </div>
         <div id="academyActiveChip" class="academy-banner academy-banner-active" hidden>
           <div class="academy-banner-text">
-            <strong>CDLRadar + ClassRoom activo</strong>
+            <strong>CDLRadar + Classroom activo</strong>
             <span>Tienes acceso a todos los cursos y al Radar Pro mientras tu suscripción siga vigente.</span>
           </div>
         </div>
@@ -2149,18 +2149,18 @@
     <!-- VISTA MI SUSCRIPCIÓN -->
     <section id="viewSubscription" style="display:none; background-color: #f8fafc !important; color: #1e293b; align-items: center; justify-content: center; padding: 40px;">
       <div class="upgrade-main-card" style="max-width: 640px;">
-        <h1 style="color: #0f172a; font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">Tu Plan CDLRadar Pro está Activo ✅</h1>
-        <p style="color: #64748b; margin: 0 0 32px 0;">Estás disfrutando de acceso completo a todas las funciones premium.</p>
+        <h1 id="subscriptionTitle" style="color: #0f172a; font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">Tu Plan CDLRadar Pro está Activo ✅</h1>
+        <p id="subscriptionDescription" style="color: #64748b; margin: 0 0 32px 0;">Estás disfrutando de acceso completo a todas las funciones premium.</p>
         
         <div style="background: #f1f5f9; border-radius: 16px; padding: 24px; margin-bottom: 24px; border: 1px solid #e2e8f0; text-align: left;">
           <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #0f172a;">📊 Detalles de tu suscripción</h3>
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
             <span style="color: #64748b;">Plan:</span>
-            <span style="font-weight: 600; color: #0f172a;">CDLRadar Pro</span>
+            <span id="subscriptionPlanName" style="font-weight: 600; color: #0f172a;">CDLRadar Pro</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
             <span style="color: #64748b;">Precio:</span>
-            <span style="font-weight: 600; color: #0f172a;">$19.99/mes</span>
+            <span id="subscriptionPrice" style="font-weight: 600; color: #0f172a;">$19.99/mes</span>
           </div>
           <div style="display: flex; justify-content: space-between; font-size: 14px;">
             <span style="color: #64748b;">Estado:</span>
@@ -2175,6 +2175,7 @@
             <div class="benefit-item" style="justify-content: flex-start;"><span style="color: #10b981; font-weight: bold;">✓</span> Todas las señales Pro activadas</div>
             <div class="benefit-item" style="justify-content: flex-start;"><span style="color: #10b981; font-weight: bold;">✓</span> Sin restricción de tiempo de uso</div>
             <div class="benefit-item" style="justify-content: flex-start;"><span style="color: #10b981; font-weight: bold;">✓</span> Soporte prioritario</div>
+            <div id="subscriptionClassroomBenefit" class="benefit-item" style="justify-content: flex-start;" hidden><span style="color: #10b981; font-weight: bold;">✓</span> Todos los cursos actuales y futuros de Classroom</div>
           </div>
         </div>
 
@@ -2195,7 +2196,7 @@
       <div class="upgrade-main-card upgrade-catalog">
         <div class="upgrade-catalog-heading">
           <h1>Elige el acceso que necesitas</h1>
-          <p>Radar Pro para operar sin límite, o Academy para sumar toda la formación.</p>
+          <p>Radar Pro para operar sin límite, o Classroom para sumar toda la formación.</p>
         </div>
         <div class="upgrade-plan-grid">
           <article class="upgrade-plan">
@@ -2221,7 +2222,7 @@
 
           <article class="upgrade-plan recommended">
             <div class="upgrade-plan-tag">MÁS COMPLETO · 78% OFF</div>
-            <h2>CDLRadar + ClassRoom</h2>
+            <h2>CDLRadar + Classroom</h2>
             <p class="upgrade-plan-summary">El Radar Pro y todos los cursos actuales y futuros en una sola suscripción.</p>
             <p class="upgrade-plan-old-price">$140 USD / mes</p>
             <p class="upgrade-plan-discount">Precio promocional con código</p>
@@ -2361,12 +2362,24 @@
       target.textContent = (name || '?').trim().charAt(0).toUpperCase() || '?';
     }
 
-    function renderProfileView(session, profile) {
+    function renderSubscriptionView(hasClassroom) {
+      document.getElementById('subscriptionTitle').textContent = hasClassroom
+        ? 'Tu Plan CDLRadar + Classroom está Activo ✅'
+        : 'Tu Plan CDLRadar Pro está Activo ✅';
+      document.getElementById('subscriptionDescription').textContent = hasClassroom
+        ? 'Tienes Radar Pro y acceso completo a todos los cursos de Classroom mientras tu suscripción siga activa.'
+        : 'Estás disfrutando de acceso completo a todas las funciones premium del Radar.';
+      document.getElementById('subscriptionPlanName').textContent = hasClassroom ? 'CDLRadar + Classroom' : 'CDLRadar Pro';
+      document.getElementById('subscriptionPrice').textContent = hasClassroom ? '$29.99/mes' : '$19.99/mes';
+      document.getElementById('subscriptionClassroomBenefit').hidden = !hasClassroom;
+    }
+
+    function renderProfileView(session, profile, hasClassroom) {
       const plan = (profile?.plan || 'free').toLowerCase();
-      const isPremium = plan === 'paid' || plan === 'pro';
+      const hasRadarPro = plan === 'paid' || plan === 'pro';
       const name = profile?.full_name || session.user.user_metadata?.full_name || session.user.email.split('@')[0];
       const avatarUrl = session.user.user_metadata?.avatar_url || '';
-      const planLabel = isPremium ? 'CDLRadar Pro activo' : 'Plan gratuito';
+      const planLabel = hasClassroom ? 'CDLRadar + Classroom activo' : hasRadarPro ? 'CDLRadar Pro activo' : 'Plan gratuito';
       const avatarTargets = [document.getElementById('avatar'), document.getElementById('profileAvatarLarge')];
 
       avatarTargets.forEach((target) => renderAvatar(target, name, avatarUrl));
@@ -2379,16 +2392,20 @@
 
       const planChip = document.getElementById('profilePlanChip');
       planChip.textContent = planLabel;
-      planChip.classList.toggle('free', !isPremium);
+      planChip.classList.toggle('free', !hasRadarPro);
 
-      document.getElementById('profileAccessTitle').textContent = isPremium ? 'Tu acceso Pro está activo' : 'Empieza con tu plan gratuito';
-      document.getElementById('profileAccessDescription').textContent = isPremium
-        ? 'Tienes acceso al Radar sin límite diario. Gestiona tu suscripción desde un único lugar.'
+      document.getElementById('profileAccessTitle').textContent = hasClassroom
+        ? 'Tu acceso CDLRadar + Classroom está activo'
+        : hasRadarPro ? 'Tu acceso Pro está activo' : 'Empieza con tu plan gratuito';
+      document.getElementById('profileAccessDescription').textContent = hasClassroom
+        ? 'Tienes acceso al Radar sin límite diario y a todos los cursos de Classroom.'
+        : hasRadarPro
+        ? 'Tienes acceso al Radar sin límite diario. Puedes sumar Classroom cuando quieras.'
         : 'Tu cuenta incluye el acceso freemium al Radar. Actualiza cuando quieras para operar sin límite diario.';
       const planAction = document.getElementById('profilePlanAction');
-      planAction.href = isPremium ? '#subscription' : '#upgrade';
-      planAction.textContent = isPremium ? 'Gestionar suscripción' : 'Desbloquear Pro';
-      document.getElementById('profileAcademyUpgrade').hidden = !isPremium;
+      planAction.href = hasRadarPro ? '#subscription' : '#upgrade';
+      planAction.textContent = hasRadarPro ? 'Gestionar suscripción' : 'Desbloquear Pro';
+      document.getElementById('profileAcademyUpgrade').hidden = !hasRadarPro || hasClassroom;
     }
 
     const AFFILIATE_PAYOUT_MINIMUM_CENTS = 5000;
@@ -3423,7 +3440,16 @@
       await fetchClassroomState(courseIds);
     }
 
-    async function renderCourseAccessCtas(session) {
+    async function getClassroomSubscriptionAccess(session) {
+      const { data, error } = await sp.rpc('academy_has_access', { target_user: session.user.id });
+      if (error) {
+        console.error('No se pudo verificar la suscripción CDLRadar + Classroom:', error);
+        return false;
+      }
+      return data === true;
+    }
+
+    async function renderCourseAccessCtas(session, hasClassroom) {
       const { data: enrollments, error } = await sp
         .from('course_enrollments')
         .select('course_id')
@@ -3436,32 +3462,33 @@
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
 
-      // Suscripción CDLRadar and ClassRoom: acceso a todos los cursos activos, presentes y futuros.
-      const { data: academyAccess, error: academyError } = await sp.rpc('academy_has_access', { target_user: session.user.id });
-      const hasAcademy = !academyError && academyAccess === true;
-      document.getElementById('academyBanner').hidden = hasAcademy;
-      document.getElementById('academyActiveChip').hidden = !hasAcademy;
-      if (hasAcademy) document.getElementById('profileAcademyUpgrade').hidden = true;
-      if (hasAcademy) {
+      // CDLRadar + Classroom: acceso a todos los cursos activos, presentes y futuros.
+      document.getElementById('academyBanner').hidden = hasClassroom;
+      document.getElementById('academyActiveChip').hidden = !hasClassroom;
+      if (hasClassroom) {
         const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
         (activeCourses || []).forEach((course) => enrolledCourseIds.add(course.id));
       }
 
-      const { data: profile } = await getProfileForSession(session, 'plan');
-      const isFreemium = (profile?.plan || 'free').toLowerCase() === 'free';
       classroomPreviewCourseIds.clear();
-      let previewCourseIds = new Set();
-      if (isFreemium) {
-        const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
-        previewCourseIds = new Set((activeCourses || []).map((course) => course.id));
-        previewCourseIds.forEach((courseId) => classroomPreviewCourseIds.add(courseId));
+      const { data: activeCourses, error: activeCoursesError } = await sp.from('courses').select('id').eq('active', true);
+      if (activeCoursesError) {
+        console.error('No se pudieron cargar los previews de Classroom:', activeCoursesError);
       }
-      const classroomCourseIds = new Set([...enrolledCourseIds, ...previewCourseIds]);
-      classroomReady = (isFreemium ? fetchClassroomState([...classroomCourseIds], true) : loadClassroomContent(enrolledCourseIds))
+      const previewCourseIds = new Set(
+        (activeCourses || [])
+          .map((course) => course.id)
+          .filter((courseId) => !enrolledCourseIds.has(courseId))
+      );
+      previewCourseIds.forEach((courseId) => classroomPreviewCourseIds.add(courseId));
+      classroomReady = Promise.all([
+        loadClassroomContent(enrolledCourseIds),
+        previewCourseIds.size ? fetchClassroomState([...previewCourseIds], true) : Promise.resolve()
+      ])
         .catch((loadError) => console.error('Classroom:', loadError));
       document.querySelectorAll('[data-course-id]').forEach((cta) => {
         const hasAccess = enrolledCourseIds.has(cta.dataset.courseId);
-        const hasPreview = isFreemium && previewCourseIds.has(cta.dataset.courseId);
+        const hasPreview = previewCourseIds.has(cta.dataset.courseId);
         const status = cta.closest('.course-content')?.querySelector('[data-course-status]');
         cta.textContent = hasAccess ? 'Abrir mi curso' : hasPreview ? 'Previsualizar clase' : 'Ver más';
         cta.setAttribute('aria-label', hasAccess ? 'Abrir mi curso' : hasPreview ? 'Abrir clase gratuita' : 'Ver información del curso');
@@ -3490,7 +3517,7 @@
         button.onclick = () => openCoursePurchaseModal(button.dataset.coursePurchase);
       });
       document.querySelectorAll('[data-course-academy]').forEach((button) => {
-        button.hidden = hasAcademy;
+        button.hidden = hasClassroom;
         button.onclick = openAcademyModal;
       });
     }
@@ -3647,20 +3674,22 @@
         'pro': 'Premium',
         'paid': 'Premium'
       };
+      const hasClassroom = await getClassroomSubscriptionAccess(session);
       const planStatusEl = document.getElementById("planStatus");
-      if (planStatusEl) planStatusEl.textContent = planNames[userPlan.toLowerCase()] || userPlan;
-      
-      // Mostrar menú dinámico según el plan
+      if (planStatusEl) planStatusEl.textContent = hasClassroom ? 'CDLRadar + Classroom' : (planNames[userPlan.toLowerCase()] || userPlan);
+
+      // Mostrar menú dinámico según el acceso al Radar.
       const navUpgrade = document.getElementById("navUpgrade");
       const navSubscription = document.getElementById("navSubscription");
       
-      const isPremium = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
+      const hasRadarPro = userPlan.toLowerCase() === "pro" || userPlan.toLowerCase() === "paid";
 
-      renderProfileView(session, profile);
-      await renderCourseAccessCtas(session);
+      renderSubscriptionView(hasClassroom);
+      renderProfileView(session, profile, hasClassroom);
+      await renderCourseAccessCtas(session, hasClassroom);
       await loadAffiliatePortal(session);
       
-      if (isPremium) {
+      if (hasRadarPro || hasClassroom) {
         navUpgrade.style.display = "none";
         navSubscription.style.display = "flex";
       } else {
@@ -3725,7 +3754,7 @@
     document.getElementById("openProfileCard").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
-    document.getElementById("navSubscription").onclick = () => navigateTo("#profile");
+    document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
     document.getElementById('classroomClose').onclick = () => {
       stopLessonTracking();
       document.getElementById('classroomSection').hidden = true;
@@ -4166,17 +4195,17 @@
     </div>
   </div>
 
-  <!-- MODAL: plan CDLRadar and ClassRoom -->
-  <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDLRadar and ClassRoom" onclick="if(event.target===this)closeAcademyModal()">
+  <!-- MODAL: plan CDLRadar + Classroom -->
+  <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDLRadar + Classroom" onclick="if(event.target===this)closeAcademyModal()">
     <div class="acm-box">
       <button type="button" class="acm-x" onclick="closeAcademyModal()" aria-label="Cerrar">✕</button>
       <div class="acm-media">
-        <div class="acm-media-fallback">CDLRadar + ClassRoom</div>
-        <img id="acmImage" alt="CDLRadar and ClassRoom" hidden>
+        <div class="acm-media-fallback">CDLRadar + Classroom</div>
+        <img id="acmImage" alt="CDLRadar + Classroom" hidden>
       </div>
 
       <div id="acmOffer" class="acm-offer acm-body">
-        <h2>CDLRadar and ClassRoom</h2>
+        <h2>CDLRadar + Classroom</h2>
         <ul class="acm-list">
           <li>Todos los cursos Incluidos</li>
           <li>CDL Radar Pro incluido, sin límite diario</li>
@@ -4225,7 +4254,7 @@
         <p>Estamos confirmando tu pago. No cierres esta ventana.</p>
       </div>
       <div id="acmDone" class="acm-stage" hidden>
-        <h3>Listo, ya eres parte de CDLRadar and ClassRoom</h3>
+        <h3>Listo, ya eres parte de CDLRadar + Classroom</h3>
         <p>Tu acceso a todos los cursos y al Radar Pro está activo.</p>
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Ir a mis cursos</button>
       </div>
@@ -4235,7 +4264,7 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3>Mejorar a CDLRadar + ClassRoom</h3>
+        <h3>Mejorar a CDLRadar + Classroom</h3>
         <p>Tu mejora suma $10 al mes y conserva una única suscripción. Estamos preparando la migración directa de tu plan actual para evitar cualquier cobro duplicado.</p>
         <button type="button" class="acm-apply" onclick="closeAcademyModal()">Entendido</button>
       </div>

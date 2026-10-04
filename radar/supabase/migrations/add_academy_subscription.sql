@@ -1,4 +1,4 @@
--- Plan "CDLRadar and ClassRoom": acceso a todos los cursos (actuales y futuros) + Radar Pro mientras la suscripción esté vigente.
+-- Plan "CDLRadar + Classroom": acceso a todos los cursos (actuales y futuros) + Radar Pro mientras la suscripción esté vigente.
 
 CREATE TABLE IF NOT EXISTS public.academy_subscriptions (
   user_id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,

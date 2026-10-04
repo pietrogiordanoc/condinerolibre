@@ -290,7 +290,7 @@ function academyBlock(userId) {
   const button = on
     ? `<button class="btn btn-danger" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
     : `<button class="btn" style="background:#10b981;" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
-  return `<div class="academy-line"><strong>CDLRadar and ClassRoom</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
+  return `<div class="academy-line"><strong>CDLRadar + Classroom</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
 }
 
 async function setAcademyAccess(userId, shouldGrant) {
@@ -299,7 +299,7 @@ async function setAcademyAccess(userId, shouldGrant) {
     Toastify({ text: `No se pudo cambiar el plan: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
     return;
   }
-  Toastify({ text: shouldGrant ? 'Plan CDLRadar and ClassRoom activado' : 'Plan CDLRadar and ClassRoom revocado', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
+  Toastify({ text: shouldGrant ? 'Plan CDLRadar + Classroom activado' : 'Plan CDLRadar + Classroom revocado', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
   await refreshUsers();
 }
 
@@ -656,4 +656,3 @@ async function toggleBlock(uId, block) {
     refreshUsers(); 
   }
 }
-
