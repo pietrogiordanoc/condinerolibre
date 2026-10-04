@@ -4652,8 +4652,10 @@
     .acm-x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff; font: inherit; font-size: 15px; cursor: pointer; }
     .acm-x:hover { background: #fff; color: #000; }
     .acm-media { position: relative; height: 140px; overflow: hidden; border-radius: 18px 18px 0 0; background: linear-gradient(135deg, #2a1700, #11151c 70%); border-bottom: 1px solid rgba(255,255,255,.1); }
-    .acm-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .acm-media-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; text-align: center; color: #ff8a00; font-size: 22px; font-weight: 600; letter-spacing: .02em; }
+    .acm-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .2; }
+    .acm-media-fallback { position: absolute; z-index: 1; inset: 0; display: grid; align-content: center; gap: 8px; padding: 20px; text-align: center; }
+    .acm-media-fallback strong { color: #ff9d2b; font-size: 22px; font-weight: 500; letter-spacing: .08em; }
+    .acm-media-fallback span { color: rgba(255,255,255,.68); font-size: 13px; font-weight: 400; letter-spacing: .12em; }
     .acm-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "title pay" "list pay" "price pay" "code pay"; column-gap: 32px; row-gap: 14px; padding: 24px 28px 28px; }
     .acm-body h2 { grid-area: title; margin: 0; font-size: 21px; font-weight: 600; }
     .acm-list { grid-area: list; display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; color: rgba(255,255,255,.78); font-size: 13.5px; line-height: 1.45; }
@@ -4690,15 +4692,16 @@
     .acm-stage h3 { margin: 0; font-size: 19px; font-weight: 600; }
     .acm-stage p { margin: 0; color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.5; }
     .acm-stage .acm-apply { justify-self: center; padding: 12px 22px; }
-    #acmUpgrade { gap: 22px; padding: 48px 38px; }
-    #acmUpgrade h3 { font-size: 38px; line-height: 1.1; }
-    #acmUpgrade p { font-size: 28px; line-height: 1.35; }
-    #acmUpgrade .acm-apply { padding: 16px 28px; font-size: 16px; }
-    .acm-upgrade-consent { display:grid; gap:12px; width:min(100%, 760px); margin:0 auto; padding:18px; border:1px solid rgba(255,138,0,.55); border-radius:6px; background:rgba(255,138,0,.07); text-align:left; }
-    .acm-upgrade-consent label { display:flex; align-items:flex-start; gap:10px; color:#fff; font-size:15px; font-weight:600; line-height:1.45; }
-    .acm-upgrade-consent input[type="checkbox"] { width:18px; height:18px; flex:0 0 auto; margin:2px 0 0; accent-color:#ff8a00; }
-    .acm-upgrade-consent input[type="text"] { width:100%; border:1px solid rgba(255,255,255,.3); border-radius:5px; background:#0c1118; color:#fff; padding:10px 12px; font:inherit; font-size:15px; text-transform:uppercase; }
-    .acm-upgrade-consent small { color:rgba(255,255,255,.68); font-size:12px; line-height:1.45; }
+    #acmUpgrade { gap: 28px; padding: 50px 54px; }
+    #acmUpgrade h3 { color:#fff; font-size: 38px; font-weight:400; line-height:1.18; letter-spacing:-.02em; }
+    #acmUpgrade p { color:rgba(255,255,255,.76); font-size:23px; font-weight:400; line-height:1.4; }
+    #acmUpgrade .acm-apply { min-width:280px; padding:16px 28px; border-radius:4px; font-size:16px; font-weight:500; letter-spacing:.04em; }
+    .acm-upgrade-consent { display:grid; justify-items:center; gap:16px; width:min(100%, 820px); margin:0 auto; padding:28px 34px; border:1px solid rgba(255,255,255,.14); border-radius:6px; background:linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,138,0,.055)); text-align:center; }
+    .acm-upgrade-consent-title { color:#ffab42; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; }
+    .acm-upgrade-consent label { display:flex; align-items:center; justify-content:center; gap:10px; color:rgba(255,255,255,.86); font-size:15px; font-weight:400; line-height:1.55; }
+    .acm-upgrade-consent input[type="checkbox"] { width:18px; height:18px; flex:0 0 auto; margin:0; accent-color:#ff8a00; }
+    .acm-upgrade-consent-confirm { display:grid !important; gap:8px !important; }
+    .acm-upgrade-consent input[type="text"] { width:min(100%, 260px); border:1px solid rgba(255,255,255,.24); border-radius:4px; background:#0c1118; color:#fff; padding:11px 14px; font:inherit; font-size:15px; text-align:center; text-transform:uppercase; }
     .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
     @keyframes acm-spin { to { transform: rotate(360deg); } }
     .acm-fine { margin: 0; color: rgba(255,255,255,.45); font-size: 11.5px; line-height: 1.5; text-align: center; }
@@ -4709,7 +4712,7 @@
       #acmUpgrade { padding: 36px 22px; }
       #acmUpgrade h3 { font-size: 28px; }
       #acmUpgrade p { font-size: 18px; }
-      .acm-upgrade-consent { padding:14px; }
+      .acm-upgrade-consent { padding:20px 16px; }
     }
   </style>
 
@@ -4747,7 +4750,7 @@
     <div class="acm-box">
       <button type="button" class="acm-x" onclick="closeAcademyModal()" aria-label="Cerrar">✕</button>
       <div class="acm-media">
-        <div class="acm-media-fallback">CDLRadar + Classroom</div>
+        <div class="acm-media-fallback"><strong id="acmHeaderTitle">BIENVENIDO A PLAN CDL ULTRA</strong><span id="acmHeaderSubtitle">CDL RADAR + ClassRoom</span></div>
         <img id="acmImage" alt="CDLRadar + Classroom" hidden>
       </div>
 
@@ -4811,13 +4814,13 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3 id="acmUpgradeTitle">Obtén acceso ilimitado a todo el contenido de ClassRoom</h3>
+        <h3 id="acmUpgradeTitle">Obtén acceso ilimitado a<br>todos los cursos</h3>
         <p id="acmUpgradeDescription">Con solo +$10 extra a tu plan actual.</p>
-        <p id="acmUpgradeDetail">Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio.</p>
+        <p id="acmUpgradeDetail" hidden></p>
         <div id="acmUpgradeConsent" class="acm-upgrade-consent">
-          <label><input id="acmUpgradeTerms" type="checkbox">Acepto voluntariamente cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes y autorizo el ajuste de mi suscripción actual.</label>
-          <label>Escribe <strong>ACEPTO</strong> para confirmar:<input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
-          <small>Tu acceso a CDL Ultra se activa inmediatamente. El equipo ajustará después el importe de tu suscripción activa en PayPal.</small>
+          <span class="acm-upgrade-consent-title">Confirmación de cambio</span>
+          <label><input id="acmUpgradeTerms" type="checkbox">Acepto por mi propia voluntad cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes.</label>
+          <label class="acm-upgrade-consent-confirm">Escribe <strong>ACEPTO</strong> para continuar<input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
         </div>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()" disabled>CAMBIAR MI PLAN</button>
       </div>
@@ -4854,16 +4857,21 @@
       message.className = 'acm-msg' + (kind ? ' ' + kind : '');
     }
 
+    function setAcademyHeader(title, subtitle) {
+      document.getElementById('acmHeaderTitle').textContent = title;
+      document.getElementById('acmHeaderSubtitle').textContent = subtitle;
+    }
+
     function renderAcademyUpgradeRequest() {
-      document.getElementById('acmUpgradeTitle').textContent = academyUpgradePending
-        ? 'Solicitud de cambio de plan enviada'
-        : 'Obtén acceso ilimitado a todo el contenido de ClassRoom';
+      const title = document.getElementById('acmUpgradeTitle');
+      if (academyUpgradePending) title.textContent = 'CDL Ultra activado';
+      else title.innerHTML = 'Obtén acceso ilimitado a<br>todos los cursos';
       document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
         ? 'CDL Ultra ya fue activado para tu cuenta.'
         : 'Con solo +$10 extra a tu plan actual.';
-      document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
-        ? 'El equipo ajustará el importe de tu suscripción actual en PayPal.'
-        : 'Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio.';
+      const detail = document.getElementById('acmUpgradeDetail');
+      detail.hidden = !academyUpgradePending;
+      detail.textContent = academyUpgradePending ? 'El equipo ajustará el importe de tu suscripción actual en PayPal.' : '';
       document.getElementById('acmUpgradeConsent').hidden = academyUpgradePending;
       const button = document.getElementById('acmUpgradeRequest');
       button.textContent = academyUpgradePending ? 'CDL ULTRA ACTIVADO' : 'CAMBIAR MI PLAN';
@@ -4913,7 +4921,9 @@
         console.error('No se pudo solicitar el cambio de plan:', error);
         button.disabled = false;
         button.textContent = 'CAMBIAR MI PLAN';
-        document.getElementById('acmUpgradeDetail').textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o contacta a soporte.';
+        const detail = document.getElementById('acmUpgradeDetail');
+        detail.hidden = false;
+        detail.textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o contacta a soporte.';
       }
     }
 
@@ -4922,6 +4932,7 @@
         openAcademyUpgradeModal();
         return;
       }
+      setAcademyHeader('CDLRadar + ClassRoom', 'Todos los cursos + CDL Radar Pro');
       document.getElementById('acmCode').textContent = ACADEMY_CONFIG.promoCode;
       const image = document.getElementById('acmImage');
       if (!image.getAttribute('src') && ACADEMY_CONFIG.imageUrl) {
@@ -4941,6 +4952,7 @@
     }
 
     function openAcademyUpgradeModal() {
+      setAcademyHeader('BIENVENIDO A PLAN CDL ULTRA', 'CDL RADAR + ClassRoom');
       renderAcademyUpgradeRequest();
       setAcademyStage('upgrade');
       document.getElementById('academy-modal').classList.add('open');
