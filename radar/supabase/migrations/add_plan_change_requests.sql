@@ -1,7 +1,8 @@
--- Solicitudes manuales para pasar de CDL Radar Pro a Premium Class.
+-- Solicitudes manuales para pasar de CDL Radar Pro a CDL Ultra.
 CREATE TABLE IF NOT EXISTS public.plan_change_requests (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  target_plan text NOT NULL DEFAULT 'ultra' CHECK (target_plan = 'ultra'),
   status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'cancelled')),
   requested_at timestamptz NOT NULL DEFAULT now(),
   processed_at timestamptz,

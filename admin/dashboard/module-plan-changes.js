@@ -52,7 +52,7 @@ function renderPlanChanges() {
   body.innerHTML = PLAN_CHANGE_REQUESTS.length ? PLAN_CHANGE_REQUESTS.map((request) => `
     <tr>
       <td>${planChangeUserLabel(request.user_id)}</td>
-      <td><strong>Premium Class</strong><br><small class="muted">US$19.99 → US$29.99 / mes</small></td>
+      <td><strong>CDL Ultra</strong><br><small class="muted">US$19.99 → US$29.99 / mes</small></td>
       <td>${formatStudyDate(request.requested_at)}</td>
       <td><button class="btn btn-primary" onclick="completePlanChangeRequest('${request.id}')">Marcar completada</button></td>
     </tr>`).join('') : '<tr><td colspan="4" class="muted" style="text-align:center; padding:28px;">No hay solicitudes pendientes.</td></tr>';

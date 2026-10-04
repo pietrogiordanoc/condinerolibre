@@ -4799,7 +4799,7 @@
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
         <h3 id="acmUpgradeTitle">Añade Classroom por solo $10 más al mes</h3>
-        <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con Premium Class pagarás $29.99 al mes: solo $10 más.</p>
+        <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.</p>
         <p id="acmUpgradeDetail">Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.</p>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()">Solicitar cambio de plan</button>
       </div>
@@ -4841,8 +4841,8 @@
         ? 'Solicitud de cambio de plan enviada'
         : 'Añade Classroom por solo $10 más al mes';
       document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
-        ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a Premium Class por $29.99 al mes.'
-        : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con Premium Class pagarás $29.99 al mes: solo $10 más.';
+        ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a CDL Ultra por $29.99 al mes.'
+        : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.';
       document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
         ? 'El equipo ajustará tu suscripción de PayPal y activará Classroom cuando el cambio quede aplicado.'
         : 'Solicita el cambio y lo ajustaremos en tu suscripción de PayPal antes de activar Classroom, sin cobros duplicados.';
@@ -4875,7 +4875,7 @@
       try {
         const { data: { session } } = await sp.auth.getSession();
         if (!session) throw new Error('unauthorized');
-        const { error } = await sp.from('plan_change_requests').insert({ user_id: session.user.id });
+        const { error } = await sp.from('plan_change_requests').insert({ user_id: session.user.id, target_plan: 'ultra' });
         if (error && error.code !== '23505') throw error;
         academyUpgradePending = true;
         renderAcademyUpgradeRequest();
