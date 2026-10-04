@@ -350,15 +350,15 @@
     #viewProfile {
       display: none;
       width: 100%;
-      max-width: 1440px;
+      max-width: 1680px;
       margin: 0 auto;
     }
     .profile-shell {
       display: grid;
       grid-template-columns: minmax(300px, .68fr) minmax(0, 1.32fr);
       grid-template-areas:
-        "summary support"
-        "details support"
+        "summary affiliate"
+        "details affiliate"
         "access affiliate"
         "academy-upgrade affiliate";
       gap: 18px;
@@ -416,24 +416,29 @@
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .profile-support-card { grid-area: support; display:grid; grid-template-rows:auto minmax(230px, 1fr) auto; gap:14px; min-height:440px; padding:22px; background:linear-gradient(160deg, rgba(11,29,24,.98), rgba(9,17,19,.98)); border-color:rgba(42,255,138,.28); }
-    .profile-support-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,.08); }
-    .profile-support-card h3 { margin:0; color:#f2fffa; font-size:18px; font-weight:500; }
-    .profile-support-card p { margin:5px 0 0; color:#a8bbb4; font-size:12.5px; line-height:1.45; }
-    .profile-support-email { flex:0 0 auto; color:#75e6ae; font-size:11px; font-weight:500; letter-spacing:.05em; text-transform:uppercase; }
-    .profile-support-thread { display:flex; flex-direction:column; gap:12px; min-height:0; overflow-y:auto; padding:6px 2px 6px 18%; }
-    .profile-support-empty { margin:auto 0; color:#9aaea6; font-size:13px; line-height:1.5; text-align:center; }
-    .profile-support-bubble { align-self:flex-end; max-width:92%; border-radius:12px 4px 12px 12px; background:#145c46; color:#ecfff5; padding:10px 12px 8px; box-shadow:0 4px 12px rgba(0,0,0,.18); font-size:13px; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .profile-support-card { position:fixed; right:24px; bottom:82px; z-index:10030; display:grid; grid-template-rows:auto minmax(250px, 1fr) auto; gap:0; width:min(390px, calc(100vw - 32px)); height:min(540px, calc(100vh - 112px)); overflow:hidden; border:1px solid rgba(42,255,138,.38); border-radius:14px; background:#e9e6dd; box-shadow:0 24px 64px rgba(0,0,0,.5); transition:opacity .2s ease, transform .2s ease, visibility .2s ease; }
+    .profile-support-card.is-collapsed { visibility:hidden; opacity:0; pointer-events:none; transform:translateY(18px) scale(.97); }
+    .profile-support-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:16px; background:linear-gradient(135deg, #0d8b55, #1fa96d); color:#fff; }
+    .profile-support-card h3 { margin:0; color:#fff; font-size:16px; font-weight:500; }
+    .profile-support-card p { margin:4px 0 0; color:rgba(255,255,255,.78); font-size:11.5px; line-height:1.45; }
+    .profile-support-email { flex:0 0 auto; color:#eafff4; font-size:10px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; }
+    .profile-support-thread { display:flex; flex-direction:column; gap:12px; min-height:0; overflow-y:auto; padding:16px; background-color:#e9e6dd; background-image:radial-gradient(rgba(78,92,90,.24) .7px, transparent .7px); background-size:14px 14px; }
+    .profile-support-system-bubble { align-self:flex-start; max-width:88%; border-radius:11px 11px 11px 3px; background:#fff; color:#31423d; padding:10px 12px; box-shadow:0 2px 8px rgba(0,0,0,.1); font-size:12px; line-height:1.5; }
+    .profile-support-system-bubble strong { display:block; margin-bottom:3px; color:#117a4d; font-size:11px; font-weight:500; }
+    .profile-support-empty { margin:auto 0; color:#53635d; font-size:12px; line-height:1.5; text-align:center; }
+    .profile-support-bubble { align-self:flex-end; max-width:88%; border-radius:11px 11px 3px 11px; background:#c8f3db; color:#17362a; padding:10px 12px 8px; box-shadow:0 2px 8px rgba(0,0,0,.1); font-size:12px; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; }
     .profile-support-bubble small { display:block; margin-top:5px; color:#b8e8d1; font-size:10px; text-align:right; }
-    .profile-support-compose { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:10px; align-items:end; padding-top:14px; border-top:1px solid rgba(255,255,255,.08); }
-    .profile-support-card textarea { width:100%; min-height:52px; max-height:120px; resize:vertical; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:#0a1414; color:#fff; padding:11px 12px; font:inherit; font-size:13px; line-height:1.45; }
-    .profile-support-card textarea:focus { outline:2px solid rgba(42,255,138,.36); border-color:var(--green); }
-    .profile-support-actions { display:grid; gap:7px; }
-    .profile-support-status { color:#9aaea6; font-size:11px; line-height:1.35; }
-    .profile-support-status.success { color:#86efac; }
-    .profile-support-status.error { color:#fca5a5; }
-    .profile-support-send { border:0; border-radius:8px; background:#29c879; color:#041108; padding:11px 15px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
+    .profile-support-compose { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:9px; align-items:end; padding:11px; background:#fff; border-top:1px solid rgba(0,0,0,.08); }
+    .profile-support-card textarea { width:100%; min-height:45px; max-height:96px; resize:vertical; border:1px solid #d5dcd8; border-radius:8px; background:#f8faf9; color:#23352e; padding:10px 11px; font:inherit; font-size:12px; line-height:1.45; }
+    .profile-support-card textarea:focus { outline:2px solid rgba(42,200,121,.28); border-color:#25a768; }
+    .profile-support-actions { display:grid; gap:5px; justify-items:end; }
+    .profile-support-status { grid-column:1 / -1; color:#62736b; font-size:10px; line-height:1.35; }
+    .profile-support-status.success { color:#168050; }
+    .profile-support-status.error { color:#c2413b; }
+    .profile-support-send { border:0; border-radius:8px; background:#25a768; color:#fff; padding:10px 14px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-send:disabled { opacity:.55; cursor:wait; }
+    .profile-support-toggle { position:fixed; right:24px; bottom:20px; z-index:10031; display:inline-flex; align-items:center; gap:9px; border:1px solid rgba(255,255,255,.3); border-radius:10px; background:#25a768; color:#fff; padding:12px 16px; box-shadow:0 12px 30px rgba(20,135,80,.35); font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
+    .profile-support-toggle::before { content:""; width:8px; height:8px; border-radius:50%; background:#d5ffe7; box-shadow:0 0 0 3px rgba(213,255,231,.22); }
     .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
     .profile-academy-upgrade[hidden] { display: none; }
     .profile-academy-upgrade-copy { display: grid; gap: 4px; }
@@ -1792,12 +1797,13 @@
           <div class="profile-support-head">
             <div>
               <h3 id="profile-support-title">Centro de Mensajes</h3>
-              <p>Déjanos tu mensaje. Te responderemos por email en cuanto lo revisemos.</p>
+              <p>Canal de atención diferida. Respondemos por email al revisar tu mensaje.</p>
             </div>
-            <span class="profile-support-email">Respuesta por email</span>
+            <span class="profile-support-email">No instantáneo</span>
           </div>
           <div id="profileSupportThread" class="profile-support-thread" aria-live="polite">
-            <span class="profile-support-empty">Aún no has enviado mensajes. Estamos aquí cuando nos necesites.</span>
+            <div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Déjanos tu consulta o sugerencia. Te responderemos por email cuando la revisemos.</div>
+            <span class="profile-support-empty">Aún no has enviado mensajes.</span>
           </div>
           <div class="profile-support-compose">
             <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe un mensaje..." aria-label="Tu mensaje para soporte"></textarea>
@@ -1807,6 +1813,7 @@
             </div>
           </div>
         </section>
+        <button id="profileSupportToggle" class="profile-support-toggle" type="button" aria-expanded="true">Centro de Mensajes</button>
 
         <section id="profileAcademyUpgrade" class="profile-academy-upgrade" hidden>
           <div class="profile-academy-upgrade-copy">
@@ -2725,14 +2732,16 @@
 
     function renderProfileSupportMessages() {
       const thread = document.getElementById('profileSupportThread');
+      const welcome = '<div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Déjanos tu consulta o sugerencia. Te responderemos por email cuando la revisemos.</div>';
       if (!profileSupportMessages.length) {
-        thread.innerHTML = '<span class="profile-support-empty">Aún no has enviado mensajes. Estamos aquí cuando nos necesites.</span>';
+        thread.innerHTML = `${welcome}<span class="profile-support-empty">Aún no has enviado mensajes.</span>`;
         return;
       }
       thread.innerHTML = profileSupportMessages.map((item) => {
         const sentAt = new Date(item.created_at).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
         return `<div class="profile-support-bubble">${escapeProfileSupportText(item.message)}<small>Enviado · ${sentAt}</small></div>`;
       }).join('');
+      thread.insertAdjacentHTML('afterbegin', welcome);
       thread.scrollTop = thread.scrollHeight;
     }
 
@@ -2771,7 +2780,7 @@
         if (error) throw error;
         input.value = '';
         await loadProfileSupportMessages(session);
-        status.textContent = 'Tu mensaje fue enviado. Recibirás un email con tu respuesta en breve.';
+        status.textContent = 'Mensaje enviado. Te responderemos en breve y recibirás la respuesta por email.';
         status.className = 'profile-support-status success';
       } catch (error) {
         console.error('No se pudo enviar el mensaje de soporte:', error);
@@ -2780,6 +2789,14 @@
       } finally {
         button.disabled = false;
       }
+    }
+
+    function toggleProfileSupportCenter() {
+      const center = document.querySelector('.profile-support-card');
+      const button = document.getElementById('profileSupportToggle');
+      const isCollapsed = center.classList.toggle('is-collapsed');
+      button.setAttribute('aria-expanded', String(!isCollapsed));
+      button.textContent = isCollapsed ? 'Abrir Centro de Mensajes' : 'Centro de Mensajes';
     }
 
     const AFFILIATE_PAYOUT_MINIMUM_CENTS = 5000;
@@ -4390,6 +4407,7 @@
     document.getElementById('studyQuestionSend').onclick = submitStudyQuestion;
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileSupportSend").onclick = sendProfileSupportMessage;
+    document.getElementById("profileSupportToggle").onclick = toggleProfileSupportCenter;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
     document.getElementById("profileAffiliateAction").onclick = openAffiliatePortal;
