@@ -3298,6 +3298,7 @@
 
     function closeClassroomView() {
       stopLessonTracking();
+      document.getElementById('classroomPlayer').replaceChildren();
       document.body.classList.remove('classroom-open');
       document.getElementById('classroomSection').hidden = true;
     }
