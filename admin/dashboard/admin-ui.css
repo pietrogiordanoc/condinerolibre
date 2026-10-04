@@ -58,6 +58,15 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 @keyframes admin-critical-alert-blink { 50% { border-color:#fff; background:linear-gradient(90deg, #dc2626, #7f1d1d); box-shadow:0 0 0 2px rgba(248,113,113,.3), 0 0 30px rgba(220,38,38,.55); } }
 @media (prefers-reduced-motion: reduce) { .admin-critical-alert { animation:none; } }
 .row-actions { display:flex; gap:6px; align-items:center; }
+.support-message-conversation { min-width:360px; white-space:pre-wrap; }
+.support-message-from-user { color:#e6ece9; }
+.support-message-from-admin { display:grid; gap:5px; margin-top:10px; padding:9px 10px; border-left:3px solid #18c36b; background:rgba(24,195,107,.08); color:#d8f5e4; }
+.support-message-from-admin strong { color:#83efb2; font-size:10px; text-transform:uppercase; letter-spacing:.04em; }
+.support-reply-form { display:grid; gap:7px; margin-top:10px; }
+.support-reply-form > span { color:#9fb0a8; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+.support-reply-form textarea { min-height:78px; resize:vertical; border:1px solid #3b4a43; border-radius:6px; background:#111; color:#f0f5f2; padding:9px; font:inherit; font-size:12px; line-height:1.4; }
+.support-reply-form textarea:focus { outline:2px solid rgba(24,195,107,.28); border-color:#18c36b; }
+.support-reply-form .btn { width:max-content; }
 .user-line { display:flex; align-items:center; gap:8px; }
 .course-toggle { background:none; border:none; color:#9aa5ad; cursor:pointer; font-size:14px; padding:2px 4px; transition: transform .15s; }
 .course-toggle.open { transform: rotate(90deg); color:#18c36b; }

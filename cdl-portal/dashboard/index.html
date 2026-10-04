@@ -427,7 +427,10 @@
     .profile-support-system-bubble strong { display:block; margin-bottom:3px; color:#117a4d; font-size:11px; font-weight:500; }
     .profile-support-empty { margin:auto 0; color:#53635d; font-size:12px; line-height:1.5; text-align:center; }
     .profile-support-bubble { align-self:flex-end; max-width:88%; border-radius:11px 11px 3px 11px; background:#c8f3db; color:#17362a; padding:10px 12px 8px; box-shadow:0 2px 8px rgba(0,0,0,.1); font-size:12px; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; }
-    .profile-support-bubble small { display:block; margin-top:5px; color:#b8e8d1; font-size:10px; text-align:right; }
+    .profile-support-bubble.admin { align-self:flex-start; border-radius:11px 11px 11px 3px; background:#fff; color:#24332d; }
+    .profile-support-bubble small { display:block; margin-top:5px; color:#5f756b; font-size:10px; text-align:right; }
+    .profile-support-bubble.admin small { color:#64756e; }
+    .profile-support-date { align-self:center; border-radius:7px; background:rgba(93,108,104,.16); color:#566761; padding:4px 8px; font-size:10px; line-height:1; }
     .profile-support-compose { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:9px; align-items:end; padding:11px; background:#fff; border-top:1px solid rgba(0,0,0,.08); }
     .profile-support-card textarea { width:100%; min-width:0; min-height:45px; max-height:96px; resize:vertical; border:1px solid #d5dcd8; border-radius:8px; background:#f8faf9; color:#23352e; padding:10px 11px; font:inherit; font-size:12px; line-height:1.45; }
     .profile-support-card textarea:focus { outline:2px solid rgba(42,200,121,.28); border-color:#25a768; }
@@ -2732,14 +2735,27 @@
 
     function renderProfileSupportMessages() {
       const thread = document.getElementById('profileSupportThread');
-      const welcome = '<div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Déjanos tu consulta o sugerencia. Te responderemos por email cuando la revisemos.</div>';
+      const welcome = '<div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Déjanos tu consulta o sugerencia. Te responderemos por aquí y también te avisaremos por email.</div>';
       if (!profileSupportMessages.length) {
         thread.innerHTML = `${welcome}<span class="profile-support-empty">Aún no has enviado mensajes.</span>`;
         return;
       }
-      thread.innerHTML = profileSupportMessages.map((item) => {
-        const sentAt = new Date(item.created_at).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
-        return `<div class="profile-support-bubble">${escapeProfileSupportText(item.message)}<small>Enviado · ${sentAt}</small></div>`;
+      const events = profileSupportMessages.flatMap((item) => {
+        const messages = [{ author: 'user', message: item.message, timestamp: item.created_at }];
+        if (item.admin_reply && item.replied_at) {
+          messages.push({ author: 'admin', message: item.admin_reply, timestamp: item.replied_at });
+        }
+        return messages;
+      }).sort((first, second) => new Date(first.timestamp) - new Date(second.timestamp));
+      let previousDate = '';
+      thread.innerHTML = events.map((event) => {
+        const date = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(event.timestamp));
+        const time = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(new Date(event.timestamp));
+        const dateSeparator = date === previousDate ? '' : `<span class="profile-support-date">${date}</span>`;
+        previousDate = date;
+        const author = event.author === 'admin' ? 'Equipo CDL' : 'Tú';
+        const bubbleClass = event.author === 'admin' ? 'profile-support-bubble admin' : 'profile-support-bubble';
+        return `${dateSeparator}<div class="${bubbleClass}">${escapeProfileSupportText(event.message)}<small>${author} · ${time}</small></div>`;
       }).join('');
       thread.insertAdjacentHTML('afterbegin', welcome);
       thread.scrollTop = thread.scrollHeight;
@@ -2747,7 +2763,7 @@
 
     async function loadProfileSupportMessages(session) {
       const { data, error } = await sp.from('user_support_messages')
-        .select('id, message, created_at, status')
+        .select('id, message, created_at, status, admin_reply, replied_at')
         .eq('user_id', session.user.id)
         .order('created_at', { ascending: true });
       if (error) {
@@ -2780,7 +2796,7 @@
         if (error) throw error;
         input.value = '';
         await loadProfileSupportMessages(session);
-        status.textContent = 'Mensaje enviado. Te responderemos en breve y recibirás la respuesta por email.';
+        status.textContent = 'Mensaje enviado. Te responderemos por aquí y recibirás un email.';
         status.className = 'profile-support-status success';
       } catch (error) {
         console.error('No se pudo enviar el mensaje de soporte:', error);

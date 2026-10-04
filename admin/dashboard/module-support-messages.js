@@ -43,7 +43,7 @@ async function refreshSupportMessages() {
   }
   SUPPORT_MESSAGES = messagesResponse.data || [];
   SUPPORT_MESSAGE_USERS_BY_ID = new Map((usersResponse.data || []).map((user) => [user.id, user]));
-  setSupportMessageAlert(SUPPORT_MESSAGES.length);
+  setSupportMessageAlert(SUPPORT_MESSAGES.filter((message) => message.status === 'pending').length);
   renderSupportMessages();
 }
 
@@ -52,30 +52,49 @@ function renderSupportMessages() {
   body.innerHTML = SUPPORT_MESSAGES.length ? SUPPORT_MESSAGES.map((message) => `
     <tr>
       <td>${supportMessageUserLabel(message.user_id)}</td>
-      <td style="min-width:360px; white-space:pre-wrap;">${escapeStudyText(message.message)}</td>
+      <td class="support-message-conversation">
+        <div class="support-message-from-user">${escapeStudyText(message.message)}</div>
+        ${message.admin_reply ? `<div class="support-message-from-admin"><strong>Tu respuesta · ${formatStudyDate(message.replied_at)}</strong>${escapeStudyText(message.admin_reply)}</div>` : `
+          <label class="support-reply-form">
+            <span>Responder en el chat</span>
+            <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta para el usuario..."></textarea>
+            <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
+          </label>`}
+      </td>
       <td>${formatStudyDate(message.created_at)}</td>
       <td><span class="tier-badge ${message.status === 'pending' ? 'tier-freemium' : 'tier-ultra'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span></td>
-      <td><div class="row-actions">${message.status === 'pending' ? `<button class="btn btn-primary" onclick="completeSupportMessage('${message.id}')">Email respondido</button>` : ''}<button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></div></td>
+      <td><div class="row-actions"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></div></td>
     </tr>`).join('') : '<tr><td colspan="5" class="muted" style="text-align:center; padding:28px;">No hay conversaciones.</td></tr>';
 }
 
-window.completeSupportMessage = async function(messageId) {
+window.replySupportMessage = async function(messageId) {
   const message = SUPPORT_MESSAGES.find((item) => item.id === messageId);
   if (!message) return;
-  if (!window.confirm('Confirma que ya respondiste este mensaje por email.')) return;
+  const input = document.getElementById(`supportReply-${messageId}`);
+  const adminReply = input.value.trim();
+  if (!adminReply) {
+    input.focus();
+    Toastify({ text: 'Escribe una respuesta antes de enviarla.', duration: 4000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
   const { data: { session } } = await sp.auth.getSession();
   if (!session) return;
+  input.disabled = true;
   const { error } = await sp.from('user_support_messages').update({
+    admin_reply: adminReply,
+    replied_at: new Date().toISOString(),
+    replied_by: session.user.id,
     status: 'completed',
     completed_at: new Date().toISOString(),
     completed_by: session.user.id
   }).eq('id', messageId);
   if (error) {
+    input.disabled = false;
     console.error('No se pudo completar el mensaje de usuario:', error);
-    Toastify({ text: `No se pudo actualizar el mensaje: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
+    Toastify({ text: `No se pudo enviar la respuesta: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
     return;
   }
-  Toastify({ text: 'Mensaje marcado como respondido por email.', duration: 3500, backgroundColor: '#10b981' }).showToast();
+  Toastify({ text: 'Respuesta publicada en el Centro de Mensajes.', duration: 3500, backgroundColor: '#10b981' }).showToast();
   await refreshSupportMessages();
 };
 
