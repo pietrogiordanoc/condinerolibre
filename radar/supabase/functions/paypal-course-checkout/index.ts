@@ -17,7 +17,12 @@ const COURSE_OFFERS: Record<string, { title: string; amountCents: number }> = {
   "velas-japonesas": { title: "Velas Japonesas desde Cero", amountCents: 16500 },
   "tradingview-basico": { title: "TradingView Básico", amountCents: 16500 },
   "trading-prime": { title: "Trading Prime Elite Profesional", amountCents: 27000 },
-  "master-pro": { title: "Master Pro Profesional Académico", amountCents: 35000 }
+  "master-pro": { title: "Master Pro Profesional Académico", amountCents: 35000 },
+  "indices-sinteticos": { title: "Índices Sintéticos", amountCents: 5000 },
+  "indices-bursatiles": { title: "Índices Bursátiles", amountCents: 5000 },
+  "criptos": { title: "Criptos", amountCents: 5000 },
+  "forex-basico": { title: "Forex Básico", amountCents: 5000 },
+  "apuestas-deportivas": { title: "Apuestas Deportivas", amountCents: 5000 }
 };
 
 function corsHeaders(request: Request) {
