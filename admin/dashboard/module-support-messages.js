@@ -1,5 +1,15 @@
 let SUPPORT_MESSAGES = [];
 let SUPPORT_MESSAGE_USERS_BY_ID = new Map();
+let supportMessagesRefreshTimer = null;
+
+function scheduleSupportMessagesRefresh() {
+  clearTimeout(supportMessagesRefreshTimer);
+  supportMessagesRefreshTimer = setTimeout(async () => {
+    await refreshSupportMessageAlert();
+    const view = document.getElementById('viewSupportMessages');
+    if (view && view.style.display !== 'none') await refreshSupportMessages();
+  }, 150);
+}
 
 function setSupportMessageAlert(count) {
   const hasPending = count > 0;
@@ -111,3 +121,9 @@ window.deleteSupportMessage = async function(messageId) {
   Toastify({ text: 'Mensaje eliminado.', duration: 3000, backgroundColor: '#10b981' }).showToast();
   await refreshSupportMessages();
 };
+
+sp.channel('support_messages_changes').on('postgres_changes', {
+  event: '*',
+  schema: 'public',
+  table: 'user_support_messages'
+}, scheduleSupportMessagesRefresh).subscribe((status) => console.log('[Centro de Mensajes] Realtime:', status));

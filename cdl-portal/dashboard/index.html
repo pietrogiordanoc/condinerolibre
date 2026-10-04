@@ -2730,6 +2730,8 @@
     }
 
     let profileSupportMessages = [];
+    let profileSupportRealtimeChannel = null;
+    let profileSupportPollingTimer = null;
 
     function escapeProfileSupportText(value) {
       return String(value || '').replace(/[&<>'"]/g, (character) => ({
@@ -2776,6 +2778,24 @@
       }
       profileSupportMessages = data || [];
       renderProfileSupportMessages();
+    }
+
+    function startProfileSupportMessageUpdates(session) {
+      if (profileSupportRealtimeChannel) sp.removeChannel(profileSupportRealtimeChannel);
+      if (profileSupportPollingTimer) clearInterval(profileSupportPollingTimer);
+
+      profileSupportRealtimeChannel = sp.channel(`profile_support_messages_${session.user.id}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'user_support_messages',
+          filter: `user_id=eq.${session.user.id}`
+        }, () => loadProfileSupportMessages(session))
+        .subscribe((status) => console.log('[Centro de Mensajes] Realtime:', status));
+
+      profileSupportPollingTimer = setInterval(() => {
+        if (!document.hidden) loadProfileSupportMessages(session);
+      }, 60000);
     }
 
     async function sendProfileSupportMessage() {
@@ -4342,6 +4362,7 @@
       renderProfileView(session, profile, hasClassroom);
       await renderCourseAccessCtas(session, hasClassroom, hasRadarPro);
       await loadProfileSupportMessages(session);
+      startProfileSupportMessageUpdates(session);
       await loadAffiliatePortal(session);
       
       if (hasRadarPro || hasClassroom) {
