@@ -732,8 +732,15 @@
     .classroom-shell { overflow: hidden; border: 1px solid rgba(42,255,138,.25); border-radius: 18px; background: linear-gradient(145deg, rgba(12,24,22,.98), rgba(14,18,27,.98)); box-shadow: 0 20px 42px rgba(0,0,0,.28); }
     .classroom-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
     .classroom-head-brand { display: flex; align-items: center; min-width: 0; gap: 14px; }
-    .classroom-head-logo { width: 124px; height: 34px; flex: 0 0 auto; object-fit: contain; object-position: left center; }
+    .classroom-head-logo { width: 213px; height: 57px; flex: 0 0 auto; object-fit: contain; object-position: left center; }
     .classroom-head-actions { display: flex; align-items: center; gap: 14px; }
+    .classroom-head-progress { width: 176px; }
+    .classroom-head-progress-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .classroom-head-progress span { color: var(--muted); font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    .classroom-head-progress strong { color: #a7f3d0; font-size: 14px; }
+    .classroom-head-progress-bar { height: 6px; margin: 6px 0 4px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.12); }
+    .classroom-head-progress-bar span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green2), var(--green)); transition: width .25s ease; }
+    .classroom-head-progress small { display: block; color: var(--muted); font-size: 10px; }
     .classroom-head-account { min-width: 0; text-align: right; }
     .classroom-head-account span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
     .classroom-head-account strong,
@@ -811,6 +818,7 @@
       .study-center-panels { grid-template-columns: 1fr; padding: 16px; }
       .classroom-head { padding: 16px; }
       .classroom-head-logo { width: 94px; }
+      .classroom-head-progress { display: none; }
       .classroom-head-account { display: none; }
       .classroom-now { padding: 14px 16px; }
     }
@@ -2244,6 +2252,14 @@
               </div>
             </div>
             <div class="classroom-head-actions">
+              <div class="classroom-head-progress" aria-label="Progreso del curso">
+                <div class="classroom-head-progress-top">
+                  <span>Progreso visto</span>
+                  <strong id="classroomProgressPercent">0%</strong>
+                </div>
+                <div class="classroom-head-progress-bar" aria-hidden="true"><span id="classroomProgressBar"></span></div>
+                <small id="classroomProgressLabel">0 de 0 lecciones completadas</small>
+              </div>
               <div class="classroom-head-account" aria-label="Cuenta activa">
                 <span>Cuenta activa</span>
                 <strong id="classroomUserName">Cargando...</strong>
@@ -3461,6 +3477,19 @@
         const items = classroomPlaylist.filter((item) => item.module?.id === el.dataset.moduleCount);
         el.textContent = `${seenIn(items)} de ${items.length} vistas`;
       });
+      const totals = classroomPlaylist.reduce((summary, item) => {
+        const entry = progress.get(item.lesson.bunny_video_id);
+        const duration = Number(entry?.duration_seconds || item.lesson.duration_seconds || 0);
+        const watched = Number(entry?.watched_seconds || 0);
+        const ratio = duration > 0 ? Math.min(watched / duration, 1) : (entry ? 1 : 0);
+        summary.watched += ratio;
+        if (entry?.completed_at || ratio >= WATCH_COMPLETE_RATIO) summary.completed += 1;
+        return summary;
+      }, { watched: 0, completed: 0 });
+      const percent = classroomPlaylist.length ? Math.round((totals.watched / classroomPlaylist.length) * 100) : 0;
+      document.getElementById('classroomProgressPercent').textContent = `${percent}%`;
+      document.getElementById('classroomProgressBar').style.width = `${percent}%`;
+      document.getElementById('classroomProgressLabel').textContent = `${totals.completed} de ${classroomPlaylist.length} lecciones completadas`;
     }
 
     let classroomReady = Promise.resolve();
@@ -3600,6 +3629,7 @@
         classroomPlaylist = [];
         document.getElementById('classroomPrev').disabled = true;
         document.getElementById('classroomNext').disabled = true;
+        updateClassroomProgressUi();
         renderStudyCenterLesson(null, null);
       } else {
         const allModules = classroomModulesByCourseId.get(courseId) || [];
@@ -3811,6 +3841,7 @@
       };
       const progress = classroomProgressByCourseId.get(tracker.courseId);
       if (progress) progress.set(tracker.videoId, { ...(progress.get(tracker.videoId) || {}), ...entry, last_viewed_at: now });
+      updateClassroomProgressUi();
 
       if (!trackingColumnsMissing) {
         const { error } = await sp.from('course_progress').upsert(
