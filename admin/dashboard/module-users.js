@@ -218,8 +218,8 @@ function renderUsers() {
     const fpWarning = fpDup ? ` ⚠️(${fpCounts[u.pres.fingerprint]})` : '';
     
     const blockBtn = u.blocked 
-      ? `<button class="action-button action-unblock" type="button" onclick="toggleBlock('${u.id}', false)" title="Desbloquear usuario"><span aria-hidden="true">✓</span> Desbloquear</button>`
-      : `<button class="action-button action-block" type="button" onclick="toggleBlock('${u.id}', true)" title="Bloquear usuario"><span aria-hidden="true">⊘</span> Bloquear</button>`;
+      ? `<button class="row-action row-action-positive" type="button" onclick="toggleBlock('${u.id}', false)" title="Desbloquear usuario"><span aria-hidden="true">✓</span> Desbloquear</button>`
+      : `<button class="row-action row-action-danger" type="button" onclick="toggleBlock('${u.id}', true)" title="Bloquear usuario"><span aria-hidden="true">⊘</span> Bloquear</button>`;
     
     // Calcular uso del radar
       // Visualización de minutos usados en radar (local, seguro, restaurado)
@@ -242,7 +242,7 @@ function renderUsers() {
     const enrolledCourseIds = academyOn ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)]) : ownCourseIds;
     const radarControl = u.tier.id === 'ultra'
       ? '<span class="tier-radar-included">Radar Pro incluido</span>'
-      : `<button type="button" class="tier-radar-toggle" onclick="adminSetPlan('${u.id}', '${nextPlan}')" title="Cambiar solo el acceso a CDLRadar">Radar: ${hasRadarPro ? 'Pro' : 'Free'}</button>`;
+      : `<button type="button" class="row-action row-action-quiet tier-radar-toggle" onclick="adminSetPlan('${u.id}', '${nextPlan}')" title="Cambiar solo el acceso a CDLRadar">Radar: ${hasRadarPro ? 'Pro' : 'Free'}</button>`;
     const coursesDisplay = COURSES.length
       ? COURSES.map(course => {
           const enrolled = enrolledCourseIds.has(course.id);
@@ -270,7 +270,7 @@ function renderUsers() {
         <td data-label="Nivel"><div class="tier-cell"><span class="pill tier-pill ${u.tier.className}">${u.tier.label}</span><small>${u.tier.description}</small>${radarControl}</div></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
-        <td data-label="Historial"><div class="row-actions"><button class="btn btn-primary" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="btn" title="Ver como alumno" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Abrir</button></div></td>
+        <td data-label="Historial"><div class="row-actions"><button class="row-action row-action-primary" type="button" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="row-action" type="button" title="Ver como alumno" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Abrir</button></div></td>
         <td data-label="SL Experimental"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:${u.experimental_sl_enabled ? '#fbbf24' : '#64748b'};"><input type="checkbox" ${u.experimental_sl_enabled ? 'checked' : ''} onchange="toggleExperimentalSl('${u.id}', this.checked)"> ${u.experimental_sl_enabled ? 'Activo' : 'Inactivo'}</label></td>
         <td data-label="Ubicación">${u.pres.ciudad || "—"}, ${u.pres.pais || "—"}</td>
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
@@ -313,8 +313,8 @@ function academyBlock(userId) {
   const until = sub?.status === 'cancelled' && sub.access_until ? ` · hasta ${new Date(sub.access_until).toLocaleDateString('es')}` : '';
   const source = sub?.paypal_subscription_id ? ' · PayPal' : (sub ? ' · manual' : '');
   const button = on
-    ? `<button class="btn btn-danger" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
-    : `<button class="btn" style="background:#10b981;" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
+    ? `<button class="row-action row-action-danger" type="button" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
+    : `<button class="row-action row-action-primary" type="button" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
   return `<div class="academy-line"><strong>CDLRadar + Classroom</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
 }
 
@@ -480,7 +480,7 @@ function courseMetrics(userId, course) {
     chips.push('<span class="mchip">Sin empezar</span>');
   }
   const detailOpen = EXPANDED_DETAIL.has(`${userId}|${course.id}`);
-  return `<span class="progress-bar" title="${tracked ? 'Tiempo de vídeo visto sobre el total del curso' : 'Lecciones abiertas'}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span>${chips.join('')}<button type="button" class="detail-toggle" onclick="toggleLessonDetail('${userId}', '${course.id}')">${detailOpen ? 'Ocultar' : 'Detalle'}</button>`;
+  return `<span class="progress-bar" title="${tracked ? 'Tiempo de vídeo visto sobre el total del curso' : 'Lecciones abiertas'}"><i style="width:${pct}%"></i></span><span class="progress-pct">${pct}%</span>${chips.join('')}<button type="button" class="row-action row-action-quiet detail-toggle" onclick="toggleLessonDetail('${userId}', '${course.id}')">${detailOpen ? 'Ocultar' : 'Detalle'}</button>`;
 }
 
 function toggleLessonDetail(userId, courseId) {
