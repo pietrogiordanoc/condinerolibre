@@ -4690,6 +4690,10 @@
     .acm-stage h3 { margin: 0; font-size: 19px; font-weight: 600; }
     .acm-stage p { margin: 0; color: rgba(255,255,255,.7); font-size: 14px; line-height: 1.5; }
     .acm-stage .acm-apply { justify-self: center; padding: 12px 22px; }
+    #acmUpgrade { gap: 22px; padding: 48px 38px; }
+    #acmUpgrade h3 { font-size: 38px; line-height: 1.1; }
+    #acmUpgrade p { font-size: 28px; line-height: 1.35; }
+    #acmUpgrade .acm-apply { padding: 16px 28px; font-size: 16px; }
     .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
     @keyframes acm-spin { to { transform: rotate(360deg); } }
     .acm-fine { margin: 0; color: rgba(255,255,255,.45); font-size: 11.5px; line-height: 1.5; text-align: center; }
@@ -4697,6 +4701,9 @@
       .acm-media { height: 190px; }
       .acm-body { grid-template-columns: 1fr; grid-template-areas: "title" "list" "price" "code" "pay"; gap: 14px; padding: 20px 22px 24px; }
       .acm-pay { padding: 0; border-left: 0; }
+      #acmUpgrade { padding: 36px 22px; }
+      #acmUpgrade h3 { font-size: 28px; }
+      #acmUpgrade p { font-size: 18px; }
     }
   </style>
 
@@ -4798,9 +4805,9 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3 id="acmUpgradeTitle">Añade Classroom por solo $10 más al mes</h3>
+        <h3 id="acmUpgradeTitle">ACCESO A TODOS LOS CURSOS</h3>
         <p id="acmUpgradeDescription">Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.</p>
-        <p id="acmUpgradeDetail">CDL Ultra desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.</p>
+        <p id="acmUpgradeDetail">Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.</p>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()">Solicitar cambio de plan</button>
       </div>
     </div>
@@ -4839,13 +4846,13 @@
     function renderAcademyUpgradeRequest() {
       document.getElementById('acmUpgradeTitle').textContent = academyUpgradePending
         ? 'Solicitud de cambio de plan enviada'
-        : 'Añade Classroom por solo $10 más al mes';
+        : 'ACCESO A TODOS LOS CURSOS';
       document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
         ? 'Ya recibimos tu solicitud para pasar de CDL Radar Pro a CDL Ultra por $29.99 al mes.'
         : 'Tu CDL Radar Pro actual cuesta $19.99 al mes. Con CDL Ultra pagarás $29.99 al mes: solo $10 más.';
       document.getElementById('acmUpgradeDetail').textContent = academyUpgradePending
         ? 'El equipo ajustará tu suscripción de PayPal y activará CDL Ultra, con todos los cursos actuales y futuros, cuando el cambio quede aplicado.'
-        : 'CDL Ultra desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.';
+        : 'Desbloquea todos los cursos actuales y futuros, además del Centro de Estudio. Solicita el cambio y lo ajustaremos en tu suscripción de PayPal sin cobros duplicados.';
       const button = document.getElementById('acmUpgradeRequest');
       button.textContent = academyUpgradePending ? 'Solicitud pendiente' : 'Solicitar cambio de plan';
       button.disabled = academyUpgradePending;
