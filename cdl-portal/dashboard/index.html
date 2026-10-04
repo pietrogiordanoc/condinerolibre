@@ -1961,10 +1961,19 @@
           <button type="button" class="academy-banner-btn" onclick="openAcademyModal()">Ver oferta</button>
         </div>
         <div id="academyActiveChip" class="academy-banner academy-banner-active" hidden>
-          <div class="academy-banner-text">
-            <strong>CDLRadar + Classroom activo</strong>
-            <span>Tienes acceso a todos los cursos y al Radar Pro mientras tu suscripción siga vigente.</span>
-          </div>
+          <a class="courses-affiliate-banner" href="#profile" aria-label="Abrir portal de afiliados">
+            <span class="courses-affiliate-icon" aria-hidden="true">$</span>
+            <span class="courses-affiliate-balance">
+              <span>Balance a retirar</span>
+              <strong id="coursesAffiliateBalance">$0.00</strong>
+            </span>
+            <span class="courses-affiliate-copy">
+              <span>Gana <b>$15</b> por cada Pro confirmado</span>
+              <span id="coursesAffiliateProgressLabel">Faltan $50.00 para PayPal</span>
+              <span class="courses-affiliate-progress"><span id="coursesAffiliateProgress" style="width:0%"></span></span>
+            </span>
+            <span class="courses-affiliate-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
@@ -2482,6 +2491,11 @@
         document.getElementById('affiliateBalance').textContent = formatAffiliateMoney(availableCents);
         document.getElementById('sidebarAffiliateBalance').textContent = formatAffiliateMoney(availableCents);
         document.getElementById('affiliateProgress').style.width = `${progress}%`;
+        document.getElementById('coursesAffiliateBalance').textContent = formatAffiliateMoney(availableCents);
+        document.getElementById('coursesAffiliateProgress').style.width = `${progress}%`;
+        document.getElementById('coursesAffiliateProgressLabel').textContent = availableCents >= AFFILIATE_PAYOUT_MINIMUM_CENTS
+          ? 'Listo para PayPal'
+          : `Faltan ${formatAffiliateMoney(AFFILIATE_PAYOUT_MINIMUM_CENTS - availableCents)} para PayPal`;
         document.getElementById('affiliateTotalEarned').textContent = `Ganancias históricas: ${formatAffiliateMoney(totalEarnedCents)}`;
         document.getElementById('affiliatePaypalEmail').value = account.paypal_email || session.user.email || '';
         document.getElementById('affiliateEligibility').textContent = availableCents >= AFFILIATE_PAYOUT_MINIMUM_CENTS
@@ -4095,8 +4109,20 @@
     .academy-banner::before { content: ''; position: absolute; z-index: -1; inset: 0; opacity: .48; background-image: linear-gradient(rgba(104,255,181,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(104,255,181,.07) 1px, transparent 1px); background-size: 18px 18px; mask-image: linear-gradient(90deg, #000, transparent 82%); }
     .academy-banner::after { content: ''; position: absolute; z-index: -1; top: -68px; left: 24%; width: 180px; height: 180px; border: 1px solid rgba(255,138,0,.24); transform: rotate(45deg); box-shadow: 0 0 30px rgba(255,138,0,.1); }
     .academy-banner[hidden] { display: none; }
-    .academy-banner-active { display: flex; border-color: rgba(42,255,138,.4); background: linear-gradient(135deg, rgba(42,255,138,.1), rgba(255,255,255,.02)); }
+    .academy-banner-active { display: flex; border-color: rgba(56,213,211,.48); background: #0b1519; }
     .academy-banner-active::before, .academy-banner-active::after { display: none; }
+    .courses-affiliate-banner { display: flex; align-items: center; width: 100%; min-width: 0; gap: 14px; color: inherit; text-decoration: none; }
+    .courses-affiliate-icon { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1px solid rgba(56,213,211,.35); border-radius: 8px; background: rgba(56,213,211,.1); color: #38d5d3; font-size: 22px; font-weight: 700; }
+    .courses-affiliate-balance { display: grid; flex: 0 0 104px; gap: 2px; min-width: 0; }
+    .courses-affiliate-balance span { color: #f3f7f6; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .courses-affiliate-balance strong { color: #dce344; font-size: 19px; line-height: 1; }
+    .courses-affiliate-copy { display: grid; flex: 1; min-width: 0; gap: 2px; padding-left: 14px; border-left: 1px solid #31505a; }
+    .courses-affiliate-copy > span:first-child { color: #38d5d3; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .courses-affiliate-copy b { color: #dce344; }
+    .courses-affiliate-copy > span:nth-child(2) { overflow: hidden; color: #e3e9e7; font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .courses-affiliate-progress { display: block; height: 6px; overflow: hidden; border-radius: 999px; background: #263338; }
+    .courses-affiliate-progress span { display: block; height: 100%; border-radius: inherit; background: #4bc77d; }
+    .courses-affiliate-arrow { color: #38d5d3; font-size: 22px; font-weight: 700; }
     .academy-banner-discount { grid-row: 1 / span 2; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; padding-right: 18px; border-right: 1px solid rgba(255,255,255,.16); text-align: center; text-shadow: 0 0 22px rgba(255,138,0,.32); }
     .academy-banner-coupon-label { margin-bottom: 7px; color: #d8ab78; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
     .academy-banner-discount-value { color: #fff; font-size: clamp(50px, 5.6vw, 78px); font-weight: 600; line-height: .8; letter-spacing: 0; }
@@ -4110,7 +4136,7 @@
     .academy-banner-btn { grid-column: 2; width: 100%; border: 1px solid #ffad45; border-radius: 7px; background: #ff8a00; color: #15100a; padding: 11px 18px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 0 #8f4700, 0 0 20px rgba(255,138,0,.2); transition: transform .16s ease, filter .16s ease; }
     .academy-banner-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
     @media (max-width: 900px) { .courses-header-grid { grid-template-columns: 1fr !important; } }
-    @media (max-width: 560px) { .academy-banner { grid-template-columns: 104px minmax(0, 1fr); gap: 10px 14px; padding: 16px; } .academy-banner-discount { padding-right: 14px; } .academy-banner-discount-value { font-size: 50px; } .academy-banner-text strong { font-size: 14px; } .academy-banner-text span { font-size: 11.5px; } }
+    @media (max-width: 560px) { .academy-banner { grid-template-columns: 104px minmax(0, 1fr); gap: 10px 14px; padding: 16px; } .academy-banner-discount { padding-right: 14px; } .academy-banner-discount-value { font-size: 50px; } .academy-banner-text strong { font-size: 14px; } .academy-banner-text span { font-size: 11.5px; } .courses-affiliate-banner { gap: 10px; } .courses-affiliate-icon { flex-basis: 36px; width: 36px; height: 36px; font-size: 18px; } .courses-affiliate-balance { flex-basis: 74px; } .courses-affiliate-balance strong { font-size: 16px; } .courses-affiliate-copy { padding-left: 10px; } .courses-affiliate-copy > span:first-child, .courses-affiliate-copy > span:nth-child(2) { font-size: 10px; } }
 
     .acm { position: fixed; inset: 0; z-index: 10060; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.8); overflow-y: auto; }
     .acm.open { display: flex; }
