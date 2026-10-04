@@ -28,6 +28,7 @@ async function init() {
   await refreshLogs();
   await refreshStudyQuestionAlert();
   await refreshPlanChangeAlert();
+  await refreshSupportMessageAlert();
 
   // Bucles de refresco (solo presencia, los eventos son en tiempo real con WebSockets)
   setInterval(async () => { await refreshPresence(); renderUsers(); }, 5000);
@@ -39,28 +40,47 @@ async function init() {
   setInterval(refreshUsers, 60000);
   setInterval(refreshStudyQuestionAlert, 30000);
   setInterval(refreshPlanChangeAlert, 30000);
+  setInterval(refreshSupportMessageAlert, 30000);
 }
 
 // Función para cambiar entre tabs
 window.switchTab = function(tab) {
   if (tab === 'users') {
     document.getElementById('viewUsers').style.display = 'block';
+    document.getElementById('viewSupportMessages').style.display = 'none';
     document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.add('active');
+    document.getElementById('tabSupportMessages').classList.remove('active');
     document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
     document.getElementById('tabAffiliates').classList.remove('active');
+  } else if (tab === 'support-messages') {
+    document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewSupportMessages').style.display = 'block';
+    document.getElementById('viewPlanChanges').style.display = 'none';
+    document.getElementById('viewHistory').style.display = 'none';
+    document.getElementById('viewStudyCenter').style.display = 'none';
+    document.getElementById('viewAffiliates').style.display = 'none';
+    document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabSupportMessages').classList.add('active');
+    document.getElementById('tabPlanChanges').classList.remove('active');
+    document.getElementById('tabHistory').classList.remove('active');
+    document.getElementById('tabStudyCenter').classList.remove('active');
+    document.getElementById('tabAffiliates').classList.remove('active');
+    refreshSupportMessages();
   } else if (tab === 'plan-changes') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewSupportMessages').style.display = 'none';
     document.getElementById('viewPlanChanges').style.display = 'block';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabSupportMessages').classList.remove('active');
     document.getElementById('tabPlanChanges').classList.add('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
@@ -68,11 +88,13 @@ window.switchTab = function(tab) {
     refreshPlanChanges();
   } else if (tab === 'history') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewSupportMessages').style.display = 'none';
     document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'block';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabSupportMessages').classList.remove('active');
     document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.add('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
@@ -80,11 +102,13 @@ window.switchTab = function(tab) {
     refreshGlobalHistory();
   } else if (tab === 'study-center') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewSupportMessages').style.display = 'none';
     document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'block';
     document.getElementById('viewAffiliates').style.display = 'none';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabSupportMessages').classList.remove('active');
     document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.add('active');
@@ -92,11 +116,13 @@ window.switchTab = function(tab) {
     refreshStudyCenter();
   } else if (tab === 'affiliates') {
     document.getElementById('viewUsers').style.display = 'none';
+    document.getElementById('viewSupportMessages').style.display = 'none';
     document.getElementById('viewPlanChanges').style.display = 'none';
     document.getElementById('viewHistory').style.display = 'none';
     document.getElementById('viewStudyCenter').style.display = 'none';
     document.getElementById('viewAffiliates').style.display = 'block';
     document.getElementById('tabUsers').classList.remove('active');
+    document.getElementById('tabSupportMessages').classList.remove('active');
     document.getElementById('tabPlanChanges').classList.remove('active');
     document.getElementById('tabHistory').classList.remove('active');
     document.getElementById('tabStudyCenter').classList.remove('active');
@@ -151,6 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (refreshStudyCenterBtn) refreshStudyCenterBtn.onclick = refreshStudyCenter;
   const refreshPlanChangesBtn = document.getElementById("refreshPlanChangesBtn");
   if (refreshPlanChangesBtn) refreshPlanChangesBtn.onclick = refreshPlanChanges;
+  const refreshSupportMessagesBtn = document.getElementById("refreshSupportMessagesBtn");
+  if (refreshSupportMessagesBtn) refreshSupportMessagesBtn.onclick = refreshSupportMessages;
   const studyQuestionFilter = document.getElementById("studyQuestionFilter");
   if (studyQuestionFilter) studyQuestionFilter.onchange = renderStudyCenter;
 });

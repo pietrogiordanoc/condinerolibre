@@ -360,6 +360,7 @@
         "summary affiliate"
         "details affiliate"
         "access affiliate"
+        "support affiliate"
         "academy-upgrade affiliate";
       gap: 18px;
       align-items: start;
@@ -367,6 +368,7 @@
     .profile-summary,
     .profile-form-card,
     .profile-access-card,
+    .profile-support-card,
     .profile-academy-upgrade {
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -415,6 +417,17 @@
     .profile-access-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 0 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700; }
     .profile-access-actions a.primary { border-color: rgba(42,255,138,.45); background: rgba(42,255,138,.12); color: #a9ffd0; }
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .profile-support-card { grid-area: support; display:grid; gap:12px; padding:18px 20px; }
+    .profile-support-card h3 { margin:0; color:#fff; font-size:16px; }
+    .profile-support-card p { margin:5px 0 0; color:var(--muted); font-size:12.5px; line-height:1.45; }
+    .profile-support-card textarea { width:100%; min-height:104px; resize:vertical; border:1px solid rgba(255,255,255,.14); border-radius:8px; background:rgba(255,255,255,.04); color:#fff; padding:11px; font:inherit; font-size:13px; line-height:1.45; }
+    .profile-support-card textarea:focus { outline:2px solid rgba(42,255,138,.45); border-color:var(--green); }
+    .profile-support-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .profile-support-status { color:var(--muted); font-size:12px; line-height:1.4; }
+    .profile-support-status.success { color:#86efac; }
+    .profile-support-status.error { color:#fca5a5; }
+    .profile-support-send { border:0; border-radius:8px; background:var(--green); color:#041108; padding:10px 14px; font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+    .profile-support-send:disabled { opacity:.55; cursor:wait; }
     .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
     .profile-academy-upgrade[hidden] { display: none; }
     .profile-academy-upgrade-copy { display: grid; gap: 4px; }
@@ -1452,7 +1465,7 @@
         max-width: 100%;
       }
 
-      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "summary" "details" "access" "academy-upgrade" "affiliate"; }
+      .profile-shell { grid-template-columns: 1fr; grid-template-areas: "summary" "details" "access" "support" "academy-upgrade" "affiliate"; }
 
       .accounts-tier-grid,
       .accounts-tier-grid.grid-2 {
@@ -1610,6 +1623,7 @@
       .profile-field.full { grid-column: auto; }
       .profile-save-row,
       .profile-access-card,
+      .profile-support-card,
       .profile-academy-upgrade { align-items: stretch; flex-direction: column; }
       .profile-access-card { display: flex; }
       .profile-access-actions { flex-direction: column; }
@@ -1759,13 +1773,25 @@
 
         <section class="profile-access-card">
           <div>
-            <h3 id="profileAccessTitle">Tu acceso</h3>
-            <p id="profileAccessDescription">Consulta tu plan y las opciones disponibles para tu cuenta.</p>
+            <h3 id="profileAccessTitle">Tu plan</h3>
+            <p id="profileAccessDescription">Consulta el alcance de tu plan y las opciones disponibles para tu cuenta.</p>
           </div>
           <div class="profile-access-actions">
             <a id="profilePlanAction" class="primary" href="#upgrade">Ver planes</a>
             <button id="profileAffiliateAction" type="button">Portal de afiliados</button>
             <a href="/contacto/privacidad.html" target="_blank" rel="noreferrer">Privacidad</a>
+          </div>
+        </section>
+
+        <section class="profile-support-card" aria-labelledby="profile-support-title">
+          <div>
+            <h3 id="profile-support-title">Envíanos un mensaje</h3>
+            <p>Cuéntanos tu pregunta o solicitud. Nuestro equipo responderá por email.</p>
+          </div>
+          <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe tu mensaje..." aria-label="Tu mensaje para soporte"></textarea>
+          <div class="profile-support-actions">
+            <span id="profileSupportStatus" class="profile-support-status">Tu mensaje llegará directamente a nuestro equipo.</span>
+            <button id="profileSupportSend" class="profile-support-send" type="button">Enviar mensaje</button>
           </div>
         </section>
 
@@ -2647,7 +2673,7 @@
       const hasRadarPro = plan === 'paid' || plan === 'pro';
       const name = profile?.full_name || session.user.user_metadata?.full_name || session.user.email.split('@')[0];
       const avatarUrl = session.user.user_metadata?.avatar_url || '';
-      const planLabel = hasClassroom ? 'CDLRadar + Classroom activo' : hasRadarPro ? 'CDLRadar Pro activo' : 'Plan gratuito';
+      const planLabel = hasClassroom ? 'CDL Ultra' : hasRadarPro ? 'CDL Premium' : 'CDL Freemium';
       const avatarTargets = [document.getElementById('avatar'), document.getElementById('profileAvatarLarge')];
 
       avatarTargets.forEach((target) => renderAvatar(target, name, avatarUrl));
@@ -2663,17 +2689,49 @@
       planChip.classList.toggle('free', !hasRadarPro);
 
       document.getElementById('profileAccessTitle').textContent = hasClassroom
-        ? 'Tu acceso CDLRadar + Classroom está activo'
-        : hasRadarPro ? 'Tu acceso Pro está activo' : 'Empieza con tu plan gratuito';
+        ? 'Tu plan: CDL Ultra'
+        : hasRadarPro ? 'Tu plan: CDL Premium' : 'Tu plan: CDL Freemium';
       document.getElementById('profileAccessDescription').textContent = hasClassroom
-        ? 'Tienes acceso al Radar sin límite diario y a todos los cursos de Classroom.'
+        ? 'Acceso ilimitado a CDL Radar y a todo el contenido actual y futuro de ClassRoom.'
         : hasRadarPro
-        ? 'Tienes acceso al Radar sin límite diario. Puedes sumar Classroom cuando quieras.'
-        : 'Tu cuenta incluye el acceso freemium al Radar. Actualiza cuando quieras para operar sin límite diario.';
+        ? 'Acceso ilimitado a CDL Radar. Puedes mejorar a CDL Ultra para acceder a todo ClassRoom.'
+        : 'Acceso freemium a CDL Radar. Actualiza tu plan cuando quieras para operar sin límite diario.';
       const planAction = document.getElementById('profilePlanAction');
       planAction.href = hasRadarPro ? '#subscription' : '#upgrade';
       planAction.textContent = hasRadarPro ? 'Gestionar suscripción' : 'Desbloquear Pro';
       document.getElementById('profileAcademyUpgrade').hidden = !hasRadarPro || hasClassroom;
+    }
+
+    async function sendProfileSupportMessage() {
+      const input = document.getElementById('profileSupportMessage');
+      const status = document.getElementById('profileSupportStatus');
+      const button = document.getElementById('profileSupportSend');
+      const message = input.value.trim();
+      if (!message) {
+        status.textContent = 'Escribe un mensaje antes de enviarlo.';
+        status.className = 'profile-support-status error';
+        input.focus();
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = 'Enviando tu mensaje...';
+      status.className = 'profile-support-status';
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('unauthorized');
+        const { error } = await sp.from('user_support_messages').insert({ user_id: session.user.id, message });
+        if (error) throw error;
+        input.value = '';
+        status.textContent = 'Tu mensaje fue enviado. Recibirás un email con tu respuesta en breve.';
+        status.className = 'profile-support-status success';
+      } catch (error) {
+        console.error('No se pudo enviar el mensaje de soporte:', error);
+        status.textContent = 'No pudimos enviar tu mensaje. Inténtalo de nuevo.';
+        status.className = 'profile-support-status error';
+      } finally {
+        button.disabled = false;
+      }
     }
 
     const AFFILIATE_PAYOUT_MINIMUM_CENTS = 5000;
@@ -4282,6 +4340,7 @@
     document.getElementById('studyNoteSave').onclick = saveStudyNote;
     document.getElementById('studyQuestionSend').onclick = submitStudyQuestion;
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
+    document.getElementById("profileSupportSend").onclick = sendProfileSupportMessage;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
     document.getElementById("profileAffiliateAction").onclick = openAffiliatePortal;
