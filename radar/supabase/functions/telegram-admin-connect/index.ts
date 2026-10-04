@@ -4,6 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
+const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") || "";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -28,12 +29,29 @@ serve(async (req) => {
     .eq("user_id", user.id)
     .maybeSingle();
   if (adminError || !administrator) return new Response("Forbidden", { status: 403, headers: corsHeaders });
+  if (!TELEGRAM_WEBHOOK_SECRET) {
+    return new Response("Falta configurar TELEGRAM_WEBHOOK_SECRET.", { status: 500, headers: corsHeaders });
+  }
 
   const botResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`);
   const bot = await botResponse.json();
   if (!botResponse.ok || !bot.ok || !bot.result?.username) {
     console.error("Telegram getMe failed:", bot);
     return new Response("No se pudo obtener el bot de Telegram.", { status: 502, headers: corsHeaders });
+  }
+
+  const webhookResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url: `${SUPABASE_URL}/functions/v1/telegram-webhook`,
+      secret_token: TELEGRAM_WEBHOOK_SECRET,
+    }),
+  });
+  const webhook = await webhookResponse.json();
+  if (!webhookResponse.ok || !webhook.ok) {
+    console.error("Telegram setWebhook failed:", webhook);
+    return new Response("No se pudo configurar el webhook de Telegram.", { status: 502, headers: corsHeaders });
   }
 
   const token = crypto.randomUUID();
