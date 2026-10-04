@@ -218,8 +218,8 @@ function renderUsers() {
     const fpWarning = fpDup ? ` ⚠️(${fpCounts[u.pres.fingerprint]})` : '';
     
     const blockBtn = u.blocked 
-      ? `<button class="btn" style="background:#10b981;" onclick="toggleBlock('${u.id}', false)">✓ Desbloq</button>`
-      : `<button class="btn" style="background:#e74c3c;" onclick="toggleBlock('${u.id}', true)">🚫 Bloquear</button>`;
+      ? `<button class="action-button action-unblock" type="button" onclick="toggleBlock('${u.id}', false)" title="Desbloquear usuario"><span aria-hidden="true">✓</span> Desbloquear</button>`
+      : `<button class="action-button action-block" type="button" onclick="toggleBlock('${u.id}', true)" title="Bloquear usuario"><span aria-hidden="true">⊘</span> Bloquear</button>`;
     
     // Calcular uso del radar
       // Visualización de minutos usados en radar (local, seguro, restaurado)
@@ -266,7 +266,7 @@ function renderUsers() {
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
         <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
-        <td data-label="Teléfono">${u.phone || "—"} <button class="btn" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? ` <button class="btn btn-danger" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">✕</button>` : ''}</td>
+        <td data-label="Teléfono"><span class="phone-value">${u.phone || "—"}</span><span class="phone-actions"><button class="icon-action" type="button" aria-label="Editar teléfono de ${escapeJS(u.displayName)}" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? `<button class="icon-action icon-action-danger" type="button" aria-label="Borrar teléfono de ${escapeJS(u.displayName)}" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">×</button>` : ''}</span></td>
         <td data-label="Nivel"><div class="tier-cell"><span class="pill tier-pill ${u.tier.className}">${u.tier.label}</span><small>${u.tier.description}</small>${radarControl}</div></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>

@@ -35,6 +35,15 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .btn-note-view { background: rgba(255,255,255,0.05); border: 1px solid #333; color: #bbb; padding: 8px 14px; border-radius: 8px; width: 100%; text-align: left; font-size: 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; transition: all 0.2s; }
 .btn-note-view:hover { background: rgba(24,195,107,0.1); border-color: #18c36b; color: #18c36b; }
 .btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
+.phone-actions { display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; vertical-align: middle; }
+.icon-action { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 0; border-radius: 50%; background: #303134; color: #d5d9dd; padding: 0; font: inherit; font-size: 16px; line-height: 1; cursor: pointer; transition: background .16s ease, color .16s ease; }
+.icon-action:hover { background: #3c4043; color: #fff; }
+.icon-action-danger:hover { background: #5f2522; color: #ffb4ab; }
+.action-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; border: 1px solid transparent; border-radius: 18px; padding: 0 12px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: none; transition: background .16s ease, border-color .16s ease; }
+.action-block { border-color: rgba(255,180,171,.3); background: rgba(140,29,24,.25); color: #ffb4ab; }
+.action-block:hover { background: rgba(140,29,24,.42); border-color: rgba(255,180,171,.55); }
+.action-unblock { border-color: rgba(94,234,155,.3); background: rgba(24,195,107,.15); color: #5eea9b; }
+.action-unblock:hover { background: rgba(24,195,107,.25); border-color: rgba(94,234,155,.55); }
 .btn-primary { background:#18c36b; color:#0b0b0b; }
 .btn-danger { background:#e74c3c; color:#fff; }
 .row-actions { display:flex; gap:6px; align-items:center; }
