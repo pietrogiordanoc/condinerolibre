@@ -556,7 +556,7 @@
       padding-bottom: 0;
     }
     .courses-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
     .courses-grid .account-link-card.course-card {
       flex-direction: column;
@@ -701,6 +701,30 @@
     @media (max-width: 680px) { .course-purchase-layout { grid-template-columns: 1fr; } .course-purchase-hero { min-height: 235px; } .course-purchase-hero img { min-height: 235px; } .course-purchase-body { padding: 26px 22px; } }
     .classroom-section { margin-top: 24px; scroll-margin-top: 24px; }
     .classroom-section[hidden] { display: none; }
+    body.classroom-open .sidebar,
+    body.classroom-open .topbar,
+    body.classroom-open .mobile-menu-toggle,
+    body.classroom-open .mobile-menu-backdrop {
+      display: none !important;
+    }
+    body.classroom-open main {
+      padding: 0;
+    }
+    body.classroom-open #viewCourses {
+      display: block !important;
+    }
+    body.classroom-open #viewCourses > :not(#classroomSection) {
+      display: none !important;
+    }
+    body.classroom-open .classroom-section {
+      min-height: 100vh;
+      margin: 0;
+    }
+    body.classroom-open .classroom-shell {
+      min-height: 100vh;
+      border: 0;
+      border-radius: 0;
+    }
     .classroom-shell { overflow: hidden; border: 1px solid rgba(42,255,138,.25); border-radius: 18px; background: linear-gradient(145deg, rgba(12,24,22,.98), rgba(14,18,27,.98)); box-shadow: 0 20px 42px rgba(0,0,0,.28); }
     .classroom-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
     .classroom-kicker { color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
@@ -3262,12 +3286,44 @@
       return false;
     }
 
-    async function openClassroom(courseId) {
+    let classroomHistoryEntry = false;
+
+    function classroomUrl(courseId = null) {
+      const url = new URL(window.location.href);
+      if (courseId) url.searchParams.set('course', courseId);
+      else url.searchParams.delete('course');
+      url.hash = 'courses';
+      return `${url.pathname}${url.search}${url.hash}`;
+    }
+
+    function closeClassroomView() {
+      stopLessonTracking();
+      document.body.classList.remove('classroom-open');
+      document.getElementById('classroomSection').hidden = true;
+    }
+
+    function closeClassroom() {
+      if (classroomHistoryEntry) {
+        classroomHistoryEntry = false;
+        history.back();
+        return;
+      }
+      closeClassroomView();
+      history.replaceState(null, '', classroomUrl());
+      document.getElementById('viewCourses').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    async function openClassroom(courseId, addHistoryEntry = true) {
       const section = document.getElementById('classroomSection');
       const player = document.getElementById('classroomPlayer');
       const lessonsWrap = document.getElementById('classroomLessons');
+      if (addHistoryEntry && new URLSearchParams(location.search).get('course') !== courseId) {
+        history.pushState({ classroomCourseId: courseId }, '', classroomUrl(courseId));
+        classroomHistoryEntry = true;
+      }
+      document.body.classList.add('classroom-open');
       section.hidden = false;
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.scrollTo(0, 0);
       player.innerHTML = '<div class="classroom-player-empty">Cargando lecciones…</div>';
 
       await classroomReady;
@@ -3294,7 +3350,7 @@
 
       if (lessons.length === 0) {
         player.innerHTML = `<div class="classroom-player-empty"><div>${escapeClassroomText(classroomEmptyMessage(courseId))}<br><br><button type="button" class="classroom-close" id="classroomRetry">Reintentar</button></div></div>`;
-        document.getElementById('classroomRetry').onclick = () => openClassroom(courseId);
+        document.getElementById('classroomRetry').onclick = () => openClassroom(courseId, false);
         document.getElementById('classroomNowMeta').textContent = 'Curso activado';
         document.getElementById('classroomNowTitle').textContent = 'Tu acceso está listo.';
         lessonsWrap.classList.remove('classroom-modules-list');
@@ -3824,7 +3880,9 @@
       }
       
       setInterval(heartbeat, 30000); heartbeat();
-      showView(location.hash.replace("#", "") || "radar");
+      const requestedCourseId = new URLSearchParams(location.search).get('course');
+      await showView(requestedCourseId ? 'courses' : (location.hash.replace("#", "") || "radar"));
+      if (requestedCourseId) await openClassroom(requestedCourseId, false);
       setCourseVideo(0, false);
       
       // Event listener para thumbnail de curso
@@ -3842,7 +3900,15 @@
     }
 
     // --- EVENTOS ---
-    window.addEventListener("hashchange", () => showView(location.hash.replace("#", "") || "radar"));
+    window.addEventListener("hashchange", () => {
+      if (!new URLSearchParams(location.search).get('course')) showView(location.hash.replace("#", "") || "radar");
+    });
+    window.addEventListener('popstate', () => {
+      const courseId = new URLSearchParams(location.search).get('course');
+      classroomHistoryEntry = false;
+      if (courseId) openClassroom(courseId, false);
+      else closeClassroomView();
+    });
     window.addEventListener('resize', () => {
       if (!isMobileView()) closeMobileMenu();
     });
@@ -3881,11 +3947,7 @@
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
     document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
-    document.getElementById('classroomClose').onclick = () => {
-      stopLessonTracking();
-      document.getElementById('classroomSection').hidden = true;
-      document.getElementById('viewCourses').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
+    document.getElementById('classroomClose').onclick = closeClassroom;
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
     document.getElementById("profileAvatarInput").addEventListener('change', saveProfileAvatar);
     document.getElementById("profileAvatarRemove").onclick = removeProfileAvatar;
