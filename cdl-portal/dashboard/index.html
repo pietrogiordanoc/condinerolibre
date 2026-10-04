@@ -4698,9 +4698,10 @@
     #acmUpgrade .acm-apply { min-width:280px; padding:16px 28px; border-radius:4px; font-size:16px; font-weight:500; letter-spacing:.04em; }
     .acm-upgrade-consent { display:grid; justify-items:center; gap:16px; width:min(100%, 820px); margin:0 auto; padding:28px 34px; border:1px solid rgba(255,255,255,.14); border-radius:6px; background:linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,138,0,.055)); text-align:center; }
     .acm-upgrade-consent-title { color:#ffab42; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; }
-    .acm-upgrade-consent label { display:flex; align-items:center; justify-content:center; gap:10px; color:rgba(255,255,255,.86); font-size:15px; font-weight:400; line-height:1.55; }
+    .acm-upgrade-consent label { display:flex; align-items:center; justify-content:center; gap:10px; max-width:100%; color:rgba(255,255,255,.86); font-size:15px; font-weight:400; line-height:1.55; }
+    .acm-upgrade-consent label > span { min-width:0; }
     .acm-upgrade-consent input[type="checkbox"] { width:18px; height:18px; flex:0 0 auto; margin:0; accent-color:#ff8a00; }
-    .acm-upgrade-consent-confirm { display:grid !important; gap:8px !important; }
+    .acm-upgrade-consent-confirm { display:grid !important; justify-items:center; gap:8px !important; }
     .acm-upgrade-consent input[type="text"] { width:min(100%, 260px); border:1px solid rgba(255,255,255,.24); border-radius:4px; background:#0c1118; color:#fff; padding:11px 14px; font:inherit; font-size:15px; text-align:center; text-transform:uppercase; }
     .acm-spinner { width: 34px; height: 34px; margin: 0 auto; border: 3px solid rgba(255,255,255,.2); border-top-color: #ff8a00; border-radius: 50%; animation: acm-spin .9s linear infinite; }
     @keyframes acm-spin { to { transform: rotate(360deg); } }
@@ -4819,8 +4820,8 @@
         <p id="acmUpgradeDetail" hidden></p>
         <div id="acmUpgradeConsent" class="acm-upgrade-consent">
           <span class="acm-upgrade-consent-title">Confirmación de cambio</span>
-          <label><input id="acmUpgradeTerms" type="checkbox">Acepto por mi propia voluntad cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes.</label>
-          <label class="acm-upgrade-consent-confirm">Escribe <strong>ACEPTO</strong> para continuar<input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
+          <label><input id="acmUpgradeTerms" type="checkbox"><span>Acepto por mi propia voluntad cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes.</span></label>
+          <label class="acm-upgrade-consent-confirm"><span>Escribe <strong>ACEPTO</strong> para continuar</span><input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
         </div>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()" disabled>CAMBIAR MI PLAN</button>
       </div>
