@@ -37,8 +37,11 @@ serve(async (req) => {
       return new Response(JSON.stringify({ delivered: 0 }), { headers: { "Content-Type": "application/json" } });
     }
 
+    const profileRequest = record.user_id
+      ? supabase.from("profiles").select("full_name, email").eq("id", record.user_id).maybeSingle()
+      : Promise.resolve({ data: null, error: null });
     const [{ data: profile, error: profileError }, { data: administrators, error: adminError }] = await Promise.all([
-      supabase.from("profiles").select("full_name, email").eq("id", record.user_id).maybeSingle(),
+      profileRequest,
       supabase.from("admin_users").select("user_id"),
     ]);
     if (profileError) throw profileError;
@@ -56,8 +59,8 @@ serve(async (req) => {
       .not("telegram_chat_id", "is", null);
     if (connectionsError) throw connectionsError;
 
-    const sender = profile?.full_name || profile?.email || "Usuario CDL";
-    const email = profile?.email || "Sin email";
+    const sender = record.guest_name || profile?.full_name || profile?.email || "Usuario CDL";
+    const email = record.guest_email || profile?.email || "Sin email";
     const text = [
       "Nuevo mensaje · Centro de Mensajes",
       "",

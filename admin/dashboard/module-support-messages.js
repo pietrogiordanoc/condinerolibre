@@ -33,9 +33,12 @@ async function refreshSupportMessageAlert() {
   setSupportMessageAlert(count || 0);
 }
 
-function supportMessageUserLabel(userId) {
-  const user = SUPPORT_MESSAGE_USERS_BY_ID.get(userId);
-  if (!user) return userId;
+function supportMessageUserLabel(message) {
+  if (!message.user_id) {
+    return `${escapeStudyText(message.guest_name || 'Visitante')}<br><small class="muted">${escapeStudyText(message.guest_email || 'Sin email')}</small>`;
+  }
+  const user = SUPPORT_MESSAGE_USERS_BY_ID.get(message.user_id);
+  if (!user) return message.user_id;
   const name = user.full_name || 'Sin nombre';
   return `${escapeStudyText(name)}<br><small class="muted">${escapeStudyText(user.email || '')}</small>`;
 }
@@ -61,7 +64,7 @@ function renderSupportMessages() {
   const body = document.getElementById('supportMessagesTbody');
   body.innerHTML = SUPPORT_MESSAGES.length ? SUPPORT_MESSAGES.map((message) => `
     <tr>
-      <td>${supportMessageUserLabel(message.user_id)}</td>
+      <td>${supportMessageUserLabel(message)}</td>
       <td class="support-message-conversation">
         <div class="support-message-from-user">${escapeStudyText(message.message)}</div>
         ${message.admin_reply ? `<div class="support-message-from-admin"><strong>Tu respuesta · ${formatStudyDate(message.replied_at)}</strong>${escapeStudyText(message.admin_reply)}</div>` : `

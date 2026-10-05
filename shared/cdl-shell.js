@@ -275,6 +275,12 @@
 
     hideLegacyShell();
     initCookieConsent();
+    if (document.documentElement.hasAttribute('data-public-support-chat')) {
+      var supportScript = document.createElement('script');
+      supportScript.src = '/shared/public-support-chat.js';
+      supportScript.defer = true;
+      document.head.appendChild(supportScript);
+    }
 
     // Cargar header
     fetch('/shared/header.html')

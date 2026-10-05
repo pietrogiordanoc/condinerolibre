@@ -4447,6 +4447,10 @@
     document.getElementById('studyNoteSave').onclick = saveStudyNote;
     document.getElementById('studyQuestionSend').onclick = submitStudyQuestion;
     document.getElementById("profileSaveBtn").onclick = saveProfileChanges;
+    document.body.append(
+      document.querySelector(".profile-support-card"),
+      document.getElementById("profileSupportToggle")
+    );
     document.getElementById("profileSupportSend").onclick = sendProfileSupportMessage;
     document.getElementById("profileSupportMessage").addEventListener("keydown", (event) => {
       if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
