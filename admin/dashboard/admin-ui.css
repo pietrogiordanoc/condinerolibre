@@ -59,6 +59,9 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 @media (prefers-reduced-motion: reduce) { .admin-critical-alert { animation:none; } }
 .row-actions { display:flex; gap:6px; align-items:center; }
 .support-message-conversation { min-width:360px; white-space:pre-wrap; }
+.support-message-origin { display:block; width:max-content; margin-bottom:6px; padding:3px 5px; border-radius:3px; font-size:9px; font-weight:700; letter-spacing:.05em; line-height:1; }
+.support-message-origin.guest { background:rgba(245,158,11,.16); color:#fbbf24; }
+.support-message-origin.member { background:rgba(24,195,107,.16); color:#7df0aa; }
 .support-message-from-user { color:#e6ece9; }
 .support-message-from-admin { display:grid; gap:5px; margin-top:10px; padding:9px 10px; border-left:3px solid #18c36b; background:rgba(24,195,107,.08); color:#d8f5e4; }
 .support-message-from-admin strong { color:#83efb2; font-size:10px; text-transform:uppercase; letter-spacing:.04em; }

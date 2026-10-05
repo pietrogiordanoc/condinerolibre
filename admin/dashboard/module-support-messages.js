@@ -35,12 +35,12 @@ async function refreshSupportMessageAlert() {
 
 function supportMessageUserLabel(message) {
   if (!message.user_id) {
-    return `${escapeStudyText(message.guest_name || 'Visitante')}<br><small class="muted">${escapeStudyText(message.guest_email || 'Sin email')}</small>`;
+    return `<span class="support-message-origin guest">VISITANTE WEB</span>${escapeStudyText(message.guest_name || 'Visitante')}<br><small class="muted">${escapeStudyText(message.guest_email || 'Sin email')}</small>`;
   }
   const user = SUPPORT_MESSAGE_USERS_BY_ID.get(message.user_id);
   if (!user) return message.user_id;
   const name = user.full_name || 'Sin nombre';
-  return `${escapeStudyText(name)}<br><small class="muted">${escapeStudyText(user.email || '')}</small>`;
+  return `<span class="support-message-origin member">USUARIO REGISTRADO</span>${escapeStudyText(name)}<br><small class="muted">${escapeStudyText(user.email || '')}</small>`;
 }
 
 async function refreshSupportMessages() {

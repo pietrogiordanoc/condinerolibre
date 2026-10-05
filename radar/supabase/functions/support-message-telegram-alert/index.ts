@@ -59,10 +59,12 @@ serve(async (req) => {
       .not("telegram_chat_id", "is", null);
     if (connectionsError) throw connectionsError;
 
+    const isGuest = !record.user_id;
     const sender = record.guest_name || profile?.full_name || profile?.email || "Usuario CDL";
     const email = record.guest_email || profile?.email || "Sin email";
     const text = [
       "Nuevo mensaje · Centro de Mensajes",
+      isGuest ? "Origen: VISITANTE WEB" : "Origen: USUARIO REGISTRADO",
       "",
       `Usuario: ${sender}`,
       `Email: ${email}`,
