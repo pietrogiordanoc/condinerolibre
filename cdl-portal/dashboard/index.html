@@ -2758,14 +2758,15 @@
       const oscillator = profileSupportAudioContext.createOscillator();
       const gain = profileSupportAudioContext.createGain();
       oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(740, profileSupportAudioContext.currentTime);
+      oscillator.frequency.setValueAtTime(880, profileSupportAudioContext.currentTime);
+      oscillator.frequency.setValueAtTime(1040, profileSupportAudioContext.currentTime + 0.17);
       gain.gain.setValueAtTime(0.0001, profileSupportAudioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.09, profileSupportAudioContext.currentTime + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, profileSupportAudioContext.currentTime + 0.24);
+      gain.gain.exponentialRampToValueAtTime(0.24, profileSupportAudioContext.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, profileSupportAudioContext.currentTime + 0.36);
       oscillator.connect(gain);
       gain.connect(profileSupportAudioContext.destination);
       oscillator.start();
-      oscillator.stop(profileSupportAudioContext.currentTime + 0.25);
+      oscillator.stop(profileSupportAudioContext.currentTime + 0.38);
     }
 
     function renderProfileSupportMessages() {

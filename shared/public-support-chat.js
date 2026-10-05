@@ -39,14 +39,15 @@
     var oscillator = state.audioContext.createOscillator();
     var gain = state.audioContext.createGain();
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(740, state.audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(1040, state.audioContext.currentTime + 0.17);
     gain.gain.setValueAtTime(0.0001, state.audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.09, state.audioContext.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, state.audioContext.currentTime + 0.24);
+    gain.gain.exponentialRampToValueAtTime(0.24, state.audioContext.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, state.audioContext.currentTime + 0.36);
     oscillator.connect(gain);
     gain.connect(state.audioContext.destination);
     oscillator.start();
-    oscillator.stop(state.audioContext.currentTime + 0.25);
+    oscillator.stop(state.audioContext.currentTime + 0.38);
   }
 
   function updateIncomingSound(data) {
