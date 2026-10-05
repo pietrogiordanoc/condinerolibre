@@ -13,6 +13,8 @@ let MODULE_POSITION_BY_ID = {};
 let EXPANDED_DETAIL = new Set();
 let sortKey = 'displayName';
 let sortOrder = 'asc';
+let MOBILE_USER_ROWS_BY_ID = new Map();
+let MOBILE_USER_DETAIL_ID = null;
 
 // Límite diario gratuito de CDLRadar en minutos. Debe coincidir con el límite real
 // aplicado por la Edge Function `radar-access` (radar/supabase/functions/radar-access).
@@ -231,6 +233,8 @@ function renderUsers() {
     if (r.pres.ip_address) ipCounts[r.pres.ip_address] = (ipCounts[r.pres.ip_address] || 0) + 1;
     if (r.pres.fingerprint) fpCounts[r.pres.fingerprint] = (fpCounts[r.pres.fingerprint] || 0) + 1;
   });
+  MOBILE_USER_ROWS_BY_ID = new Map(rows.map((row) => [row.id, row]));
+  renderMobileUserList(rows, ipCounts, fpCounts);
 
   document.getElementById("usersTbody").innerHTML = rows.map(u => {
     const hasRadarPro = u.plan === 'paid' || u.plan === 'pro';
@@ -325,6 +329,126 @@ const ACADEMY_STATUS_LABELS = {
   suspended: ['Suspendido', '#e74c3c'],
   expired: ['Expirado', '#e74c3c'],
   revoked: ['Revocado', '#e74c3c']
+}
+
+function mobileUserDetailItem(label, value) {
+  return `<div class="mobile-user-detail-item"><span>${escapeHtmlText(label)}</span><strong>${escapeHtmlText(value || '—')}</strong></div>`;
+}
+
+function mobileRadarUsageLabel(user) {
+  if (user.plan === 'paid' || user.plan === 'pro') return 'Ilimitado';
+  if (typeof user.radarUsage?.seconds_used === 'number') {
+    return `${Math.floor(user.radarUsage.seconds_used / 60)}/${RADAR_FREE_DAILY_LIMIT_MINUTES} min hoy`;
+  }
+  return `—/${RADAR_FREE_DAILY_LIMIT_MINUTES} min hoy`;
+}
+
+function renderMobileUserList(rows, ipCounts, fpCounts) {
+  const list = document.getElementById('mobileUserList');
+  if (!list) return;
+
+  list.innerHTML = rows.length ? rows.map((user) => {
+    const hasSharedIdentity = (user.pres.ip_address && ipCounts[user.pres.ip_address] > 1)
+      || (user.pres.fingerprint && fpCounts[user.pres.fingerprint] > 1);
+    const flags = [
+      `<span class="mobile-user-chip ${user.online ? 'is-online' : ''}">${user.online ? 'En línea' : 'Sin conexión'}</span>`,
+      user.blocked ? '<span class="mobile-user-chip is-danger">Bloqueado</span>' : '',
+      hasSharedIdentity ? '<span class="mobile-user-chip is-warning">Alerta</span>' : ''
+    ].join('');
+    return `<button class="mobile-user-card" type="button" onclick="openMobileUserDetail('${user.id}')">
+      <span class="mobile-user-presence ${user.online ? 'online' : ''}" aria-hidden="true"></span>
+      <span class="mobile-user-card-main">
+        <span class="mobile-user-card-name">${escapeHtmlText(user.displayName)}</span>
+        <span class="mobile-user-card-email">${escapeHtmlText(user.email)}</span>
+        <span class="mobile-user-card-meta"><span class="mobile-user-chip">${escapeHtmlText(user.tier.label)}</span>${flags}</span>
+      </span>
+      <span class="mobile-user-card-arrow" aria-hidden="true">›</span>
+    </button>`;
+  }).join('') : '<div class="support-messages-empty">No hay usuarios que coincidan con estos filtros.</div>';
+}
+
+function renderMobileUserDetail(section = 'summary') {
+  const user = MOBILE_USER_ROWS_BY_ID.get(MOBILE_USER_DETAIL_ID);
+  if (!user) return;
+
+  const detailSections = {
+    summary: {
+      label: 'Resumen',
+      items: [
+        ['Estado', user.online ? 'En línea' : 'Sin conexión'],
+        ['Plan', user.tier.label],
+        ['Uso del Radar', mobileRadarUsageLabel(user)],
+        ['Ubicación', user.location || 'No disponible']
+      ]
+    },
+    access: {
+      label: 'Acceso',
+      items: [
+        ['Radar', user.plan === 'paid' || user.plan === 'pro' ? 'CDLRadar Pro' : 'CDLRadar Free'],
+        ['Classroom', academyHasAccess(user.id) ? 'Acceso completo activo' : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} cursos individuales`],
+        ['SL experimental', user.experimental_sl_enabled ? 'Activo' : 'Inactivo'],
+        ['Teléfono', user.phone || 'No registrado']
+      ]
+    },
+    activity: {
+      label: 'Actividad',
+      items: [
+        ['Historial', 'Consulta las acciones y eventos registrados'],
+        ['Última presencia', user.pres.last_seen ? timeAgo(user.pres.last_seen) : 'No disponible'],
+        ['Estado de cuenta', user.blocked ? 'Bloqueada' : 'Activa']
+      ]
+    },
+    security: {
+      label: 'Seguridad',
+      items: [
+        ['IP', user.pres.ip_address || 'No disponible'],
+        ['Fingerprint', user.pres.fingerprint || 'No disponible'],
+        ['Estado', user.blocked ? 'Usuario bloqueado' : 'Usuario sin bloqueo']
+      ]
+    }
+  };
+  const active = detailSections[section] || detailSections.summary;
+  const nav = document.getElementById('mobileUserDetailNav');
+  const content = document.getElementById('mobileUserDetailContent');
+  document.getElementById('mobileUserDetailTitle').textContent = user.displayName;
+  nav.innerHTML = Object.entries(detailSections).map(([key, value]) =>
+    `<button type="button" class="${key === section ? 'active' : ''}" onclick="showMobileUserDetailSection('${key}')">${value.label}</button>`
+  ).join('');
+  content.innerHTML = `<div class="mobile-user-detail-grid">${active.items.map(([label, value]) => mobileUserDetailItem(label, value)).join('')}</div>
+    <div class="mobile-user-detail-actions">
+      ${section === 'activity' ? '<button type="button" class="btn btn-primary" onclick="mobileUserAction(\'history\')">Ver historial</button>' : ''}
+      ${section === 'access' ? '<button type="button" class="btn" onclick="mobileUserAction(\'phone\')">Editar teléfono</button>' : ''}
+      <button type="button" class="btn" onclick="mobileUserAction('note')">Notas</button>
+      <button type="button" class="btn ${user.blocked ? 'btn-primary' : 'btn-danger'}" onclick="mobileUserAction('block')">${user.blocked ? 'Desbloquear' : 'Bloquear'}</button>
+    </div>`;
+}
+
+window.openMobileUserDetail = function(userId) {
+  if (!MOBILE_USER_ROWS_BY_ID.has(userId)) return;
+  MOBILE_USER_DETAIL_ID = userId;
+  document.getElementById('mobileUserDetail').hidden = false;
+  document.body.style.overflow = 'hidden';
+  renderMobileUserDetail();
+};
+
+window.closeMobileUserDetail = function() {
+  document.getElementById('mobileUserDetail').hidden = true;
+  document.body.style.overflow = '';
+  MOBILE_USER_DETAIL_ID = null;
+};
+
+window.showMobileUserDetailSection = function(section) {
+  renderMobileUserDetail(section);
+};
+
+window.mobileUserAction = function(action) {
+  const user = MOBILE_USER_ROWS_BY_ID.get(MOBILE_USER_DETAIL_ID);
+  if (!user) return;
+  closeMobileUserDetail();
+  if (action === 'history') openHistory(user.id, user.email);
+  if (action === 'phone') openPhoneModal(user.id, user.displayName, user.phone || '');
+  if (action === 'note') openNoteModal(user.id, user.displayName, user.notas_admin || '');
+  if (action === 'block') toggleBlock(user.id, !user.blocked);
 };
 
 function academyHasAccess(userId) {

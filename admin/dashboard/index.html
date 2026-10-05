@@ -72,7 +72,7 @@
     </div>
 
     <div class="section-title"><span>⚙</span> GESTIÓN DE CLIENTES</div>
-    <div class="table-container">
+    <div class="table-container user-table-container">
       <table class="user-table">
         <thead>
           <tr>
@@ -92,6 +92,7 @@
         <tbody id="usersTbody"></tbody>
       </table>
     </div>
+    <div id="mobileUserList" class="mobile-user-list" aria-label="Usuarios"></div>
     </div>
 
     <div id="viewSupportMessages" style="display:none;">
@@ -211,6 +212,20 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="mobileUserDetail" class="mobile-user-detail" hidden onclick="if(event.target===this) closeMobileUserDetail()">
+    <section class="mobile-user-detail-sheet" role="dialog" aria-modal="true" aria-labelledby="mobileUserDetailTitle">
+      <header class="mobile-user-detail-header">
+        <div>
+          <p class="mobile-user-detail-kicker">Usuario</p>
+          <h2 id="mobileUserDetailTitle">Detalle de usuario</h2>
+        </div>
+        <button type="button" class="mobile-user-detail-close" onclick="closeMobileUserDetail()" aria-label="Cerrar detalle">×</button>
+      </header>
+      <nav id="mobileUserDetailNav" class="mobile-user-detail-nav" aria-label="Secciones de usuario"></nav>
+      <div id="mobileUserDetailContent" class="mobile-user-detail-content"></div>
+    </section>
   </div>
 
   <!-- Modales -->
