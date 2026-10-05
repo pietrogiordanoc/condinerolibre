@@ -98,6 +98,14 @@ function visibleSupportMessages() {
 function renderSupportMessages() {
   const list = document.getElementById('supportMessagesList');
   const messages = visibleSupportMessages();
+  const drafts = new Map();
+  const activeReply = document.activeElement?.matches('.support-reply-form textarea') ? document.activeElement : null;
+  const activeReplyId = activeReply?.id || '';
+  const activeSelectionStart = activeReply?.selectionStart;
+  const activeSelectionEnd = activeReply?.selectionEnd;
+  list.querySelectorAll('.support-reply-form textarea').forEach((input) => {
+    drafts.set(input.id, input.value);
+  });
   list.innerHTML = messages.length ? messages.map((message) => {
     const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(message.id) || [];
     const hasTeamReply = Boolean(message.admin_reply || replies.length);
@@ -126,6 +134,17 @@ function renderSupportMessages() {
       <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
     </article>`;
   }).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
+  drafts.forEach((value, id) => {
+    const input = document.getElementById(id);
+    if (input) input.value = value;
+  });
+  if (activeReplyId) {
+    const input = document.getElementById(activeReplyId);
+    if (input) {
+      input.focus();
+      input.setSelectionRange(activeSelectionStart, activeSelectionEnd);
+    }
+  }
 }
 
 window.replySupportMessage = async function(messageId) {
