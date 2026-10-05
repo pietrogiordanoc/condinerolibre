@@ -60,24 +60,54 @@ async function refreshSupportMessages() {
   renderSupportMessages();
 }
 
+function supportMessageFilterValue(id) {
+  return document.getElementById(id)?.value || '';
+}
+
+function visibleSupportMessages() {
+  const search = supportMessageFilterValue('supportMessageSearch').trim().toLowerCase();
+  const status = supportMessageFilterValue('supportMessageStatusFilter') || 'pending';
+  const origin = supportMessageFilterValue('supportMessageOriginFilter') || 'all';
+  const date = supportMessageFilterValue('supportMessageDateFilter');
+  return SUPPORT_MESSAGES
+    .filter((message) => {
+      const profile = message.user_id ? SUPPORT_MESSAGE_USERS_BY_ID.get(message.user_id) : null;
+      const name = message.guest_name || profile?.full_name || '';
+      const email = message.guest_email || profile?.email || '';
+      const haystack = `${name} ${email} ${message.message} ${message.admin_reply || ''}`.toLowerCase();
+      const matchesSearch = !search || haystack.includes(search);
+      const matchesStatus = status === 'all' || message.status === status;
+      const matchesOrigin = origin === 'all' || (origin === 'guest' ? !message.user_id : !!message.user_id);
+      const matchesDate = !date || message.created_at.slice(0, 10) === date;
+      return matchesSearch && matchesStatus && matchesOrigin && matchesDate;
+    })
+    .sort((first, second) => {
+      const pendingOrder = Number(second.status === 'pending') - Number(first.status === 'pending');
+      return pendingOrder || new Date(second.created_at) - new Date(first.created_at);
+    });
+}
+
 function renderSupportMessages() {
-  const body = document.getElementById('supportMessagesTbody');
-  body.innerHTML = SUPPORT_MESSAGES.length ? SUPPORT_MESSAGES.map((message) => `
-    <tr>
-      <td>${supportMessageUserLabel(message)}</td>
-      <td class="support-message-conversation">
-        <div class="support-message-from-user">${escapeStudyText(message.message)}</div>
-        ${message.admin_reply ? `<div class="support-message-from-admin"><strong>Tu respuesta · ${formatStudyDate(message.replied_at)}</strong>${escapeStudyText(message.admin_reply)}</div>` : `
-          <label class="support-reply-form">
-            <span>Responder en el chat</span>
-            <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta para el usuario..."></textarea>
-            <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
-          </label>`}
-      </td>
-      <td>${formatStudyDate(message.created_at)}</td>
-      <td><span class="tier-badge ${message.status === 'pending' ? 'tier-freemium' : 'tier-ultra'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span></td>
-      <td><div class="row-actions"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></div></td>
-    </tr>`).join('') : '<tr><td colspan="5" class="muted" style="text-align:center; padding:28px;">No hay conversaciones.</td></tr>';
+  const list = document.getElementById('supportMessagesList');
+  const messages = visibleSupportMessages();
+  list.innerHTML = messages.length ? messages.map((message) => `
+    <article class="support-chat-card ${message.status === 'pending' ? 'is-pending' : 'is-completed'}">
+      <header class="support-chat-card-head">
+        <div>${supportMessageUserLabel(message)}</div>
+        <span class="support-chat-status ${message.status === 'pending' ? 'pending' : 'completed'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span>
+      </header>
+      <div class="support-chat-thread">
+        <div class="support-chat-bubble user">${escapeStudyText(message.message)}<small>${formatStudyDate(message.created_at)}</small></div>
+        ${message.admin_reply ? `<div class="support-chat-bubble admin">${escapeStudyText(message.admin_reply)}<small>Equipo CDL · ${formatStudyDate(message.replied_at)}</small></div>` : '<div class="support-chat-empty">Esperando tu respuesta.</div>'}
+      </div>
+      ${message.status === 'pending' ? `
+        <label class="support-reply-form">
+          <span>Responder en el chat</span>
+          <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
+          <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
+        </label>` : ''}
+      <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
+    </article>`).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
 }
 
 window.replySupportMessage = async function(messageId) {
@@ -130,3 +160,6 @@ sp.channel('support_messages_changes').on('postgres_changes', {
   schema: 'public',
   table: 'user_support_messages'
 }, scheduleSupportMessagesRefresh).subscribe((status) => console.log('[Centro de Mensajes] Realtime:', status));
+
+['supportMessageSearch', 'supportMessageStatusFilter', 'supportMessageOriginFilter', 'supportMessageDateFilter']
+  .forEach((id) => document.getElementById(id)?.addEventListener(id === 'supportMessageSearch' ? 'input' : 'change', renderSupportMessages));

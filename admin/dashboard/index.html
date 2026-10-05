@@ -101,13 +101,22 @@
           <button id="refreshSupportMessagesBtn" class="btn btn-primary">Refrescar</button>
         </div>
       </div>
-      <div class="section-title"><span>💬</span> CONVERSACIONES</div>
-      <div class="table-container">
-        <table>
-          <thead><tr><th>Usuario</th><th>Conversación</th><th>Enviado</th><th>Estado</th><th>Acción</th></tr></thead>
-          <tbody id="supportMessagesTbody"></tbody>
-        </table>
+      <div class="support-message-filters">
+        <input id="supportMessageSearch" type="search" placeholder="Buscar por nombre, email o mensaje">
+        <select id="supportMessageStatusFilter">
+          <option value="pending">Pendientes primero</option>
+          <option value="all">Todos los estados</option>
+          <option value="completed">Respondidos</option>
+        </select>
+        <select id="supportMessageOriginFilter">
+          <option value="all">Todos los orígenes</option>
+          <option value="guest">Visitante web</option>
+          <option value="member">Usuario registrado</option>
+        </select>
+        <input id="supportMessageDateFilter" type="date" aria-label="Filtrar mensajes por fecha">
       </div>
+      <div class="section-title"><span>💬</span> CONVERSACIONES</div>
+      <div id="supportMessagesList" class="support-messages-list"></div>
     </div>
 
     <div id="viewPlanChanges" style="display:none;">
