@@ -4,7 +4,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0;
 .header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 18px; border: 1px solid #333; }
 .btn-logout { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .section-title { color: #18c36b; font-size: 1.1rem; margin: 18px 0 12px 0; display: flex; align-items: center; gap: 10px; }
-.table-container { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin-bottom: 18px; }
+.table-container { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow-x: auto; margin-bottom: 18px; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; }
 th { padding: 12px 14px; text-align: left; background: #252525; color: #888; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; cursor: pointer; }
 th.sort-active { color: #18c36b; background: #2a2a2a; }
@@ -33,7 +33,7 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .tier-radar-included { color: #5eea9b; font-size: 10px; }
 .btn-note-view { background: rgba(255,255,255,0.05); border: 1px solid #333; color: #bbb; padding: 8px 14px; border-radius: 8px; width: 100%; text-align: left; font-size: 12px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; transition: all 0.2s; }
 .btn-note-view:hover { background: rgba(24,195,107,0.1); border-color: #18c36b; color: #18c36b; }
-.btn { background: #333; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
+.btn { background: #333; color: white; border: none; min-height: 32px; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 10px; text-transform: uppercase; }
 .phone-actions { display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; vertical-align: middle; }
 .icon-action { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 0; border-radius: 50%; background: #303134; color: #d5d9dd; padding: 0; font: inherit; font-size: 16px; line-height: 1; cursor: pointer; transition: background .16s ease, color .16s ease; }
 .icon-action:hover { background: #3c4043; color: #fff; }
@@ -158,12 +158,16 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .note-counter { text-align: right; color: #666; font-size: 11px; margin-top: 8px; }
 .filters { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px; margin-bottom: 14px; display: flex; gap: 10px; }
 .filters input, .filters select { background: #0f0f0f; border: 1px solid #333; color: #e0e0e0; padding: 10px; border-radius: 10px; font-size: 13px; }
+.admin-toolbar { align-items: center; justify-content: space-between; }
+.toolbar-actions { display: flex; align-items: center; gap: 8px; }
 .classroom-sync-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; padding: 10px 12px; border: 1px solid rgba(24,195,107,.32); border-radius: 10px; background: rgba(24,195,107,.07); }
 .classroom-sync-bar span { margin-right: 4px; color: #76f3ae; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 /* TABS */
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
 .tab-btn { background: transparent; border: none; border-bottom: 3px solid transparent; color: #888; padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
 .tab-btn:hover { color: #e0e0e0; }
 .tab-btn.active { color: #18c36b; border-bottom-color: #18c36b; }
+.tab-btn:focus-visible, .btn:focus-visible, .btn-logout:focus-visible, .row-action:focus-visible, .icon-action:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #67e8a5; outline-offset: 2px; }
 
 /* ANIMACIÓN DE EVENTOS EN TIEMPO REAL */
 @keyframes new-event-flash {
@@ -200,10 +204,12 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   
   /* Tabs más compactos */
   .tab-btn { 
+    flex: 0 0 auto;
+    min-height: 44px;
     padding: 10px 10px; 
     font-size: 11px; 
-    flex: 1;
   }
+  .admin-tabs { gap: 2px; margin-bottom: 14px; }
   
   /* Filtros en columna */
   .filters { 
@@ -215,9 +221,13 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   .filters select,
   .filters button { 
     width: 100%; 
+    min-height: 44px;
     font-size: 13px;
     padding: 8px;
   }
+  .admin-toolbar { align-items: stretch; }
+  .toolbar-actions { width: 100%; flex-direction: column; align-items: stretch; }
+  .toolbar-actions .btn, .toolbar-actions select { width: 100%; }
 
   .classroom-sync-bar { align-items: stretch; flex-direction: column; }
   .classroom-sync-bar .btn { width: 100%; min-height: 34px; }
@@ -229,14 +239,15 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
     border-radius: 8px;
   }
   
-  table { 
-    min-width: 100%;
+  .table-container > table {
+    min-width: 680px;
     font-size: 11px;
   }
+  .user-table { min-width: 1520px !important; }
   
   /* Columnas importantes fijas a la izquierda */
-  th:nth-child(1), /* Usuario */
-  td:nth-child(1) {
+  .user-table th:nth-child(1),
+  .user-table td:nth-child(1) {
     position: sticky;
     left: 0;
     background: #252525;
@@ -245,25 +256,25 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
     max-width: 140px;
   }
   
-  td:nth-child(1) {
+  .user-table td:nth-child(1) {
     background: #1a1a1a;
   }
   
-  tr:hover td:nth-child(1) {
+  .user-table tr:hover td:nth-child(1) {
     background: #1f1f1f;
   }
   
   /* Columnas prioritarias - más anchas */
-  th:nth-child(2), td:nth-child(2) { min-width: 70px; } /* Plan */
-  th:nth-child(3), td:nth-child(3) { min-width: 90px; } /* Estado */
-  th:nth-child(4), td:nth-child(4) { min-width: 100px; } /* Uso Radar */
+  .user-table th:nth-child(2), .user-table td:nth-child(2) { min-width: 100px; }
+  .user-table th:nth-child(3), .user-table td:nth-child(3) { min-width: 150px; }
+  .user-table th:nth-child(4), .user-table td:nth-child(4) { min-width: 100px; }
   
   /* Columnas secundarias - más estrechas */
-  th:nth-child(5), td:nth-child(5) { min-width: 90px; } /* Historial */
-  th:nth-child(6), td:nth-child(6) { min-width: 130px; } /* Ubicación */
-  th:nth-child(7), td:nth-child(7) { min-width: 140px; } /* IP/Fingerprint */
-  th:nth-child(8), td:nth-child(8) { min-width: 90px; } /* Acción */
-  th:nth-child(9), td:nth-child(9) { min-width: 150px; } /* Notas */
+  .user-table th:nth-child(5), .user-table td:nth-child(5) { min-width: 110px; }
+  .user-table th:nth-child(6), .user-table td:nth-child(6) { min-width: 125px; }
+  .user-table th:nth-child(7), .user-table td:nth-child(7) { min-width: 130px; }
+  .user-table th:nth-child(8), .user-table td:nth-child(8) { min-width: 130px; }
+  .user-table th:nth-child(9), .user-table td:nth-child(9) { min-width: 140px; }
   
   th { 
     padding: 8px 6px; 
@@ -278,7 +289,7 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   }
   
   /* Usuario - texto wrap permitido */
-  td:nth-child(1) {
+  .user-table td:nth-child(1) {
     white-space: normal;
   }
   
@@ -342,10 +353,10 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   
   /* Modales full screen */
   .modal { 
-    width: 100%; 
-    height: 100%; 
-    max-height: 100vh; 
-    border-radius: 0; 
+    width: calc(100% - 16px) !important;
+    height: auto;
+    max-height: calc(100vh - 16px);
+    border-radius: 12px;
   }
   
   .modal-header { 
@@ -384,9 +395,13 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   .header h1 { font-size: 1rem !important; }
   
   .tab-btn { 
-    padding: 8px 6px; 
-    font-size: 10px; 
+    padding: 8px 10px;
+    font-size: 11px;
   }
+
+  .support-message-filters { grid-template-columns: 1fr; }
+  .study-question-alert { align-items: flex-start; flex-wrap: wrap; padding: 12px; }
+  .study-question-alert-action { width: 100%; margin-left: 24px; }
   
   th, td { 
     padding: 6px 4px; 

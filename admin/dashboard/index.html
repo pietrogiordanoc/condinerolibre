@@ -25,14 +25,14 @@
     </div>
 
     <!-- Tabs de navegación -->
-    <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
+    <nav class="admin-tabs" aria-label="Secciones de administración">
       <button id="tabUsers" class="tab-btn active" onclick="switchTab('users')">👥 Usuarios</button>
       <button id="tabSupportMessages" class="tab-btn" onclick="switchTab('support-messages')">💬 Centro de Mensajes <span id="supportMessageBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabPlanChanges" class="tab-btn" onclick="switchTab('plan-changes')">💳 Cambios de plan <span id="planChangeBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">📋 Historial Global</button>
       <button id="tabStudyCenter" class="tab-btn" onclick="switchTab('study-center')">🎓 Centro de Estudio <span id="studyQuestionBadge" class="study-question-badge" hidden>0</span></button>
       <button id="tabAffiliates" class="tab-btn" onclick="switchTab('affiliates')">💸 Afiliados</button>
-    </div>
+    </nav>
 
     <button id="studyQuestionAlert" class="study-question-alert admin-critical-alert" type="button" hidden onclick="switchTab('study-center')">
       <span class="study-question-alert-dot" aria-hidden="true"></span>
@@ -72,7 +72,7 @@
 
     <div class="section-title"><span>⚙</span> GESTIÓN DE CLIENTES</div>
     <div class="table-container">
-      <table>
+      <table class="user-table">
         <thead>
           <tr>
             <th onclick="handleSort('displayName')">Usuario ↕</th>
@@ -94,9 +94,9 @@
     </div>
 
     <div id="viewSupportMessages" style="display:none;">
-      <div class="filters" style="justify-content:space-between; align-items:center;">
+      <div class="filters admin-toolbar">
         <span style="font-weight:800; color:#fbbf24;">CENTRO DE MENSAJES · RESPONDER EN EL CHAT Y POR EMAIL</span>
-        <div style="display:flex; gap:8px;">
+        <div class="toolbar-actions">
           <button id="connectTelegramBtn" class="btn">Conectar Telegram</button>
           <button id="refreshSupportMessagesBtn" class="btn btn-primary">Refrescar</button>
         </div>
@@ -122,7 +122,7 @@
     </div>
 
     <div id="viewPlanChanges" style="display:none;">
-      <div class="filters" style="justify-content:space-between; align-items:center;">
+      <div class="filters admin-toolbar">
         <span style="font-weight:800; color:#fbbf24;">CAMBIOS DE PLAN · CDL RADAR PRO A CDL ULTRA</span>
         <button id="refreshPlanChangesBtn" class="btn btn-primary">Refrescar</button>
       </div>
@@ -170,9 +170,9 @@
     </div>
 
     <div id="viewAffiliates" style="display:none;">
-      <div class="filters" style="justify-content:space-between; align-items:center;">
+      <div class="filters admin-toolbar">
         <span style="font-weight:800; color:#18c36b;">PROGRAMA DE AFILIADOS · $15 POR CONVERSIÓN</span>
-        <div style="display:flex; gap:8px;"><button id="linkAffiliateBtn" class="btn">Vincular referido</button><button id="refreshAffiliatesBtn" class="btn btn-primary">Refrescar</button></div>
+        <div class="toolbar-actions"><button id="linkAffiliateBtn" class="btn">Vincular referido</button><button id="refreshAffiliatesBtn" class="btn btn-primary">Refrescar</button></div>
       </div>
       <div class="section-title"><span>💰</span> SALDOS DE REFERIDORES</div>
       <div class="table-container"><table><thead><tr><th>Referente</th><th>Código</th><th>Registrados</th><th>Conversiones</th><th>Saldo disponible</th><th>Ganado histórico</th></tr></thead><tbody id="affiliateAccountsTbody"></tbody></table></div>
@@ -183,9 +183,9 @@
     </div>
 
     <div id="viewStudyCenter" style="display:none;">
-      <div class="filters" style="justify-content:space-between; align-items:center;">
+      <div class="filters admin-toolbar">
         <span style="font-weight:800; color:#86ffd0;">CENTRO DE ESTUDIO · ACOMPAÑAMIENTO DOCENTE</span>
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div class="toolbar-actions">
           <select id="studyQuestionFilter">
             <option value="all">Todas las consultas</option>
             <option value="open">Pendientes</option>
