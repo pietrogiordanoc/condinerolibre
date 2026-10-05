@@ -33,7 +33,7 @@ serve(async (req) => {
 
   try {
     const { record } = await req.json();
-    if (!record?.id || !record?.user_id || !record?.message) {
+    if (!record?.id || !record?.message || (!record?.user_id && !record?.guest_email)) {
       return new Response(JSON.stringify({ delivered: 0 }), { headers: { "Content-Type": "application/json" } });
     }
 
