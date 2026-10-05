@@ -4,7 +4,7 @@
   var endpoint = "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/submit-public-support-message";
   var storageKey = "cdl_public_support_chat";
   var timeoutMs = 10 * 60 * 1000;
-  var state = { contact: null, messages: [], timer: null };
+  var state = { contact: null, messages: [], replies: [], timer: null };
 
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, function (character) {
@@ -46,7 +46,11 @@
       events.push({ kind: "visitor", text: item.message, at: item.created_at });
       if (item.admin_reply && item.replied_at) {
         events.push({ kind: "team", text: item.admin_reply, at: item.replied_at });
-      } else if (Date.now() - new Date(item.created_at).getTime() >= timeoutMs) {
+      }
+      state.replies.filter(function (reply) { return reply.support_message_id === item.id; }).forEach(function (reply) {
+        events.push({ kind: "team", text: reply.message, at: reply.created_at });
+      });
+      if (!item.admin_reply && !state.replies.some(function (reply) { return reply.support_message_id === item.id; }) && Date.now() - new Date(item.created_at).getTime() >= timeoutMs) {
         events.push({
           kind: "system",
           text: "Lamentamos no poder atenderte en este momento. Nuestro equipo está ocupado; te responderemos por email a la brevedad posible.",
@@ -88,6 +92,7 @@
     if (!state.contact) return Promise.resolve();
     return sendRequest({ action: "thread", sessionId: state.contact.sessionId }).then(function (data) {
       state.messages = data.messages || [];
+      state.replies = data.replies || [];
       renderThread(wrapper);
     }).catch(function (error) {
       console.error("No se pudo actualizar el chat público:", error);

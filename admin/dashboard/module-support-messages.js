@@ -1,4 +1,5 @@
 let SUPPORT_MESSAGES = [];
+let SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID = new Map();
 let SUPPORT_MESSAGE_USERS_BY_ID = new Map();
 let supportMessagesRefreshTimer = null;
 
@@ -44,17 +45,24 @@ function supportMessageUserLabel(message) {
 }
 
 async function refreshSupportMessages() {
-  const [messagesResponse, usersResponse] = await Promise.all([
+  const [messagesResponse, usersResponse, repliesResponse] = await Promise.all([
     sp.from('user_support_messages').select('*').order('created_at', { ascending: false }),
-    sp.from('profiles').select('id, full_name, email')
+    sp.from('profiles').select('id, full_name, email'),
+    sp.from('user_support_message_chat_replies').select('support_message_id, message, created_at').order('created_at', { ascending: true })
   ]);
-  const error = messagesResponse.error || usersResponse.error;
+  const error = messagesResponse.error || usersResponse.error || repliesResponse.error;
   if (error) {
     console.error('No se pudieron cargar los mensajes de usuarios:', error);
     Toastify({ text: `No se pudieron cargar los mensajes: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
     return;
   }
   SUPPORT_MESSAGES = messagesResponse.data || [];
+  SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID = new Map();
+  (repliesResponse.data || []).forEach((reply) => {
+    const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(reply.support_message_id) || [];
+    replies.push(reply);
+    SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.set(reply.support_message_id, replies);
+  });
   SUPPORT_MESSAGE_USERS_BY_ID = new Map((usersResponse.data || []).map((user) => [user.id, user]));
   setSupportMessageAlert(SUPPORT_MESSAGES.filter((message) => message.status === 'pending').length);
   renderSupportMessages();
@@ -90,24 +98,34 @@ function visibleSupportMessages() {
 function renderSupportMessages() {
   const list = document.getElementById('supportMessagesList');
   const messages = visibleSupportMessages();
-  list.innerHTML = messages.length ? messages.map((message) => `
+  list.innerHTML = messages.length ? messages.map((message) => {
+    const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(message.id) || [];
+    const hasTeamReply = Boolean(message.admin_reply || replies.length);
+    const lastSeen = message.guest_last_seen_at ? new Date(message.guest_last_seen_at) : null;
+    const isOnline = lastSeen && Date.now() - lastSeen.getTime() <= 30000;
+    const presence = !message.user_id && lastSeen
+      ? `<span class="support-chat-presence ${isOnline ? 'online' : ''}">${isOnline ? 'En línea' : `Visto ${formatStudyDate(message.guest_last_seen_at)}`}</span>`
+      : '';
+    return `
     <article class="support-chat-card ${message.status === 'pending' ? 'is-pending' : 'is-completed'}">
       <header class="support-chat-card-head">
-        <div>${supportMessageUserLabel(message)}</div>
+        <div>${supportMessageUserLabel(message)}${presence}</div>
         <span class="support-chat-status ${message.status === 'pending' ? 'pending' : 'completed'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span>
       </header>
       <div class="support-chat-thread">
         <div class="support-chat-bubble user">${escapeStudyText(message.message)}<small>${formatStudyDate(message.created_at)}</small></div>
-        ${message.admin_reply ? `<div class="support-chat-bubble admin">${escapeStudyText(message.admin_reply)}<small>Equipo CDL · ${formatStudyDate(message.replied_at)}</small></div>` : '<div class="support-chat-empty">Esperando tu respuesta.</div>'}
+        ${message.admin_reply ? `<div class="support-chat-bubble admin">${escapeStudyText(message.admin_reply)}<small>Equipo CDL · ${formatStudyDate(message.replied_at)}</small></div>` : ''}
+        ${replies.map((reply) => `<div class="support-chat-bubble admin">${escapeStudyText(reply.message)}<small>Equipo CDL · ${formatStudyDate(reply.created_at)}</small></div>`).join('')}
+        ${hasTeamReply ? '' : '<div class="support-chat-empty">Esperando tu respuesta.</div>'}
       </div>
-      ${message.status === 'pending' ? `
-        <label class="support-reply-form">
-          <span>Responder en el chat</span>
-          <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
-          <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
-        </label>` : ''}
+      <label class="support-reply-form">
+        <span>${hasTeamReply ? 'Continuar conversación' : 'Responder en el chat'}</span>
+        <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
+        <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
+      </label>
       <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
-    </article>`).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
+    </article>`;
+  }).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
 }
 
 window.replySupportMessage = async function(messageId) {
@@ -123,14 +141,20 @@ window.replySupportMessage = async function(messageId) {
   const { data: { session } } = await sp.auth.getSession();
   if (!session) return;
   input.disabled = true;
-  const { error } = await sp.from('user_support_messages').update({
-    admin_reply: adminReply,
-    replied_at: new Date().toISOString(),
-    replied_by: session.user.id,
-    status: 'completed',
-    completed_at: new Date().toISOString(),
-    completed_by: session.user.id
-  }).eq('id', messageId);
+  const { error } = message.admin_reply
+    ? await sp.from('user_support_message_chat_replies').insert({
+      support_message_id: messageId,
+      message: adminReply,
+      created_by: session.user.id
+    })
+    : await sp.from('user_support_messages').update({
+      admin_reply: adminReply,
+      replied_at: new Date().toISOString(),
+      replied_by: session.user.id,
+      status: 'completed',
+      completed_at: new Date().toISOString(),
+      completed_by: session.user.id
+    }).eq('id', messageId);
   if (error) {
     input.disabled = false;
     console.error('No se pudo completar el mensaje de usuario:', error);
@@ -159,6 +183,10 @@ sp.channel('support_messages_changes').on('postgres_changes', {
   event: '*',
   schema: 'public',
   table: 'user_support_messages'
+}, scheduleSupportMessagesRefresh).on('postgres_changes', {
+  event: '*',
+  schema: 'public',
+  table: 'user_support_message_chat_replies'
 }, scheduleSupportMessagesRefresh).subscribe((status) => console.log('[Centro de Mensajes] Realtime:', status));
 
 ['supportMessageSearch', 'supportMessageStatusFilter', 'supportMessageOriginFilter', 'supportMessageDateFilter']

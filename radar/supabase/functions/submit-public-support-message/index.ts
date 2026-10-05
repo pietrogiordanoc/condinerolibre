@@ -30,13 +30,28 @@ serve(async (req) => {
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(sessionId || ""))) {
         return response({ error: "Conversación no válida." }, 400, origin);
       }
-      const { data, error } = await supabase
+      const { data: messages, error } = await supabase
         .from("user_support_messages")
         .select("id, message, created_at, admin_reply, replied_at, status")
         .eq("public_session_id", sessionId)
         .order("created_at", { ascending: true });
       if (error) throw error;
-      return new Response(JSON.stringify({ messages: data || [] }), { headers: headers(origin) });
+      const messageIds = (messages || []).map((item) => item.id);
+      const { error: presenceError } = await supabase
+        .from("user_support_messages")
+        .update({ guest_last_seen_at: new Date().toISOString() })
+        .eq("public_session_id", sessionId)
+        .is("user_id", null);
+      if (presenceError) throw presenceError;
+      const { data: replies, error: repliesError } = messageIds.length
+        ? await supabase
+          .from("user_support_message_chat_replies")
+          .select("support_message_id, message, created_at")
+          .in("support_message_id", messageIds)
+          .order("created_at", { ascending: true })
+        : { data: [], error: null };
+      if (repliesError) throw repliesError;
+      return new Response(JSON.stringify({ messages: messages || [], replies: replies || [] }), { headers: headers(origin) });
     }
     const guestName = String(name || "").trim();
     const guestEmail = String(email || "").trim().toLowerCase();

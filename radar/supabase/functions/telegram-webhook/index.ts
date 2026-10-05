@@ -63,27 +63,48 @@ serve(async (req) => {
           return new Response(JSON.stringify({ ok: true }), { status: 200 });
         }
 
-        const { data: updatedMessage, error: replyError } = await supabase
+        const { data: supportMessage, error: supportMessageError } = await supabase
           .from("user_support_messages")
-          .update({
-            admin_reply: adminReply,
-            replied_at: new Date().toISOString(),
-            replied_by: alert.admin_user_id,
-            status: "completed",
-            completed_at: new Date().toISOString(),
-            completed_by: alert.admin_user_id,
-          })
+          .select("id, admin_reply")
           .eq("id", alert.support_message_id)
-          .is("admin_reply", null)
-          .select("id")
           .maybeSingle();
+        if (supportMessageError) throw supportMessageError;
+        if (!supportMessage) {
+          await sendTelegramMessage(chatId, "ℹ️ Esta conversación ya no está disponible.");
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        const { data: updatedMessage, error: replyError } = supportMessage.admin_reply
+          ? await supabase
+            .from("user_support_message_chat_replies")
+            .insert({
+              support_message_id: supportMessage.id,
+              message: adminReply,
+              created_by: alert.admin_user_id,
+            })
+            .select("id")
+            .maybeSingle()
+          : await supabase
+            .from("user_support_messages")
+            .update({
+              admin_reply: adminReply,
+              replied_at: new Date().toISOString(),
+              replied_by: alert.admin_user_id,
+              status: "completed",
+              completed_at: new Date().toISOString(),
+              completed_by: alert.admin_user_id,
+            })
+            .eq("id", alert.support_message_id)
+            .is("admin_reply", null)
+            .select("id")
+            .maybeSingle();
         if (replyError) throw replyError;
 
         await sendTelegramMessage(
           chatId,
           updatedMessage
             ? "✅ Respuesta publicada. El usuario o visitante la verá de inmediato en el chat."
-            : "ℹ️ Este mensaje ya fue respondido desde Admin o Telegram."
+            : "ℹ️ No se pudo publicar la respuesta. Inténtalo nuevamente."
         );
         return new Response(JSON.stringify({ ok: true }), { status: 200 });
       }

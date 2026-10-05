@@ -2731,6 +2731,7 @@
     }
 
     let profileSupportMessages = [];
+    let profileSupportRepliesByMessageId = new Map();
     let profileSupportRealtimeChannel = null;
     let profileSupportPollingTimer = null;
     let profileSupportRenderTimer = null;
@@ -2753,7 +2754,11 @@
         const messages = [{ author: 'user', message: item.message, timestamp: item.created_at }];
         if (item.admin_reply && item.replied_at) {
           messages.push({ author: 'admin', message: item.admin_reply, timestamp: item.replied_at });
-        } else if (Date.now() - new Date(item.created_at).getTime() >= PROFILE_SUPPORT_TIMEOUT_MS) {
+        }
+        (profileSupportRepliesByMessageId.get(item.id) || []).forEach((reply) => {
+          messages.push({ author: 'admin', message: reply.message, timestamp: reply.created_at });
+        });
+        if (!item.admin_reply && !(profileSupportRepliesByMessageId.get(item.id) || []).length && Date.now() - new Date(item.created_at).getTime() >= PROFILE_SUPPORT_TIMEOUT_MS) {
           messages.push({ author: 'waiting', message: 'Lamentamos no poder atenderte en este momento. Nuestro equipo está ocupado; te responderemos por email a la brevedad posible.', timestamp: item.created_at });
         } else {
           messages.push({ author: 'waiting', message: 'Estamos buscando un asistente humano para atenderte. Mantén este chat abierto.', timestamp: item.created_at });
@@ -2785,6 +2790,23 @@
         return;
       }
       profileSupportMessages = data || [];
+      const messageIds = profileSupportMessages.map((message) => message.id);
+      const { data: replies, error: repliesError } = messageIds.length
+        ? await sp.from('user_support_message_chat_replies')
+          .select('support_message_id, message, created_at')
+          .in('support_message_id', messageIds)
+          .order('created_at', { ascending: true })
+        : { data: [], error: null };
+      if (repliesError) {
+        console.error('No se pudieron cargar las respuestas del Centro de Mensajes:', repliesError);
+        return;
+      }
+      profileSupportRepliesByMessageId = new Map();
+      (replies || []).forEach((reply) => {
+        const messageReplies = profileSupportRepliesByMessageId.get(reply.support_message_id) || [];
+        messageReplies.push(reply);
+        profileSupportRepliesByMessageId.set(reply.support_message_id, messageReplies);
+      });
       renderProfileSupportMessages();
     }
 
@@ -2799,6 +2821,11 @@
           schema: 'public',
           table: 'user_support_messages',
           filter: `user_id=eq.${session.user.id}`
+        }, () => loadProfileSupportMessages(session))
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'user_support_message_chat_replies'
         }, () => loadProfileSupportMessages(session))
         .subscribe((status) => console.log('[Centro de Mensajes] Realtime:', status));
 
