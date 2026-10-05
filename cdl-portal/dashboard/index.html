@@ -447,6 +447,7 @@
     .profile-support-status.error { color:#c2413b; }
     .profile-support-send { border:0; border-radius:8px; background:#25a768; color:#fff; padding:10px 14px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-send:disabled { opacity:.55; cursor:wait; }
+    .profile-support-close { border:1px solid #cf6760; border-radius:8px; background:transparent; color:#b54a43; padding:10px 12px; font:inherit; font-size:11px; font-weight:600; cursor:pointer; }
     .profile-support-toggle { position:fixed; right:24px; bottom:20px; z-index:10031; display:inline-flex; align-items:center; gap:9px; border:1px solid rgba(255,255,255,.3); border-radius:10px; background:#25a768; color:#fff; padding:12px 16px; box-shadow:0 12px 30px rgba(20,135,80,.35); font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-toggle::before { content:""; width:8px; height:8px; border-radius:50%; background:#d5ffe7; box-shadow:0 0 0 3px rgba(213,255,231,.22); }
     .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
@@ -1819,6 +1820,7 @@
             <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe un mensaje..." aria-label="Tu mensaje para soporte"></textarea>
             <div class="profile-support-actions">
               <button id="profileSupportSend" class="profile-support-send" type="button">Enviar</button>
+              <button id="profileSupportClose" class="profile-support-close" type="button">Terminar conversación</button>
               <span id="profileSupportStatus" class="profile-support-status"></span>
             </div>
           </div>
@@ -2737,6 +2739,8 @@
     let profileSupportHasLoaded = false;
     let profileSupportTeamResponseIds = new Set();
     let profileSupportAudioContext = null;
+    let profileSupportConversationClosed = false;
+    const PROFILE_SUPPORT_ENDPOINT = 'https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/submit-public-support-message';
     let profileSupportRealtimeChannel = null;
     let profileSupportPollingTimer = null;
     let profileSupportRenderTimer = null;
@@ -2785,6 +2789,12 @@
 
     function renderProfileSupportMessages() {
       const thread = document.getElementById('profileSupportThread');
+      const input = document.getElementById('profileSupportMessage');
+      const sendButton = document.getElementById('profileSupportSend');
+      const closeButton = document.getElementById('profileSupportClose');
+      input.disabled = profileSupportConversationClosed;
+      sendButton.disabled = profileSupportConversationClosed;
+      closeButton.hidden = profileSupportConversationClosed || !profileSupportMessages.length;
       const welcome = '<div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Hola, gracias por escribirnos. Bienvenido al chat de ConDineroLibre.</div>';
       if (!profileSupportMessages.length) {
         thread.innerHTML = `${welcome}<span class="profile-support-empty">Aún no has enviado mensajes.</span>`;
@@ -2817,12 +2827,15 @@
         return `${dateSeparator}<div class="${bubbleClass}">${escapeProfileSupportText(event.message)}<small>${author} · ${time}</small></div>`;
       }).join('');
       thread.insertAdjacentHTML('afterbegin', welcome);
+      if (profileSupportConversationClosed) {
+        thread.insertAdjacentHTML('beforeend', '<div class="profile-support-waiting">Esta conversación fue finalizada. Gracias por contactarnos.</div>');
+      }
       thread.scrollTop = thread.scrollHeight;
     }
 
     async function loadProfileSupportMessages(session) {
       const { data, error } = await sp.from('user_support_messages')
-        .select('id, message, created_at, status, admin_reply, replied_at')
+        .select('id, message, created_at, status, admin_reply, replied_at, conversation_closed_at')
         .eq('user_id', session.user.id)
         .order('created_at', { ascending: true });
       if (error) {
@@ -2830,6 +2843,7 @@
         return;
       }
       profileSupportMessages = data || [];
+      profileSupportConversationClosed = profileSupportMessages.length > 0 && profileSupportMessages.every((message) => message.conversation_closed_at);
       const messageIds = profileSupportMessages.map((message) => message.id);
       const { data: replies, error: repliesError } = messageIds.length
         ? await sp.from('user_support_message_chat_replies')
@@ -2895,6 +2909,7 @@
       const button = document.getElementById('profileSupportSend');
       const message = input.value.trim();
       enableProfileSupportIncomingSound();
+      if (profileSupportConversationClosed) return;
       if (!message) {
         status.textContent = 'Escribe un mensaje antes de enviarlo.';
         status.className = 'profile-support-status error';
@@ -2920,6 +2935,38 @@
         status.className = 'profile-support-status error';
       } finally {
         button.disabled = false;
+      }
+    }
+
+    async function closeProfileSupportConversation() {
+      if (!window.confirm('¿Quieres terminar esta conversación? Ya no podrás enviar más mensajes en este chat.')) return;
+      const status = document.getElementById('profileSupportStatus');
+      const closeButton = document.getElementById('profileSupportClose');
+      closeButton.disabled = true;
+      status.textContent = 'Finalizando conversación...';
+      status.className = 'profile-support-status';
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('Sesión no disponible.');
+        const response = await fetch(PROFILE_SUPPORT_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({ action: 'close-authenticated' })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'No pudimos finalizar la conversación.');
+        profileSupportConversationClosed = true;
+        await loadProfileSupportMessages(session);
+        status.textContent = 'Conversación finalizada.';
+        status.className = 'profile-support-status success';
+      } catch (error) {
+        console.error('No se pudo finalizar la conversación:', error);
+        closeButton.disabled = false;
+        status.textContent = error.message || 'No pudimos finalizar la conversación.';
+        status.className = 'profile-support-status error';
       }
     }
 
@@ -4544,6 +4591,7 @@
       document.getElementById("profileSupportToggle")
     );
     document.getElementById("profileSupportSend").onclick = sendProfileSupportMessage;
+    document.getElementById("profileSupportClose").onclick = closeProfileSupportConversation;
     document.getElementById("profileSupportMessage").addEventListener("keydown", (event) => {
       if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
       event.preventDefault();

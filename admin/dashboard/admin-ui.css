@@ -87,6 +87,7 @@ td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #2a2a2a; fon
 .support-reply-form textarea { min-height:78px; resize:vertical; border:1px solid #3b4a43; border-radius:6px; background:#111; color:#f0f5f2; padding:9px; font:inherit; font-size:12px; line-height:1.4; }
 .support-reply-form textarea:focus { outline:2px solid rgba(24,195,107,.28); border-color:#18c36b; }
 .support-reply-form .btn { width:max-content; }
+.support-chat-closed { padding:14px 12px; border-top:1px solid #29322e; color:#9fb0a8; font-size:11px; font-weight:600; }
 .support-chat-card-foot { display:flex; justify-content:flex-end; padding:0 12px 12px; }
 .support-messages-empty { padding:34px; border:1px solid #303a35; border-radius:10px; color:#aab6b1; text-align:center; }
 @media (max-width:760px) { .support-message-filters { grid-template-columns:1fr 1fr; } .support-messages-list { grid-template-columns:1fr; } }

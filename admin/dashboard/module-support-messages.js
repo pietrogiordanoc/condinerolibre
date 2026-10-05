@@ -87,11 +87,13 @@ function visibleSupportMessages() {
       const haystack = `${name} ${email} ${message.message} ${message.admin_reply || ''}`.toLowerCase();
       const matchesSearch = !search || haystack.includes(search);
       const matchesStatus = status === 'all'
+        || (status === 'closed' && Boolean(message.conversation_closed_at))
         || (status === 'online'
           ? !message.user_id
+            && !message.conversation_closed_at
             && message.guest_last_seen_at
             && Date.now() - new Date(message.guest_last_seen_at).getTime() <= 30000
-          : message.status === status);
+          : status !== 'closed' && message.status === status);
       const matchesOrigin = origin === 'all' || (origin === 'guest' ? !message.user_id : !!message.user_id);
       const matchesDate = !date || message.created_at.slice(0, 10) === date;
       return matchesSearch && matchesStatus && matchesOrigin && matchesDate;
@@ -121,11 +123,14 @@ function renderSupportMessages() {
     const presence = !message.user_id && lastSeen
       ? `<span class="support-chat-presence ${isOnline ? 'online' : ''}">${isOnline ? 'En línea' : `Visto ${formatStudyDate(message.guest_last_seen_at)}`}</span>`
       : '';
+    const isClosed = Boolean(message.conversation_closed_at);
+    const state = isClosed ? 'closed' : message.status;
+    const statusLabel = isClosed ? 'Conversación terminada' : message.status === 'pending' ? 'Pendiente' : 'Respondido';
     return `
-    <article class="support-chat-card ${message.status === 'pending' ? 'is-pending' : 'is-completed'}">
+    <article class="support-chat-card ${state === 'pending' ? 'is-pending' : 'is-completed'}">
       <header class="support-chat-card-head">
         <div>${supportMessageUserLabel(message)}${presence}</div>
-        <span class="support-chat-status ${message.status === 'pending' ? 'pending' : 'completed'}">${message.status === 'pending' ? 'Pendiente' : 'Respondido'}</span>
+        <span class="support-chat-status ${state === 'pending' ? 'pending' : 'completed'}">${statusLabel}</span>
       </header>
       <div class="support-chat-thread">
         <div class="support-chat-bubble user">${escapeStudyText(message.message)}<small>${formatStudyDate(message.created_at)}</small></div>
@@ -133,11 +138,11 @@ function renderSupportMessages() {
         ${replies.map((reply) => `<div class="support-chat-bubble admin">${escapeStudyText(reply.message)}<small>Equipo CDL · ${formatStudyDate(reply.created_at)}</small></div>`).join('')}
         ${hasTeamReply ? '' : '<div class="support-chat-empty">Esperando tu respuesta.</div>'}
       </div>
-      <label class="support-reply-form">
+      ${isClosed ? '<div class="support-chat-closed">El usuario finalizó esta conversación.</div>' : `<label class="support-reply-form">
         <span>${hasTeamReply ? 'Continuar conversación' : 'Responder en el chat'}</span>
         <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
         <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
-      </label>
+      </label>`}
       <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
     </article>`;
   }).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
@@ -157,6 +162,10 @@ function renderSupportMessages() {
 window.replySupportMessage = async function(messageId) {
   const message = SUPPORT_MESSAGES.find((item) => item.id === messageId);
   if (!message || supportReplySending.has(messageId)) return;
+  if (message.conversation_closed_at) {
+    Toastify({ text: 'Esta conversación fue finalizada por el usuario.', duration: 4000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
   const input = document.getElementById(`supportReply-${messageId}`);
   const adminReply = input.value.trim();
   if (!adminReply) {

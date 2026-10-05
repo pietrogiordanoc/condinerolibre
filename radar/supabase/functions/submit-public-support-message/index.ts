@@ -9,7 +9,7 @@ const allowedOrigins = new Set(["https://condinerolibre.com", "https://www.condi
 function headers(origin: string | null) {
   return {
     "Access-Control-Allow-Origin": origin && allowedOrigins.has(origin) ? origin : "https://condinerolibre.com",
-    "Access-Control-Allow-Headers": "content-type",
+    "Access-Control-Allow-Headers": "content-type, authorization",
     "Content-Type": "application/json",
   };
 }
@@ -32,7 +32,7 @@ serve(async (req) => {
       }
       const { data: messages, error } = await supabase
         .from("user_support_messages")
-        .select("id, message, created_at, admin_reply, replied_at, status")
+        .select("id, message, created_at, admin_reply, replied_at, status, conversation_closed_at")
         .eq("public_session_id", sessionId)
         .order("created_at", { ascending: true });
       if (error) throw error;
@@ -52,6 +52,32 @@ serve(async (req) => {
         : { data: [], error: null };
       if (repliesError) throw repliesError;
       return new Response(JSON.stringify({ messages: messages || [], replies: replies || [] }), { headers: headers(origin) });
+    }
+    if (action === "close") {
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(sessionId || ""))) {
+        return response({ error: "Conversación no válida." }, 400, origin);
+      }
+      const { error } = await supabase
+        .from("user_support_messages")
+        .update({ conversation_closed_at: new Date().toISOString(), conversation_closed_by: "guest" })
+        .eq("public_session_id", sessionId)
+        .is("user_id", null)
+        .is("conversation_closed_at", null);
+      if (error) throw error;
+      return response({ message: "Conversación finalizada." }, 200, origin);
+    }
+    if (action === "close-authenticated") {
+      const accessToken = req.headers.get("Authorization")?.replace(/^Bearer\s+/i, "");
+      if (!accessToken) return response({ error: "Sesión no válida." }, 401, origin);
+      const { data: userData, error: userError } = await supabase.auth.getUser(accessToken);
+      if (userError || !userData.user) return response({ error: "Sesión no válida." }, 401, origin);
+      const { error } = await supabase
+        .from("user_support_messages")
+        .update({ conversation_closed_at: new Date().toISOString(), conversation_closed_by: "user" })
+        .eq("user_id", userData.user.id)
+        .is("conversation_closed_at", null);
+      if (error) throw error;
+      return response({ message: "Conversación finalizada." }, 200, origin);
     }
     const guestName = String(name || "").trim();
     const guestEmail = String(email || "").trim().toLowerCase();
@@ -80,6 +106,17 @@ serve(async (req) => {
     const publicSessionId = String(sessionId || "");
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(publicSessionId)) {
       return response({ error: "No se pudo iniciar la conversación. Actualiza la página e inténtalo de nuevo." }, 400, origin);
+    }
+    const { data: closedConversation, error: closedConversationError } = await supabase
+      .from("user_support_messages")
+      .select("id")
+      .eq("public_session_id", publicSessionId)
+      .not("conversation_closed_at", "is", null)
+      .limit(1)
+      .maybeSingle();
+    if (closedConversationError) throw closedConversationError;
+    if (closedConversation) {
+      return response({ error: "Esta conversación ya fue finalizada." }, 409, origin);
     }
     const { error: insertError } = await supabase.from("user_support_messages").insert({
       user_id: null,
