@@ -1,46 +1,52 @@
 async function init() {
-  const { data: { session } } = await sp.auth.getSession();
-  if (!session) { 
-    // Detectar si es local o producción
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    window.location.href = isLocal ? "../cdl-admin/" : "/cdl-admin/"; 
-    return; 
+  const status = document.getElementById("dashboardStatus");
+  const setStatus = (message, isError = false) => {
+    status.textContent = message;
+    status.classList.toggle("is-error", isError);
+  };
+
+  try {
+    const { data: { session } } = await sp.auth.getSession();
+    if (!session) {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      window.location.href = isLocal ? "../cdl-admin/" : "/cdl-admin/";
+      return;
+    }
+
+    document.getElementById("sessionEmail").textContent = session.user.email;
+    setStatus("Verificando acceso...");
+    const { data: adminUser, error: adminError } = await sp
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
+
+    if (adminError || !adminUser) {
+      await sp.auth.signOut();
+      window.location.href = "/admin/cdl-admin/?error=forbidden";
+      return;
+    }
+
+    setStatus("Cargando usuarios...");
+    await refreshPresence();
+    await refreshRadarUsage();
+    await refreshUsers();
+    await refreshLogs();
+    await refreshStudyQuestionAlert();
+    await refreshPlanChangeAlert();
+    await refreshSupportMessageAlert();
+    setStatus("");
+
+    setInterval(async () => { await refreshPresence(); renderUsers(); }, 5000);
+    setInterval(async () => { await refreshRadarUsage(); renderUsers(); }, 120000);
+    setInterval(refreshUsers, 60000);
+    setInterval(refreshStudyQuestionAlert, 30000);
+    setInterval(refreshPlanChangeAlert, 30000);
+    setInterval(refreshSupportMessageAlert, 30000);
+  } catch (error) {
+    console.error("No se pudo iniciar la consola de administración:", error);
+    setStatus("No se pudo cargar la consola. Comprueba la conexión y recarga la página.", true);
   }
-
-  const { data: adminUser, error: adminError } = await sp
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", session.user.id)
-    .maybeSingle();
-
-  if (adminError || !adminUser) {
-    await sp.auth.signOut();
-    window.location.href = "/admin/cdl-admin/?error=forbidden";
-    return;
-  }
-  
-  document.getElementById("sessionEmail").textContent = session.user.email;
-  
-  // Carga inicial
-  await refreshPresence();
-  await refreshRadarUsage();
-  await refreshUsers();
-  await refreshLogs();
-  await refreshStudyQuestionAlert();
-  await refreshPlanChangeAlert();
-  await refreshSupportMessageAlert();
-
-  // Bucles de refresco (solo presencia, los eventos son en tiempo real con WebSockets)
-  setInterval(async () => { await refreshPresence(); renderUsers(); }, 5000);
-  
-  // Refrescar uso del radar cada 2 minutos
-  setInterval(async () => { await refreshRadarUsage(); renderUsers(); }, 120000);
-
-  // Refresca cursos y progreso de alumnos cada minuto.
-  setInterval(refreshUsers, 60000);
-  setInterval(refreshStudyQuestionAlert, 30000);
-  setInterval(refreshPlanChangeAlert, 30000);
-  setInterval(refreshSupportMessageAlert, 30000);
 }
 
 // Función para cambiar entre tabs

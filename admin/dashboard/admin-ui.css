@@ -2,6 +2,8 @@
 body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 20px; margin: 0; }
 .container { max-width: 1600px; margin: auto; }
 .header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 18px; border: 1px solid #333; }
+.dashboard-status { min-height: 1.2em; margin: 4px 0 0; color: #aab6b1; font-size: 11px; }
+.dashboard-status.is-error { color: #fca5a5; }
 .btn-logout { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .section-title { color: #18c36b; font-size: 1.1rem; margin: 18px 0 12px 0; display: flex; align-items: center; gap: 10px; }
 .table-container { background: #1a1a1a; border-radius: 12px; border: 1px solid #333; overflow-x: auto; margin-bottom: 18px; -webkit-overflow-scrolling: touch; }

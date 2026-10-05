@@ -71,8 +71,8 @@ function loadSessionRows() {
 async function refreshUsers() {
   // Devuelve el plan previo a quien canceló y ya agotó su periodo pagado (ignora errores si el SQL no existe).
   await sp.rpc("academy_expire_overdue").then(() => {}, () => {});
-  const [profilesResponse, coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse, sessionsResponse, academyResponse] = await Promise.all([
-    sp.from("profiles").select("*, notas_admin").order("email", { ascending: true }),
+  const profilesPromise = sp.from("profiles").select("*, notas_admin").order("email", { ascending: true });
+  const userDetailsPromise = Promise.all([
     sp.from("courses").select("id, title, bunny_collection_id").eq("active", true).order("title", { ascending: true }),
     sp.from("course_modules").select("id, course_id, position"),
     sp.from("course_enrollments").select("user_id, course_id"),
@@ -81,6 +81,7 @@ async function refreshUsers() {
     loadSessionRows(),
     sp.from("academy_subscriptions").select("user_id, status, access_until, paypal_subscription_id, activated_at")
   ]);
+  const profilesResponse = await profilesPromise;
 
   if (profilesResponse.error) {
     console.error('No se pudieron cargar los usuarios:', profilesResponse.error);
@@ -89,6 +90,10 @@ async function refreshUsers() {
     return;
   }
 
+  PROFILES = profilesResponse.data || [];
+  renderUsers();
+
+  const [coursesResponse, modulesResponse, enrollmentsResponse, progressResponse, lessonsResponse, sessionsResponse, academyResponse] = await userDetailsPromise;
   ACADEMY_BY_USER = Object.fromEntries((academyResponse.data || []).map((row) => [row.user_id, row]));
 
   PROGRESS_BY_USER = (progressResponse.data || []).reduce((byUser, row) => {
@@ -116,7 +121,6 @@ async function refreshUsers() {
       .push({ t: new Date(session.started_at).getTime(), seconds: session.seconds_watched || 0 });
   });
 
-  PROFILES = profilesResponse.data || [];
   COURSES = coursesResponse.data || [];
   COURSE_IDS_WITH_MODULES = new Set((modulesResponse.data || []).map(module => module.course_id));
   COURSE_ENROLLMENTS_BY_USER = (enrollmentsResponse.data || []).reduce((byUser, enrollment) => {
