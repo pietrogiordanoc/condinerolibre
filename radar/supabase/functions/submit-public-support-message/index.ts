@@ -25,7 +25,19 @@ serve(async (req) => {
   if (!origin || !allowedOrigins.has(origin)) return response({ error: "Origen no permitido." }, 403, origin);
 
   try {
-    const { name, email, message, website } = await req.json();
+    const { action, name, email, message, website, sessionId } = await req.json();
+    if (action === "thread") {
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(sessionId || ""))) {
+        return response({ error: "Conversación no válida." }, 400, origin);
+      }
+      const { data, error } = await supabase
+        .from("user_support_messages")
+        .select("id, message, created_at, admin_reply, replied_at, status")
+        .eq("public_session_id", sessionId)
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return new Response(JSON.stringify({ messages: data || [] }), { headers: headers(origin) });
+    }
     const guestName = String(name || "").trim();
     const guestEmail = String(email || "").trim().toLowerCase();
     const supportMessage = String(message || "").trim();
@@ -50,15 +62,20 @@ serve(async (req) => {
       return response({ error: "Ya recibimos varios mensajes tuyos. Inténtalo de nuevo más tarde." }, 429, origin);
     }
 
+    const publicSessionId = String(sessionId || "");
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(publicSessionId)) {
+      return response({ error: "No se pudo iniciar la conversación. Actualiza la página e inténtalo de nuevo." }, 400, origin);
+    }
     const { error: insertError } = await supabase.from("user_support_messages").insert({
       user_id: null,
       guest_name: guestName,
       guest_email: guestEmail,
       message: supportMessage,
+      public_session_id: publicSessionId,
     });
     if (insertError) throw insertError;
 
-    return response({ message: "Mensaje enviado. Recibirás la respuesta en tu correo." }, 201, origin);
+    return response({ message: "Mensaje enviado." }, 201, origin);
   } catch (error) {
     console.error("Public support message failed:", error);
     return response({ error: "No pudimos enviar tu mensaje. Inténtalo de nuevo." }, 500, origin);

@@ -6,34 +6,11 @@ const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const TELEGRAM_WEBHOOK_SECRET = Deno.env.get("TELEGRAM_WEBHOOK_SECRET") || "";
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
-const RESEND_FROM = Deno.env.get("RESEND_FROM") || "CDL <onboarding@resend.dev>";
 
 // Límite diario gratuito de CDLRadar (debe coincidir con la Edge Function radar-access)
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[character] || character));
-}
-
-async function sendGuestSupportReply(email: string, name: string, reply: string) {
-  if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY is not configured.");
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: RESEND_FROM,
-      to: [email],
-      subject: "Respuesta de ConDineroLibre",
-      html: `<p>Hola ${escapeHtml(name || "");},</p><p>${escapeHtml(reply).replace(/\n/g, "<br>")}</p><p>Equipo ConDineroLibre</p>`,
-    }),
-  });
-  if (!response.ok) throw new Error(`Resend failed: ${await response.text()}`);
-}
 
 serve(async (req) => {
   try {
@@ -86,16 +63,6 @@ serve(async (req) => {
           return new Response(JSON.stringify({ ok: true }), { status: 200 });
         }
 
-        const { data: supportMessage, error: supportMessageError } = await supabase
-          .from("user_support_messages")
-          .select("guest_name, guest_email")
-          .eq("id", alert.support_message_id)
-          .maybeSingle();
-        if (supportMessageError) throw supportMessageError;
-        if (supportMessage?.guest_email) {
-          await sendGuestSupportReply(supportMessage.guest_email, supportMessage.guest_name || "", adminReply);
-        }
-
         const { data: updatedMessage, error: replyError } = await supabase
           .from("user_support_messages")
           .update({
@@ -115,9 +82,7 @@ serve(async (req) => {
         await sendTelegramMessage(
           chatId,
           updatedMessage
-            ? supportMessage?.guest_email
-              ? "✅ Respuesta enviada al correo del visitante."
-              : "✅ Respuesta publicada. El usuario la verá de inmediato en su Centro de Mensajes."
+            ? "✅ Respuesta publicada. El usuario o visitante la verá de inmediato en el chat."
             : "ℹ️ Este mensaje ya fue respondido desde Admin o Telegram."
         );
         return new Response(JSON.stringify({ ok: true }), { status: 200 });

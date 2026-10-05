@@ -2,7 +2,9 @@
   "use strict";
 
   var endpoint = "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/submit-public-support-message";
-  var storageKey = "cdl_public_support_contact";
+  var storageKey = "cdl_public_support_chat";
+  var timeoutMs = 10 * 60 * 1000;
+  var state = { contact: null, messages: [], timer: null };
 
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, function (character) {
@@ -10,78 +12,185 @@
     });
   }
 
-  function savedContact() {
-    try { return JSON.parse(localStorage.getItem(storageKey) || "{}"); } catch (error) { return {}; }
+  function loadState() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+      if (saved && saved.sessionId && saved.name && saved.email) state.contact = saved;
+    } catch (error) {}
   }
 
-  function saveContact(name, email) {
-    try { localStorage.setItem(storageKey, JSON.stringify({ name: name, email: email })); } catch (error) {}
+  function saveState() {
+    try { localStorage.setItem(storageKey, JSON.stringify(state.contact)); } catch (error) {}
+  }
+
+  function formatTime(value) {
+    return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+  }
+
+  function sendRequest(payload) {
+    return fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function (response) {
+      return response.json().catch(function () { return {}; }).then(function (data) {
+        if (!response.ok) throw new Error(data.error || "No pudimos procesar tu mensaje.");
+        return data;
+      });
+    });
+  }
+
+  function buildEvents() {
+    var events = [];
+    state.messages.forEach(function (item) {
+      events.push({ kind: "visitor", text: item.message, at: item.created_at });
+      if (item.admin_reply && item.replied_at) {
+        events.push({ kind: "team", text: item.admin_reply, at: item.replied_at });
+      } else if (Date.now() - new Date(item.created_at).getTime() >= timeoutMs) {
+        events.push({
+          kind: "system",
+          text: "Lamentamos no poder atenderte en este momento. Nuestro equipo está ocupado; te responderemos por email a la brevedad posible.",
+          at: item.created_at
+        });
+      } else {
+        events.push({
+          kind: "system",
+          text: "Estamos buscando un asistente humano para atenderte. Mantén este chat abierto.",
+          at: item.created_at
+        });
+      }
+    });
+    return events.sort(function (first, second) { return new Date(first.at) - new Date(second.at); });
+  }
+
+  function renderThread(wrapper) {
+    var thread = wrapper.querySelector(".cdl-public-support-thread");
+    if (!thread) return;
+    var intro = '<div class="cdl-public-bubble cdl-public-team"><strong>Equipo ConDineroLibre</strong>Hola, gracias por escribirnos. Bienvenido al chat de ConDineroLibre.</div>';
+    thread.innerHTML = intro + buildEvents().map(function (event) {
+      if (event.kind === "system") {
+        return '<div class="cdl-public-system">' + escapeHtml(event.text) + '</div>';
+      }
+      var className = event.kind === "visitor" ? "cdl-public-visitor" : "cdl-public-team";
+      var label = event.kind === "visitor" ? "Tú" : "Equipo CDL";
+      return '<div class="cdl-public-bubble ' + className + '">' + escapeHtml(event.text) + '<small>' + label + ' · ' + formatTime(event.at) + '</small></div>';
+    }).join("");
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function showChat(wrapper) {
+    wrapper.querySelector(".cdl-public-intake").hidden = true;
+    wrapper.querySelector(".cdl-public-chat").hidden = false;
+    renderThread(wrapper);
+  }
+
+  function loadThread(wrapper) {
+    if (!state.contact) return Promise.resolve();
+    return sendRequest({ action: "thread", sessionId: state.contact.sessionId }).then(function (data) {
+      state.messages = data.messages || [];
+      renderThread(wrapper);
+    }).catch(function (error) {
+      console.error("No se pudo actualizar el chat público:", error);
+    });
+  }
+
+  function startPolling(wrapper) {
+    if (state.timer) clearInterval(state.timer);
+    state.timer = setInterval(function () {
+      if (!document.hidden) loadThread(wrapper);
+      else renderThread(wrapper);
+    }, 8000);
   }
 
   function createWidget() {
     if (document.getElementById("cdl-public-support")) return;
-    var contact = savedContact();
+    loadState();
     var wrapper = document.createElement("section");
     wrapper.id = "cdl-public-support";
     wrapper.innerHTML =
       '<style>' +
-      '#cdl-public-support{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:Arial,sans-serif}' +
-      '#cdl-public-support *{box-sizing:border-box}' +
-      '.cdl-public-support-panel{width:min(370px,calc(100vw - 28px));overflow:hidden;border:1px solid rgba(42,255,138,.42);border-radius:16px;background:#e9e6dd;box-shadow:0 24px 64px rgba(0,0,0,.42)}' +
-      '.cdl-public-support-head{padding:15px 16px;background:linear-gradient(135deg,#087c4d,#1fac6c);color:#fff}.cdl-public-support-head strong{display:block;font-size:16px;font-weight:600}.cdl-public-support-head span{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:rgba(255,255,255,.82)}' +
-      '.cdl-public-support-form{display:grid;gap:10px;padding:14px;background-color:#e9e6dd;background-image:radial-gradient(rgba(78,92,90,.22) .7px,transparent .7px);background-size:14px 14px}.cdl-public-support-form label{display:grid;gap:5px;color:#496057;font-size:11px}.cdl-public-support-form input,.cdl-public-support-form textarea{width:100%;border:1px solid #d1dad5;border-radius:8px;background:#fff;color:#20342b;padding:10px;font:inherit;font-size:13px}.cdl-public-support-form textarea{min-height:86px;resize:vertical}.cdl-public-support-form input:focus,.cdl-public-support-form textarea:focus{outline:2px solid rgba(37,167,104,.25);border-color:#25a768}.cdl-public-support-submit{border:0;border-radius:8px;background:#25a768;color:#fff;padding:11px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}.cdl-public-support-submit:disabled{opacity:.6;cursor:wait}.cdl-public-support-status{min-height:16px;margin:0;color:#547067;font-size:11px;line-height:1.4}.cdl-public-support-status.error{color:#bd3b35}.cdl-public-support-status.success{color:#087c4d}.cdl-public-support-toggle{margin:12px 0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.28);border-radius:10px;background:#1ba465;color:#fff;padding:12px 15px;box-shadow:0 12px 28px rgba(20,135,80,.34);font:600 12px Arial,sans-serif;cursor:pointer}.cdl-public-support-toggle:before{content:"";width:8px;height:8px;border-radius:50%;background:#d7ffea;box-shadow:0 0 0 3px rgba(215,255,234,.15)}.cdl-public-support-honeypot{position:absolute!important;left:-9999px!important;opacity:0!important}' +
-      '@media(max-width:600px){#cdl-public-support{right:14px;bottom:14px}.cdl-public-support-panel{width:calc(100vw - 28px)}}' +
+      '#cdl-public-support{position:fixed;right:22px;bottom:22px;z-index:99999;font-family:Arial,sans-serif}#cdl-public-support *{box-sizing:border-box}' +
+      '.cdl-public-support-panel{width:min(380px,calc(100vw - 28px));height:min(540px,calc(100vh - 48px));display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;border:1px solid rgba(42,255,138,.42);border-radius:16px;background:#e9e6dd;box-shadow:0 24px 64px rgba(0,0,0,.42)}.cdl-public-support-head{padding:15px 16px;background:linear-gradient(135deg,#087c4d,#1fac6c);color:#fff}.cdl-public-support-head strong{display:block;font-size:16px;font-weight:600}.cdl-public-support-head span{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:rgba(255,255,255,.82)}' +
+      '.cdl-public-intake,.cdl-public-compose{display:grid;gap:10px;padding:14px;background-color:#e9e6dd;background-image:radial-gradient(rgba(78,92,90,.22) .7px,transparent .7px);background-size:14px 14px}.cdl-public-intake{align-content:center}.cdl-public-intake label{display:grid;gap:5px;color:#496057;font-size:11px}.cdl-public-intake input,.cdl-public-compose textarea{width:100%;border:1px solid #d1dad5;border-radius:8px;background:#fff;color:#20342b;padding:10px;font:inherit;font-size:13px}.cdl-public-compose{grid-template-columns:minmax(0,1fr) auto;background:#fff;border-top:1px solid rgba(0,0,0,.08)}.cdl-public-compose textarea{min-height:44px;max-height:96px;resize:vertical}.cdl-public-send{align-self:end;border:0;border-radius:8px;background:#25a768;color:#fff;padding:11px 13px;font:600 12px Arial,sans-serif;cursor:pointer}.cdl-public-send:disabled{opacity:.6;cursor:wait}.cdl-public-intake input:focus,.cdl-public-compose textarea:focus{outline:2px solid rgba(37,167,104,.25);border-color:#25a768}' +
+      '.cdl-public-support-thread{display:flex;flex-direction:column;gap:10px;min-height:0;overflow-y:auto;padding:14px;background-color:#e9e6dd;background-image:radial-gradient(rgba(78,92,90,.22) .7px,transparent .7px);background-size:14px 14px;scrollbar-width:thin;scrollbar-color:rgba(19,139,84,.48) transparent}.cdl-public-support-thread::-webkit-scrollbar{width:7px}.cdl-public-support-thread::-webkit-scrollbar-thumb{border:2px solid transparent;border-radius:999px;background:rgba(19,139,84,.48);background-clip:padding-box}.cdl-public-bubble{max-width:88%;padding:10px 12px 8px;border-radius:11px;font-size:12px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 2px 8px rgba(0,0,0,.1)}.cdl-public-bubble strong{display:block;margin-bottom:3px;font-size:11px}.cdl-public-bubble small{display:block;margin-top:5px;color:#5f756b;font-size:10px;text-align:right}.cdl-public-visitor{align-self:flex-end;border-radius:11px 11px 3px 11px;background:#c8f3db;color:#17362a}.cdl-public-team{align-self:flex-start;border-radius:11px 11px 11px 3px;background:#fff;color:#24332d}.cdl-public-team strong{color:#087c4d}.cdl-public-system{align-self:center;max-width:90%;border-radius:8px;background:rgba(255,248,195,.85);color:#5e5424;padding:7px 9px;font-size:10.5px;line-height:1.4;text-align:center}' +
+      '.cdl-public-status{grid-column:1/-1;min-height:15px;margin:0;color:#5d7168;font-size:10px}.cdl-public-status.error{color:#bd3b35}.cdl-public-status.success{color:#087c4d}.cdl-public-support-toggle{margin:12px 0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.28);border-radius:10px;background:#1ba465;color:#fff;padding:12px 15px;box-shadow:0 12px 28px rgba(20,135,80,.34);font:600 12px Arial,sans-serif;cursor:pointer}.cdl-public-support-toggle:before{content:"";width:8px;height:8px;border-radius:50%;background:#d7ffea;box-shadow:0 0 0 3px rgba(215,255,234,.15)}.cdl-public-honeypot{position:absolute!important;left:-9999px!important;opacity:0!important}@media(max-width:600px){#cdl-public-support{right:14px;bottom:14px}.cdl-public-support-panel{width:calc(100vw - 28px)}}' +
       '</style>' +
-      '<div class="cdl-public-support-panel" hidden>' +
-      '<div class="cdl-public-support-head"><strong>Centro de Mensajes</strong><span>Déjanos tu consulta. Te responderemos por email.</span></div>' +
-      '<form class="cdl-public-support-form">' +
-      '<label>Tu nombre<input name="name" maxlength="100" autocomplete="name" required value="' + escapeHtml(contact.name) + '"></label>' +
-      '<label>Tu correo<input name="email" type="email" maxlength="254" autocomplete="email" required value="' + escapeHtml(contact.email) + '"></label>' +
-      '<label>Tu mensaje<textarea name="message" maxlength="3000" required placeholder="Escribe tu mensaje..."></textarea></label>' +
-      '<label class="cdl-public-support-honeypot" aria-hidden="true">Sitio web<input name="website" tabindex="-1" autocomplete="off"></label>' +
-      '<button class="cdl-public-support-submit" type="submit">Enviar mensaje</button>' +
-      '<p class="cdl-public-support-status" aria-live="polite"></p>' +
-      '</form></div>' +
+      '<div class="cdl-public-support-panel" hidden><div class="cdl-public-support-head"><strong>Centro de Mensajes</strong><span>Habla con el equipo de ConDineroLibre.</span></div>' +
+      '<form class="cdl-public-intake"><div class="cdl-public-bubble cdl-public-team"><strong>Equipo ConDineroLibre</strong>Hola, gracias por escribirnos. Para iniciar, dinos cómo podemos llamarte.</div><label>Tu nombre<input name="name" maxlength="100" autocomplete="name" required></label><label>Tu correo<input name="email" type="email" maxlength="254" autocomplete="email" required></label><button class="cdl-public-send" type="submit">Entrar al chat</button><p class="cdl-public-status" aria-live="polite"></p></form>' +
+      '<div class="cdl-public-chat" hidden><div class="cdl-public-support-thread" aria-live="polite"></div><form class="cdl-public-compose"><textarea name="message" maxlength="3000" required placeholder="Escribe un mensaje..." aria-label="Tu mensaje"></textarea><button class="cdl-public-send" type="submit">Enviar</button><p class="cdl-public-status" aria-live="polite"></p></form></div></div>' +
       '<button class="cdl-public-support-toggle" type="button" aria-expanded="false">Centro de Mensajes</button>';
-
     document.body.appendChild(wrapper);
+
     var panel = wrapper.querySelector(".cdl-public-support-panel");
     var toggle = wrapper.querySelector(".cdl-public-support-toggle");
-    var form = wrapper.querySelector("form");
-    var submit = wrapper.querySelector(".cdl-public-support-submit");
-    var status = wrapper.querySelector(".cdl-public-support-status");
+    var intake = wrapper.querySelector(".cdl-public-intake");
+    var chat = wrapper.querySelector(".cdl-public-chat");
+    var intakeStatus = intake.querySelector(".cdl-public-status");
+    var chatStatus = chat.querySelector(".cdl-public-status");
+    var compose = chat.querySelector("form");
+
+    if (state.contact) {
+      intake.elements.name.value = state.contact.name;
+      intake.elements.email.value = state.contact.email;
+      showChat(wrapper);
+      loadThread(wrapper);
+      startPolling(wrapper);
+    }
 
     toggle.addEventListener("click", function () {
       var isOpen = panel.hidden;
       panel.hidden = !isOpen;
       toggle.setAttribute("aria-expanded", String(isOpen));
-      if (isOpen) form.elements.name.focus();
+      if (isOpen && state.contact) loadThread(wrapper);
+      if (isOpen && !state.contact) intake.elements.name.focus();
     });
 
-    form.addEventListener("submit", async function (event) {
+    intake.addEventListener("submit", function (event) {
       event.preventDefault();
-      status.className = "cdl-public-support-status";
-      status.textContent = "Enviando tu mensaje...";
-      submit.disabled = true;
-      try {
-        var formData = new FormData(form);
-        var response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(Object.fromEntries(formData.entries()))
-        });
-        var payload = await response.json();
-        if (!response.ok) throw new Error(payload.error || "No pudimos enviar tu mensaje.");
-        saveContact(formData.get("name").trim(), formData.get("email").trim());
-        form.elements.message.value = "";
-        status.className = "cdl-public-support-status success";
-        status.textContent = payload.message;
-      } catch (error) {
-        status.className = "cdl-public-support-status error";
-        status.textContent = error.message || "No pudimos enviar tu mensaje. Inténtalo de nuevo.";
-      } finally {
-        submit.disabled = false;
-      }
+      state.contact = {
+        name: intake.elements.name.value.trim(),
+        email: intake.elements.email.value.trim().toLowerCase(),
+        sessionId: crypto.randomUUID()
+      };
+      saveState();
+      showChat(wrapper);
+      startPolling(wrapper);
+      intakeStatus.textContent = "";
+      compose.elements.message.focus();
+    });
+
+    compose.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var message = compose.elements.message.value.trim();
+      if (!message) return;
+      var button = compose.querySelector(".cdl-public-send");
+      button.disabled = true;
+      chatStatus.className = "cdl-public-status";
+      chatStatus.textContent = "Enviando...";
+      sendRequest({
+        name: state.contact.name,
+        email: state.contact.email,
+        message: message,
+        sessionId: state.contact.sessionId,
+        website: ""
+      }).then(function () {
+        compose.elements.message.value = "";
+        chatStatus.className = "cdl-public-status success";
+        chatStatus.textContent = "Estamos buscando un asistente humano para atenderte.";
+        return loadThread(wrapper);
+      }).catch(function (error) {
+        chatStatus.className = "cdl-public-status error";
+        chatStatus.textContent = error.message || "No pudimos enviar tu mensaje.";
+      }).finally(function () {
+        button.disabled = false;
+        compose.elements.message.focus();
+      });
+    });
+
+    compose.elements.message.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
+      event.preventDefault();
+      compose.requestSubmit();
     });
   }
 
