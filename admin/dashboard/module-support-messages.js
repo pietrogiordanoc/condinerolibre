@@ -76,7 +76,7 @@ function supportMessageFilterValue(id) {
 
 function visibleSupportMessages() {
   const search = supportMessageFilterValue('supportMessageSearch').trim().toLowerCase();
-  const status = supportMessageFilterValue('supportMessageStatusFilter') || 'pending';
+  const status = supportMessageFilterValue('supportMessageStatusFilter') || 'online';
   const origin = supportMessageFilterValue('supportMessageOriginFilter') || 'all';
   const date = supportMessageFilterValue('supportMessageDateFilter');
   return SUPPORT_MESSAGES
@@ -86,7 +86,12 @@ function visibleSupportMessages() {
       const email = message.guest_email || profile?.email || '';
       const haystack = `${name} ${email} ${message.message} ${message.admin_reply || ''}`.toLowerCase();
       const matchesSearch = !search || haystack.includes(search);
-      const matchesStatus = status === 'all' || message.status === status;
+      const matchesStatus = status === 'all'
+        || (status === 'online'
+          ? !message.user_id
+            && message.guest_last_seen_at
+            && Date.now() - new Date(message.guest_last_seen_at).getTime() <= 30000
+          : message.status === status);
       const matchesOrigin = origin === 'all' || (origin === 'guest' ? !message.user_id : !!message.user_id);
       const matchesDate = !date || message.created_at.slice(0, 10) === date;
       return matchesSearch && matchesStatus && matchesOrigin && matchesDate;
