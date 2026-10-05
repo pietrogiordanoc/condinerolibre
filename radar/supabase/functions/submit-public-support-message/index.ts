@@ -58,7 +58,7 @@ serve(async (req) => {
       .eq("guest_email", guestEmail)
       .gte("created_at", oneHourAgo);
     if (countError) throw countError;
-    if ((count || 0) >= 30) {
+    if ((count || 0) >= 50) {
       return response({ error: "Alcanzaste el límite de mensajes por ahora. Inténtalo de nuevo más tarde." }, 429, origin);
     }
 
