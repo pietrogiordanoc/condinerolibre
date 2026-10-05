@@ -46,7 +46,7 @@ serve(async (req) => {
       const { data: replies, error: repliesError } = messageIds.length
         ? await supabase
           .from("user_support_message_chat_replies")
-          .select("support_message_id, message, created_at")
+          .select("id, support_message_id, message, created_at")
           .in("support_message_id", messageIds)
           .order("created_at", { ascending: true })
         : { data: [], error: null };

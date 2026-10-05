@@ -4,7 +4,7 @@
   var endpoint = "https://yhgqmbexjscojlrzguvh.supabase.co/functions/v1/submit-public-support-message";
   var storageKey = "cdl_public_support_chat";
   var timeoutMs = 10 * 60 * 1000;
-  var state = { contact: null, messages: [], replies: [], timer: null };
+  var state = { contact: null, messages: [], replies: [], timer: null, hasLoadedThread: false, teamResponseIds: new Set(), audioContext: null };
 
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, function (character) {
@@ -25,6 +25,44 @@
 
   function formatTime(value) {
     return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+  }
+
+  function enableIncomingSound() {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!state.audioContext) state.audioContext = new AudioContext();
+    if (state.audioContext.state === "suspended") state.audioContext.resume().catch(function () {});
+  }
+
+  function playIncomingSound() {
+    if (!state.audioContext || state.audioContext.state !== "running") return;
+    var oscillator = state.audioContext.createOscillator();
+    var gain = state.audioContext.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(740, state.audioContext.currentTime);
+    gain.gain.setValueAtTime(0.0001, state.audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.09, state.audioContext.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, state.audioContext.currentTime + 0.24);
+    oscillator.connect(gain);
+    gain.connect(state.audioContext.destination);
+    oscillator.start();
+    oscillator.stop(state.audioContext.currentTime + 0.25);
+  }
+
+  function updateIncomingSound(data) {
+    var responseIds = new Set();
+    (data.messages || []).forEach(function (item) {
+      if (item.admin_reply && item.replied_at) responseIds.add("legacy:" + item.id + ":" + item.replied_at);
+    });
+    (data.replies || []).forEach(function (reply) {
+      responseIds.add("reply:" + reply.id);
+    });
+    var hasNewResponse = state.hasLoadedThread && Array.from(responseIds).some(function (id) {
+      return !state.teamResponseIds.has(id);
+    });
+    state.teamResponseIds = responseIds;
+    state.hasLoadedThread = true;
+    if (hasNewResponse) playIncomingSound();
   }
 
   function sendRequest(payload) {
@@ -91,6 +129,7 @@
   function loadThread(wrapper) {
     if (!state.contact) return Promise.resolve();
     return sendRequest({ action: "thread", sessionId: state.contact.sessionId }).then(function (data) {
+      updateIncomingSound(data);
       state.messages = data.messages || [];
       state.replies = data.replies || [];
       renderThread(wrapper);
@@ -143,6 +182,7 @@
     }
 
     toggle.addEventListener("click", function () {
+      enableIncomingSound();
       var isOpen = panel.hidden;
       panel.hidden = !isOpen;
       toggle.setAttribute("aria-expanded", String(isOpen));
@@ -152,6 +192,7 @@
 
     intake.addEventListener("submit", function (event) {
       event.preventDefault();
+      enableIncomingSound();
       state.contact = {
         name: intake.elements.name.value.trim(),
         email: intake.elements.email.value.trim().toLowerCase(),
@@ -166,6 +207,7 @@
 
     compose.addEventListener("submit", function (event) {
       event.preventDefault();
+      enableIncomingSound();
       var message = compose.elements.message.value.trim();
       if (!message) return;
       var button = compose.querySelector(".cdl-public-send");

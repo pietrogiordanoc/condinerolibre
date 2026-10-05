@@ -2732,6 +2732,9 @@
 
     let profileSupportMessages = [];
     let profileSupportRepliesByMessageId = new Map();
+    let profileSupportHasLoaded = false;
+    let profileSupportTeamResponseIds = new Set();
+    let profileSupportAudioContext = null;
     let profileSupportRealtimeChannel = null;
     let profileSupportPollingTimer = null;
     let profileSupportRenderTimer = null;
@@ -2741,6 +2744,28 @@
       return String(value || '').replace(/[&<>'"]/g, (character) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
       }[character]));
+    }
+
+    function enableProfileSupportIncomingSound() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      if (!profileSupportAudioContext) profileSupportAudioContext = new AudioContext();
+      if (profileSupportAudioContext.state === 'suspended') profileSupportAudioContext.resume().catch(() => {});
+    }
+
+    function playProfileSupportIncomingSound() {
+      if (!profileSupportAudioContext || profileSupportAudioContext.state !== 'running') return;
+      const oscillator = profileSupportAudioContext.createOscillator();
+      const gain = profileSupportAudioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(740, profileSupportAudioContext.currentTime);
+      gain.gain.setValueAtTime(0.0001, profileSupportAudioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.09, profileSupportAudioContext.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, profileSupportAudioContext.currentTime + 0.24);
+      oscillator.connect(gain);
+      gain.connect(profileSupportAudioContext.destination);
+      oscillator.start();
+      oscillator.stop(profileSupportAudioContext.currentTime + 0.25);
     }
 
     function renderProfileSupportMessages() {
@@ -2793,7 +2818,7 @@
       const messageIds = profileSupportMessages.map((message) => message.id);
       const { data: replies, error: repliesError } = messageIds.length
         ? await sp.from('user_support_message_chat_replies')
-          .select('support_message_id, message, created_at')
+          .select('id, support_message_id, message, created_at')
           .in('support_message_id', messageIds)
           .order('created_at', { ascending: true })
         : { data: [], error: null };
@@ -2807,6 +2832,15 @@
         messageReplies.push(reply);
         profileSupportRepliesByMessageId.set(reply.support_message_id, messageReplies);
       });
+      const teamResponseIds = new Set();
+      profileSupportMessages.forEach((message) => {
+        if (message.admin_reply && message.replied_at) teamResponseIds.add(`legacy:${message.id}:${message.replied_at}`);
+      });
+      (replies || []).forEach((reply) => teamResponseIds.add(`reply:${reply.id}`));
+      const hasNewResponse = profileSupportHasLoaded && [...teamResponseIds].some((id) => !profileSupportTeamResponseIds.has(id));
+      profileSupportTeamResponseIds = teamResponseIds;
+      profileSupportHasLoaded = true;
+      if (hasNewResponse) playProfileSupportIncomingSound();
       renderProfileSupportMessages();
     }
 
@@ -2842,6 +2876,7 @@
       const status = document.getElementById('profileSupportStatus');
       const button = document.getElementById('profileSupportSend');
       const message = input.value.trim();
+      enableProfileSupportIncomingSound();
       if (!message) {
         status.textContent = 'Escribe un mensaje antes de enviarlo.';
         status.className = 'profile-support-status error';
