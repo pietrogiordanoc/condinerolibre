@@ -93,6 +93,17 @@ window.replySupportMessage = async function(messageId) {
   const { data: { session } } = await sp.auth.getSession();
   if (!session) return;
   input.disabled = true;
+  if (message.guest_email) {
+    const { error: emailError } = await sp.functions.invoke("send-public-support-reply", {
+      body: { messageId, reply: adminReply }
+    });
+    if (emailError) {
+      input.disabled = false;
+      console.error("No se pudo enviar el email al visitante:", emailError);
+      Toastify({ text: "No se pudo enviar el email al visitante. La respuesta no fue publicada.", duration: 7000, backgroundColor: "#e74c3c" }).showToast();
+      return;
+    }
+  }
   const { error } = await sp.from('user_support_messages').update({
     admin_reply: adminReply,
     replied_at: new Date().toISOString(),
