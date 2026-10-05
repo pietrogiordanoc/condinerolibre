@@ -2,6 +2,8 @@ let SUPPORT_MESSAGES = [];
 let SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID = new Map();
 let SUPPORT_MESSAGE_USERS_BY_ID = new Map();
 let supportMessagesRefreshTimer = null;
+const supportReplyDrafts = new Map();
+const supportReplySending = new Set();
 
 function scheduleSupportMessagesRefresh() {
   clearTimeout(supportMessagesRefreshTimer);
@@ -98,13 +100,13 @@ function visibleSupportMessages() {
 function renderSupportMessages() {
   const list = document.getElementById('supportMessagesList');
   const messages = visibleSupportMessages();
-  const drafts = new Map();
   const activeReply = document.activeElement?.matches('.support-reply-form textarea') ? document.activeElement : null;
   const activeReplyId = activeReply?.id || '';
   const activeSelectionStart = activeReply?.selectionStart;
   const activeSelectionEnd = activeReply?.selectionEnd;
   list.querySelectorAll('.support-reply-form textarea').forEach((input) => {
-    drafts.set(input.id, input.value);
+    const messageId = input.id.replace('supportReply-', '');
+    if (!supportReplySending.has(messageId)) supportReplyDrafts.set(input.id, input.value);
   });
   list.innerHTML = messages.length ? messages.map((message) => {
     const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(message.id) || [];
@@ -134,11 +136,11 @@ function renderSupportMessages() {
       <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
     </article>`;
   }).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
-  drafts.forEach((value, id) => {
+  supportReplyDrafts.forEach((value, id) => {
     const input = document.getElementById(id);
     if (input) input.value = value;
   });
-  if (activeReplyId) {
+  if (activeReplyId && !supportReplySending.has(activeReplyId.replace('supportReply-', ''))) {
     const input = document.getElementById(activeReplyId);
     if (input) {
       input.focus();
@@ -149,7 +151,7 @@ function renderSupportMessages() {
 
 window.replySupportMessage = async function(messageId) {
   const message = SUPPORT_MESSAGES.find((item) => item.id === messageId);
-  if (!message) return;
+  if (!message || supportReplySending.has(messageId)) return;
   const input = document.getElementById(`supportReply-${messageId}`);
   const adminReply = input.value.trim();
   if (!adminReply) {
@@ -157,31 +159,40 @@ window.replySupportMessage = async function(messageId) {
     Toastify({ text: 'Escribe una respuesta antes de enviarla.', duration: 4000, backgroundColor: '#e74c3c' }).showToast();
     return;
   }
-  const { data: { session } } = await sp.auth.getSession();
-  if (!session) return;
+  supportReplySending.add(messageId);
+  supportReplyDrafts.delete(input.id);
   input.disabled = true;
-  const { error } = message.admin_reply
-    ? await sp.from('user_support_message_chat_replies').insert({
-      support_message_id: messageId,
-      message: adminReply,
-      created_by: session.user.id
-    })
-    : await sp.from('user_support_messages').update({
-      admin_reply: adminReply,
-      replied_at: new Date().toISOString(),
-      replied_by: session.user.id,
-      status: 'completed',
-      completed_at: new Date().toISOString(),
-      completed_by: session.user.id
-    }).eq('id', messageId);
-  if (error) {
-    input.disabled = false;
+  input.closest('.support-reply-form').querySelector('button').disabled = true;
+  let sendFailed = false;
+  try {
+    const { data: { session } } = await sp.auth.getSession();
+    if (!session) throw new Error('Sesión no disponible.');
+    const { error } = message.admin_reply
+      ? await sp.from('user_support_message_chat_replies').insert({
+        support_message_id: messageId,
+        message: adminReply,
+        created_by: session.user.id
+      })
+      : await sp.from('user_support_messages').update({
+        admin_reply: adminReply,
+        replied_at: new Date().toISOString(),
+        replied_by: session.user.id,
+        status: 'completed',
+        completed_at: new Date().toISOString(),
+        completed_by: session.user.id
+      }).eq('id', messageId);
+    if (error) throw error;
+    Toastify({ text: 'Respuesta publicada en el Centro de Mensajes.', duration: 3500, backgroundColor: '#10b981' }).showToast();
+    await refreshSupportMessages();
+  } catch (error) {
+    sendFailed = true;
+    supportReplyDrafts.set(input.id, adminReply);
     console.error('No se pudo completar el mensaje de usuario:', error);
     Toastify({ text: `No se pudo enviar la respuesta: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
-    return;
+  } finally {
+    supportReplySending.delete(messageId);
+    if (sendFailed) renderSupportMessages();
   }
-  Toastify({ text: 'Respuesta publicada en el Centro de Mensajes.', duration: 3500, backgroundColor: '#10b981' }).showToast();
-  await refreshSupportMessages();
 };
 
 window.deleteSupportMessage = async function(messageId) {
