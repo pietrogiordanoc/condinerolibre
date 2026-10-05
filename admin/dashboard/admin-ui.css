@@ -263,8 +263,8 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   .mobile-user-chip.is-danger { background: rgba(231,76,60,.16); color: #ff9d94; }
   .mobile-user-card-arrow { color: #8f9aa3; font-size: 24px; line-height: 1; }
   .mobile-user-detail[hidden] { display: none; }
-  .mobile-user-detail { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: flex-end; background: rgba(0,0,0,.76); }
-  .mobile-user-detail-sheet { width: 100%; max-height: 92vh; overflow: hidden; border: 1px solid #343e3a; border-radius: 18px 18px 0 0; background: #121514; box-shadow: 0 -14px 42px rgba(0,0,0,.46); }
+  .mobile-user-detail { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: flex-start; background: rgba(0,0,0,.76); }
+  .mobile-user-detail-sheet { width: 100%; max-height: 92vh; overflow: hidden; border: 1px solid #343e3a; border-radius: 0 0 18px 18px; background: #121514; box-shadow: 0 14px 42px rgba(0,0,0,.46); }
   .mobile-user-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px; border-bottom: 1px solid #29322e; }
   .mobile-user-detail-kicker { margin: 0 0 4px; color: #7df0aa; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
   .mobile-user-detail-header h2 { margin: 0; color: #fff; font-size: 18px; }
@@ -279,6 +279,10 @@ tr.new-event { animation: new-event-flash 1.5s ease-out; }
   .mobile-user-detail-item strong { color: #edf4ef; font-size: 13px; overflow-wrap: anywhere; }
   .mobile-user-detail-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
   .mobile-user-detail-actions .btn { min-height: 42px; font-size: 10px; }
+  .mobile-classroom-list { display: grid; gap: 8px; margin-top: 12px; }
+  .mobile-classroom-course { display: flex; align-items: center; gap: 10px; border: 1px solid #29322e; border-radius: 9px; background: #171a19; padding: 11px; color: #edf4ef; font-size: 12px; }
+  .mobile-classroom-course input { flex: 0 0 auto; width: 18px; height: 18px; accent-color: #18c36b; }
+  .mobile-classroom-course small { display: block; margin-top: 3px; color: #9fb0a8; font-size: 10px; }
   
   /* Columnas importantes fijas a la izquierda */
   .user-table th:nth-child(1),

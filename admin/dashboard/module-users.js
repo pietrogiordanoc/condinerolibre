@@ -390,6 +390,13 @@ function renderMobileUserDetail(section = 'summary') {
         ['Teléfono', user.phone || 'No registrado']
       ]
     },
+    classroom: {
+      label: 'Classroom',
+      items: [
+        ['Acceso actual', academyHasAccess(user.id) ? 'Classroom completo activo' : 'Cursos individuales'],
+        ['Cursos activos', academyHasAccess(user.id) ? `${COURSES.length} incluidos por suscripción` : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} asignados`]
+      ]
+    },
     activity: {
       label: 'Actividad',
       items: [
@@ -414,7 +421,21 @@ function renderMobileUserDetail(section = 'summary') {
   nav.innerHTML = Object.entries(detailSections).map(([key, value]) =>
     `<button type="button" class="${key === section ? 'active' : ''}" onclick="showMobileUserDetailSection('${key}')">${value.label}</button>`
   ).join('');
-  content.innerHTML = `<div class="mobile-user-detail-grid">${active.items.map(([label, value]) => mobileUserDetailItem(label, value)).join('')}</div>
+  const classroomControls = section === 'classroom'
+    ? `<div class="mobile-classroom-list">
+        ${academyBlock(user.id)}
+        ${COURSES.length ? COURSES.map((course) => {
+          const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[user.id] || new Set();
+          const viaAcademy = academyHasAccess(user.id) && !ownCourseIds.has(course.id);
+          const enrolled = academyHasAccess(user.id) || ownCourseIds.has(course.id);
+          return `<label class="mobile-classroom-course">
+            <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''} onchange="setCourseAccess('${user.id}', '${course.id}', this.checked, this)">
+            <span>${escapeHtmlText(course.title)}<small>${viaAcademy ? 'Incluido por suscripción Classroom' : 'Asignar acceso individual'}</small></span>
+          </label>`;
+        }).join('') : '<div class="support-messages-empty">No hay cursos configurados.</div>'}
+      </div>`
+    : '';
+  content.innerHTML = `<div class="mobile-user-detail-grid">${active.items.map(([label, value]) => mobileUserDetailItem(label, value)).join('')}</div>${classroomControls}
     <div class="mobile-user-detail-actions">
       ${section === 'activity' ? '<button type="button" class="btn btn-primary" onclick="mobileUserAction(\'history\')">Ver historial</button>' : ''}
       ${section === 'access' ? '<button type="button" class="btn" onclick="mobileUserAction(\'phone\')">Editar teléfono</button>' : ''}
