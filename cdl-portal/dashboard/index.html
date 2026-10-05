@@ -447,7 +447,9 @@
     .profile-support-status.error { color:#c2413b; }
     .profile-support-send { border:0; border-radius:8px; background:#25a768; color:#fff; padding:10px 14px; font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-send:disabled { opacity:.55; cursor:wait; }
-    .profile-support-close { border:1px solid #cf6760; border-radius:8px; background:transparent; color:#b54a43; padding:10px 12px; font:inherit; font-size:11px; font-weight:600; cursor:pointer; }
+    .profile-support-head-actions { display:flex; align-items:flex-start; gap:4px; }
+    .profile-support-head-actions button { width:25px; height:25px; border:0; border-radius:6px; background:rgba(255,255,255,.12); color:#fff; font:500 19px/1 Arial,sans-serif; cursor:pointer; }
+    .profile-support-head-actions button:hover { background:rgba(255,255,255,.24); }
     .profile-support-toggle { position:fixed; right:24px; bottom:20px; z-index:10031; display:inline-flex; align-items:center; gap:9px; border:1px solid rgba(255,255,255,.3); border-radius:10px; background:#25a768; color:#fff; padding:12px 16px; box-shadow:0 12px 30px rgba(20,135,80,.35); font:inherit; font-size:12px; font-weight:500; cursor:pointer; }
     .profile-support-toggle::before { content:""; width:8px; height:8px; border-radius:50%; background:#d5ffe7; box-shadow:0 0 0 3px rgba(213,255,231,.22); }
     .profile-academy-upgrade { grid-area: academy-upgrade; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-color: rgba(255,138,0,.7); background: linear-gradient(135deg, rgba(255,138,0,.16), rgba(20,22,25,.96)); }
@@ -1810,7 +1812,10 @@
               <h3 id="profile-support-title">Centro de Mensajes</h3>
               <p>Chat con el equipo de ConDineroLibre.</p>
             </div>
-            <span class="profile-support-email">No instantáneo</span>
+            <div class="profile-support-head-actions">
+              <button id="profileSupportMinimize" type="button" aria-label="Minimizar chat" title="Minimizar">&minus;</button>
+              <button id="profileSupportClose" type="button" aria-label="Terminar conversación" title="Terminar conversación" hidden>&times;</button>
+            </div>
           </div>
           <div id="profileSupportThread" class="profile-support-thread" aria-live="polite">
             <div class="profile-support-system-bubble"><strong>Equipo CDL</strong>Déjanos tu consulta o sugerencia. Te responderemos por email cuando la revisemos.</div>
@@ -1820,7 +1825,6 @@
             <textarea id="profileSupportMessage" maxlength="3000" placeholder="Escribe un mensaje..." aria-label="Tu mensaje para soporte"></textarea>
             <div class="profile-support-actions">
               <button id="profileSupportSend" class="profile-support-send" type="button">Enviar</button>
-              <button id="profileSupportClose" class="profile-support-close" type="button">Terminar conversación</button>
               <span id="profileSupportStatus" class="profile-support-status"></span>
             </div>
           </div>
@@ -2939,7 +2943,7 @@
     }
 
     async function closeProfileSupportConversation() {
-      if (!window.confirm('¿Quieres terminar esta conversación? Ya no podrás enviar más mensajes en este chat.')) return;
+      if (!window.confirm('¿Quieres terminar esta conversación? Esta acción cerrará el chat y ya no podrás enviar más mensajes.')) return;
       const status = document.getElementById('profileSupportStatus');
       const closeButton = document.getElementById('profileSupportClose');
       closeButton.disabled = true;
@@ -4592,6 +4596,7 @@
     );
     document.getElementById("profileSupportSend").onclick = sendProfileSupportMessage;
     document.getElementById("profileSupportClose").onclick = closeProfileSupportConversation;
+    document.getElementById("profileSupportMinimize").onclick = toggleProfileSupportCenter;
     document.getElementById("profileSupportMessage").addEventListener("keydown", (event) => {
       if (event.key !== "Enter" || event.shiftKey || event.isComposing) return;
       event.preventDefault();
