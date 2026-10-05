@@ -82,6 +82,13 @@ async function refreshUsers() {
     sp.from("academy_subscriptions").select("user_id, status, access_until, paypal_subscription_id, activated_at")
   ]);
 
+  if (profilesResponse.error) {
+    console.error('No se pudieron cargar los usuarios:', profilesResponse.error);
+    document.getElementById("usersTbody").innerHTML = '<tr><td colspan="11" style="padding:24px; color:#fca5a5; text-align:center;">No se pudieron cargar los usuarios. Comprueba la conexión e inténtalo de nuevo.</td></tr>';
+    Toastify({ text: `No se pudieron cargar los usuarios: ${profilesResponse.error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+
   ACADEMY_BY_USER = Object.fromEntries((academyResponse.data || []).map((row) => [row.user_id, row]));
 
   PROGRESS_BY_USER = (progressResponse.data || []).reduce((byUser, row) => {

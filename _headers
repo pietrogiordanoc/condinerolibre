@@ -24,6 +24,14 @@
   # Cache de 1 año para JavaScript
   Cache-Control: public, max-age=31536000, immutable
 
+/admin/dashboard/*.js
+  # La consola usa nombres de archivo estables; debe revalidar cambios de código.
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/admin/dashboard/*.css
+  # La consola usa nombres de archivo estables; debe revalidar cambios de estilos.
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /*.jpg
   # Cache de 1 año para imágenes
   Cache-Control: public, max-age=31536000, immutable
