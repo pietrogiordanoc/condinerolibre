@@ -29,3 +29,4 @@ muestra la ciudad, el desfase GMT y la hora local, junto con la próxima apertur
 o cierre y el tiempo que falta o queda en esa misma hora. Debajo de cada sesión
 se indica si está cerrada (su próxima apertura y el tiempo que falta) o abierta
 (el tiempo transcurrido, el cierre y el tiempo restante).
+La línea temporal inferior representa esas sesiones y marca la hora local actual.

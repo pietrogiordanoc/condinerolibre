@@ -33,6 +33,13 @@ interface MarketSession {
   closesAt: { hour: number; minute: number };
 }
 
+interface TimelineSegment {
+  name: string;
+  startPercent: number;
+  widthPercent: number;
+  colorClass: string;
+}
+
 const EVENT_TIME_ZONES: Record<string, string> = {
   ET: 'America/New_York',
   GMT: 'Etc/UTC'
@@ -181,6 +188,65 @@ const getSessionInfo = (session: MarketSession, now: Date) => {
   }
 
   throw new Error(`No se pudo calcular la próxima apertura de ${session.timeZone}.`);
+};
+
+const getTimelineSegments = (now: Date, userTimeZone: string): TimelineSegment[] => {
+  const userDate = getZonedDateParts(now, userTimeZone);
+  const dayStart = getZonedTimestamp(userDate.year, userDate.month, userDate.day, 0, 0, userTimeZone);
+  const nextDay = new Date(Date.UTC(userDate.year, userDate.month - 1, userDate.day + 1));
+  const dayEnd = getZonedTimestamp(
+    nextDay.getUTCFullYear(),
+    nextDay.getUTCMonth() + 1,
+    nextDay.getUTCDate(),
+    0,
+    0,
+    userTimeZone
+  );
+  const dayDuration = dayEnd - dayStart;
+  const sessions = [
+    { name: 'ASIA', definition: ASIA_SESSION, colorClass: 'bg-blue-500/20 text-blue-300' },
+    { name: 'EU', definition: EUROPE_SESSION, colorClass: 'bg-indigo-500/20 text-indigo-300' },
+    { name: 'NY', definition: AMERICA_SESSION, colorClass: 'bg-emerald-500/25 text-emerald-200' }
+  ];
+
+  return sessions.flatMap(({ name, definition, colorClass }) => {
+    const marketDate = getZonedDateParts(now, definition.timeZone);
+
+    for (let dayOffset = -1; dayOffset <= 1; dayOffset += 1) {
+      const candidate = new Date(Date.UTC(marketDate.year, marketDate.month - 1, marketDate.day + dayOffset));
+      if (!isWeekday(candidate.getUTCDay())) continue;
+
+      const opensAt = getZonedTimestamp(
+        candidate.getUTCFullYear(),
+        candidate.getUTCMonth() + 1,
+        candidate.getUTCDate(),
+        definition.opensAt.hour,
+        definition.opensAt.minute,
+        definition.timeZone
+      );
+      const closesAt = getZonedTimestamp(
+        candidate.getUTCFullYear(),
+        candidate.getUTCMonth() + 1,
+        candidate.getUTCDate(),
+        definition.closesAt.hour,
+        definition.closesAt.minute,
+        definition.timeZone
+      );
+
+      if (closesAt > dayStart && opensAt < dayEnd) {
+        const visibleStart = Math.max(opensAt, dayStart);
+        const visibleEnd = Math.min(closesAt, dayEnd);
+        return [{
+          name,
+          startPercent: ((visibleStart - dayStart) / dayDuration) * 100,
+          widthPercent: ((visibleEnd - visibleStart) / dayDuration) * 100,
+          colorClass
+        }];
+      }
+    }
+
+    return [];
+  });
 };
 
 interface SessionMonitorProps {
@@ -480,25 +546,39 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     const transitionTime = session.nextChangeAt
       ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(session.nextChangeAt)
       : null;
+    const isOpen = session.status === 'open';
 
     return (
-    <div className="flex items-start gap-1.5 md:gap-2 flex-shrink-0">
-      <div className={`mt-1.5 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
-        session.status === 'open' ? 'bg-emerald-500' : 'bg-neutral-600'
-      }`} />
-      <div className="flex flex-col">
-        <span className="text-[10px] md:text-xs font-bold text-white tracking-wider">
-          {session.name}
-        </span>
-        <span className={`mt-0.5 text-[9px] md:text-[10px] font-mono font-bold ${
-          session.status === 'open' ? 'text-emerald-400' : 'text-neutral-500'
-        }`}>
-          {session.status === 'open'
-            ? <>Lleva {session.elapsed || '--'} · cierra {transitionTime || '--'} · quedan {session.timeLeft || '--'}</>
-            : <>Abre {transitionTime || '--'} · faltan {session.opensIn || '--'}</>}
-        </span>
+      <div className={`min-w-[200px] rounded-lg border px-3 py-2.5 font-mono ${
+        isOpen
+          ? 'border-emerald-400/45 bg-emerald-500/[0.10] shadow-[0_0_24px_rgba(16,185,129,0.08)]'
+          : 'border-slate-600/50 bg-slate-800/45'
+      }`}>
+        <div className="flex items-center justify-between gap-3">
+          <span className={`flex items-center gap-1.5 text-xs font-black tracking-wide ${isOpen ? 'text-emerald-200' : 'text-slate-300'}`}>
+            <span className={`h-2 w-2 rounded-full ${isOpen ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 'bg-slate-400'}`} />
+            {session.name}
+          </span>
+          <span className={`rounded px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide ${
+            isOpen ? 'bg-emerald-400/20 text-emerald-300' : 'bg-slate-600/50 text-slate-300'
+          }`}>
+            {isOpen ? 'Activa' : 'Cerrado'}
+          </span>
+        </div>
+        <div className={`mt-1.5 space-y-0.5 text-[10px] font-bold ${isOpen ? 'text-emerald-300' : 'text-slate-400'}`}>
+          {isOpen ? (
+            <>
+              <p>Lleva {session.elapsed || '--'}</p>
+              <p>Cierra {transitionTime || '--'} · Quedan {session.timeLeft || '--'}</p>
+            </>
+          ) : (
+            <>
+              <p>Abre {transitionTime || '--'}</p>
+              <p>Faltan {session.opensIn || '--'}</p>
+            </>
+          )}
+        </div>
       </div>
-    </div>
   );
   };
 
@@ -516,69 +596,73 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
   const userOffsetHours = Math.floor(Math.abs(userOffsetMinutes) / 60).toString().padStart(2, '0');
   const userOffsetRemainder = (Math.abs(userOffsetMinutes) % 60).toString().padStart(2, '0');
   const userGmtOffset = `GMT${userOffsetMinutes >= 0 ? '+' : '-'}${userOffsetHours}:${userOffsetRemainder}`;
+  const timelineSegments = getTimelineSegments(new Date(), userTimeZone);
+  const localNow = new Date();
+  const userDay = getZonedDateParts(localNow, userTimeZone);
+  const localDayStart = getZonedTimestamp(userDay.year, userDay.month, userDay.day, 0, 0, userTimeZone);
+  const localNextDay = new Date(Date.UTC(userDay.year, userDay.month - 1, userDay.day + 1));
+  const localDayEnd = getZonedTimestamp(
+    localNextDay.getUTCFullYear(),
+    localNextDay.getUTCMonth() + 1,
+    localNextDay.getUTCDate(),
+    0,
+    0,
+    userTimeZone
+  );
+  const currentTimePercent = ((localNow.getTime() - localDayStart) / (localDayEnd - localDayStart)) * 100;
+  const activeTimelineSession = [sessions.asia, sessions.europe, sessions.america].find(session => session.status === 'open');
   return (
     <div className="max-w-[1500px] mx-auto px-4 md:px-8 mb-4 md:mb-6">
-      <div className="bg-gradient-to-r from-white/[0.08] to-white/[0.05] border border-white/20 md:border-2 rounded-lg md:rounded-xl overflow-hidden shadow-lg">
+      <div className="overflow-hidden rounded-xl border border-[#274254] bg-[#101d29] shadow-lg">
         {/* Strip principal siempre visible */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-3 md:px-6 py-2 md:py-3.5 gap-3 md:gap-0">
-          <div className="flex items-center gap-3 md:gap-6 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
-            <span className="text-[8px] md:text-[10px] font-black text-white/60 uppercase tracking-widest flex-shrink-0">
-              SESSIONS
+        <div className="flex flex-col gap-3 px-4 py-4 xl:flex-row xl:items-center xl:justify-between md:px-6">
+          <div className="flex min-w-0 items-center gap-4 overflow-x-auto pb-1 xl:pb-0">
+            <span className="shrink-0 border-r border-slate-600/60 pr-4 text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
+              Sessions
             </span>
-            <div className="w-px h-4 md:h-6 bg-white/20" />
             <SessionBadge session={sessions.asia} />
-            <div className="w-px h-4 md:h-5 bg-white/10" />
             <SessionBadge session={sessions.europe} />
-            <div className="w-px h-4 md:h-5 bg-white/10" />
             <SessionBadge session={sessions.america} />
-            <div className="w-px h-4 md:h-5 bg-white/10" />
-            <div className="flex items-center whitespace-nowrap rounded-md border border-cyan-400/25 bg-cyan-400/[0.08] px-2.5 py-1.5 font-mono text-[11px] md:text-xs" aria-live="polite">
-              <span className="font-semibold text-neutral-300">
-                TU HORA · {userLocation} ({userGmtOffset}) · <span className="text-white">{localTime}</span>
-              </span>
+          </div>
+
+          <div className="flex items-center gap-3 overflow-x-auto pb-1 xl:pb-0">
+            <div className="shrink-0 rounded-lg border border-cyan-400/40 bg-cyan-500/[0.06] px-3 py-2 font-mono" aria-live="polite">
+              <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wide text-cyan-200">
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" aria-hidden="true">
+                  <circle cx="12" cy="12" r="8" />
+                  <path strokeLinecap="round" d="M12 7v5l3 2" />
+                </svg>
+                Tu hora
+              </div>
+              <div className="mt-0.5 text-lg font-black leading-none text-cyan-100">{localTime}</div>
+              <div className="mt-1 flex items-center gap-2 text-[9px] font-bold text-cyan-200/80">
+                <span>{userLocation} ({userGmtOffset})</span>
+                <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-1.5 py-0.5 text-[8px] text-emerald-300">SYNC</span>
+              </div>
             </div>
-            
-            {/* Market Activity Indicators - Amplified, hidden on mobile */}
+
             {marketStats && (
-              <>
-                <div className="hidden md:block w-px h-5 bg-white/10" />
-                
-                {/* Mercado Pasivo (≥70% esperando) */}
-                {marketStats.quietPercentage >= 70 ? (
-                  <div className="hidden md:flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-blue-500/15 to-blue-600/10 border-2 border-blue-500/30 rounded-xl shadow-lg">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 border border-blue-400/30">
-                      <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M20 12H4" />
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-black text-blue-300 leading-tight uppercase tracking-wider">
-                        Mercado Pasivo
-                      </span>
-                      <span className="text-[10px] text-blue-400/80 leading-tight font-medium">
-                        {marketStats.waiting} de {marketStats.totalConnected} esperando señal
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  /* Mercado Activo (<70% esperando, hay movimiento) */
-                  <div className="hidden md:flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-emerald-500/15 to-green-600/10 border-2 border-emerald-500/40 rounded-xl shadow-lg animate-pulse">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30">
-                      <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-black text-emerald-300 leading-tight uppercase tracking-wider">
-                        Mercado Activo
-                      </span>
-                      <span className="text-[10px] text-emerald-400/80 leading-tight font-medium">
-                        {marketStats.entering + marketStats.exiting} oportunidades detectadas
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </>
+              <div className={`hidden shrink-0 items-center gap-2 rounded-lg border px-3 py-2.5 md:flex ${
+                marketStats.quietPercentage >= 70
+                  ? 'border-slate-600 bg-slate-800/50 text-slate-300'
+                  : 'border-emerald-400/35 bg-emerald-500/[0.08] text-emerald-200'
+              }`}>
+                <span className={`flex h-7 w-7 items-center justify-center rounded-md border text-lg ${
+                  marketStats.quietPercentage >= 70
+                    ? 'border-slate-500/50 bg-slate-700/40 text-slate-300'
+                    : 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300'
+                }`}>
+                  {marketStats.quietPercentage >= 70 ? '−' : '↗'}
+                </span>
+                <div className="font-mono">
+                  <p className="text-[10px] font-black uppercase tracking-wide">
+                    {marketStats.quietPercentage >= 70 ? 'Mercado pasivo' : 'Mercado activo'}
+                  </p>
+                  <p className="text-[9px] opacity-75">
+                    {marketStats.waiting} de {marketStats.totalConnected} esperando señal
+                  </p>
+                </div>
+              </div>
             )}
           </div>
 
@@ -631,6 +715,44 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+          </div>
+        </div>
+
+        <div className="border-t border-[#274254] px-4 pb-4 pt-2 md:px-6">
+          <div className="relative h-3 overflow-hidden rounded border border-slate-700/70 bg-[#0b1520]">
+            {timelineSegments.map(segment => (
+              <div
+                key={segment.name}
+                className={`absolute top-0 h-full border-x border-white/5 ${segment.colorClass}`}
+                style={{ left: `${segment.startPercent}%`, width: `${segment.widthPercent}%` }}
+              >
+                <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black uppercase tracking-wide opacity-70">
+                  {segment.name}
+                </span>
+              </div>
+            ))}
+            <div
+              className="absolute top-0 z-10 h-full w-[2px] bg-white shadow-[0_0_8px_rgba(255,255,255,0.95)]"
+              style={{ left: `${Math.min(100, Math.max(0, currentTimePercent))}%` }}
+              aria-hidden="true"
+            />
+          </div>
+          <div className="relative mt-1 h-4 font-mono text-[9px] font-bold text-slate-500">
+            <span className="absolute left-0">00:00</span>
+            <span className="absolute left-[16.67%] -translate-x-1/2">04:00</span>
+            <span className="absolute left-1/3 -translate-x-1/2">08:00</span>
+            <span className="absolute left-1/2 -translate-x-1/2">12:00</span>
+            <span className="absolute left-[66.67%] -translate-x-1/2">16:00</span>
+            <span className="absolute left-[83.33%] -translate-x-1/2">20:00</span>
+            <span className="absolute right-0">23:59</span>
+            {activeTimelineSession && (
+              <span
+                className="absolute -top-4 -translate-x-1/2 whitespace-nowrap text-[9px] font-black text-emerald-300"
+                style={{ left: `${Math.min(96, Math.max(4, currentTimePercent))}%` }}
+              >
+                ▲ {localTime} ({activeTimelineSession.name} EN CURSO)
+              </span>
+            )}
           </div>
         </div>
 
