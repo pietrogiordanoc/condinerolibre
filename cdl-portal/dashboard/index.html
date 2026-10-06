@@ -4668,10 +4668,6 @@
       cta.addEventListener('click', (event) => {
         if (cta.onclick) return;
         event.preventDefault();
-        if (isGuestPortal) {
-          window.location.href = "/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23courses";
-          return;
-        }
         classroomPreviewCourseIds.add(cta.dataset.courseId);
         openClassroom(cta.dataset.courseId);
       });
