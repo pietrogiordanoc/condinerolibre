@@ -9,6 +9,30 @@ function isSupportMessagePending(message) {
   return message.status === 'pending' && !message.admin_reply && !message.conversation_closed_at;
 }
 
+function supportConversationKey(message) {
+  if (message.user_id) return `user:${message.user_id}`;
+  if (message.public_session_id) return `guest-session:${message.public_session_id}`;
+  if (message.guest_email) return `guest-email:${message.guest_email.trim().toLowerCase()}`;
+  return `message:${message.id}`;
+}
+
+function groupSupportMessages(messages) {
+  const conversations = new Map();
+  messages.forEach((message) => {
+    const key = supportConversationKey(message);
+    const conversation = conversations.get(key) || { key, messages: [] };
+    conversation.messages.push(message);
+    conversations.set(key, conversation);
+  });
+  return Array.from(conversations.values()).map((conversation) => {
+    conversation.messages.sort((first, second) => new Date(first.created_at) - new Date(second.created_at));
+    conversation.latestMessage = conversation.messages.at(-1);
+    conversation.hasPending = conversation.messages.some(isSupportMessagePending);
+    conversation.isClosed = conversation.messages.every((message) => Boolean(message.conversation_closed_at));
+    return conversation;
+  });
+}
+
 function scheduleSupportMessagesRefresh() {
   clearTimeout(supportMessagesRefreshTimer);
   supportMessagesRefreshTimer = setTimeout(async () => {
@@ -30,16 +54,13 @@ function setSupportMessageAlert(count) {
 }
 
 async function refreshSupportMessageAlert() {
-  const { count, error } = await sp.from('user_support_messages')
-    .select('id', { count: 'exact', head: true })
-    .eq('status', 'pending')
-    .is('admin_reply', null)
-    .is('conversation_closed_at', null);
+  const { data, error } = await sp.from('user_support_messages')
+    .select('id, user_id, guest_email, public_session_id, status, admin_reply, conversation_closed_at');
   if (error) {
     console.error('No se pudo cargar el contador de mensajes de usuarios:', error);
     return;
   }
-  setSupportMessageAlert(count || 0);
+  setSupportMessageAlert(groupSupportMessages(data || []).filter((conversation) => conversation.hasPending).length);
 }
 
 function supportMessageUserLabel(message) {
@@ -72,7 +93,7 @@ async function refreshSupportMessages() {
     SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.set(reply.support_message_id, replies);
   });
   SUPPORT_MESSAGE_USERS_BY_ID = new Map((usersResponse.data || []).map((user) => [user.id, user]));
-  setSupportMessageAlert(SUPPORT_MESSAGES.filter(isSupportMessagePending).length);
+  setSupportMessageAlert(groupSupportMessages(SUPPORT_MESSAGES).filter((conversation) => conversation.hasPending).length);
   renderSupportMessages();
 }
 
@@ -85,28 +106,34 @@ function visibleSupportMessages() {
   const status = supportMessageFilterValue('supportMessageStatusFilter') || 'online';
   const origin = supportMessageFilterValue('supportMessageOriginFilter') || 'all';
   const date = supportMessageFilterValue('supportMessageDateFilter');
-  return SUPPORT_MESSAGES
-    .filter((message) => {
-      const profile = message.user_id ? SUPPORT_MESSAGE_USERS_BY_ID.get(message.user_id) : null;
-      const name = message.guest_name || profile?.full_name || '';
-      const email = message.guest_email || profile?.email || '';
-      const haystack = `${name} ${email} ${message.message} ${message.admin_reply || ''}`.toLowerCase();
+  return groupSupportMessages(SUPPORT_MESSAGES)
+    .filter((conversation) => {
+      const latestMessage = conversation.latestMessage;
+      const profile = latestMessage.user_id ? SUPPORT_MESSAGE_USERS_BY_ID.get(latestMessage.user_id) : null;
+      const name = latestMessage.guest_name || profile?.full_name || '';
+      const email = latestMessage.guest_email || profile?.email || '';
+      const haystack = conversation.messages.map((message) => {
+        const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(message.id) || [];
+        return `${message.message} ${message.admin_reply || ''} ${replies.map((reply) => reply.message).join(' ')}`;
+      }).join(' ').toLowerCase();
       const matchesSearch = !search || haystack.includes(search);
       const matchesStatus = status === 'all'
-        || (status === 'closed' && Boolean(message.conversation_closed_at))
+        || (status === 'closed' && conversation.isClosed)
         || (status === 'online'
-          ? !message.user_id
-            && !message.conversation_closed_at
-            && message.guest_last_seen_at
-            && Date.now() - new Date(message.guest_last_seen_at).getTime() <= 30000
-          : status !== 'closed' && message.status === status);
-      const matchesOrigin = origin === 'all' || (origin === 'guest' ? !message.user_id : !!message.user_id);
-      const matchesDate = !date || message.created_at.slice(0, 10) === date;
+          ? !latestMessage.user_id
+            && !conversation.isClosed
+            && latestMessage.guest_last_seen_at
+            && Date.now() - new Date(latestMessage.guest_last_seen_at).getTime() <= 30000
+          : status === 'pending'
+            ? conversation.hasPending
+            : status !== 'closed' && !conversation.hasPending && !conversation.isClosed);
+      const matchesOrigin = origin === 'all' || (origin === 'guest' ? !latestMessage.user_id : !!latestMessage.user_id);
+      const matchesDate = !date || conversation.messages.some((message) => message.created_at.slice(0, 10) === date);
       return matchesSearch && matchesStatus && matchesOrigin && matchesDate;
     })
     .sort((first, second) => {
-      const pendingOrder = Number(isSupportMessagePending(second)) - Number(isSupportMessagePending(first));
-      return pendingOrder || new Date(second.created_at) - new Date(first.created_at);
+      const pendingOrder = Number(second.hasPending) - Number(first.hasPending);
+      return pendingOrder || new Date(second.latestMessage.created_at) - new Date(first.latestMessage.created_at);
     });
 }
 
@@ -121,18 +148,28 @@ function renderSupportMessages() {
     const messageId = input.id.replace('supportReply-', '');
     if (!supportReplySending.has(messageId)) supportReplyDrafts.set(input.id, input.value);
   });
-  list.innerHTML = messages.length ? messages.map((message) => {
-    const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(message.id) || [];
-    const hasTeamReply = Boolean(message.admin_reply || replies.length);
+  list.innerHTML = messages.length ? messages.map((conversation) => {
+    const message = conversation.latestMessage;
+    const replyTarget = [...conversation.messages].reverse().find((item) => isSupportMessagePending(item)) || message;
+    const hasTeamReply = conversation.messages.some((item) => {
+      const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(item.id) || [];
+      return Boolean(item.admin_reply || replies.length);
+    });
     const lastSeen = message.guest_last_seen_at ? new Date(message.guest_last_seen_at) : null;
     const isOnline = lastSeen && Date.now() - lastSeen.getTime() <= 30000;
     const presence = !message.user_id && lastSeen
       ? `<span class="support-chat-presence ${isOnline ? 'online' : ''}">${isOnline ? 'En línea' : `Visto ${formatStudyDate(message.guest_last_seen_at)}`}</span>`
       : '';
-    const isClosed = Boolean(message.conversation_closed_at);
-    const isPending = isSupportMessagePending(message);
-    const state = isClosed ? 'closed' : isPending ? 'pending' : 'completed';
-    const statusLabel = isClosed ? 'Conversación terminada' : isPending ? 'Pendiente' : 'Respondido';
+    const state = conversation.isClosed ? 'closed' : conversation.hasPending ? 'pending' : 'completed';
+    const statusLabel = conversation.isClosed ? 'Conversación terminada' : conversation.hasPending ? 'Pendiente' : 'Respondido';
+    const thread = conversation.messages.map((item) => {
+      const replies = SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.get(item.id) || [];
+      return `
+        <div class="support-chat-bubble user">${escapeStudyText(item.message)}<small>${formatStudyDate(item.created_at)}</small></div>
+        ${item.admin_reply ? `<div class="support-chat-bubble admin">${escapeStudyText(item.admin_reply)}<small>Equipo CDL · ${formatStudyDate(item.replied_at)}</small></div>` : ''}
+        ${replies.map((reply) => `<div class="support-chat-bubble admin">${escapeStudyText(reply.message)}<small>Equipo CDL · ${formatStudyDate(reply.created_at)}</small></div>`).join('')}
+      `;
+    }).join('');
     return `
     <article class="support-chat-card ${state === 'pending' ? 'is-pending' : 'is-completed'}">
       <header class="support-chat-card-head">
@@ -140,17 +177,15 @@ function renderSupportMessages() {
         <span class="support-chat-status ${state === 'pending' ? 'pending' : 'completed'}">${statusLabel}</span>
       </header>
       <div class="support-chat-thread">
-        <div class="support-chat-bubble user">${escapeStudyText(message.message)}<small>${formatStudyDate(message.created_at)}</small></div>
-        ${message.admin_reply ? `<div class="support-chat-bubble admin">${escapeStudyText(message.admin_reply)}<small>Equipo CDL · ${formatStudyDate(message.replied_at)}</small></div>` : ''}
-        ${replies.map((reply) => `<div class="support-chat-bubble admin">${escapeStudyText(reply.message)}<small>Equipo CDL · ${formatStudyDate(reply.created_at)}</small></div>`).join('')}
-        ${hasTeamReply ? '' : '<div class="support-chat-empty">Esperando tu respuesta.</div>'}
+        ${thread}
+        ${conversation.hasPending && !hasTeamReply ? '<div class="support-chat-empty">Esperando tu respuesta.</div>' : ''}
       </div>
-      ${isClosed ? '<div class="support-chat-closed">El usuario finalizó esta conversación.</div>' : `<label class="support-reply-form">
+      ${conversation.isClosed ? '<div class="support-chat-closed">El usuario finalizó esta conversación.</div>' : `<label class="support-reply-form">
         <span>${hasTeamReply ? 'Continuar conversación' : 'Responder en el chat'}</span>
-        <textarea id="supportReply-${message.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
-        <button class="btn btn-primary" type="button" onclick="replySupportMessage('${message.id}')">Enviar respuesta</button>
+        <textarea id="supportReply-${replyTarget.id}" maxlength="3000" placeholder="Escribe una respuesta..."></textarea>
+        <button class="btn btn-primary" type="button" onclick="replySupportMessage('${replyTarget.id}')">Enviar respuesta</button>
       </label>`}
-      <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportMessage('${message.id}')">Eliminar</button></footer>
+      <footer class="support-chat-card-foot"><button class="btn btn-danger" onclick="deleteSupportConversation('${conversation.messages.map((item) => item.id).join(',')}')">Eliminar</button></footer>
     </article>`;
   }).join('') : '<div class="support-messages-empty">No hay conversaciones que coincidan con estos filtros.</div>';
   supportReplyDrafts.forEach((value, id) => {
@@ -227,6 +262,20 @@ window.deleteSupportMessage = async function(messageId) {
     return;
   }
   Toastify({ text: 'Mensaje eliminado.', duration: 3000, backgroundColor: '#10b981' }).showToast();
+  await refreshSupportMessages();
+};
+
+window.deleteSupportConversation = async function(messageIds) {
+  const ids = messageIds.split(',').filter(Boolean);
+  if (!ids.length) return;
+  if (!window.confirm('¿Eliminar esta conversación permanentemente? Esta acción no se puede deshacer.')) return;
+  const { error } = await sp.from('user_support_messages').delete().in('id', ids);
+  if (error) {
+    console.error('No se pudo eliminar la conversación de usuario:', error);
+    Toastify({ text: `No se pudo eliminar la conversación: ${error.message}`, duration: 7000, backgroundColor: '#e74c3c' }).showToast();
+    return;
+  }
+  Toastify({ text: 'Conversación eliminada.', duration: 3000, backgroundColor: '#10b981' }).showToast();
   await refreshSupportMessages();
 };
 
