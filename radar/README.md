@@ -25,4 +25,5 @@ Los eventos fundamentales se convierten desde su zona de origen y se muestran en
 la zona horaria local del dispositivo. Las sesiones del radar usan las zonas
 oficiales de Tokio, Londres y Nueva York, por lo que sus contadores ajustan
 automáticamente los cambios de horario de verano. La franja de sesiones también
-muestra la hora local y la próxima apertura o cierre en esa misma hora.
+muestra la ciudad, el desfase GMT y la hora local, junto con la próxima apertura
+o cierre y el tiempo que falta o queda en esa misma hora.

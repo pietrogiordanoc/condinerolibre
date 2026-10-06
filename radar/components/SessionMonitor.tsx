@@ -488,12 +488,25 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     hour: '2-digit',
     minute: '2-digit'
   }).format(new Date());
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const userLocation = userTimeZone
+    .split('/')
+    .pop()
+    ?.replace(/_/g, ' ')
+    .toUpperCase() || 'HORA LOCAL';
+  const userOffsetMinutes = getTimeZoneOffsetMinutes(new Date(), userTimeZone);
+  const userOffsetHours = Math.floor(Math.abs(userOffsetMinutes) / 60).toString().padStart(2, '0');
+  const userOffsetRemainder = (Math.abs(userOffsetMinutes) % 60).toString().padStart(2, '0');
+  const userGmtOffset = `GMT${userOffsetMinutes >= 0 ? '+' : '-'}${userOffsetHours}:${userOffsetRemainder}`;
   const nextSessionChange = [sessions.asia, sessions.europe, sessions.america]
     .filter((session): session is SessionInfo & { nextChangeAt: number } => session.nextChangeAt !== undefined)
     .sort((first, second) => first.nextChangeAt - second.nextChangeAt)[0];
   const nextSessionTime = nextSessionChange
     ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(nextSessionChange.nextChangeAt)
     : null;
+  const nextSessionCountdown = nextSessionChange?.status === 'open'
+    ? nextSessionChange.timeLeft
+    : nextSessionChange?.opensIn;
 
   return (
     <div className="max-w-[1500px] mx-auto px-4 md:px-8 mb-4 md:mb-6">
@@ -513,10 +526,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
             {nextSessionChange && nextSessionTime && (
               <>
                 <div className="w-px h-4 md:h-5 bg-white/10" />
-                <div className="flex items-center gap-1.5 whitespace-nowrap rounded-md border border-cyan-400/20 bg-cyan-400/[0.06] px-2 py-1 text-[9px] font-mono md:text-[10px]" aria-live="polite">
-                  <span className="text-neutral-400">TU HORA {localTime}</span>
+                <div className="flex items-center gap-2 whitespace-nowrap rounded-md border border-cyan-400/25 bg-cyan-400/[0.08] px-2.5 py-1.5 font-mono text-[11px] md:text-xs" aria-live="polite">
+                  <span className="font-semibold text-neutral-300">
+                    TU HORA · {userLocation} ({userGmtOffset}) · <span className="text-white">{localTime}</span>
+                  </span>
                   <span className="text-cyan-300">
-                    {nextSessionChange.name} {nextSessionChange.status === 'open' ? 'cierra' : 'abre'} {nextSessionTime}
+                    {nextSessionChange.name} {nextSessionChange.status === 'open' ? 'cierra' : 'abre'} a las {nextSessionTime}
+                    {nextSessionCountdown && ` · ${nextSessionChange.status === 'open' ? 'quedan' : 'faltan'} ${nextSessionCountdown}`}
                   </span>
                 </div>
               </>
