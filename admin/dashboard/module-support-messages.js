@@ -5,6 +5,10 @@ let supportMessagesRefreshTimer = null;
 const supportReplyDrafts = new Map();
 const supportReplySending = new Set();
 
+function isSupportMessagePending(message) {
+  return message.status === 'pending' && !message.admin_reply && !message.conversation_closed_at;
+}
+
 function scheduleSupportMessagesRefresh() {
   clearTimeout(supportMessagesRefreshTimer);
   supportMessagesRefreshTimer = setTimeout(async () => {
@@ -28,7 +32,9 @@ function setSupportMessageAlert(count) {
 async function refreshSupportMessageAlert() {
   const { count, error } = await sp.from('user_support_messages')
     .select('id', { count: 'exact', head: true })
-    .eq('status', 'pending');
+    .eq('status', 'pending')
+    .is('admin_reply', null)
+    .is('conversation_closed_at', null);
   if (error) {
     console.error('No se pudo cargar el contador de mensajes de usuarios:', error);
     return;
@@ -66,7 +72,7 @@ async function refreshSupportMessages() {
     SUPPORT_MESSAGE_REPLIES_BY_MESSAGE_ID.set(reply.support_message_id, replies);
   });
   SUPPORT_MESSAGE_USERS_BY_ID = new Map((usersResponse.data || []).map((user) => [user.id, user]));
-  setSupportMessageAlert(SUPPORT_MESSAGES.filter((message) => message.status === 'pending').length);
+  setSupportMessageAlert(SUPPORT_MESSAGES.filter(isSupportMessagePending).length);
   renderSupportMessages();
 }
 
@@ -99,7 +105,7 @@ function visibleSupportMessages() {
       return matchesSearch && matchesStatus && matchesOrigin && matchesDate;
     })
     .sort((first, second) => {
-      const pendingOrder = Number(second.status === 'pending') - Number(first.status === 'pending');
+      const pendingOrder = Number(isSupportMessagePending(second)) - Number(isSupportMessagePending(first));
       return pendingOrder || new Date(second.created_at) - new Date(first.created_at);
     });
 }
@@ -124,8 +130,9 @@ function renderSupportMessages() {
       ? `<span class="support-chat-presence ${isOnline ? 'online' : ''}">${isOnline ? 'En línea' : `Visto ${formatStudyDate(message.guest_last_seen_at)}`}</span>`
       : '';
     const isClosed = Boolean(message.conversation_closed_at);
-    const state = isClosed ? 'closed' : message.status;
-    const statusLabel = isClosed ? 'Conversación terminada' : message.status === 'pending' ? 'Pendiente' : 'Respondido';
+    const isPending = isSupportMessagePending(message);
+    const state = isClosed ? 'closed' : isPending ? 'pending' : 'completed';
+    const statusLabel = isClosed ? 'Conversación terminada' : isPending ? 'Pendiente' : 'Respondido';
     return `
     <article class="support-chat-card ${state === 'pending' ? 'is-pending' : 'is-completed'}">
       <header class="support-chat-card-head">

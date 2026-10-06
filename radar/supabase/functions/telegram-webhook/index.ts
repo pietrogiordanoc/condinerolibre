@@ -74,6 +74,7 @@ serve(async (req) => {
           return new Response(JSON.stringify({ ok: true }), { status: 200 });
         }
 
+        const repliedAt = new Date().toISOString();
         const { data: updatedMessage, error: replyError } = supportMessage.admin_reply
           ? await supabase
             .from("user_support_message_chat_replies")
@@ -88,10 +89,10 @@ serve(async (req) => {
             .from("user_support_messages")
             .update({
               admin_reply: adminReply,
-              replied_at: new Date().toISOString(),
+              replied_at: repliedAt,
               replied_by: alert.admin_user_id,
               status: "completed",
-              completed_at: new Date().toISOString(),
+              completed_at: repliedAt,
               completed_by: alert.admin_user_id,
             })
             .eq("id", alert.support_message_id)
@@ -99,6 +100,18 @@ serve(async (req) => {
             .select("id")
             .maybeSingle();
         if (replyError) throw replyError;
+        if (updatedMessage && supportMessage.admin_reply) {
+          const { error: statusError } = await supabase
+            .from("user_support_messages")
+            .update({
+              status: "completed",
+              completed_at: repliedAt,
+              completed_by: alert.admin_user_id,
+            })
+            .eq("id", supportMessage.id)
+            .eq("status", "pending");
+          if (statusError) throw statusError;
+        }
 
         await sendTelegramMessage(
           chatId,
