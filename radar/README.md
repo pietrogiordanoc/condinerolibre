@@ -24,4 +24,5 @@ View your app in AI Studio: https://ai.studio/apps/drive/1blSCulp61a3dgemc1WE351
 Los eventos fundamentales se convierten desde su zona de origen y se muestran en
 la zona horaria local del dispositivo. Las sesiones del radar usan las zonas
 oficiales de Tokio, Londres y Nueva York, por lo que sus contadores ajustan
-automáticamente los cambios de horario de verano.
+automáticamente los cambios de horario de verano. La franja de sesiones también
+muestra la hora local y la próxima apertura o cierre en esa misma hora.

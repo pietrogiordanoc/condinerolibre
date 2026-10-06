@@ -6,6 +6,7 @@ interface SessionInfo {
   status: 'open' | 'closed' | 'pre-open';
   timeLeft?: string;
   opensIn?: string;
+  nextChangeAt?: number;
 }
 
 interface FundamentalEvent {
@@ -145,7 +146,11 @@ const getSessionInfo = (session: MarketSession, now: Date) => {
   const isOpen = isWeekday(localNow.weekday) && nowTimestamp >= openTimestamp && nowTimestamp < closeTimestamp;
 
   if (isOpen) {
-    return { isOpen, minutesUntilChange: Math.ceil((closeTimestamp - nowTimestamp) / 60_000) };
+    return {
+      isOpen,
+      minutesUntilChange: Math.ceil((closeTimestamp - nowTimestamp) / 60_000),
+      nextChangeAt: closeTimestamp
+    };
   }
 
   for (let daysAhead = 0; daysAhead <= 7; daysAhead += 1) {
@@ -161,7 +166,11 @@ const getSessionInfo = (session: MarketSession, now: Date) => {
       session.timeZone
     );
     if (nextOpen > nowTimestamp) {
-      return { isOpen, minutesUntilChange: Math.ceil((nextOpen - nowTimestamp) / 60_000) };
+      return {
+        isOpen,
+        minutesUntilChange: Math.ceil((nextOpen - nowTimestamp) / 60_000),
+        nextChangeAt: nextOpen
+      };
     }
   }
 
@@ -408,19 +417,22 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
         name: 'ASIA',
         status: (asiaOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: asiaOpen ? formatTime(asiaTimeLeft) : undefined,
-        opensIn: !asiaOpen && asiaOpensIn > 0 ? formatTime(asiaOpensIn) : undefined
+        opensIn: !asiaOpen && asiaOpensIn > 0 ? formatTime(asiaOpensIn) : undefined,
+        nextChangeAt: asiaSession.nextChangeAt
       },
       europe: {
         name: 'EU',
         status: (europeOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: europeOpen ? formatTime(europeTimeLeft) : undefined,
-        opensIn: !europeOpen && europeOpensIn > 0 ? formatTime(europeOpensIn) : undefined
+        opensIn: !europeOpen && europeOpensIn > 0 ? formatTime(europeOpensIn) : undefined,
+        nextChangeAt: europeSession.nextChangeAt
       },
       america: {
         name: 'NY',
         status: (americaOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: americaOpen ? formatTime(americaTimeLeft) : undefined,
-        opensIn: !americaOpen && americaOpensIn > 0 ? formatTime(americaOpensIn) : undefined
+        opensIn: !americaOpen && americaOpensIn > 0 ? formatTime(americaOpensIn) : undefined,
+        nextChangeAt: americaSession.nextChangeAt
       },
       advice
     };
@@ -472,6 +484,17 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     </div>
   );
 
+  const localTime = new Intl.DateTimeFormat('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date());
+  const nextSessionChange = [sessions.asia, sessions.europe, sessions.america]
+    .filter((session): session is SessionInfo & { nextChangeAt: number } => session.nextChangeAt !== undefined)
+    .sort((first, second) => first.nextChangeAt - second.nextChangeAt)[0];
+  const nextSessionTime = nextSessionChange
+    ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(nextSessionChange.nextChangeAt)
+    : null;
+
   return (
     <div className="max-w-[1500px] mx-auto px-4 md:px-8 mb-4 md:mb-6">
       <div className="bg-gradient-to-r from-white/[0.08] to-white/[0.05] border border-white/20 md:border-2 rounded-lg md:rounded-xl overflow-hidden shadow-lg">
@@ -487,6 +510,17 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
             <SessionBadge session={sessions.europe} />
             <div className="w-px h-4 md:h-5 bg-white/10" />
             <SessionBadge session={sessions.america} />
+            {nextSessionChange && nextSessionTime && (
+              <>
+                <div className="w-px h-4 md:h-5 bg-white/10" />
+                <div className="flex items-center gap-1.5 whitespace-nowrap rounded-md border border-cyan-400/20 bg-cyan-400/[0.06] px-2 py-1 text-[9px] font-mono md:text-[10px]" aria-live="polite">
+                  <span className="text-neutral-400">TU HORA {localTime}</span>
+                  <span className="text-cyan-300">
+                    {nextSessionChange.name} {nextSessionChange.status === 'open' ? 'cierra' : 'abre'} {nextSessionTime}
+                  </span>
+                </div>
+              </>
+            )}
             
             {/* Market Activity Indicators - Amplified, hidden on mobile */}
             {marketStats && (
