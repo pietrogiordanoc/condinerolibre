@@ -41,6 +41,8 @@ const App: React.FC = () => {
   const [accountEmail, setAccountEmail] = useState('');
   const [accountPlan, setAccountPlan] = useState('free');
   const [hasVerifiedAccess, setHasVerifiedAccess] = useState(false);
+  const [isGuestPreview, setIsGuestPreview] = useState(true);
+  const [isGuestRegistrationOpen, setIsGuestRegistrationOpen] = useState(false);
   const [affiliateBalanceCents, setAffiliateBalanceCents] = useState(0);
   const [signalStats, setSignalStats] = useState<Record<string, { totalSignals: number; winRatePct: number | null; avgResultPct: number | null }>>({});
   const [portalSessionReady, setPortalSessionReady] = useState(() => window.self === window.top);
@@ -188,14 +190,14 @@ const App: React.FC = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
-        // Sin sesión → redirigir a login (el portal contenedor ya gestiona su propia sesión)
+        // Sin sesión: mantener el dashboard como vista previa de solo lectura.
         if (!session) {
           if (window.self !== window.top) return;
-          console.log('[Radar] Sin sesión - redirigiendo a login');
-          window.location.href = '/login?next=/radar';
+          setIsGuestPreview(true);
           return;
         }
 
+        setIsGuestPreview(false);
         setAccountEmail(session.user.email || '');
         // Perfil incompleto (falta nombre o teléfono) → completar antes de usar el Radar
         setUserId(session.user.id);
@@ -266,6 +268,10 @@ const App: React.FC = () => {
     
     validateAccess();
   }, [portalSessionReady]);
+
+  const openGuestRegistration = useCallback(() => {
+    setIsGuestRegistrationOpen(true);
+  }, []);
 
   const handleRefreshComplete = useCallback(() => {
     setRefreshTrigger(t => t + 1);
@@ -585,8 +591,8 @@ const App: React.FC = () => {
               onClick={handleRefreshComplete}
             />
             </div>
-            <button onClick={() => setIsAccountPanelOpen(true)} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-emerald-200">
-              Mi plan
+            <button onClick={isGuestPreview ? openGuestRegistration : () => setIsAccountPanelOpen(true)} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-emerald-200">
+              {isGuestPreview ? 'Crear cuenta' : 'Mi plan'}
             </button>
           </div>
         </div>
@@ -678,12 +684,14 @@ const App: React.FC = () => {
                   strategy={STRATEGIES[0]}
                   onAnalysisUpdate={handleAnalysisUpdate}
                   isTestMode={false}
-                  onOpenChart={handleOpenChart}
+                  onOpenChart={isGuestPreview ? openGuestRegistration : handleOpenChart}
                   onOpenTutorial={() => setIsTutorialOpen(true)}
                   onPinChange={() => forceUpdate(trigger => trigger + 1)}
                   chartStatus={charts[instrument.symbol]}
                   stats={signalStats[instrument.symbol]}
                   experimentalSlEnabled={experimentalSlEnabled}
+                  isPreview={isGuestPreview}
+                  onRequestRegistration={openGuestRegistration}
                 />
               </div>
             );
@@ -746,6 +754,21 @@ const App: React.FC = () => {
         isOpen={isAccountPanelOpen}
         onClose={() => setIsAccountPanelOpen(false)}
       />
+
+      {isGuestRegistrationOpen && (
+        <div className="fixed inset-0 z-[700] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" onClick={() => setIsGuestRegistrationOpen(false)}>
+          <section className="w-full max-w-md rounded-xl border border-emerald-400/30 bg-[#0b0f14] p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="guest-registration-title" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="float-right text-sm text-neutral-500 hover:text-white" onClick={() => setIsGuestRegistrationOpen(false)} aria-label="Cerrar">Cerrar</button>
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-400">CDLRadar Freemium</p>
+            <h2 id="guest-registration-title" className="text-xl font-semibold text-white">Desbloquea el Radar</h2>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-300">Crea tu cuenta gratuita para ver los datos operativos y activar tus 10 minutos diarios de CDLRadar.</p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <a href="/cdl-portal/registro/" className="rounded-lg bg-emerald-400 px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-emerald-300">Crear cuenta gratis</a>
+              <a href="/cdl-portal/login/" className="rounded-lg border border-white/15 px-4 py-3 text-center text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5">Ya tengo cuenta</a>
+            </div>
+          </section>
+        </div>
+      )}
 
       {metricInfo && (
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/75 p-4" onClick={() => setMetricInfo(null)}>
