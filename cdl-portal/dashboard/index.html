@@ -1718,11 +1718,11 @@
       left: 0;
       z-index: 1000;
       width: 100%;
-      height: var(--chrome-h);
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 0 max(16px, calc((100vw - 1920px) / 2 + 24px));
+      gap: 6px 14px;
+      padding: 6px max(16px, calc((100vw - 1920px) / 2 + 24px));
       border-bottom: 1px solid rgba(96, 165, 250, .4);
       background: linear-gradient(90deg, #1e3a8a 0%, #1d4ed8 50%, #2563eb 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
@@ -1734,8 +1734,11 @@
     #guestRegistrationBanner.guest-registration-attention { animation: guest-registration-attention .9s ease 2; }
     @keyframes guest-registration-attention { 50% { box-shadow: 0 0 0 4px rgba(0, 229, 153, .55), 0 8px 24px rgba(0, 0, 0, .22); } }
     #guestRegistrationBanner strong { color: #fff; }
-    .guest-registration-copy { display: flex; min-width: 0; align-items: center; gap: 12px; font-weight: 500; }
+    .guest-registration-copy { display: flex; flex: 1 1 240px; min-width: 0; align-items: center; gap: 12px; font-weight: 500; }
     .guest-registration-copy p { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .guest-registration-copy .guest-login-msg { display: none; font-weight: 700; }
+    #guestRegistrationBanner.guest-has-msg .guest-registration-copy p:not(.guest-login-msg) { display: none; }
+    #guestRegistrationBanner.guest-has-msg .guest-login-msg { display: block; }
     .guest-registration-badge { display: inline-flex; flex-shrink: 0; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; background: rgba(255,255,255,.15); padding: 5px 10px; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
     .guest-registration-pulse { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #67e8f9; }
     .guest-registration-pulse::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #67e8f9; animation: guest-registration-ping 1.3s cubic-bezier(0, 0, .2, 1) infinite; }
@@ -1748,10 +1751,23 @@
     .guest-registration-signup:hover { transform: scale(1.02); }
     .guest-registration-dismiss { border: 0; background: transparent; color: #bfdbfe; cursor: pointer; line-height: 1; }
     .guest-registration-dismiss:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .guest-login-form { display: flex; flex-shrink: 0; align-items: center; gap: 6px; margin: 0; }
+    .guest-login-form input { width: 150px; height: 32px; border: 1px solid rgba(255,255,255,.28); border-radius: 8px; background: rgba(10, 25, 80, .35); padding: 0 10px; color: #fff; font: inherit; font-size: 12px; }
+    .guest-login-form input::placeholder { color: #bfdbfe; }
+    .guest-login-form input:focus { outline: 2px solid #67e8f9; outline-offset: 1px; }
+    .guest-login-form button, .guest-modal-actions button { height: 32px; border-radius: 8px; padding: 0 14px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .guest-login-form button:disabled { opacity: .6; cursor: wait; }
+    .guest-login-forgot { color: #bfdbfe; font-size: 11px; text-decoration: underline; white-space: nowrap; }
+    .guest-login-forgot:hover { color: #fff; }
     @media (max-width: 640px) {
-      body.guest-portal:not(.guest-banner-dismissed) { --chrome-h: 124px; }
-      #guestRegistrationBanner { align-items: flex-start; flex-direction: column; justify-content: center; padding: 8px 14px; }
-      .guest-registration-copy p { white-space: normal; }
+      body.guest-portal:not(.guest-banner-dismissed) { --chrome-h: 190px; }
+      #guestRegistrationBanner { align-items: stretch; flex-direction: column; justify-content: center; padding: 8px 14px; }
+      .guest-registration-copy { flex: 0 0 auto; display: block; }
+      .guest-registration-badge { display: none; }
+      .guest-registration-copy p { font-size: 11px; white-space: normal; }
+      .guest-login-form { flex-wrap: wrap; }
+      .guest-login-form input { flex: 1 1 120px; width: auto; }
+      .guest-login-form button { flex: 0 0 auto; }
       .guest-registration-actions { width: 100%; }
       .guest-registration-actions a { flex: 1; text-align: center; }
       .guest-registration-dismiss { position: absolute; top: 6px; right: 4px; }
@@ -1766,7 +1782,8 @@
     .guest-modal-box h2 { margin: 8px 0 10px; font-size: 22px; }
     .guest-modal-box p { margin: 0 0 22px; color: var(--muted); font-size: 14px; line-height: 1.55; }
     .guest-modal-actions { display: flex; gap: 10px; }
-    .guest-modal-actions a { flex: 1; justify-content: center; border-radius: 10px; padding: 12px 14px; text-align: center; font-size: 13px; font-weight: 700; text-decoration: none; }
+    .guest-modal-actions a, .guest-modal-actions button { flex: 1; justify-content: center; border-radius: 10px; padding: 12px 14px; text-align: center; font-size: 13px; font-weight: 700; text-decoration: none; }
+    .guest-modal-actions button { height: auto; }
     @media (max-width: 480px) { .guest-modal-actions { flex-direction: column; } }
   </style>
 </head>
@@ -1780,9 +1797,15 @@
     <div class="guest-registration-copy">
       <span class="guest-registration-badge"><i class="guest-registration-pulse"></i> ClassRoom y Radar</span>
       <p><strong>Regístrate gratis</strong> para desbloquear ClassRoom y Radar <strong style="color:#67e8f9;">10 minutos diarios</strong> sin costo.</p>
+      <p id="guestLoginMsg" class="guest-login-msg" role="alert"></p>
     </div>
+    <form id="guestLoginForm" class="guest-login-form">
+      <input id="guestLoginEmail" type="email" name="email" placeholder="Email" autocomplete="username" aria-label="Email" required>
+      <input id="guestLoginPassword" type="password" name="password" placeholder="Contraseña" autocomplete="current-password" aria-label="Contraseña" required>
+      <button id="guestLoginSubmit" class="guest-registration-login" type="submit">Entrar</button>
+      <a class="guest-login-forgot" href="/cdl-portal/recuperar-password/">¿Olvidaste?</a>
+    </form>
     <span class="guest-registration-actions">
-      <a class="guest-registration-login" href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Iniciar sesión</a>
       <a class="guest-registration-signup" href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Registrarme gratis <span aria-hidden="true">→</span></a>
       <button class="guest-registration-dismiss" type="button" aria-label="Cerrar banner" onclick="document.body.classList.add('guest-banner-dismissed')">×</button>
     </span>
@@ -1795,7 +1818,7 @@
       <p>Regístrate para comprar cursos, descargar plataformas y activar tus 10 minutos diarios de CDLRadar. Sin tarjeta de crédito.</p>
       <div class="guest-modal-actions">
         <a id="guestModalSignup" class="guest-registration-signup" href="/cdl-portal/registro/">Registrarme gratis <span aria-hidden="true">→</span></a>
-        <a id="guestModalLogin" class="guest-registration-login" href="/cdl-portal/login/">Ya tengo cuenta</a>
+        <button id="guestModalLogin" class="guest-registration-login" type="button">Ya tengo cuenta</button>
       </div>
     </div>
   </div>
@@ -2699,6 +2722,7 @@
     window.addEventListener('message', (event) => {
       if (event.origin !== window.location.origin) return;
       if (event.data?.type === 'RADAR_NAVIGATE' && event.data.hash === '#upgrade') { navigateTo('#upgrade'); return; }
+      if (event.data?.type === 'RADAR_LOGIN' && isGuestPortal) { focusGuestLogin(); return; }
       if (event.data?.type !== 'RADAR_SESSION_READY') return;
       sendRadarSession().catch((error) => console.error('[Portal] Error reenviando sesión al Radar:', error));
     });
@@ -4043,10 +4067,7 @@
             const lesson = lessons.find((item) => item.id === card.dataset.classroomLessonId);
             if (lesson?.locked) {
               if (isGuestPortal) {
-                const banner = document.getElementById('guestRegistrationBanner');
-                banner.classList.remove('guest-registration-attention');
-                void banner.offsetWidth;
-                banner.classList.add('guest-registration-attention');
+                pulseGuestBanner();
                 return;
               }
               openAcademyModal();
@@ -4583,10 +4604,64 @@
       }
     }
 
+    function pulseGuestBanner() {
+      const banner = document.getElementById('guestRegistrationBanner');
+      banner.classList.remove('guest-registration-attention');
+      void banner.offsetWidth;
+      banner.classList.add('guest-registration-attention');
+    }
+
+    function focusGuestLogin() {
+      document.body.classList.remove('guest-banner-dismissed');
+      pulseGuestBanner();
+      document.getElementById('guestLoginEmail').focus();
+    }
+
+    function setGuestLoginMessage(text, ok = false) {
+      const message = document.getElementById('guestLoginMsg');
+      message.textContent = text || '';
+      message.style.color = ok ? '#bbf7d0' : '#fecaca';
+      document.getElementById('guestRegistrationBanner').classList.toggle('guest-has-msg', Boolean(text));
+    }
+
+    async function submitGuestLogin(event) {
+      event.preventDefault();
+      const button = document.getElementById('guestLoginSubmit');
+      const email = document.getElementById('guestLoginEmail').value.trim();
+      const password = document.getElementById('guestLoginPassword').value;
+      button.disabled = true;
+      setGuestLoginMessage('Validando acceso…', true);
+
+      const { data, error } = await sp.auth.signInWithPassword({ email, password });
+      if (error) {
+        setGuestLoginMessage(error.message === 'Invalid login credentials' ? 'Email o contraseña incorrectos.' : (error.message || 'No se pudo iniciar sesión.'));
+        button.disabled = false;
+        return;
+      }
+
+      setGuestLoginMessage('Acceso correcto. Entrando…', true);
+      try {
+        await sp.from('audit_events').insert({
+          user_id: data.user.id,
+          event_type: 'Login exitoso',
+          metadata: { email, timestamp: new Date().toISOString() },
+          created_at: new Date().toISOString()
+        });
+      } catch (auditError) {
+        console.log('Audit log:', auditError);
+      }
+      // Confirmar que la sesión ya quedó persistida antes de recargar.
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const { data: { session } } = await sp.auth.getSession();
+        if (session) break;
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+      window.location.reload();
+    }
+
     function openGuestRegistrationModal() {
       const next = encodeURIComponent(`/cdl-portal/dashboard/${location.hash || '#radar'}`);
       document.getElementById('guestModalSignup').href = `/cdl-portal/registro/?next=${next}`;
-      document.getElementById('guestModalLogin').href = `/cdl-portal/login/?next=${next}`;
       document.getElementById('guestRegistrationModal').classList.add('open');
     }
 
@@ -4604,6 +4679,14 @@
       openGuestRegistrationModal();
     }, true);
     document.getElementById('guestModalClose').addEventListener('click', closeGuestRegistrationModal);
+    document.getElementById('guestModalLogin').addEventListener('click', () => {
+      closeGuestRegistrationModal();
+      focusGuestLogin();
+    });
+    document.getElementById('guestLoginForm').addEventListener('submit', submitGuestLogin);
+    ['guestLoginEmail', 'guestLoginPassword'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => setGuestLoginMessage(''));
+    });
     document.getElementById('guestRegistrationModal').addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closeGuestRegistrationModal();
     });
@@ -4621,6 +4704,9 @@
       document.getElementById("emailDisplay").textContent = "Sin cuenta";
       document.getElementById("memberSince").textContent = "—";
       document.getElementById("logoutBtn").textContent = "Registrarme";
+      // El ribbon tiene altura variable (formulario + responsive): el resto del layout sigue su altura real.
+      const guestBanner = document.getElementById('guestRegistrationBanner');
+      new ResizeObserver(() => document.body.style.setProperty('--chrome-h', `${guestBanner.offsetHeight}px`)).observe(guestBanner);
       showView(location.hash.replace("#", "") || "radar");
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
@@ -4659,7 +4745,7 @@
       if (session) await sp.from('user_presence').update({ online: false }).eq('user_id', session.user.id);
       await sp.auth.signOut();
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      window.location.href = isLocal ? "../login/" : "/login"; // CAMBIO QUIRÚRGICO: Redirección real
+      window.location.href = isLocal ? "./" : "/cdl-portal/dashboard/";
     };
 
     document.getElementById("navAccounts").onclick = () => navigateTo("#accounts");
