@@ -15,6 +15,159 @@ interface FundamentalEvent {
   impact: 'high' | 'extreme';
 }
 
+interface ZonedDateParts {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  weekday: number;
+}
+
+interface MarketSession {
+  timeZone: string;
+  opensAt: { hour: number; minute: number };
+  closesAt: { hour: number; minute: number };
+}
+
+const EVENT_TIME_ZONES: Record<string, string> = {
+  ET: 'America/New_York',
+  GMT: 'Etc/UTC'
+};
+
+const ASIA_SESSION: MarketSession = {
+  timeZone: 'Asia/Tokyo',
+  opensAt: { hour: 8, minute: 0 },
+  closesAt: { hour: 17, minute: 0 }
+};
+
+const EUROPE_SESSION: MarketSession = {
+  timeZone: 'Europe/London',
+  opensAt: { hour: 8, minute: 0 },
+  closesAt: { hour: 16, minute: 30 }
+};
+
+const AMERICA_SESSION: MarketSession = {
+  timeZone: 'America/New_York',
+  opensAt: { hour: 9, minute: 30 },
+  closesAt: { hour: 16, minute: 0 }
+};
+
+const WEEKDAY_NUMBERS: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6
+};
+
+const getZonedDateParts = (date: Date, timeZone: string): ZonedDateParts => {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    weekday: 'short',
+    hourCycle: 'h23'
+  }).formatToParts(date);
+
+  const getNumber = (type: Intl.DateTimeFormatPartTypes) => {
+    const value = parts.find(part => part.type === type)?.value;
+    if (!value) throw new Error(`No se pudo obtener ${type} para ${timeZone}.`);
+    return Number(value);
+  };
+  const weekday = parts.find(part => part.type === 'weekday')?.value;
+  if (!weekday || !(weekday in WEEKDAY_NUMBERS)) {
+    throw new Error(`No se pudo obtener el día de la semana para ${timeZone}.`);
+  }
+
+  return {
+    year: getNumber('year'),
+    month: getNumber('month'),
+    day: getNumber('day'),
+    hour: getNumber('hour'),
+    minute: getNumber('minute'),
+    weekday: WEEKDAY_NUMBERS[weekday]
+  };
+};
+
+const getTimeZoneOffsetMinutes = (date: Date, timeZone: string) => {
+  const timeZoneName = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    timeZoneName: 'longOffset'
+  }).formatToParts(date).find(part => part.type === 'timeZoneName')?.value;
+
+  if (timeZoneName === 'GMT') return 0;
+  const match = timeZoneName?.match(/^GMT([+-])(\d{2}):(\d{2})$/);
+  if (!match) throw new Error(`No se pudo obtener el desfase de ${timeZone}.`);
+
+  const offset = Number(match[2]) * 60 + Number(match[3]);
+  return match[1] === '+' ? offset : -offset;
+};
+
+const getZonedTimestamp = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  timeZone: string
+) => {
+  const utcGuess = new Date(Date.UTC(year, month - 1, day, hour, minute));
+  return utcGuess.getTime() - getTimeZoneOffsetMinutes(utcGuess, timeZone) * 60_000;
+};
+
+const isWeekday = (weekday: number) => weekday >= 1 && weekday <= 5;
+
+const getSessionInfo = (session: MarketSession, now: Date) => {
+  const localNow = getZonedDateParts(now, session.timeZone);
+  const openTimestamp = getZonedTimestamp(
+    localNow.year,
+    localNow.month,
+    localNow.day,
+    session.opensAt.hour,
+    session.opensAt.minute,
+    session.timeZone
+  );
+  const closeTimestamp = getZonedTimestamp(
+    localNow.year,
+    localNow.month,
+    localNow.day,
+    session.closesAt.hour,
+    session.closesAt.minute,
+    session.timeZone
+  );
+  const nowTimestamp = now.getTime();
+  const isOpen = isWeekday(localNow.weekday) && nowTimestamp >= openTimestamp && nowTimestamp < closeTimestamp;
+
+  if (isOpen) {
+    return { isOpen, minutesUntilChange: Math.ceil((closeTimestamp - nowTimestamp) / 60_000) };
+  }
+
+  for (let daysAhead = 0; daysAhead <= 7; daysAhead += 1) {
+    const candidate = new Date(Date.UTC(localNow.year, localNow.month - 1, localNow.day + daysAhead));
+    if (!isWeekday(candidate.getUTCDay())) continue;
+
+    const nextOpen = getZonedTimestamp(
+      candidate.getUTCFullYear(),
+      candidate.getUTCMonth() + 1,
+      candidate.getUTCDate(),
+      session.opensAt.hour,
+      session.opensAt.minute,
+      session.timeZone
+    );
+    if (nextOpen > nowTimestamp) {
+      return { isOpen, minutesUntilChange: Math.ceil((nextOpen - nowTimestamp) / 60_000) };
+    }
+  }
+
+  throw new Error(`No se pudo calcular la próxima apertura de ${session.timeZone}.`);
+};
+
 interface SessionMonitorProps {
   marketStats?: {
     totalConnected: number;
@@ -44,30 +197,44 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
   // Calcular próximo NFP (memoizado, solo recalcula al cambiar de mes)
   const nextNFP = useMemo(() => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
+    const newYorkNow = getZonedDateParts(now, 'America/New_York');
+    const year = newYorkNow.year;
+    const month = newYorkNow.month - 1;
     
     // Buscar primer viernes de este mes
-    let firstFriday = new Date(year, month, 1);
+    let firstFriday = new Date(Date.UTC(year, month, 1));
     while (firstFriday.getDay() !== 5) {
-      firstFriday.setDate(firstFriday.getDate() + 1);
+      firstFriday.setUTCDate(firstFriday.getUTCDate() + 1);
     }
     
-    // 08:30 ET = 13:30 UTC (considerando horario estándar)
-    firstFriday.setUTCHours(13, 30, 0, 0);
+    let timestamp = getZonedTimestamp(
+      firstFriday.getUTCFullYear(),
+      firstFriday.getUTCMonth() + 1,
+      firstFriday.getUTCDate(),
+      8,
+      30,
+      'America/New_York'
+    );
     
     // Si ya pasó, calcular el del próximo mes
-    if (firstFriday.getTime() < Date.now()) {
+    if (timestamp < Date.now()) {
       const nextMonth = month + 1;
-      firstFriday = new Date(year + Math.floor(nextMonth / 12), nextMonth % 12, 1);
+      firstFriday = new Date(Date.UTC(year + Math.floor(nextMonth / 12), nextMonth % 12, 1));
       while (firstFriday.getDay() !== 5) {
-        firstFriday.setDate(firstFriday.getDate() + 1);
+        firstFriday.setUTCDate(firstFriday.getUTCDate() + 1);
       }
-      firstFriday.setUTCHours(13, 30, 0, 0);
+      timestamp = getZonedTimestamp(
+        firstFriday.getUTCFullYear(),
+        firstFriday.getUTCMonth() + 1,
+        firstFriday.getUTCDate(),
+        8,
+        30,
+        'America/New_York'
+      );
     }
     
-    return firstFriday.getTime();
-  }, [new Date().getMonth()]); // Solo recalcula al cambiar de mes
+    return timestamp;
+  }, [new Date().getUTCMonth()]); // Solo recalcula al cambiar de mes
 
   // Parsear eventos manuales del JSON (memoizado)
   const upcomingEvents = useMemo((): FundamentalEvent[] => {
@@ -91,14 +258,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
           const [year, month, day] = datePart.split('-').map(Number);
           const [hour, minute] = timePart.split(':').map(Number);
           
-          let utcHour = hour;
-          // Convertir ET a UTC (ET = UTC-5 en invierno, UTC-4 en verano)
-          // Simplificamos: ET = UTC-5
-          if (tz === 'ET') utcHour = hour + 5;
-          else if (tz === 'GMT') utcHour = hour; // GMT = UTC
-          
-          const eventDate = new Date(Date.UTC(year, month - 1, day, utcHour, minute));
-          const timestamp = eventDate.getTime();
+          const timeZone = EVENT_TIME_ZONES[tz];
+          if (!timeZone) {
+            console.error(`Zona horaria no compatible para ${event.name}: ${tz}`);
+            return;
+          }
+          const timestamp = getZonedTimestamp(year, month, day, hour, minute, timeZone);
           
           // Solo eventos futuros dentro de los próximos 30 días
           if (timestamp > now && timestamp < now + 30 * 24 * 60 * 60 * 1000) {
@@ -118,27 +283,22 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
 
   const getSessionStatus = useCallback(() => {
     const now = new Date();
-    const utcHour = now.getUTCHours();
-    const utcMinute = now.getUTCMinutes();
     const utcDay = now.getUTCDay();
-    const totalMinutes = utcHour * 60 + utcMinute;
+    const asiaSession = getSessionInfo(ASIA_SESSION, now);
+    const europeSession = getSessionInfo(EUROPE_SESSION, now);
+    const americaSession = getSessionInfo(AMERICA_SESSION, now);
+    const asiaOpen = asiaSession.isOpen;
+    const europeOpen = europeSession.isOpen;
+    const americaOpen = americaSession.isOpen;
 
     const advice: string[] = [];
 
-    // ASIA: 23:00 - 08:00 UTC (Tokyo + Hong Kong + Shanghai)
-    const asiaOpen = utcHour >= 23 || utcHour < 8;
-    const asiaTimeLeft = asiaOpen ? (8 * 60 - totalMinutes + (utcHour >= 23 ? 1440 : 0)) : 0;
-    const asiaOpensIn = !asiaOpen ? ((23 * 60 - totalMinutes + (totalMinutes < 23 * 60 ? 0 : 1440))) : 0;
-
-    // EUROPA: 07:00 - 16:30 UTC (London + Frankfurt + Paris)
-    const europeOpen = utcDay >= 1 && utcDay <= 5 && totalMinutes >= 420 && totalMinutes <= 990;
-    const europeTimeLeft = europeOpen ? (990 - totalMinutes) : 0;
-    const europeOpensIn = !europeOpen && utcDay >= 1 && utcDay <= 5 ? (totalMinutes < 420 ? 420 - totalMinutes : 420 + 1440 - totalMinutes) : 0;
-
-    // AMERICA: 14:30 - 21:00 UTC (NYSE + NASDAQ)
-    const americaOpen = utcDay >= 1 && utcDay <= 5 && totalMinutes >= 870 && totalMinutes <= 1260;
-    const americaTimeLeft = americaOpen ? (1260 - totalMinutes) : 0;
-    const americaOpensIn = !americaOpen && utcDay >= 1 && utcDay <= 5 ? (totalMinutes < 870 ? 870 - totalMinutes : 870 + 1440 - totalMinutes) : 0;
+    const asiaTimeLeft = asiaOpen ? asiaSession.minutesUntilChange : 0;
+    const asiaOpensIn = !asiaOpen ? asiaSession.minutesUntilChange : 0;
+    const europeTimeLeft = europeOpen ? europeSession.minutesUntilChange : 0;
+    const europeOpensIn = !europeOpen ? europeSession.minutesUntilChange : 0;
+    const americaTimeLeft = americaOpen ? americaSession.minutesUntilChange : 0;
+    const americaOpensIn = !americaOpen ? americaSession.minutesUntilChange : 0;
 
     // Formato tiempo
     const formatTime = (minutes: number) => {
@@ -156,7 +316,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
       advice.push("Las señales de EUR/USD, GBP/USD y USD/CHF son más confiables ahora");
     } else if (europeOpen && !americaOpen) {
       advice.push("✅ Buena liquidez en pares EUR y GBP mientras Europa está activa");
-      advice.push("FOREX: Liquidez moderada, espera apertura de NY (14:30 UTC) para mayor movimiento");
+      advice.push("FOREX: Liquidez moderada, espera apertura de NY para mayor movimiento");
     } else if (americaOpen && !europeOpen) {
       advice.push("✅ Wall Street operativo - Señales de acciones USA son válidas");
       advice.push("FOREX: Buena liquidez con pares del dólar (USD/JPY, USD/CAD, etc)");
@@ -182,12 +342,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
 
     if (utcDay === 0) {
       // Domingo
-      advice.push("📅 Domingo - Solo FOREX desde las 22:00 UTC y CRYPTO 24/7");
+      advice.push("📅 Domingo - Los principales mercados abren progresivamente según su zona horaria y CRYPTO opera 24/7");
       advice.push("Los mercados de acciones abren el lunes. Usa este tiempo para planificar");
     } else if (utcDay === 6) {
       // Sábado
       advice.push("📅 Fin de semana - Mercados cerrados excepto CRYPTO");
-      advice.push("⚠️ Ignora señales de FOREX y ACCIONES hasta el domingo 22:00 UTC");
+      advice.push("⚠️ Ignora señales de FOREX y ACCIONES hasta la reapertura de los mercados el domingo por la tarde (hora de Nueva York)");
       advice.push("Es buen momento para revisar tu historial y analizar trades de la semana");
     }
 

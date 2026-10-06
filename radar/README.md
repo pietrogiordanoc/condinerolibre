@@ -18,3 +18,10 @@ View your app in AI Studio: https://ai.studio/apps/drive/1blSCulp61a3dgemc1WE351
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Horarios de mercado
+
+Los eventos fundamentales se convierten desde su zona de origen y se muestran en
+la zona horaria local del dispositivo. Las sesiones del radar usan las zonas
+oficiales de Tokio, Londres y Nueva York, por lo que sus contadores ajustan
+automáticamente los cambios de horario de verano.
