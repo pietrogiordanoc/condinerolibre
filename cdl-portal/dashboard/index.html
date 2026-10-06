@@ -1756,6 +1756,18 @@
       .guest-registration-actions a { flex: 1; text-align: center; }
       .guest-registration-dismiss { position: absolute; top: 6px; right: 4px; }
     }
+
+    .guest-modal { display: none; position: fixed; inset: 0; z-index: 10000; align-items: center; justify-content: center; padding: 20px; background: rgba(0, 0, 0, .78); backdrop-filter: blur(4px); }
+    .guest-modal.open { display: flex; }
+    .guest-modal-box { position: relative; width: min(440px, 100%); padding: 30px 28px 26px; border: 1px solid rgba(42, 255, 138, .3); border-radius: 18px; background: #0d1512; box-shadow: 0 24px 60px rgba(0, 0, 0, .55); }
+    .guest-modal-close { position: absolute; top: 10px; right: 12px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; padding: 4px 9px; cursor: pointer; }
+    .guest-modal-close:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .guest-modal-tag { color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: .14em; }
+    .guest-modal-box h2 { margin: 8px 0 10px; font-size: 22px; }
+    .guest-modal-box p { margin: 0 0 22px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .guest-modal-actions { display: flex; gap: 10px; }
+    .guest-modal-actions a { flex: 1; justify-content: center; border-radius: 10px; padding: 12px 14px; text-align: center; font-size: 13px; font-weight: 700; text-decoration: none; }
+    @media (max-width: 480px) { .guest-modal-actions { flex-direction: column; } }
   </style>
 </head>
 
@@ -1774,6 +1786,18 @@
       <a class="guest-registration-signup" href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Registrarme gratis <span aria-hidden="true">→</span></a>
       <button class="guest-registration-dismiss" type="button" aria-label="Cerrar banner" onclick="document.body.classList.add('guest-banner-dismissed')">×</button>
     </span>
+  </div>
+  <div id="guestRegistrationModal" class="guest-modal" role="dialog" aria-modal="true" aria-labelledby="guestModalTitle">
+    <div class="guest-modal-box">
+      <button id="guestModalClose" class="guest-modal-close" type="button" aria-label="Cerrar">×</button>
+      <span class="guest-modal-tag">CDLRADAR FREEMIUM</span>
+      <h2 id="guestModalTitle">Crea tu cuenta gratis</h2>
+      <p>Regístrate para comprar cursos, descargar plataformas y activar tus 10 minutos diarios de CDLRadar. Sin tarjeta de crédito.</p>
+      <div class="guest-modal-actions">
+        <a id="guestModalSignup" class="guest-registration-signup" href="/cdl-portal/registro/">Registrarme gratis <span aria-hidden="true">→</span></a>
+        <a id="guestModalLogin" class="guest-registration-login" href="/cdl-portal/login/">Ya tengo cuenta</a>
+      </div>
+    </div>
   </div>
   <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Abrir menú">☰</button>
   <div id="mobileMenuBackdrop" class="mobile-menu-backdrop"></div>
@@ -4604,6 +4628,34 @@
       }
     }
 
+    function openGuestRegistrationModal() {
+      const next = encodeURIComponent(`/cdl-portal/dashboard/${location.hash || '#radar'}`);
+      document.getElementById('guestModalSignup').href = `/cdl-portal/registro/?next=${next}`;
+      document.getElementById('guestModalLogin').href = `/cdl-portal/login/?next=${next}`;
+      document.getElementById('guestRegistrationModal').classList.add('open');
+    }
+
+    function closeGuestRegistrationModal() {
+      document.getElementById('guestRegistrationModal').classList.remove('open');
+    }
+
+    // Acciones que requieren cuenta: el visitante ve el modal en lugar de la acción.
+    const GUEST_GATED_SELECTOR = '[data-course-purchase], [data-course-academy], #academyBannerButton, #navUpgrade, #viewDownload a.btn-primary-link';
+    document.addEventListener('click', (event) => {
+      if (!isGuestPortal || !event.target.closest(GUEST_GATED_SELECTOR)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (isMobileView()) closeMobileMenu();
+      openGuestRegistrationModal();
+    }, true);
+    document.getElementById('guestModalClose').addEventListener('click', closeGuestRegistrationModal);
+    document.getElementById('guestRegistrationModal').addEventListener('click', (event) => {
+      if (event.target === event.currentTarget) closeGuestRegistrationModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeGuestRegistrationModal();
+    });
+
     function initGuestPortal() {
       isGuestPortal = true;
       document.body.classList.add('guest-portal');
@@ -4668,13 +4720,7 @@
     document.getElementById("navAffiliateFunds").onclick = openAffiliatePortal;
     document.getElementById("openProfileCard").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
-    document.getElementById("navUpgrade").onclick = () => {
-      if (isGuestPortal) {
-        window.location.href = "/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar";
-        return;
-      }
-      navigateTo("#upgrade");
-    };
+    document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
     document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
     document.querySelectorAll('[data-course-id]').forEach((cta) => {
       cta.addEventListener('click', (event) => {
