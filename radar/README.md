@@ -26,4 +26,6 @@ la zona horaria local del dispositivo. Las sesiones del radar usan las zonas
 oficiales de Tokio, Londres y Nueva York, por lo que sus contadores ajustan
 automáticamente los cambios de horario de verano. La franja de sesiones también
 muestra la ciudad, el desfase GMT y la hora local, junto con la próxima apertura
-o cierre y el tiempo que falta o queda en esa misma hora.
+o cierre y el tiempo que falta o queda en esa misma hora. Debajo de cada sesión
+se indica si está cerrada (su próxima apertura y el tiempo que falta) o abierta
+(el tiempo transcurrido, el cierre y el tiempo restante).

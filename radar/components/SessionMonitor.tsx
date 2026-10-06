@@ -5,7 +5,9 @@ interface SessionInfo {
   name: string;
   status: 'open' | 'closed' | 'pre-open';
   timeLeft?: string;
+  elapsed?: string;
   opensIn?: string;
+  openedAt?: number;
   nextChangeAt?: number;
 }
 
@@ -149,6 +151,8 @@ const getSessionInfo = (session: MarketSession, now: Date) => {
     return {
       isOpen,
       minutesUntilChange: Math.ceil((closeTimestamp - nowTimestamp) / 60_000),
+      minutesSinceOpen: Math.floor((nowTimestamp - openTimestamp) / 60_000),
+      openedAt: openTimestamp,
       nextChangeAt: closeTimestamp
     };
   }
@@ -169,6 +173,8 @@ const getSessionInfo = (session: MarketSession, now: Date) => {
       return {
         isOpen,
         minutesUntilChange: Math.ceil((nextOpen - nowTimestamp) / 60_000),
+        minutesSinceOpen: undefined,
+        openedAt: undefined,
         nextChangeAt: nextOpen
       };
     }
@@ -417,21 +423,27 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
         name: 'ASIA',
         status: (asiaOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: asiaOpen ? formatTime(asiaTimeLeft) : undefined,
+        elapsed: asiaOpen ? formatTime(asiaSession.minutesSinceOpen) : undefined,
         opensIn: !asiaOpen && asiaOpensIn > 0 ? formatTime(asiaOpensIn) : undefined,
+        openedAt: asiaSession.openedAt,
         nextChangeAt: asiaSession.nextChangeAt
       },
       europe: {
         name: 'EU',
         status: (europeOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: europeOpen ? formatTime(europeTimeLeft) : undefined,
+        elapsed: europeOpen ? formatTime(europeSession.minutesSinceOpen) : undefined,
         opensIn: !europeOpen && europeOpensIn > 0 ? formatTime(europeOpensIn) : undefined,
+        openedAt: europeSession.openedAt,
         nextChangeAt: europeSession.nextChangeAt
       },
       america: {
         name: 'NY',
         status: (americaOpen ? 'open' : 'closed') as 'open' | 'closed',
         timeLeft: americaOpen ? formatTime(americaTimeLeft) : undefined,
+        elapsed: americaOpen ? formatTime(americaSession.minutesSinceOpen) : undefined,
         opensIn: !americaOpen && americaOpensIn > 0 ? formatTime(americaOpensIn) : undefined,
+        openedAt: americaSession.openedAt,
         nextChangeAt: americaSession.nextChangeAt
       },
       advice
@@ -464,25 +476,31 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     }
   }, [expanded, sessions.advice.length]);
 
-  const SessionBadge = ({ session }: { session: SessionInfo }) => (
-    <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
-      <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
+  const SessionBadge = ({ session }: { session: SessionInfo }) => {
+    const transitionTime = session.nextChangeAt
+      ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(session.nextChangeAt)
+      : null;
+
+    return (
+    <div className="flex items-start gap-1.5 md:gap-2 flex-shrink-0">
+      <div className={`mt-1.5 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${
         session.status === 'open' ? 'bg-emerald-500' : 'bg-neutral-600'
       }`} />
-      <span className="text-[10px] md:text-xs font-bold text-white tracking-wider">
-        {session.name}
-      </span>
-      <span className={`text-[9px] md:text-xs font-mono font-bold ${
-        session.status === 'open' ? 'text-emerald-400' : 'text-neutral-500'
-      }`}>
-        {session.status === 'open' && session.timeLeft 
-          ? session.timeLeft 
-          : session.opensIn 
-            ? session.opensIn
-            : '--'}
-      </span>
+      <div className="flex flex-col">
+        <span className="text-[10px] md:text-xs font-bold text-white tracking-wider">
+          {session.name}
+        </span>
+        <span className={`mt-0.5 text-[9px] md:text-[10px] font-mono font-bold ${
+          session.status === 'open' ? 'text-emerald-400' : 'text-neutral-500'
+        }`}>
+          {session.status === 'open'
+            ? <>Lleva {session.elapsed || '--'} · cierra {transitionTime || '--'} · quedan {session.timeLeft || '--'}</>
+            : <>Abre {transitionTime || '--'} · faltan {session.opensIn || '--'}</>}
+        </span>
+      </div>
     </div>
   );
+  };
 
   const localTime = new Intl.DateTimeFormat('es-ES', {
     hour: '2-digit',
@@ -498,16 +516,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
   const userOffsetHours = Math.floor(Math.abs(userOffsetMinutes) / 60).toString().padStart(2, '0');
   const userOffsetRemainder = (Math.abs(userOffsetMinutes) % 60).toString().padStart(2, '0');
   const userGmtOffset = `GMT${userOffsetMinutes >= 0 ? '+' : '-'}${userOffsetHours}:${userOffsetRemainder}`;
-  const nextSessionChange = [sessions.asia, sessions.europe, sessions.america]
-    .filter((session): session is SessionInfo & { nextChangeAt: number } => session.nextChangeAt !== undefined)
-    .sort((first, second) => first.nextChangeAt - second.nextChangeAt)[0];
-  const nextSessionTime = nextSessionChange
-    ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(nextSessionChange.nextChangeAt)
-    : null;
-  const nextSessionCountdown = nextSessionChange?.status === 'open'
-    ? nextSessionChange.timeLeft
-    : nextSessionChange?.opensIn;
-
   return (
     <div className="max-w-[1500px] mx-auto px-4 md:px-8 mb-4 md:mb-6">
       <div className="bg-gradient-to-r from-white/[0.08] to-white/[0.05] border border-white/20 md:border-2 rounded-lg md:rounded-xl overflow-hidden shadow-lg">
@@ -523,20 +531,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
             <SessionBadge session={sessions.europe} />
             <div className="w-px h-4 md:h-5 bg-white/10" />
             <SessionBadge session={sessions.america} />
-            {nextSessionChange && nextSessionTime && (
-              <>
-                <div className="w-px h-4 md:h-5 bg-white/10" />
-                <div className="flex items-center gap-2 whitespace-nowrap rounded-md border border-cyan-400/25 bg-cyan-400/[0.08] px-2.5 py-1.5 font-mono text-[11px] md:text-xs" aria-live="polite">
-                  <span className="font-semibold text-neutral-300">
-                    TU HORA · {userLocation} ({userGmtOffset}) · <span className="text-white">{localTime}</span>
-                  </span>
-                  <span className="text-cyan-300">
-                    {nextSessionChange.name} {nextSessionChange.status === 'open' ? 'cierra' : 'abre'} a las {nextSessionTime}
-                    {nextSessionCountdown && ` · ${nextSessionChange.status === 'open' ? 'quedan' : 'faltan'} ${nextSessionCountdown}`}
-                  </span>
-                </div>
-              </>
-            )}
+            <div className="w-px h-4 md:h-5 bg-white/10" />
+            <div className="flex items-center whitespace-nowrap rounded-md border border-cyan-400/25 bg-cyan-400/[0.08] px-2.5 py-1.5 font-mono text-[11px] md:text-xs" aria-live="polite">
+              <span className="font-semibold text-neutral-300">
+                TU HORA · {userLocation} ({userGmtOffset}) · <span className="text-white">{localTime}</span>
+              </span>
+            </div>
             
             {/* Market Activity Indicators - Amplified, hidden on mobile */}
             {marketStats && (
