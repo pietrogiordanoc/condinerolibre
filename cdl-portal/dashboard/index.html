@@ -798,6 +798,9 @@
     .classroom-head h2 { margin: 5px 0 0; color: #fff; font-size: 22px; }
     .classroom-close { border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.05); color: #fff; padding: 8px 11px; font: inherit; font-size: 12px; cursor: pointer; }
     .classroom-close:hover { border-color: rgba(42,255,138,.5); color: var(--green); }
+    .classroom-back { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid rgba(42,255,138,.55); border-radius: 12px; background: rgba(42,255,138,.1); color: var(--green); cursor: pointer; transition: background .2s, color .2s; }
+    .classroom-back:hover { background: rgba(42,255,138,.22); color: #fff; }
+    .classroom-back svg { width: 22px; height: 22px; }
     .classroom-study-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(420px, 480px); align-items: start; }
     .classroom-study-main { min-width: 0; }
     .classroom-playlist { position: sticky; top: 0; max-height: calc(100vh - 93px); max-height: calc(100dvh - 93px); overflow-y: auto; border-left: 1px solid rgba(255,255,255,.1); background: rgba(2,7,10,.38); }
@@ -2419,6 +2422,9 @@
         <div class="classroom-shell">
           <div class="classroom-head">
             <div class="classroom-head-brand">
+              <button id="classroomBack" class="classroom-back" type="button" aria-label="Volver a cursos" title="Volver a cursos">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+              </button>
               <img class="classroom-head-logo" src="../../images/logocdl.avif" alt="ConDineroLibre">
               <div>
                 <span class="classroom-kicker">Centro de Estudio</span>
@@ -4772,6 +4778,7 @@
       });
     });
     document.getElementById('classroomClose').onclick = closeClassroom;
+    document.getElementById('classroomBack').onclick = closeClassroom;
     document.getElementById('classroomTheater').onclick = toggleClassroomTheater;
     document.getElementById('classroomFullscreen').onclick = toggleClassroomFullscreen;
     document.getElementById('studyNoteSave').onclick = saveStudyNote;
