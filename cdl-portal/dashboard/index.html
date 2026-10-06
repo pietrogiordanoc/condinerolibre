@@ -1713,32 +1713,43 @@
     #guestRegistrationBanner {
       display: none;
       position: fixed;
-      top: 14px;
-      left: 50%;
+      top: 0;
+      left: 0;
       z-index: 1000;
-      width: min(760px, calc(100vw - 32px));
-      transform: translateX(-50%);
+      width: 100%;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      padding: 12px 14px;
-      border: 1px solid rgba(42, 255, 138, .45);
-      border-radius: 12px;
-      background: rgba(10, 22, 18, .97);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, .35);
-      color: #e7f9ee;
-      font-size: 13px;
+      padding: 10px max(16px, calc((100vw - 1920px) / 2 + 24px));
+      border-bottom: 1px solid rgba(96, 165, 250, .4);
+      background: linear-gradient(90deg, #1e3a8a 0%, #1d4ed8 50%, #2563eb 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
+      color: #dbeafe;
+      font-size: 12px;
+      backdrop-filter: blur(12px);
     }
     body.guest-portal #guestRegistrationBanner { display: flex; }
-    #guestRegistrationBanner strong { color: #91f7bb; }
+    #guestRegistrationBanner strong { color: #fff; }
+    .guest-registration-copy { display: flex; min-width: 0; align-items: center; gap: 12px; font-weight: 500; }
+    .guest-registration-copy p { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .guest-registration-badge { display: inline-flex; flex-shrink: 0; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; background: rgba(255,255,255,.15); padding: 5px 10px; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+    .guest-registration-pulse { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #67e8f9; }
+    .guest-registration-pulse::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #67e8f9; animation: guest-registration-ping 1.3s cubic-bezier(0, 0, .2, 1) infinite; }
+    @keyframes guest-registration-ping { 75%, 100% { opacity: 0; transform: scale(2); } }
     .guest-registration-actions { display: flex; flex-shrink: 0; gap: 8px; }
-    .guest-registration-actions a { border-radius: 7px; padding: 8px 11px; font-size: 12px; font-weight: 700; text-decoration: none; }
-    .guest-registration-login { border: 1px solid rgba(255,255,255,.2); color: #fff; }
-    .guest-registration-signup { background: #2aff8a; color: #04120a; }
+    .guest-registration-actions a, .guest-registration-dismiss { border-radius: 8px; padding: 7px 12px; font-size: 12px; font-weight: 700; text-decoration: none; transition: background .2s, transform .2s; }
+    .guest-registration-login { border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.1); color: #fff; }
+    .guest-registration-login:hover { background: rgba(255,255,255,.2); }
+    .guest-registration-signup { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(90deg, #00e599, #34d399); box-shadow: 0 0 20px -3px rgba(0, 229, 153, .45); color: #03170e; }
+    .guest-registration-signup:hover { transform: scale(1.02); }
+    .guest-registration-dismiss { border: 0; background: transparent; color: #bfdbfe; cursor: pointer; line-height: 1; }
+    .guest-registration-dismiss:hover { background: rgba(255,255,255,.1); color: #fff; }
     @media (max-width: 640px) {
       #guestRegistrationBanner { align-items: flex-start; flex-direction: column; }
+      .guest-registration-copy p { white-space: normal; }
       .guest-registration-actions { width: 100%; }
       .guest-registration-actions a { flex: 1; text-align: center; }
+      .guest-registration-dismiss { position: absolute; top: 6px; right: 4px; }
     }
   </style>
 </head>
@@ -1749,10 +1760,14 @@
     document.body.dataset.view = initialPortalView === 'dashboard' ? 'radar' : initialPortalView;
   </script>
   <div id="guestRegistrationBanner" role="status">
-    <span><strong>Explora CDLRadar.</strong> Regístrate gratis para desbloquear los datos operativos y activar tus 10 minutos diarios.</span>
+    <div class="guest-registration-copy">
+      <span class="guest-registration-badge"><i class="guest-registration-pulse"></i> EXPLORA CDLRADAR</span>
+      <p><strong>Regístrate gratis</strong> para desbloquear las señales en vivo, datos operativos y activar tus <strong style="color:#67e8f9;">10 minutos diarios</strong> sin costo.</p>
+    </div>
     <span class="guest-registration-actions">
       <a class="guest-registration-login" href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Iniciar sesión</a>
-      <a class="guest-registration-signup" href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Registrarme gratis</a>
+      <a class="guest-registration-signup" href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Registrarme gratis <span aria-hidden="true">→</span></a>
+      <button class="guest-registration-dismiss" type="button" aria-label="Cerrar banner" onclick="document.getElementById('guestRegistrationBanner').style.display='none'">×</button>
     </span>
   </div>
   <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Abrir menú">☰</button>
