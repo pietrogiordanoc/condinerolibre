@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abriendo CDLRadar...</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (async () => {
+      const client = supabase.createClient(
+        "https://yhgqmbexjscojlrzguvh.supabase.co",
+        "******"
+      );
+      const { data: { session }, error } = await client.auth.getSession();
+
+      if (error) console.error("No se pudo comprobar la sesión:", error);
+      window.location.replace(session ? "/cdl-portal/dashboard/#radar" : "/radar/");
+    })();
+  </script>
+</body>
+</html>

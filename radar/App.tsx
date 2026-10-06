@@ -763,8 +763,8 @@ const App: React.FC = () => {
             <h2 id="guest-registration-title" className="text-xl font-semibold text-white">Desbloquea el Radar</h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-300">Crea tu cuenta gratuita para ver los datos operativos y activar tus 10 minutos diarios de CDLRadar.</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <a href="/cdl-portal/registro/" className="rounded-lg bg-emerald-400 px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-emerald-300">Crear cuenta gratis</a>
-              <a href="/cdl-portal/login/" className="rounded-lg border border-white/15 px-4 py-3 text-center text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5">Ya tengo cuenta</a>
+              <a href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar" className="rounded-lg bg-emerald-400 px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-emerald-300">Crear cuenta gratis</a>
+              <a href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F%23radar" className="rounded-lg border border-white/15 px-4 py-3 text-center text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5">Ya tengo cuenta</a>
             </div>
           </section>
         </div>
