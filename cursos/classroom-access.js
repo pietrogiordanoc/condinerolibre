@@ -1,5 +1,5 @@
 (() => {
-  const classroomUrl = '/cdl-portal/dashboard/#courses';
+  const classroomUrl = '/cdl-portal/dashboard/#accounts';
   const classroomCtaText = /^(empezar curso|comprar por .*|acceder por .*|registrarse en el curso gratuito ahora|activar acceso ahora)$/i;
 
   const openClassroom = () => {
@@ -15,6 +15,7 @@
     if (element.tagName === 'A') {
       element.setAttribute('href', classroomUrl);
       element.removeAttribute('target');
+      element.classList.remove('btn-activar-acceso');
       return;
     }
 
