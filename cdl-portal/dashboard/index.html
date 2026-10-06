@@ -1709,6 +1709,37 @@
     .affiliate-bonus, .affiliate-head .metal-money, .account-link-card b, .course-card .btn-primary-link,
     .course-playlist-head, .course-item b, .profile-save-btn, .profile-access-actions a,
     .profile-access-actions button, .affiliate-btn { font-weight: 600; }
+
+    #guestRegistrationBanner {
+      display: none;
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      z-index: 1000;
+      width: min(760px, calc(100vw - 32px));
+      transform: translateX(-50%);
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(42, 255, 138, .45);
+      border-radius: 12px;
+      background: rgba(10, 22, 18, .97);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .35);
+      color: #e7f9ee;
+      font-size: 13px;
+    }
+    body.guest-portal #guestRegistrationBanner { display: flex; }
+    #guestRegistrationBanner strong { color: #91f7bb; }
+    .guest-registration-actions { display: flex; flex-shrink: 0; gap: 8px; }
+    .guest-registration-actions a { border-radius: 7px; padding: 8px 11px; font-size: 12px; font-weight: 700; text-decoration: none; }
+    .guest-registration-login { border: 1px solid rgba(255,255,255,.2); color: #fff; }
+    .guest-registration-signup { background: #2aff8a; color: #04120a; }
+    @media (max-width: 640px) {
+      #guestRegistrationBanner { align-items: flex-start; flex-direction: column; }
+      .guest-registration-actions { width: 100%; }
+      .guest-registration-actions a { flex: 1; text-align: center; }
+    }
   </style>
 </head>
 
@@ -1717,6 +1748,13 @@
     const initialPortalView = window.location.hash.replace('#', '') || 'radar';
     document.body.dataset.view = initialPortalView === 'dashboard' ? 'radar' : initialPortalView;
   </script>
+  <div id="guestRegistrationBanner" role="status">
+    <span><strong>Explora CDLRadar.</strong> Regístrate gratis para desbloquear los datos operativos y activar tus 10 minutos diarios.</span>
+    <span class="guest-registration-actions">
+      <a class="guest-registration-login" href="/cdl-portal/login/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Iniciar sesión</a>
+      <a class="guest-registration-signup" href="/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar">Registrarme gratis</a>
+    </span>
+  </div>
   <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Abrir menú">☰</button>
   <div id="mobileMenuBackdrop" class="mobile-menu-backdrop"></div>
 
@@ -2614,6 +2652,7 @@
     ];
     const sp = supabase.createClient(CONFIG.supabaseUrl, CONFIG.anonKey);
     let currentCourseIndex = 0;
+    let isGuestPortal = false;
 
     async function restoreAuditSessionFromUrl() {
       const url = new URL(window.location.href);
@@ -3511,7 +3550,7 @@
         which = 'radar';
       }
       // Antes de mostrar Radar, exigir perfil completo (nombre + teléfono)
-      if (which === "radar") {
+      if (which === "radar" && !isGuestPortal) {
         const { data: { session } } = await sp.auth.getSession();
         const { data: profile } = await getProfileForSession(session, "plan, full_name, phone");
         const hasName = !!(profile?.full_name && profile.full_name.trim());
@@ -3546,10 +3585,14 @@
       if (which === "profile") document.getElementById("navProfile").classList.add("active");
 
       if (which === "radar") {
-        const { data: { session } } = await sp.auth.getSession();
-        const { data: profile } = await getProfileForSession(session, "plan");
-        document.getElementById("radarBanner").style.display = (profile?.plan === 'free') ? "block" : "none";
-        if (await checkRadarAccess()) startRadarTick();
+        if (isGuestPortal) {
+          document.getElementById("radarBanner").style.display = "none";
+        } else {
+          const { data: { session } } = await sp.auth.getSession();
+          const { data: profile } = await getProfileForSession(session, "plan");
+          document.getElementById("radarBanner").style.display = (profile?.plan === 'free') ? "block" : "none";
+          if (await checkRadarAccess()) startRadarTick();
+        }
       } else {
         stopRadarTick();
       }
@@ -4417,9 +4460,7 @@
         ({ data: { session } } = await sp.auth.getSession());
       }
       if (!session) {
-        const classroomPath = '/cdl-portal/dashboard/#courses';
-        const loginPath = isLocal ? '../login/' : '/login';
-        window.location.href = `${loginPath}?next=${encodeURIComponent(classroomPath)}`;
+        initGuestPortal();
         return;
       }
       await processCoursePurchaseReturn(session);
@@ -4536,6 +4577,20 @@
       }
     }
 
+    function initGuestPortal() {
+      isGuestPortal = true;
+      document.body.classList.add('guest-portal');
+      document.getElementById("username").textContent = "Explora CDLRadar";
+      document.getElementById("useremail").textContent = "Regístrate para activar tu acceso Freemium";
+      document.getElementById("userNameDisplay").textContent = "Visitante";
+      document.getElementById("planStatus").textContent = "Preview";
+      document.getElementById("emailDisplay").textContent = "Sin cuenta";
+      document.getElementById("memberSince").textContent = "—";
+      document.getElementById("logoutBtn").textContent = "Registrarme";
+      showView(location.hash.replace("#", "") || "radar");
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
     // --- EVENTOS ---
     window.addEventListener("hashchange", () => {
       if (!new URLSearchParams(location.search).get('course')) showView(location.hash.replace("#", "") || "radar");
@@ -4562,6 +4617,10 @@
     };
 
     document.getElementById("logoutBtn").onclick = async () => {
+      if (isGuestPortal) {
+        window.location.href = "/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar";
+        return;
+      }
       const { data: { session } } = await sp.auth.getSession();
       if (session) await sp.from('user_presence').update({ online: false }).eq('user_id', session.user.id);
       await sp.auth.signOut();
@@ -4582,7 +4641,13 @@
     document.getElementById("navAffiliateFunds").onclick = openAffiliatePortal;
     document.getElementById("openProfileCard").onclick = () => navigateTo("#profile");
     document.getElementById("navRadar").onclick = () => navigateTo("#radar");
-    document.getElementById("navUpgrade").onclick = () => navigateTo("#upgrade");
+    document.getElementById("navUpgrade").onclick = () => {
+      if (isGuestPortal) {
+        window.location.href = "/cdl-portal/registro/?next=%2Fcdl-portal%2Fdashboard%2F%23radar";
+        return;
+      }
+      navigateTo("#upgrade");
+    };
     document.getElementById("navSubscription").onclick = () => navigateTo("#subscription");
     document.getElementById('classroomClose').onclick = closeClassroom;
     document.getElementById('classroomTheater').onclick = toggleClassroomTheater;
