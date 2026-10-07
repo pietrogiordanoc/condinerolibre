@@ -92,11 +92,11 @@ serve(async (request) => {
         .from("course_enrollments").select("course_id")
         .eq("user_id", userId).eq("course_id", courseId).maybeSingle();
       if (!enrollment) {
-        const { data: hasAcademy } = await supabaseAdmin.rpc("academy_has_access", { target_user: userId });
+        const { data: hasPremium } = await supabaseAdmin.rpc("premium_has_access", { target_user: userId });
         const canImportPublicPreview = course.active;
         // An active course may be imported by a visitor who is opening its free preview.
         // The course_lessons RLS policies still limit playback to the preview entitlement.
-        if (hasAcademy !== true && !canImportPublicPreview) return reply({ error: "Forbidden", code: "forbidden" }, 403);
+        if (hasPremium !== true && !canImportPublicPreview) return reply({ error: "Forbidden", code: "forbidden" }, 403);
       }
     }
 
