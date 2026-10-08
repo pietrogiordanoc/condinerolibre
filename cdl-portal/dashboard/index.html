@@ -418,7 +418,8 @@
     .profile-access-actions button { min-height: 38px; padding: 0 13px; border: 1px solid rgba(42,255,138,.45); border-radius: 8px; background: rgba(42,255,138,.12); color: #a9ffd0; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
     .profile-support-card { position:fixed; right:24px; bottom:82px; z-index:10030; display:grid; grid-template-rows:auto minmax(250px, 1fr) auto; gap:0; width:min(390px, calc(100vw - 32px)); height:min(540px, calc(100vh - 112px)); overflow:hidden; border:1px solid rgba(42,255,138,.38); border-radius:14px; background:#e9e6dd; box-shadow:0 24px 64px rgba(0,0,0,.5); transition:opacity .2s ease, transform .2s ease, visibility .2s ease; }
     .profile-support-card.is-collapsed { visibility:hidden; opacity:0; pointer-events:none; transform:translateY(18px) scale(.97); }
-    .profile-support-card.profile-support-new-message { animation:profile-support-new-message 1.2s ease-out; }
+    .profile-support-card.profile-support-new-message,
+    .profile-support-toggle.profile-support-new-message { animation:profile-support-new-message 1.2s ease-out; }
     @keyframes profile-support-new-message { 0%, 45% { box-shadow:0 0 0 4px rgba(37,167,104,.8),0 24px 64px rgba(0,0,0,.5); } 100% { box-shadow:0 24px 64px rgba(0,0,0,.5); } }
     .profile-support-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:16px; background:linear-gradient(135deg, #0d8b55, #1fa96d); color:#fff; }
     .profile-support-card h3 { margin:0; color:#fff; font-size:16px; font-weight:500; }
@@ -1914,7 +1915,7 @@
           </div>
         </section>
 
-        <section class="profile-support-card" aria-labelledby="profile-support-title">
+        <section class="profile-support-card is-collapsed" aria-labelledby="profile-support-title">
           <div class="profile-support-head">
             <div>
               <h3 id="profile-support-title">Centro de Mensajes</h3>
@@ -1937,7 +1938,7 @@
             </div>
           </div>
         </section>
-        <button id="profileSupportToggle" class="profile-support-toggle" type="button" aria-expanded="true">Centro de Mensajes</button>
+        <button id="profileSupportToggle" class="profile-support-toggle" type="button" aria-expanded="false">Abrir Centro de Mensajes</button>
 
         <section id="profileAcademyUpgrade" class="profile-academy-upgrade" hidden>
           <div class="profile-academy-upgrade-copy">
@@ -2848,16 +2849,14 @@
       oscillator.stop(profileSupportAudioContext.currentTime + 0.38);
     }
 
-    function openProfileSupportForIncomingResponse() {
+    function notifyProfileSupportIncomingResponse() {
       const center = document.querySelector('.profile-support-card');
       const button = document.getElementById('profileSupportToggle');
-      center.classList.remove('is-collapsed');
-      center.classList.remove('profile-support-new-message');
-      button.setAttribute('aria-expanded', 'true');
-      button.textContent = 'Centro de Mensajes';
-      void center.offsetWidth;
-      center.classList.add('profile-support-new-message');
-      setTimeout(() => center.classList.remove('profile-support-new-message'), 1200);
+      const notificationTarget = center.classList.contains('is-collapsed') ? button : center;
+      notificationTarget.classList.remove('profile-support-new-message');
+      void notificationTarget.offsetWidth;
+      notificationTarget.classList.add('profile-support-new-message');
+      setTimeout(() => notificationTarget.classList.remove('profile-support-new-message'), 1200);
     }
 
     function renderProfileSupportMessages() {
@@ -2943,7 +2942,7 @@
       profileSupportTeamResponseIds = teamResponseIds;
       profileSupportHasLoaded = true;
       if (hasNewResponse) {
-        openProfileSupportForIncomingResponse();
+        notifyProfileSupportIncomingResponse();
         playProfileSupportIncomingSound();
       }
       renderProfileSupportMessages();
