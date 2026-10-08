@@ -31,19 +31,28 @@ const parseAndPrepareCandles = (rawCandles: any[]): Candlestick[] => {
 export const fetchTimeSeries = async (symbol: string, interval: Timeframe, outputSize: number = 2000): Promise<Candlestick[]> => {
   try {
     const candleLimit = Math.min(outputSize, 2000);
-    const { data, error } = await supabase
-      .from('market_candles')
-      .select('candle')
-      .eq('symbol', symbol)
-      .order('candle_at', { ascending: false })
-      .limit(candleLimit);
+    // Supabase devuelve como máximo 1000 filas por petición: se pide por páginas.
+    const pageSize = 1000;
+    const pages = await Promise.all(
+      Array.from({ length: Math.ceil(candleLimit / pageSize) }, (_, page) => {
+        const from = page * pageSize;
+        const to = Math.min(from + pageSize, candleLimit) - 1;
+        return supabase
+          .from('market_candles')
+          .select('candle')
+          .eq('symbol', symbol)
+          .order('candle_at', { ascending: false })
+          .range(from, to);
+      })
+    );
 
-    if (error) {
-      console.warn(`Error fetching historical data from Supabase for ${symbol}:`, error.message);
+    const failedPage = pages.find((page) => page.error);
+    if (failedPage?.error) {
+      console.warn(`Error fetching historical data from Supabase for ${symbol}:`, failedPage.error.message);
       return [];
     }
-    
-    const rawCandles = (data || []).map((row) => row.candle);
+
+    const rawCandles = pages.flatMap((page) => (page.data || []).map((row) => row.candle));
     if (rawCandles.length === 0) {
         console.warn(`No historical data found in Supabase for ${symbol}`);
         return [];
