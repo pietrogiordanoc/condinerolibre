@@ -64,15 +64,15 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.admin_set_premium_access(uuid, boolean) TO authenticated;
 
-DROP FUNCTION IF EXISTS public.request_ultra_plan_change();
+ALTER TABLE public.plan_change_requests
+  DROP CONSTRAINT IF EXISTS plan_change_requests_target_plan_check;
 
 UPDATE public.plan_change_requests
 SET target_plan = 'premium'
 WHERE target_plan IS DISTINCT FROM 'premium';
 
 ALTER TABLE public.plan_change_requests
-  DROP CONSTRAINT IF EXISTS plan_change_requests_target_plan_check;
-
-ALTER TABLE public.plan_change_requests
   ADD CONSTRAINT plan_change_requests_target_plan_check
   CHECK (target_plan = 'premium');
+
+DROP FUNCTION IF EXISTS public.request_ultra_plan_change();
