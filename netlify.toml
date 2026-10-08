@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = "npm --prefix radar ci && npm --prefix radar run build"
+  command = "npm --prefix radar install && npm --prefix radar run build"
 
 # Permitir iframes del mismo origen globalmente
 [[headers]]
