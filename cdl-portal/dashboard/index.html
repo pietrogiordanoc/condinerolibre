@@ -1445,9 +1445,10 @@
         z-index: 9001;
         background: #06070a;
         box-shadow: 20px 0 40px rgba(0, 0, 0, .5);
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto auto;
         transform: translateX(-105%);
         transition: transform .22s ease;
-        overflow-y: auto;
       }
 
       .sidebar.open {
@@ -1456,6 +1457,18 @@
 
       .logo-container {
         padding: 0 6px 18px;
+      }
+
+      .nav {
+        min-height: 0;
+      }
+
+      .sidebar-account {
+        margin: 12px 2px 10px;
+      }
+
+      .profile-card {
+        margin-top: 0;
       }
 
       main {
@@ -1534,7 +1547,7 @@
       }
 
       body[data-view="radar"] main {
-        padding: 54px 0 0;
+        padding: calc(var(--chrome-h) + 56px) 0 0;
       }
 
       #viewRadar {
@@ -1542,8 +1555,8 @@
       }
 
       body[data-view="radar"] #viewRadar {
-        height: calc(100dvh - 64px);
-        min-height: calc(100dvh - 64px);
+        height: calc(100dvh - var(--chrome-h) - 56px);
+        min-height: calc(100dvh - var(--chrome-h) - 56px);
         width: 100%;
         margin-left: 0;
         padding: 0 6px;
@@ -1763,13 +1776,13 @@
     .guest-login-form button:disabled { opacity: .6; cursor: wait; }
     .guest-login-forgot { color: #bfdbfe; font-size: 11px; text-decoration: underline; white-space: nowrap; }
     .guest-login-forgot:hover { color: #fff; }
-    @media (max-width: 640px) {
+    @media (max-width: 900px) {
       body.guest-portal:not(.guest-banner-dismissed) { --chrome-h: 190px; }
       #guestRegistrationBanner { align-items: stretch; flex-direction: column; justify-content: center; padding: 8px 14px; }
       .guest-registration-copy { flex: 0 0 auto; display: block; }
       .guest-registration-badge { display: none; }
       .guest-registration-copy p { font-size: 11px; white-space: normal; }
-      .guest-login-form { flex-wrap: wrap; }
+      .guest-login-form { width: 100%; flex-wrap: wrap; }
       .guest-login-form input { flex: 1 1 120px; width: auto; }
       .guest-login-form button { flex: 0 0 auto; }
       .guest-registration-actions { width: 100%; }
