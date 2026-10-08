@@ -30,24 +30,26 @@ const parseAndPrepareCandles = (rawCandles: any[]): Candlestick[] => {
 
 export const fetchTimeSeries = async (symbol: string, interval: Timeframe, outputSize: number = 2000): Promise<Candlestick[]> => {
   try {
+    const candleLimit = Math.min(outputSize, 2000);
     const { data, error } = await supabase
-      .from('market_cache')
-      .select('time_series_data') // Pide el historial de datos real.
+      .from('market_candles')
+      .select('candle')
       .eq('symbol', symbol)
-      .single();
+      .order('candle_at', { ascending: false })
+      .limit(candleLimit);
 
     if (error) {
       console.warn(`Error fetching historical data from Supabase for ${symbol}:`, error.message);
       return [];
     }
     
-    if (!data || !data.time_series_data) {
+    const rawCandles = (data || []).map((row) => row.candle);
+    if (rawCandles.length === 0) {
         console.warn(`No historical data found in Supabase for ${symbol}`);
         return [];
     }
     
-    // ¡Los datos históricos reales están aquí! No más simulaciones.
-    const historicalCandles = parseAndPrepareCandles(data.time_series_data);
+    const historicalCandles = parseAndPrepareCandles(rawCandles);
     
     if (historicalCandles.length > 0) {
       // Actualiza el precio más reciente para la UI.

@@ -28,6 +28,8 @@ type TwelveDataResponse = {
   values?: Candle5m[];
 };
 
+const RECENT_CANDLE_COUNT = 288;
+
 const INSTRUMENTS: Instrument[] = [
   { symbol: 'EUR/USD', type: 'forex' }, { symbol: 'USD/JPY', type: 'forex' },
   { symbol: 'GBP/USD', type: 'forex' }, { symbol: 'AUD/USD', type: 'forex' },
@@ -81,10 +83,12 @@ serve(async () => {
 
   try {
     const projectUrl = Deno.env.get('PROJECT_URL') ?? Deno.env.get('SUPABASE_URL');
-    const anonKey = Deno.env.get('PROJECT_ANON_KEY') ?? Deno.env.get('SUPABASE_ANON_KEY');
-    if (!projectUrl || !anonKey) throw new Error('Supabase URL or anon key is not configured');
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    if (!projectUrl || !serviceRoleKey) {
+      throw new Error('Supabase URL or service role key is not configured');
+    }
 
-    supabase = createClient(projectUrl, anonKey);
+    supabase = createClient(projectUrl, serviceRoleKey);
 
     const { data: gotLock, error: lockError } = await supabase.rpc('try_market_feeder_lock');
     if (lockError) throw lockError;
@@ -100,7 +104,7 @@ serve(async () => {
         `https://api.twelvedata.com/time_series` +
         `?symbol=${encodeURIComponent(requestedSymbol)}` +
         (instrument.micCode ? `&mic_code=${encodeURIComponent(instrument.micCode)}` : '') +
-        `&interval=5min&outputsize=2000&apikey=${encodeURIComponent(apiKey)}`;
+        `&interval=5min&outputsize=${RECENT_CANDLE_COUNT}&apikey=${encodeURIComponent(apiKey)}`;
 
       try {
         const response = await fetch(url);
@@ -123,17 +127,17 @@ serve(async () => {
           continue;
         }
 
-        const latest = values[0];
-        const { error } = await supabase.from('market_cache').upsert({
+        const rows = values.map((candle) => ({
           symbol: instrument.symbol,
-          data: {
-            symbol: instrument.symbol, type: instrument.type, datetime: latest.datetime,
-            open: latest.open, high: latest.high, low: latest.low,
-            close: latest.close, volume: latest.volume,
-          },
-          time_series_data: values,
-          updated_at: new Date().toISOString(),
-        });
+          candle_at: candle.datetime,
+          candle,
+        }));
+        const { error } = await supabase
+          .from('market_candles')
+          .upsert(rows, {
+            onConflict: 'symbol,candle_at',
+            ignoreDuplicates: true,
+          });
 
         if (error) console.error(`Database error for ${instrument.symbol}: ${error.message}`);
       } catch (error) {
