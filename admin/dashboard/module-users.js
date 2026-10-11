@@ -10,6 +10,7 @@ let SESSIONS_BY_USER_COURSE = {};
 let ACADEMY_BY_USER = {};
 let MODULE_POSITION_BY_ID = {};
 let EXPANDED_DETAIL = new Set();
+let EXPANDED_STUDY_TRACKING = new Set();
 let sortKey = 'displayName';
 let sortOrder = 'asc';
 let MOBILE_USER_ROWS_BY_ID = new Map();
@@ -262,13 +263,15 @@ function renderUsers() {
     }
 
     const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
-    const enrolledCourseIds = academyHasAccess(u.id)
+    const ultraAccess = academyHasAccess(u.id);
+    const studyTrackingOpen = EXPANDED_STUDY_TRACKING.has(u.id);
+    const enrolledCourseIds = ultraAccess
       ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)])
       : ownCourseIds;
 
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="user-line"><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
+        <td data-label="Usuario"><div class="user-line"><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div>${ultraAccess ? `<button type="button" class="row-action row-action-quiet study-tracking-toggle" aria-expanded="${studyTrackingOpen}" onclick="toggleStudyTracking('${u.id}')">${studyTrackingOpen ? 'Ocultar estudios' : 'Ver estudios'}</button>` : ''}</div></div></td>
         <td data-label="Teléfono"><span class="phone-value">${u.phone || "—"}</span><span class="phone-actions"><button class="icon-action" type="button" aria-label="Editar teléfono de ${escapeJS(u.displayName)}" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? `<button class="icon-action icon-action-danger" type="button" aria-label="Borrar teléfono de ${escapeJS(u.displayName)}" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">×</button>` : ''}</span></td>
         <td data-label="Nivel"><div class="tier-cell">${tierControls(u.id, u.tier.id)}</div></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
@@ -279,8 +282,32 @@ function renderUsers() {
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
         <td data-label="Acción">${blockBtn}</td>
         <td data-label="Notas"><button class="btn-note-view" onclick="openNoteModal('${u.id}', '${escapeJS(u.displayName)}', '${noteEscaped}')" title="${u.notas_admin ? 'Ver/editar nota' : 'Añadir nota'}">${notePreview}</button></td>
-      </tr>`;
+      </tr>${ultraAccess && studyTrackingOpen ? studyTrackingRow(u.id) : ''}`;
   }).join("");
+}
+
+function studyTrackingRow(userId) {
+  const courses = COURSES.map((course) => {
+    const stats = courseProgressStats(userId, course);
+    const detailOpen = EXPANDED_DETAIL.has(`${userId}|${course.id}`);
+    return `<div class="course-block">
+      <div class="course-row ${stats.seen ? '' : 'is-idle'}">
+        <strong class="study-course-name">${escapeHtmlText(course.title)}</strong>
+        <div class="course-metrics">${courseMetrics(userId, course)}</div>
+      </div>
+      ${detailOpen ? lessonDetail(userId, course) : ''}
+    </div>`;
+  }).join('');
+  const content = courses
+    ? `<div class="course-list">${courses}</div>`
+    : '<span class="course-metrics-empty">No hay cursos activos para mostrar.</span>';
+  return `<tr class="study-tracking-row"><td colspan="11"><div class="study-tracking-panel"><strong>Seguimiento de estudios · CDL Ultra</strong>${content}</div></td></tr>`;
+}
+
+function toggleStudyTracking(userId) {
+  if (EXPANDED_STUDY_TRACKING.has(userId)) EXPANDED_STUDY_TRACKING.delete(userId);
+  else EXPANDED_STUDY_TRACKING.add(userId);
+  renderUsers();
 }
 
 function tierControls(userId, currentTier) {
