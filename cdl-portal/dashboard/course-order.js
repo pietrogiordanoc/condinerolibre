@@ -14,7 +14,7 @@ window.COURSE_CARD_ORDER = [
   'indices-sinteticos',
   'indices-bursatiles',
   'criptos',
- 'apuestas-deportivas'
+  'apuestas-deportivas',
   'forex-basico',
   'the-leap',
   'psicologia-trading',
