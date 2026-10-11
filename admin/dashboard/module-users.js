@@ -3,7 +3,6 @@ let RADAR_USAGE_BY_ID = {};
 let COURSES = [];
 let COURSE_IDS_WITH_MODULES = new Set();
 let COURSE_ENROLLMENTS_BY_USER = {};
-let EXPANDED_COURSE_ROWS = new Set();
 let PROGRESS_BY_USER = {};
 let LESSONS_BY_COURSE = {};
 let LESSON_INDEX_BY_COURSE = {};
@@ -232,7 +231,6 @@ function renderUsers() {
 
   document.getElementById("usersTbody").innerHTML = rows.map(u => {
     const hasRadarPro = u.plan === 'paid' || u.plan === 'pro';
-    const nextPlan = hasRadarPro ? 'free' : 'paid';
     const notePreview = u.notas_admin ? (u.notas_admin.substring(0, 50) + (u.notas_admin.length > 50 ? '...' : '')) : 'Añadir nota...';
     const noteEscaped = escapeJS(u.notas_admin || '');
     
@@ -264,36 +262,15 @@ function renderUsers() {
     }
 
     const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
-    const academyOn = academyHasAccess(u.id);
-    const enrolledCourseIds = academyOn ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)]) : ownCourseIds;
-    const radarControl = u.tier.id === 'ultra'
-      ? '<span class="tier-radar-included">Radar incluido en Ultra</span>'
-      : `<button type="button" class="row-action row-action-quiet tier-radar-toggle" onclick="adminSetPlan('${u.id}', '${nextPlan}')" title="Cambiar entre Freemium y Premium">${hasRadarPro ? 'Pasar a Freemium' : 'Activar Premium'}</button>`;
-    const coursesDisplay = COURSES.length
-      ? COURSES.map(course => {
-          const enrolled = enrolledCourseIds.has(course.id);
-          const viaAcademy = academyOn && !ownCourseIds.has(course.id);
-          const started = enrolled && courseProgressStats(u.id, course).seen > 0;
-          return `
-          <div class="course-block">
-          <div class="course-row ${started ? '' : 'is-idle'}">
-            <label class="course-access-option">
-              <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''}
-                onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
-              <span>${course.title}              ${viaAcademy ? ' <small style="color:#f59e0b">(incluido en Ultra)</small>' : ''}</span>
-            </label>
-            <div class="course-metrics">${enrolled ? courseMetrics(u.id, course) : '<span class="course-metrics-empty">Sin acceso</span>'}</div>
-          </div>
-          ${enrolled && EXPANDED_DETAIL.has(`${u.id}|${course.id}`) ? lessonDetail(u.id, course) : ''}
-          </div>`;
-        }).join('')
-      : '<span class="course-access-empty">Aún no hay cursos configurados.</span>';
-    
+    const enrolledCourseIds = academyHasAccess(u.id)
+      ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)])
+      : ownCourseIds;
+
     return `
       <tr style="${u.blocked ? 'opacity:0.5; background:#331111;' : ''}">
-        <td data-label="Usuario"><div class="user-line"><button class="course-toggle ${EXPANDED_COURSE_ROWS.has(u.id) ? 'open' : ''}" data-course-toggle="${u.id}" onclick="toggleCourseRow('${u.id}')" title="Ver y administrar cursos">▸</button><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
+        <td data-label="Usuario"><div class="user-line"><span class="course-led ${enrolledCourseIds.size ? 'on' : ''}" data-course-led="${u.id}" title="${enrolledCourseIds.size} cursos activos"></span>${progressBadge(u.id, enrolledCourseIds)}<div><div class="name">${u.displayName}${u.blocked ? ' 🚫' : ''}</div><div class="email">${u.email}</div></div></div></td>
         <td data-label="Teléfono"><span class="phone-value">${u.phone || "—"}</span><span class="phone-actions"><button class="icon-action" type="button" aria-label="Editar teléfono de ${escapeJS(u.displayName)}" title="Editar teléfono" onclick="openPhoneModal('${u.id}', '${escapeJS(u.displayName)}', '${escapeJS(u.phone || '')}')">✎</button>${u.phone ? `<button class="icon-action icon-action-danger" type="button" aria-label="Borrar teléfono de ${escapeJS(u.displayName)}" title="Borrar teléfono" onclick="savePhone('${u.id}', '')">×</button>` : ''}</span></td>
-        <td data-label="Nivel"><div class="tier-cell"><span class="pill tier-pill ${u.tier.className}">${u.tier.label}</span><small>${u.tier.description}</small>${radarControl}</div></td>
+        <td data-label="Nivel"><div class="tier-cell">${tierControls(u.id, u.tier.id)}</div></td>
         <td data-label="Estado"><div class="badge ${u.online ? 'online' : 'offline'}"><span class="dot"></span> ${u.online ? 'ONLINE' : 'OFFLINE'}</div></td>
         <td data-label="Uso Radar">${radarDisplay}</td>
         <td data-label="Historial"><div class="row-actions"><button class="row-action row-action-primary" type="button" onclick="openHistory('${u.id}','${u.email}')">Historial</button><button class="row-action" type="button" title="Ver como alumno" onclick="openAuditView('${u.id}', '${escapeJS(u.email)}')">Abrir</button></div></td>
@@ -302,27 +279,23 @@ function renderUsers() {
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
         <td data-label="Acción">${blockBtn}</td>
         <td data-label="Notas"><button class="btn-note-view" onclick="openNoteModal('${u.id}', '${escapeJS(u.displayName)}', '${noteEscaped}')" title="${u.notas_admin ? 'Ver/editar nota' : 'Añadir nota'}">${notePreview}</button></td>
-      </tr>
-      <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''} ${EXPANDED_COURSE_ROWS.has(u.id) ? '' : 'is-collapsed'}" id="course-row-${u.id}">
-        <td colspan="11">
-          <div class="course-access-line">
-            ${academyBlock(u.id)}
-            <strong>La Classroom</strong>
-            <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
-            <div class="course-list">${coursesDisplay}</div>
-          </div>
-        </td>
       </tr>`;
   }).join("");
 }
 
-const ACADEMY_STATUS_LABELS = {
-  active: ['Activo', '#10b981'],
-  payment_failed: ['Pago fallido (en gracia)', '#f59e0b'],
-  cancelled: ['Cancelado', '#f59e0b'],
-  suspended: ['Suspendido', '#e74c3c'],
-  expired: ['Expirado', '#e74c3c'],
-  revoked: ['Revocado', '#e74c3c']
+function tierControls(userId, currentTier) {
+  const tiers = [
+    ['freemium', 'Freemium'],
+    ['premium', 'Premium'],
+    ['ultra', 'Ultra']
+  ];
+  return `<div class="tier-switches" role="group" aria-label="Nivel del usuario">${
+    tiers.map(([tier, label]) => `
+      <button type="button" class="tier-switch ${tier === currentTier ? `is-active tier-${tier}` : ''}" data-user-tier="${userId}"
+        aria-pressed="${tier === currentTier}" ${tier === currentTier ? 'disabled' : ''}
+        onclick="setAdminTier('${userId}', '${tier}')">${label}</button>
+    `).join('')
+  }</div>`;
 }
 
 function mobileUserDetailItem(label, value) {
@@ -379,16 +352,9 @@ function renderMobileUserDetail(section = 'summary') {
       label: 'Acceso',
       items: [
         ['Radar', user.plan === 'paid' || user.plan === 'pro' ? 'Sin límites (Premium)' : 'Free · 10 min/día'],
-        ['Classroom', academyHasAccess(user.id) ? 'Acceso completo (Ultra)' : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} cursos individuales`],
+        ['Classroom', academyHasAccess(user.id) ? 'Acceso completo (Ultra)' : 'Sin acceso Ultra'],
         ['SL experimental', user.experimental_sl_enabled ? 'Activo' : 'Inactivo'],
         ['Teléfono', user.phone || 'No registrado']
-      ]
-    },
-    classroom: {
-      label: 'Classroom',
-      items: [
-        ['Acceso actual', academyHasAccess(user.id) ? 'Classroom completo (Ultra)' : 'Cursos individuales'],
-        ['Cursos activos', academyHasAccess(user.id) ? `${COURSES.length} incluidos en Ultra` : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} asignados`]
       ]
     },
     activity: {
@@ -415,21 +381,8 @@ function renderMobileUserDetail(section = 'summary') {
   nav.innerHTML = Object.entries(detailSections).map(([key, value]) =>
     `<button type="button" class="${key === section ? 'active' : ''}" onclick="showMobileUserDetailSection('${key}')">${value.label}</button>`
   ).join('');
-  const classroomControls = section === 'classroom'
-    ? `<div class="mobile-classroom-list">
-        ${academyBlock(user.id)}
-        ${COURSES.length ? COURSES.map((course) => {
-          const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[user.id] || new Set();
-          const viaAcademy = academyHasAccess(user.id) && !ownCourseIds.has(course.id);
-          const enrolled = academyHasAccess(user.id) || ownCourseIds.has(course.id);
-          return `<label class="mobile-classroom-course">
-            <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''} onchange="setCourseAccess('${user.id}', '${course.id}', this.checked, this)">
-            <span>${escapeHtmlText(course.title)}<small>${viaAcademy ? 'Incluido en Ultra' : 'Asignar acceso individual'}</small></span>
-          </label>`;
-        }).join('') : '<div class="support-messages-empty">No hay cursos configurados.</div>'}
-      </div>`
-    : '';
-  content.innerHTML = `<div class="mobile-user-detail-grid">${active.items.map(([label, value]) => mobileUserDetailItem(label, value)).join('')}</div>${classroomControls}
+  content.innerHTML = `${tierControls(user.id, user.tier.id)}
+    <div class="mobile-user-detail-grid">${active.items.map(([label, value]) => mobileUserDetailItem(label, value)).join('')}</div>
     <div class="mobile-user-detail-actions">
       ${section === 'activity' ? '<button type="button" class="btn btn-primary" onclick="mobileUserAction(\'history\')">Ver historial</button>' : ''}
       ${section === 'access' ? '<button type="button" class="btn" onclick="mobileUserAction(\'phone\')">Editar teléfono</button>' : ''}
@@ -473,26 +426,74 @@ function academyHasAccess(userId) {
   return sub.status === 'cancelled' && !!sub.access_until && new Date(sub.access_until).getTime() > Date.now();
 }
 
-function academyBlock(userId) {
-  const sub = ACADEMY_BY_USER[userId];
-  const on = academyHasAccess(userId);
-  const [label, color] = sub ? (ACADEMY_STATUS_LABELS[sub.status] || [sub.status, '#94a3b8']) : ['Sin plan', '#64748b'];
-  const until = sub?.status === 'cancelled' && sub.access_until ? ` · hasta ${new Date(sub.access_until).toLocaleDateString('es')}` : '';
-  const source = sub?.paypal_subscription_id ? ' · PayPal' : (sub ? ' · manual' : '');
-  const button = on
-    ? `<button class="row-action row-action-danger" type="button" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
-    : `<button class="row-action row-action-primary" type="button" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
-  return `<div class="academy-line"><strong>CDL Ultra</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
-}
+async function setAdminTier(userId, targetTier) {
+  if (!['freemium', 'premium', 'ultra'].includes(targetTier)) return;
+  const buttons = [...document.querySelectorAll(`[data-user-tier="${userId}"]`)];
+  let ultraRevoked = false;
+  buttons.forEach((button) => { button.disabled = true; });
 
-async function setAcademyAccess(userId, shouldGrant) {
-  const { error } = await sp.rpc('admin_set_academy_access', { target_user_id: userId, should_grant: shouldGrant });
-  if (error) {
-    Toastify({ text: `No se pudo cambiar el plan: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
-    return;
+  try {
+    if (targetTier === 'ultra') {
+      const { error } = await sp.rpc('admin_set_academy_access', {
+        target_user_id: userId,
+        should_grant: true
+      });
+      if (error) throw error;
+    } else {
+      if (academyHasAccess(userId)) {
+        const { error } = await sp.rpc('admin_set_academy_access', {
+          target_user_id: userId,
+          should_grant: false
+        });
+        if (error) throw error;
+        ultraRevoked = true;
+      }
+      const { data: { session } } = await sp.auth.getSession();
+      if (!session) throw new Error('Tu sesión de administrador expiró. Vuelve a iniciar sesión.');
+      const plan = targetTier === 'premium' ? 'paid' : 'free';
+      const response = await fetch(CONFIG.edgeSetPlanUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ action: 'set_plan', target_user_id: userId, plan })
+      });
+      if (!response.ok) {
+        const detail = await response.text();
+        throw new Error(detail || response.statusText || 'No se pudo actualizar el plan del Radar.');
+      }
+      const { error: auditError } = await sp.from('audit_events').insert({
+        user_id: userId,
+        event_type: 'Cambio de nivel (Admin)',
+        metadata: {
+          new_plan: plan,
+          commercial_tier: targetTier,
+          admin_user: session.user.email,
+          timestamp: new Date().toISOString()
+        },
+        created_at: new Date().toISOString()
+      });
+      if (auditError) console.error('No se pudo registrar el cambio de nivel:', auditError);
+    }
+
+    const label = targetTier === 'freemium' ? 'Freemium' : targetTier === 'premium' ? 'Premium' : 'Ultra';
+    Toastify({ text: `Nivel cambiado a CDL ${label}`, duration: 2500, backgroundColor: '#10b981' }).showToast();
+    await refreshUsers();
+    if (MOBILE_USER_DETAIL_ID === userId) renderMobileUserDetail();
+  } catch (error) {
+    console.error('No se pudo cambiar el nivel del usuario:', error);
+    if (ultraRevoked) {
+      const { error: restoreError } = await sp.rpc('admin_set_academy_access', {
+        target_user_id: userId,
+        should_grant: true
+      });
+      if (restoreError) {
+        console.error('No se pudo restaurar Ultra después del error:', restoreError);
+        Toastify({ text: `El cambio falló y no se pudo restaurar Ultra: ${restoreError.message}`, duration: 9000, backgroundColor: '#b91c1c' }).showToast();
+        await refreshUsers();
+      }
+    }
+    Toastify({ text: `No se pudo cambiar el nivel: ${error.message || error}`, duration: 6000, backgroundColor: '#e74c3c' }).showToast();
+    buttons.forEach((button) => { button.disabled = false; });
   }
-  Toastify({ text: shouldGrant ? 'Plan CDL Ultra activado' : 'Plan CDL Ultra revocado', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
-  await refreshUsers();
 }
 
 async function setCourseAccess(userId, courseId, shouldGrant, checkbox) {
@@ -675,13 +676,6 @@ function lessonDetail(userId, course) {
     return `<div class="ld-row"><span class="ld-n">${position + 1}</span><span class="ld-title" title="${escapeHtmlText(title)}">${escapeHtmlText(shortTitle)}</span><span class="ld-dur">${duration ? fmtClock(duration) : '—'}</span><span class="ld-ranges" title="Tramos vistos del vídeo">${ranges}</span><span class="ld-pct">${status === 'none' || status === 'opened' ? '—' : `${pct}%`}</span><span class="ld-status st-${status}">${LESSON_STATUS_LABELS[status]}</span><span class="ld-when">${row ? timeAgo(row.last_viewed_at) : '—'}</span></div>`;
   });
   return `<div class="lesson-detail">${items.join('') || '<span class="course-metrics-empty">Este curso aún no tiene lecciones importadas.</span>'}</div>`;
-}
-
-function toggleCourseRow(userId) {
-  const open = !EXPANDED_COURSE_ROWS.has(userId);
-  if (open) EXPANDED_COURSE_ROWS.add(userId); else EXPANDED_COURSE_ROWS.delete(userId);
-  document.getElementById(`course-row-${userId}`)?.classList.toggle('is-collapsed', !open);
-  document.querySelector(`[data-course-toggle="${userId}"]`)?.classList.toggle('open', open);
 }
 
 function updateCourseLed(userId) {

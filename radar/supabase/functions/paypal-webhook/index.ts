@@ -13,6 +13,10 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:5500"
 ]);
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const RADAR_PLAN_IDS = new Map([
+  ["P-8WN86335RL7197925NFXDFTI", "monthly"],
+  ["P-8RP24765AS427370MNHCOQ6Y", "annual"]
+]);
 
 function corsHeaders(request: Request) {
   const origin = request.headers.get("Origin") || "";
@@ -145,11 +149,11 @@ async function readProfile(userId: string): Promise<{ plan?: string; full_name?:
   return byUserId.data;
 }
 
-function accessUntilFor(subscription: Subscription): string {
+function accessUntilFor(subscription: Subscription, fallbackDays = 30): string {
   const next = subscription.billing_info?.next_billing_time;
   if (next) return next;
   const lastPayment = subscription.billing_info?.last_payment?.time;
-  if (lastPayment) return new Date(new Date(lastPayment).getTime() + 30 * 86_400_000).toISOString();
+  if (lastPayment) return new Date(new Date(lastPayment).getTime() + fallbackDays * 86_400_000).toISOString();
   return new Date().toISOString();
 }
 
@@ -201,6 +205,89 @@ async function applyState(userId: string, subscription: Subscription, state: str
 
   const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(userId);
   await notifyAdmin(`${STATE_SUBJECTS[state] || "Cambio de suscripcion"} · CDL Ultra`, [
+    ["Alumno", profile?.full_name || "-"],
+    ["Email", authUser?.user?.email || "-"],
+    ["Estado", state],
+    ["Suscripcion PayPal", subscription.id],
+    ["Ultimo pago", subscription.billing_info?.last_payment?.amount?.value ? `${subscription.billing_info.last_payment.amount.value} USD` : "-"],
+    ["Origen", source],
+    ["Fecha", new Date().toISOString()]
+  ]);
+  return { changed: true };
+}
+
+async function academyHasAccessForUser(userId: string): Promise<boolean> {
+  const { data, error } = await supabaseAdmin
+    .from("academy_subscriptions")
+    .select("status, access_until")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) throw error;
+  return data?.status === "active" || data?.status === "payment_failed" ||
+    (data?.status === "cancelled" && !!data.access_until && new Date(data.access_until).getTime() > Date.now());
+}
+
+async function applyRadarState(userId: string, subscription: Subscription, state: string, source: string) {
+  const { data: existing, error: existingError } = await supabaseAdmin
+    .from("radar_subscriptions")
+    .select("status, paypal_subscription_id, prev_plan, plan_restored")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (existingError) throw existingError;
+
+  const sameSubscription = existing?.paypal_subscription_id === subscription.id;
+  const explicitActivation = source === "BILLING.SUBSCRIPTION.ACTIVATED" ||
+    source === "BILLING.SUBSCRIPTION.RE-ACTIVATED" || source === "portal.confirm";
+  if (existing && !sameSubscription && !explicitActivation) return { changed: false, skipped: "stale_subscription" };
+  if (existing?.status === "revoked" && sameSubscription && !explicitActivation) {
+    return { changed: false, skipped: "revoked" };
+  }
+  if (existing?.status === state && sameSubscription) return { changed: false };
+
+  const profile = await readProfile(userId);
+  const currentPlan = profile?.plan || "free";
+  const prevPlan = existing && !existing.plan_restored && existing.prev_plan
+    ? existing.prev_plan
+    : currentPlan;
+  const accessUntil = state === "cancelled"
+    ? accessUntilFor(subscription, subscription.plan_id === "P-8RP24765AS427370MNHCOQ6Y" ? 365 : 30)
+    : null;
+  const cancelledAccessUntil = accessUntil ? new Date(accessUntil).getTime() : 0;
+  const hasAccess = state === "active" || state === "payment_failed" ||
+    (state === "cancelled" && cancelledAccessUntil > Date.now());
+  const restoreNow = state === "suspended" || state === "expired" ||
+    (state === "cancelled" && cancelledAccessUntil <= Date.now());
+
+  const row: Record<string, unknown> = {
+    user_id: userId,
+    paypal_subscription_id: subscription.id,
+    plan_id: subscription.plan_id,
+    status: state,
+    access_until: accessUntil,
+    prev_plan: prevPlan,
+    plan_restored: restoreNow,
+    updated_at: new Date().toISOString(),
+    note: source
+  };
+  if (hasAccess && (!sameSubscription || (existing?.status !== "active" && existing?.status !== "payment_failed"))) {
+    row.activated_at = new Date().toISOString();
+  }
+
+  const { error: upsertError } = await supabaseAdmin
+    .from("radar_subscriptions")
+    .upsert(row, { onConflict: "user_id" });
+  if (upsertError) throw upsertError;
+
+  if (hasAccess) {
+    if (currentPlan !== "paid" && currentPlan !== "pro") await updateProfilePlan(userId, "paid");
+  } else if (restoreNow && (currentPlan === "paid" || currentPlan === "pro")) {
+    const restoredPlan = await academyHasAccessForUser(userId) ? "paid" : prevPlan;
+    await updateProfilePlan(userId, restoredPlan || "free");
+  }
+
+  const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(userId);
+  const planLabel = RADAR_PLAN_IDS.get(subscription.plan_id) === "annual" ? "Premium anual" : "Premium mensual";
+  await notifyAdmin(`${STATE_SUBJECTS[state] || "Cambio de suscripcion"} · CDL ${planLabel}`, [
     ["Alumno", profile?.full_name || "-"],
     ["Email", authUser?.user?.email || "-"],
     ["Estado", state],
@@ -275,19 +362,25 @@ async function handleWebhook(request: Request, reply: (body: Record<string, unkn
       userId = outcome.userId || null;
     } else {
       const subscription = await fetchSubscription(subscriptionId as string);
-      if (subscription && subscription.plan_id === env("PAYPAL_ACADEMY_PLAN_ID")) {
-      userId = subscription.custom_id && UUID_PATTERN.test(subscription.custom_id) ? subscription.custom_id : null;
-      const state = stateFor(eventType, subscription.status);
-      if (!userId) result = "no_user";
-      else if (!state) result = `no_state_${subscription.status}`;
-      else {
-        const outcome = await applyState(userId, subscription, state, eventType);
-        result = outcome.changed ? `applied_${state}` : `unchanged_${outcome.skipped || state}`;
-      }
+      const isUltraPlan = subscription?.plan_id === env("PAYPAL_ACADEMY_PLAN_ID");
+      const isRadarPlan = subscription ? RADAR_PLAN_IDS.has(subscription.plan_id) : false;
+      if (subscription && (isUltraPlan || isRadarPlan)) {
+        userId = subscription.custom_id && UUID_PATTERN.test(subscription.custom_id) ? subscription.custom_id : null;
+        const state = stateFor(eventType, subscription.status);
+        if (!userId) result = "no_user";
+        else if (!state) result = `no_state_${subscription.status}`;
+        else {
+          const outcome = isUltraPlan
+            ? await applyState(userId, subscription, state, eventType)
+            : await applyRadarState(userId, subscription, state, eventType);
+          result = outcome.changed ? `applied_${state}` : `unchanged_${outcome.skipped || state}`;
+        }
       }
     }
     await supabaseAdmin.from("paypal_events").update({ result, user_id: userId }).eq("id", event.id);
     await supabaseAdmin.rpc("academy_expire_overdue");
+    const { error: radarExpireError } = await supabaseAdmin.rpc("radar_expire_overdue");
+    if (radarExpireError) throw radarExpireError;
     return reply({ ok: true, result });
   } catch (error) {
     // Se libera el evento para que el reintento de PayPal pueda procesarlo.
