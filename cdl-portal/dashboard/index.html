@@ -2293,8 +2293,8 @@
       </div>
 
       <div class="accounts-tier">
-        <div class="accounts-tier-grid courses-grid">
-          <article class="account-link-card course-card">
+        <div id="courseCards" class="accounts-tier-grid courses-grid">
+          <article class="account-link-card course-card" data-course-card-id="master-pro">
             <div class="course-image-wrap">
               <img src="../../images/curso01.avif" alt="Master Pro Academico">
             </div>
@@ -2308,7 +2308,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="trading-prime">
             <div class="course-image-wrap">
               <img src="../../images/curso02.avif" alt="Trading Prime Elite Profesional">
             </div>
@@ -2322,7 +2322,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="velas-japonesas">
             <div class="course-image-wrap">
               <img src="../../images/curso03.avif" alt="Velas Japonesas desde Cero">
             </div>
@@ -2336,7 +2336,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="tradingview-basico">
             <div class="course-image-wrap">
               <img src="../../images/curso04.avif" alt="TradingView Basico">
             </div>
@@ -2350,7 +2350,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="indices-sinteticos">
             <div class="course-image-wrap">
               <img src="../../images/curso05-indices-sinteticos.avif" alt="Índices Sintéticos">
             </div>
@@ -2364,7 +2364,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="indices-bursatiles">
             <div class="course-image-wrap">
               <img src="../../images/curso06-indices-bursatiles.avif" alt="Índices Bursátiles">
             </div>
@@ -2378,7 +2378,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="criptos">
             <div class="course-image-wrap">
               <img src="../../images/curso07-criptos.avif" alt="Criptos">
             </div>
@@ -2392,7 +2392,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="forex-basico">
             <div class="course-image-wrap">
               <img src="../../images/curso08-forex-basico.avif" alt="Forex Básico">
             </div>
@@ -2406,7 +2406,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="metatrader">
             <div class="course-image-wrap">
               <img src="../../images/curso12-metatrader.avif" alt="MetaTrader">
             </div>
@@ -2420,7 +2420,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card course-card-coming">
+          <article class="account-link-card course-card course-card-coming" data-course-card-id="the-leap">
             <div class="course-image-wrap">
               <img src="../../images/curso10-the-leap.png" alt="The Leap">
             </div>
@@ -2431,7 +2431,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card course-card-coming">
+          <article class="account-link-card course-card course-card-coming" data-course-card-id="psicologia-trading">
             <div class="course-image-wrap">
               <img src="../../images/curso11-psico-trading.avif" alt="Psicología del Trading">
             </div>
@@ -2442,7 +2442,7 @@
             </div>
           </article>
 
-          <article class="account-link-card course-card">
+          <article class="account-link-card course-card" data-course-card-id="apuestas-deportivas">
             <div class="course-image-wrap">
               <img src="../../images/curso09-apuestas.avif" alt="Apuestas Deportivas">
             </div>
@@ -2700,8 +2700,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://www.paypal.com/sdk/js?client-id=ATeQqFo-1rpKLpkSsABudZfD5nPLEeFEX44Cq84qFkvvDHY8OohSadLVzvjXubX6sqhtwwGPVDyUJ51K&vault=true&intent=subscription"></script>
+  <script src="course-order.js"></script>
 
   <script>
+    window.applyCourseCardOrder?.();
     const radarModeParam = new URLSearchParams(window.location.search).get('radar');
     const radarIframeSrc = radarModeParam === 'dev'
       ? 'http://127.0.0.1:3000'
