@@ -4544,7 +4544,7 @@
         ({ data: { session } } = await sp.auth.getSession());
       }
       if (!session) {
-        initGuestPortal();
+        await initGuestPortal();
         return;
       }
       await processCoursePurchaseReturn(session);
@@ -4751,7 +4751,7 @@
       if (event.key === 'Escape') closeGuestRegistrationModal();
     });
 
-    function initGuestPortal() {
+    async function initGuestPortal() {
       isGuestPortal = true;
       document.body.classList.add('guest-portal');
       document.getElementById("username").textContent = "Explora CDLRadar";
@@ -4764,7 +4764,12 @@
       // El ribbon tiene altura variable (formulario + responsive): el resto del layout sigue su altura real.
       const guestBanner = document.getElementById('guestRegistrationBanner');
       new ResizeObserver(() => document.body.style.setProperty('--chrome-h', `${guestBanner.offsetHeight}px`)).observe(guestBanner);
-      showView(location.hash.replace("#", "") || "radar");
+      const requestedCourseId = new URLSearchParams(location.search).get('course');
+      await showView(requestedCourseId ? 'courses' : (location.hash.replace("#", "") || "radar"));
+      if (requestedCourseId) {
+        classroomPreviewCourseIds.add(requestedCourseId);
+        await openClassroom(requestedCourseId, false);
+      }
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
