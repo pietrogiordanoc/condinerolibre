@@ -4124,7 +4124,7 @@
             const lesson = lessons.find((item) => item.id === card.dataset.classroomLessonId);
             if (lesson?.locked) {
               if (isGuestPortal) {
-                pulseGuestBanner();
+                openGuestRegistrationModal();
                 return;
               }
               openAcademyModal();
