@@ -215,7 +215,13 @@ const App: React.FC = () => {
             .maybeSingle();
         }
         const profile = profileResp.data;
-        setAccountPlan((profile?.plan || 'free').toLowerCase());
+        const basePlan = (profile?.plan || 'free').toLowerCase();
+        setAccountPlan(basePlan);
+        if (basePlan === 'paid' || basePlan === 'pro') {
+          // Ultra = Radar + Classroom; solo cambia la etiqueta del plan, nunca el acceso al Radar.
+          const { data: hasUltra } = await supabase.rpc('academy_has_access', { target_user: session.user.id });
+          if (hasUltra === true) setAccountPlan('ultra');
+        }
 
         const { data: affiliateLedger, error: affiliateLedgerError } = await supabase
           .from('affiliate_ledger')
@@ -537,7 +543,7 @@ const App: React.FC = () => {
               <span className="block text-2xl font-black leading-6 text-[#dce344]">{affiliateBalance}</span>
             </span>
             <span className="min-w-0 flex-1 border-l border-[#31505a] pl-4">
-              <span className="block text-sm font-black uppercase tracking-wide text-[#38d5d3]">Gana <span className="text-[#dce344]">$15</span> por cada Pro confirmado</span>
+              <span className="block text-sm font-black uppercase tracking-wide text-[#38d5d3]">Gana <span className="text-[#dce344]">$15</span> por cada Premium o Ultra confirmado</span>
               <span className="mt-0.5 block truncate text-sm font-semibold text-[#e3e9e7]">{affiliateProgressLabel}</span>
               <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-[#263338]"><span className="block h-full rounded-full bg-[#4bc77d]" style={{ width: `${affiliateProgressPercent}%` }} /></span>
             </span>

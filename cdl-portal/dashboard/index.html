@@ -1895,7 +1895,7 @@
       </button>
       <a id="navAffiliate" class="nav-item nav-affiliate"><i data-lucide="hand-coins"></i> Afiliados</a>
       <a id="navSubscription" class="nav-item" style="display:none; color: #cfe3d8;"><i data-lucide="wallet"></i> Mi Suscripción</a>
-      <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PRO</a>
+      <a id="navUpgrade" class="nav-item" style="color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3);"><i data-lucide="rocket"></i> Desbloquear PREMIUM</a>
     </nav>
     <button id="openProfileCard" class="sidebar-account" type="button" aria-label="Abrir mi cuenta">
       <h4>Mi Cuenta</h4>
@@ -1990,8 +1990,8 @@
         <section id="profileAcademyUpgrade" class="profile-academy-upgrade" hidden>
           <div class="profile-academy-upgrade-copy">
             <span class="profile-academy-upgrade-tag">MEJORA TU PLAN</span>
-            <h3>Activa CDL Premium</h3>
-            <p>Incluye Radar Pro y todos los cursos presentes y futuros por $29.99 al mes.</p>
+            <h3>Pasa de CDL Premium a CDL Ultra</h3>
+            <p>Conserva tu Radar sin límites y añade todos los cursos presentes y futuros por $10 más al mes ($29.99 en total).</p>
           </div>
           <button type="button" onclick="openAcademyUpgradeModal()">Mejorar mi plan</button>
         </section>
@@ -2000,7 +2000,7 @@
           <div class="affiliate-head">
             <div>
               <h2 id="affiliate-title">Portal de afiliados</h2>
-              <p>Comparte tu enlace. Por cada referido que confirmemos como Pro, ganas <span class="metal-money">$15</span>.</p>
+              <p>Comparte tu enlace. Por cada referido que confirmemos como Premium o Ultra, ganas <span class="metal-money">$15</span>.</p>
             </div>
             <span class="affiliate-bonus">$15 por conversión</span>
           </div>
@@ -2261,7 +2261,7 @@
           <p>Explora tus cursos y continúa tu aprendizaje.</p>
         </div>
 
-        <!-- Plan CDL Premium -->
+        <!-- Plan CDL Ultra -->
         <div id="academyBanner" class="academy-banner">
           <div id="academyBannerDiscount" class="academy-banner-discount" aria-label="Cupón: 78 por ciento off">
             <span class="academy-banner-coupon-label">CUPÓN</span>
@@ -2270,8 +2270,8 @@
           </div>
           <div class="academy-banner-text">
             <span id="academyBannerTag" class="academy-banner-tag">OFERTA PROMO</span>
-            <strong id="academyBannerTitle">CDL Premium</strong>
-            <span id="academyBannerDescription">Todos los cursos incluidos + Radar</span>
+            <strong id="academyBannerTitle">CDL Ultra</strong>
+            <span id="academyBannerDescription">Radar + todos los cursos de Classroom</span>
           </div>
           <button id="academyBannerButton" type="button" class="academy-banner-btn" onclick="openAcademyModal()">Ver oferta</button>
         </div>
@@ -2283,7 +2283,7 @@
               <strong id="coursesAffiliateBalance">$0.00</strong>
             </span>
             <span class="courses-affiliate-copy">
-              <span>Gana <b>$15</b> por cada Pro confirmado</span>
+              <span>Gana <b>$15</b> por cada Premium o Ultra confirmado</span>
               <span id="coursesAffiliateProgressLabel">Faltan $50.00 para PayPal</span>
               <span class="courses-affiliate-progress"><span id="coursesAffiliateProgress" style="width:0%"></span></span>
             </span>
@@ -2605,14 +2605,14 @@
     <!-- VISTA MI SUSCRIPCIÓN -->
     <section id="viewSubscription" style="display:none; background-color: #f8fafc !important; color: #1e293b; align-items: center; justify-content: center; padding: 40px;">
       <div class="upgrade-main-card" style="max-width: 640px;">
-        <h1 id="subscriptionTitle" style="color: #0f172a; font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">Tu Plan CDLRadar Pro está Activo ✅</h1>
+        <h1 id="subscriptionTitle" style="color: #0f172a; font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">Tu Plan CDL Premium está Activo ✅</h1>
         <p id="subscriptionDescription" style="color: #64748b; margin: 0 0 32px 0;">Estás disfrutando de acceso completo a todas las funciones premium.</p>
         
         <div style="background: #f1f5f9; border-radius: 16px; padding: 24px; margin-bottom: 24px; border: 1px solid #e2e8f0; text-align: left;">
           <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #0f172a;">📊 Detalles de tu suscripción</h3>
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
             <span style="color: #64748b;">Plan:</span>
-            <span id="subscriptionPlanName" style="font-weight: 600; color: #0f172a;">CDLRadar Pro</span>
+            <span id="subscriptionPlanName" style="font-weight: 600; color: #0f172a;">CDL Premium</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
             <span style="color: #64748b;">Precio:</span>
@@ -2652,12 +2652,12 @@
       <div class="upgrade-main-card upgrade-catalog">
         <div class="upgrade-catalog-heading">
           <h1>Elige el acceso que necesitas</h1>
-          <p>Radar Pro para operar sin límite, o Classroom para sumar toda la formación.</p>
+          <p>CDL Premium para operar sin límite, o CDL Ultra para sumar toda la formación.</p>
         </div>
         <div class="upgrade-plan-grid">
           <article class="upgrade-plan">
-            <div class="upgrade-plan-tag">RADAR PRO</div>
-            <h2>CDLRadar Pro</h2>
+            <div class="upgrade-plan-tag">PREMIUM</div>
+            <h2>CDL Premium</h2>
             <p class="upgrade-plan-summary">Para seguir las señales y operar con el Radar sin límite diario.</p>
             <div style="display:flex; align-items:center; margin-bottom:18px;">
               <span style="font-size:14px; font-weight:600;">Mensual</span>
@@ -2678,13 +2678,13 @@
 
           <article class="upgrade-plan recommended">
             <div class="upgrade-plan-tag">MÁS COMPLETO · 78% OFF</div>
-            <h2>CDL Premium</h2>
-            <p class="upgrade-plan-summary">El Radar Pro y todos los cursos actuales y futuros en una sola suscripción.</p>
+            <h2>CDL Ultra</h2>
+            <p class="upgrade-plan-summary">El Radar y todos los cursos actuales y futuros en una sola suscripción.</p>
             <p class="upgrade-plan-old-price">$140 USD / mes</p>
             <p class="upgrade-plan-discount">Precio promocional con código</p>
             <div class="upgrade-plan-price"><strong>$29.99</strong><span>USD / mes</span></div>
             <ul class="upgrade-plan-benefits">
-              <li>Todo lo incluido en CDLRadar Pro</li>
+              <li>Todo lo incluido en CDL Premium</li>
               <li>Acceso a todos los cursos presentes</li>
               <li>Nuevos cursos incluidos mientras sigas activo</li>
               <li>Cancela cuando quieras desde PayPal</li>
@@ -2823,11 +2823,15 @@
     }
 
     function renderSubscriptionView(hasClassroom) {
-      document.getElementById('subscriptionTitle').textContent = 'Tu Plan CDL Premium está Activo ✅';
-      document.getElementById('subscriptionDescription').textContent = 'Tienes Radar Pro y acceso completo a todos los cursos de Classroom mientras tu suscripción siga activa.';
-      document.getElementById('subscriptionPlanName').textContent = 'CDL Premium';
-      document.getElementById('subscriptionPrice').textContent = '$29.99/mes';
-      document.getElementById('subscriptionClassroomBenefit').hidden = false;
+      document.getElementById('subscriptionTitle').textContent = hasClassroom
+        ? 'Tu Plan CDL Ultra está Activo ✅'
+        : 'Tu Plan CDL Premium está Activo ✅';
+      document.getElementById('subscriptionDescription').textContent = hasClassroom
+        ? 'Tienes el Radar sin límites y acceso completo a todos los cursos de Classroom mientras tu suscripción siga activa.'
+        : 'Estás disfrutando de acceso completo a todas las funciones del Radar.';
+      document.getElementById('subscriptionPlanName').textContent = hasClassroom ? 'CDL Ultra' : 'CDL Premium';
+      document.getElementById('subscriptionPrice').textContent = hasClassroom ? '$29.99/mes' : '$19.99/mes';
+      document.getElementById('subscriptionClassroomBenefit').hidden = !hasClassroom;
     }
 
     function renderProfileView(session, profile, hasClassroom) {
@@ -2835,7 +2839,7 @@
       const hasRadarPro = plan === 'paid' || plan === 'pro';
       const name = profile?.full_name || session.user.user_metadata?.full_name || session.user.email.split('@')[0];
       const avatarUrl = session.user.user_metadata?.avatar_url || '';
-      const planLabel = hasRadarPro ? 'CDL Premium' : 'CDL Freemium';
+      const planLabel = hasClassroom ? 'CDL Ultra' : hasRadarPro ? 'CDL Premium' : 'CDL Freemium';
       const avatarTargets = [document.getElementById('avatar'), document.getElementById('profileAvatarLarge')];
 
       avatarTargets.forEach((target) => renderAvatar(target, name, avatarUrl));
@@ -2850,14 +2854,18 @@
       planChip.textContent = planLabel;
       planChip.classList.toggle('free', !hasRadarPro);
 
-      document.getElementById('profileAccessTitle').textContent = hasRadarPro ? 'Tu plan: CDL Premium' : 'Tu plan: CDL Freemium';
-      document.getElementById('profileAccessDescription').textContent = hasRadarPro
+      document.getElementById('profileAccessTitle').textContent = hasClassroom
+        ? 'Tu plan: CDL Ultra'
+        : hasRadarPro ? 'Tu plan: CDL Premium' : 'Tu plan: CDL Freemium';
+      document.getElementById('profileAccessDescription').textContent = hasClassroom
         ? 'Acceso ilimitado a CDL Radar y a todo el contenido actual y futuro de ClassRoom.'
-        : 'Acceso freemium a CDL Radar. Actualiza a Premium para operar sin límite diario y acceder a todos los cursos.';
+        : hasRadarPro
+        ? 'Acceso ilimitado a CDL Radar. Mejora a CDL Ultra para acceder a todo ClassRoom.'
+        : 'Acceso freemium a CDL Radar. Activa CDL Premium cuando quieras para operar sin límite diario.';
       const planAction = document.getElementById('profilePlanAction');
       planAction.href = hasRadarPro ? '#subscription' : '#upgrade';
-      planAction.textContent = hasRadarPro ? 'Gestionar suscripción' : 'Activar Premium';
-      document.getElementById('profileAcademyUpgrade').hidden = true;
+      planAction.textContent = hasRadarPro ? 'Gestionar suscripción' : 'Desbloquear Premium';
+      document.getElementById('profileAcademyUpgrade').hidden = !hasRadarPro || hasClassroom;
     }
 
     let profileSupportMessages = [];
@@ -3140,7 +3148,7 @@
       list.innerHTML = referrals.map((referral) => {
         const converted = referral.referral_status === 'converted';
         const voided = referral.referral_status === 'void';
-        const label = converted ? 'Pro confirmado · +$15.00' : (voided ? 'No elegible' : 'Registrado · Freemium');
+        const label = converted ? 'Premium o Ultra confirmado · +$15.00' : (voided ? 'No elegible' : 'Registrado · Freemium');
         const date = new Date(referral.registered_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
         return `<div class="affiliate-referral-item"><div><strong>${maskAffiliateName(referral.display_name)}</strong><small>Se registró el ${date}</small></div><span class="affiliate-referral-state ${converted ? 'converted' : ''}">${label}</span></div>`;
       }).join('');
@@ -3404,7 +3412,7 @@
       const banner = document.getElementById('radarBanner');
       const el = document.getElementById('radarTimeRemaining');
       if (banner) banner.style.display = 'block';
-      if (el) el.textContent = 'Límite diario alcanzado. Vuelve mañana o elige Desbloquear PRO cuando quieras.';
+      if (el) el.textContent = 'Límite diario alcanzado. Vuelve mañana o elige Desbloquear Premium cuando quieras.';
     }
 
     function startRadarCountdown() {
@@ -4349,7 +4357,7 @@
     async function getClassroomSubscriptionAccess(session) {
       const { data, error } = await sp.rpc('academy_has_access', { target_user: session.user.id });
       if (error) {
-        console.error('No se pudo verificar la suscripción CDL Premium:', error);
+        console.error('No se pudo verificar la suscripción CDL Ultra:', error);
         return false;
       }
       return data === true;
@@ -4368,17 +4376,17 @@
 
       const enrolledCourseIds = new Set((enrollments || []).map(enrollment => enrollment.course_id));
 
-      // Premium da acceso a todos los cursos activos, presentes y futuros.
+      // CDL Ultra: acceso a todos los cursos activos, presentes y futuros.
       academyUpgradeEligible = hasRadarPro && !hasClassroom;
       document.getElementById('academyBanner').hidden = hasClassroom;
       document.getElementById('academyActiveChip').hidden = !hasClassroom;
       document.getElementById('academyBannerDiscount').hidden = academyUpgradeEligible;
-      document.getElementById('academyBannerTag').textContent = academyUpgradeEligible ? 'MEJORA PREMIUM' : 'OFERTA PROMO';
-      document.getElementById('academyBannerTitle').textContent = 'CDL Premium';
+      document.getElementById('academyBannerTag').textContent = academyUpgradeEligible ? 'MEJORA A ULTRA' : 'OFERTA PROMO';
+      document.getElementById('academyBannerTitle').textContent = academyUpgradeEligible ? 'Pasa a CDL Ultra por solo +$10/mes' : 'CDL Ultra';
       document.getElementById('academyBannerDescription').textContent = academyUpgradeEligible
-        ? 'Todos los cursos incluidos + Radar Pro por $29.99 al mes.'
-        : 'Todos los cursos incluidos + Radar Pro por $29.99 al mes.';
-      document.getElementById('academyBannerButton').textContent = 'Ver oferta';
+        ? 'Pasa de $19.99 a $29.99 al mes con una única suscripción.'
+        : 'Radar + todos los cursos de Classroom';
+      document.getElementById('academyBannerButton').textContent = academyUpgradeEligible ? 'Mejorar por +$10/mes' : 'Ver oferta';
       if (hasClassroom) {
         const { data: activeCourses } = await sp.from('courses').select('id').eq('active', true);
         (activeCourses || []).forEach((course) => enrolledCourseIds.add(course.id));
@@ -4460,14 +4468,14 @@
       document.getElementById('coursePurchaseIndividual').disabled = false;
       document.getElementById('coursePurchaseIndividual').textContent = `Comprar este curso · ${offer.price}`;
       document.getElementById('coursePurchaseAcademyTitle').textContent = academyUpgradeEligible
-        ? 'Añade todos los cursos a tu plan Premium'
-        : '¿Quieres todos los cursos y Radar Pro?';
+        ? 'Pasa de CDL Premium a CDL Ultra'
+        : '¿Quieres todos los cursos y el Radar?';
       document.getElementById('coursePurchaseAcademyDescription').textContent = academyUpgradeEligible
-        ? 'Conservas CDL Radar Pro y sumas Classroom por solo $10 más al mes.'
-        : 'ClassRoom incluye los cursos actuales, futuros y CDLRadar Pro por $29.99 USD al mes.';
+        ? 'Conservas tu Radar sin límites y sumas todos los cursos por solo $10 más al mes.'
+        : 'CDL Ultra incluye los cursos actuales, futuros y el Radar sin límites por $29.99 USD al mes.';
       document.getElementById('coursePurchaseAcademyButton').textContent = academyUpgradeEligible
-        ? 'Añadir Classroom · +$10/mes'
-        : 'Ver oferta ClassRoom';
+        ? 'Pasar a Ultra · +$10/mes'
+        : 'Ver oferta CDL Ultra';
       document.getElementById('coursePurchaseModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -4602,13 +4610,13 @@
       
       // Mostrar plan de forma legible
       const planNames = {
-        'free': 'Gratis',
+        'free': 'Freemium',
         'pro': 'Premium',
         'paid': 'Premium'
       };
-      const hasClassroom = userPlan.toLowerCase() === 'pro' || userPlan.toLowerCase() === 'paid';
+      const hasClassroom = await getClassroomSubscriptionAccess(session);
       const planStatusEl = document.getElementById("planStatus");
-      if (planStatusEl) planStatusEl.textContent = hasClassroom ? 'Premium' : (planNames[userPlan.toLowerCase()] || userPlan);
+      if (planStatusEl) planStatusEl.textContent = hasClassroom ? 'Ultra' : (planNames[userPlan.toLowerCase()] || userPlan);
 
       // Mostrar menú dinámico según el acceso al Radar.
       const navUpgrade = document.getElementById("navUpgrade");
@@ -5294,9 +5302,9 @@
           <div class="course-purchase-value"><span>Incluye acceso completo a este curso</span><strong>Pago seguro procesado por PayPal</strong></div>
           <button id="coursePurchaseIndividual" type="button" class="course-purchase-individual" onclick="startIndividualCoursePurchase()">Comprar este curso</button>
           <div class="course-purchase-academy">
-            <strong id="coursePurchaseAcademyTitle">¿Quieres todos los cursos y Radar Pro?</strong>
-            <span id="coursePurchaseAcademyDescription">ClassRoom incluye los cursos actuales, futuros y CDLRadar Pro por $29.99 USD al mes.</span>
-            <button id="coursePurchaseAcademyButton" type="button" onclick="chooseAcademyFromCoursePurchase()">Ver oferta ClassRoom</button>
+            <strong id="coursePurchaseAcademyTitle">¿Quieres todos los cursos y el Radar?</strong>
+            <span id="coursePurchaseAcademyDescription">CDL Ultra incluye los cursos actuales, futuros y el Radar sin límites por $29.99 USD al mes.</span>
+            <button id="coursePurchaseAcademyButton" type="button" onclick="chooseAcademyFromCoursePurchase()">Ver oferta CDL Ultra</button>
           </div>
           <button type="button" class="course-purchase-back" onclick="closeCoursePurchaseModal()">Volver a cursos</button>
         </div>
@@ -5304,20 +5312,20 @@
     </div>
   </div>
 
-  <!-- MODAL: plan CDL Premium -->
-  <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDL Premium" onclick="if(event.target===this)closeAcademyModal()">
+  <!-- MODAL: plan CDL Ultra -->
+  <div id="academy-modal" class="acm" role="dialog" aria-modal="true" aria-label="CDL Ultra" onclick="if(event.target===this)closeAcademyModal()">
     <div class="acm-box">
       <button type="button" class="acm-x" onclick="closeAcademyModal()" aria-label="Cerrar">✕</button>
       <div class="acm-media">
-        <div class="acm-media-fallback"><strong id="acmHeaderTitle">BIENVENIDO A CDL PREMIUM</strong><span id="acmHeaderSubtitle">CDL RADAR + ClassRoom</span></div>
-        <img id="acmImage" alt="CDL Premium" hidden>
+        <div class="acm-media-fallback"><strong id="acmHeaderTitle">BIENVENIDO A CDL ULTRA</strong><span id="acmHeaderSubtitle">CDL RADAR + ClassRoom</span></div>
+        <img id="acmImage" alt="CDL Ultra" hidden>
       </div>
 
       <div id="acmOffer" class="acm-offer acm-body">
-        <h2>CDL Premium</h2>
+        <h2>CDL Ultra</h2>
         <ul class="acm-list">
           <li>Todos los cursos Incluidos</li>
-          <li>CDL Radar Pro incluido, sin límite diario</li>
+          <li>Radar sin límite diario incluido (todo CDL Premium)</li>
           <li>Acceso mientras tu suscripción esté activa</li>
           <li>Cancela cuando quieras desde tu cuenta de PayPal</li>
         </ul>
@@ -5363,8 +5371,8 @@
         <p>Estamos confirmando tu pago. No cierres esta ventana.</p>
       </div>
       <div id="acmDone" class="acm-stage" hidden>
-        <h3>Listo, ya tienes CDL Premium</h3>
-        <p>Tu acceso a todos los cursos y al Radar Pro está activo.</p>
+        <h3>Listo, ya eres parte de CDL Ultra</h3>
+        <p>Tu acceso a todos los cursos y al Radar está activo.</p>
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Ir a mis cursos</button>
       </div>
       <div id="acmLate" class="acm-stage" hidden>
@@ -5373,12 +5381,12 @@
         <button type="button" class="acm-apply" onclick="finishAcademyPurchase()">Recargar</button>
       </div>
       <div id="acmUpgrade" class="acm-stage" hidden>
-        <h3 id="acmUpgradeTitle">Obtén acceso ilimitado a<br>todos los cursos</h3>
-        <p id="acmUpgradeDescription">Con solo +$10 extra a tu plan actual.</p>
+        <h3 id="acmUpgradeTitle">Pasa a CDL Ultra y obtén<br>todos los cursos</h3>
+        <p id="acmUpgradeDescription">Con solo +$10 extra a tu plan Premium actual.</p>
         <p id="acmUpgradeDetail" hidden></p>
         <div id="acmUpgradeConsent" class="acm-upgrade-consent">
           <span class="acm-upgrade-consent-title">Confirmación de cambio</span>
-          <label><input id="acmUpgradeTerms" type="checkbox"><span>Acepto por mi propia voluntad activar CDL Premium por $29.99 al mes.</span></label>
+          <label><input id="acmUpgradeTerms" type="checkbox"><span>Acepto por mi propia voluntad cambiar mi plan CDL Premium a CDL Ultra por $29.99 al mes.</span></label>
           <label class="acm-upgrade-consent-confirm"><span>Escribe <strong>ACEPTO</strong> para continuar</span><input id="acmUpgradeAcceptance" type="text" autocomplete="off" spellcheck="false" aria-label="Escribe ACEPTO para confirmar"></label>
         </div>
         <button id="acmUpgradeRequest" type="button" class="acm-apply" onclick="requestAcademyPlanChange()" disabled>CAMBIAR MI PLAN</button>
@@ -5423,17 +5431,17 @@
 
     function renderAcademyUpgradeRequest() {
       const title = document.getElementById('acmUpgradeTitle');
-      if (academyUpgradePending) title.textContent = 'CDL Premium activado';
-      else title.innerHTML = 'Obtén acceso ilimitado a<br>todos los cursos';
+      if (academyUpgradePending) title.textContent = 'CDL Ultra activado';
+      else title.innerHTML = 'Pasa a CDL Ultra y obtén<br>todos los cursos';
       document.getElementById('acmUpgradeDescription').textContent = academyUpgradePending
-        ? 'CDL Premium ya fue activado para tu cuenta.'
-        : 'Premium incluye Radar Pro y todos los cursos por $29.99 al mes.';
+        ? 'CDL Ultra ya fue activado para tu cuenta.'
+        : 'Con solo +$10 extra a tu plan Premium actual.';
       const detail = document.getElementById('acmUpgradeDetail');
       detail.hidden = !academyUpgradePending;
       detail.textContent = academyUpgradePending ? 'El equipo ajustará el importe de tu suscripción actual en PayPal.' : '';
       document.getElementById('acmUpgradeConsent').hidden = academyUpgradePending;
       const button = document.getElementById('acmUpgradeRequest');
-      button.textContent = academyUpgradePending ? 'CDL PREMIUM ACTIVADO' : 'ACTIVAR PREMIUM';
+      button.textContent = academyUpgradePending ? 'CDL ULTRA ACTIVADO' : 'CAMBIAR MI PLAN';
       button.disabled = academyUpgradePending || !canRequestAcademyPlanChange();
     }
 
@@ -5467,9 +5475,23 @@
       if (!academyUpgradeEligible || academyUpgradePending || !canRequestAcademyPlanChange()) return;
       const button = document.getElementById('acmUpgradeRequest');
       button.disabled = true;
-      button.textContent = 'ACTIVANDO CDL PREMIUM...';
-      academyUpgradeEligible = false;
-      openAcademyModal();
+      button.textContent = 'ACTIVANDO CDL ULTRA...';
+      try {
+        const { data: { session } } = await sp.auth.getSession();
+        if (!session) throw new Error('unauthorized');
+        const { error } = await sp.rpc('request_ultra_plan_change');
+        if (error) throw error;
+        academyUpgradePending = true;
+        academyUpgradeEligible = false;
+        setAcademyStage('done');
+      } catch (error) {
+        console.error('No se pudo solicitar el cambio de plan:', error);
+        button.disabled = false;
+        button.textContent = 'CAMBIAR MI PLAN';
+        const detail = document.getElementById('acmUpgradeDetail');
+        detail.hidden = false;
+        detail.textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o contacta a soporte.';
+      }
     }
 
     function openAcademyModal() {
@@ -5477,7 +5499,7 @@
         openAcademyUpgradeModal();
         return;
       }
-      setAcademyHeader('CDL Premium', 'Todos los cursos + CDL Radar Pro');
+      setAcademyHeader('CDL Ultra', 'Todos los cursos + CDL Radar');
       document.getElementById('acmCode').textContent = ACADEMY_CONFIG.promoCode;
       const image = document.getElementById('acmImage');
       if (!image.getAttribute('src') && ACADEMY_CONFIG.imageUrl) {
@@ -5497,7 +5519,7 @@
     }
 
     function openAcademyUpgradeModal() {
-      setAcademyHeader('BIENVENIDO A CDL PREMIUM', 'CDL RADAR + ClassRoom');
+      setAcademyHeader('BIENVENIDO A CDL ULTRA', 'CDL RADAR + ClassRoom');
       renderAcademyUpgradeRequest();
       setAcademyStage('upgrade');
       document.getElementById('academy-modal').classList.add('open');

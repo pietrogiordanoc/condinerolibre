@@ -10,12 +10,14 @@ interface AccountPanelProps {
 }
 
 const formatPlan = (plan: string) => {
-  if (plan === 'pro' || plan === 'paid') return 'CDLRadar Pro';
-  return 'CDLRadar Free';
+  if (plan === 'ultra') return 'CDL Ultra';
+  if (plan === 'pro' || plan === 'paid') return 'CDL Premium';
+  return 'CDL Freemium';
 };
 
 const AccountPanel: React.FC<AccountPanelProps> = ({ email, plan, hasVerifiedAccess, isOpen, onClose }) => {
-  const isPro = plan === 'pro' || plan === 'paid';
+  const isUltra = plan === 'ultra';
+  const isPro = isUltra || plan === 'pro' || plan === 'paid';
   const accessLabel = hasVerifiedAccess ? 'Acceso confirmado' : 'Acceso limitado';
 
   useEffect(() => {
@@ -57,16 +59,18 @@ const AccountPanel: React.FC<AccountPanelProps> = ({ email, plan, hasVerifiedAcc
               </span>
             </div>
             <p className="mt-4 border-t border-emerald-400/15 pt-4 text-sm leading-relaxed text-neutral-300">
-              {isPro
-                ? 'Tu plan Pro habilita el acceso completo al Radar, señales premium y alertas sin límite de tiempo.'
-                : 'Estás utilizando el acceso gratuito disponible. Puedes pasar a Pro para desbloquear el Radar sin límites.'}
+              {isUltra
+                ? 'Tu plan Ultra habilita el Radar sin límites y todos los cursos de Classroom.'
+                : isPro
+                ? 'Tu plan Premium habilita el acceso completo al Radar, señales premium y alertas sin límite de tiempo.'
+                : 'Estás utilizando el acceso Freemium disponible. Puedes pasar a Premium para desbloquear el Radar sin límites.'}
             </p>
           </div>
 
           <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-white"><CreditCard className="h-4 w-4 text-cyan-300" /> Pago y renovación</div>
             <p className="mt-3 text-sm leading-relaxed text-neutral-400">
-              {isPro ? 'La suscripción se reconoce como activa para esta cuenta.' : 'No hay una suscripción Pro activa asociada a esta cuenta.'}
+              {isPro ? 'La suscripción se reconoce como activa para esta cuenta.' : 'No hay una suscripción Premium activa asociada a esta cuenta.'}
             </p>
             <a href="https://www.paypal.com/myaccount/autopay/" target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition hover:text-cyan-100">
               Gestionar en PayPal <ExternalLink className="h-4 w-4" />

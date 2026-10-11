@@ -1,3 +1,4 @@
+-- SUPERSEDED por restore_three_tier_plans.sql (catálogo de tres niveles: Freemium, Premium y Ultra).
 -- El catálogo comercial solo tiene dos estados: Freemium y Premium.
 -- Premium concede el Radar Pro y todos los cursos activos, presentes y futuros.
 

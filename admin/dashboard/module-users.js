@@ -21,10 +21,13 @@ let MOBILE_USER_DETAIL_ID = null;
 const RADAR_FREE_DAILY_LIMIT_MINUTES = 10;
 const COMMERCIAL_TIERS = {
   freemium: { label: 'CDL Freemium', description: 'Radar Free · 10 min/día', rank: 1, className: 'tier-freemium' },
-  premium: { label: 'CDL Premium', description: 'Radar Pro + todos los cursos', rank: 2, className: 'tier-premium' }
+  premium: { label: 'CDL Premium', description: 'Radar sin límites · $19.99/mes', rank: 2, className: 'tier-premium' },
+  ultra: { label: 'CDL Ultra', description: 'Radar + Classroom · $29.99/mes', rank: 3, className: 'tier-ultra' }
 };
 
-function commercialTierFor(plan) {
+function commercialTierFor(userId, plan) {
+  if (academyHasAccess(userId)) return { id: 'ultra', ...COMMERCIAL_TIERS.ultra };
+
   const hasRadarPro = plan === 'paid' || plan === 'pro';
   return hasRadarPro
     ? { id: 'premium', ...COMMERCIAL_TIERS.premium }
@@ -182,7 +185,7 @@ function renderUsers() {
     const online = (pres.online === true) && (Math.abs(Date.now() - new Date(pres.last_seen).getTime()) <= 120000);
     const name = [p.display_name, p.full_name, p.name].find(n => n && String(n).trim() !== "") || p.email.split("@")[0];
     const radarUsage = RADAR_USAGE_BY_ID[p.id] || null;
-    const tier = commercialTierFor(p.plan);
+    const tier = commercialTierFor(p.id, p.plan);
     const hasRadarPro = p.plan === 'paid' || p.plan === 'pro';
     return {
       ...p,
@@ -260,16 +263,25 @@ function renderUsers() {
       radarDisplay = `<span style="color:#64748b;">— / ${RADAR_FREE_DAILY_LIMIT_MINUTES} min</span>`;
     }
 
-    const enrolledCourseIds = hasRadarPro ? new Set(COURSES.map(course => course.id)) : new Set();
-    const radarControl = `<button type="button" class="row-action row-action-quiet tier-radar-toggle" onclick="setPremiumAccess('${u.id}', ${!hasRadarPro})" title="Cambiar entre Freemium y Premium">Plan: ${hasRadarPro ? 'Premium' : 'Freemium'}</button>`;
+    const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[u.id] || new Set();
+    const academyOn = academyHasAccess(u.id);
+    const enrolledCourseIds = academyOn ? new Set([...ownCourseIds, ...COURSES.map(course => course.id)]) : ownCourseIds;
+    const radarControl = u.tier.id === 'ultra'
+      ? '<span class="tier-radar-included">Radar incluido en Ultra</span>'
+      : `<button type="button" class="row-action row-action-quiet tier-radar-toggle" onclick="adminSetPlan('${u.id}', '${nextPlan}')" title="Cambiar entre Freemium y Premium">${hasRadarPro ? 'Pasar a Freemium' : 'Activar Premium'}</button>`;
     const coursesDisplay = COURSES.length
       ? COURSES.map(course => {
           const enrolled = enrolledCourseIds.has(course.id);
+          const viaAcademy = academyOn && !ownCourseIds.has(course.id);
           const started = enrolled && courseProgressStats(u.id, course).seen > 0;
           return `
           <div class="course-block">
           <div class="course-row ${started ? '' : 'is-idle'}">
-            <span class="course-access-option">${course.title}<small>${enrolled ? 'Incluido con Premium' : 'Requiere Premium'}</small></span>
+            <label class="course-access-option">
+              <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''}
+                onchange="setCourseAccess('${u.id}', '${course.id}', this.checked, this)">
+              <span>${course.title}              ${viaAcademy ? ' <small style="color:#f59e0b">(incluido en Ultra)</small>' : ''}</span>
+            </label>
             <div class="course-metrics">${enrolled ? courseMetrics(u.id, course) : '<span class="course-metrics-empty">Sin acceso</span>'}</div>
           </div>
           ${enrolled && EXPANDED_DETAIL.has(`${u.id}|${course.id}`) ? lessonDetail(u.id, course) : ''}
@@ -294,9 +306,9 @@ function renderUsers() {
       <tr class="course-access-row ${u.blocked ? 'is-blocked' : ''} ${EXPANDED_COURSE_ROWS.has(u.id) ? '' : 'is-collapsed'}" id="course-row-${u.id}">
         <td colspan="11">
           <div class="course-access-line">
-            ${premiumBlock(u.id)}
+            ${academyBlock(u.id)}
             <strong>La Classroom</strong>
-            <span class="course-access-help">Premium incluye todos los cursos actuales y futuros.</span>
+            <span class="course-access-help">Marca los cursos que este alumno puede ver.</span>
             <div class="course-list">${coursesDisplay}</div>
           </div>
         </td>
@@ -366,8 +378,8 @@ function renderMobileUserDetail(section = 'summary') {
     access: {
       label: 'Acceso',
       items: [
-        ['Radar', user.plan === 'paid' || user.plan === 'pro' ? 'CDLRadar Pro' : 'CDLRadar Free'],
-        ['Classroom', user.plan === 'paid' || user.plan === 'pro' ? 'Todos los cursos incluidos' : 'Requiere Premium'],
+        ['Radar', user.plan === 'paid' || user.plan === 'pro' ? 'Sin límites (Premium)' : 'Free · 10 min/día'],
+        ['Classroom', academyHasAccess(user.id) ? 'Acceso completo (Ultra)' : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} cursos individuales`],
         ['SL experimental', user.experimental_sl_enabled ? 'Activo' : 'Inactivo'],
         ['Teléfono', user.phone || 'No registrado']
       ]
@@ -375,8 +387,8 @@ function renderMobileUserDetail(section = 'summary') {
     classroom: {
       label: 'Classroom',
       items: [
-        ['Acceso actual', user.plan === 'paid' || user.plan === 'pro' ? 'Premium activo' : 'Freemium'],
-        ['Cursos activos', user.plan === 'paid' || user.plan === 'pro' ? `${COURSES.length} incluidos con Premium` : 'Activa Premium para incluirlos todos']
+        ['Acceso actual', academyHasAccess(user.id) ? 'Classroom completo (Ultra)' : 'Cursos individuales'],
+        ['Cursos activos', academyHasAccess(user.id) ? `${COURSES.length} incluidos en Ultra` : `${(COURSE_ENROLLMENTS_BY_USER[user.id] || new Set()).size} asignados`]
       ]
     },
     activity: {
@@ -405,12 +417,15 @@ function renderMobileUserDetail(section = 'summary') {
   ).join('');
   const classroomControls = section === 'classroom'
     ? `<div class="mobile-classroom-list">
-        ${premiumBlock(user.id)}
+        ${academyBlock(user.id)}
         ${COURSES.length ? COURSES.map((course) => {
-          const enrolled = user.plan === 'paid' || user.plan === 'pro';
-          return `<div class="mobile-classroom-course">
-            <span>${escapeHtmlText(course.title)}<small>${enrolled ? 'Incluido con Premium' : 'Requiere Premium'}</small></span>
-          </div>`;
+          const ownCourseIds = COURSE_ENROLLMENTS_BY_USER[user.id] || new Set();
+          const viaAcademy = academyHasAccess(user.id) && !ownCourseIds.has(course.id);
+          const enrolled = academyHasAccess(user.id) || ownCourseIds.has(course.id);
+          return `<label class="mobile-classroom-course">
+            <input type="checkbox" ${enrolled ? 'checked' : ''} ${viaAcademy ? 'disabled' : ''} onchange="setCourseAccess('${user.id}', '${course.id}', this.checked, this)">
+            <span>${escapeHtmlText(course.title)}<small>${viaAcademy ? 'Incluido en Ultra' : 'Asignar acceso individual'}</small></span>
+          </label>`;
         }).join('') : '<div class="support-messages-empty">No hay cursos configurados.</div>'}
       </div>`
     : '';
@@ -451,22 +466,32 @@ window.mobileUserAction = function(action) {
   if (action === 'block') toggleBlock(user.id, !user.blocked);
 };
 
-function premiumBlock(userId) {
-  const user = PROFILES.find((profile) => profile.id === userId);
-  const on = user?.plan === 'paid' || user?.plan === 'pro';
-  const button = on
-    ? `<button class="row-action row-action-danger" type="button" onclick="setPremiumAccess('${userId}', false)">Pasar a Freemium</button>`
-    : `<button class="row-action row-action-primary" type="button" onclick="setPremiumAccess('${userId}', true)">Activar Premium</button>`;
-  return `<div class="academy-line"><strong>CDL Premium</strong><span style="color:${on ? '#10b981' : '#64748b'}">${on ? 'Activo · Radar Pro y todos los cursos' : 'Freemium'}</span>${button}</div>`;
+function academyHasAccess(userId) {
+  const sub = ACADEMY_BY_USER[userId];
+  if (!sub) return false;
+  if (sub.status === 'active' || sub.status === 'payment_failed') return true;
+  return sub.status === 'cancelled' && !!sub.access_until && new Date(sub.access_until).getTime() > Date.now();
 }
 
-async function setPremiumAccess(userId, shouldGrant) {
-  const { error } = await sp.rpc('admin_set_premium_access', { target_user_id: userId, should_grant: shouldGrant });
+function academyBlock(userId) {
+  const sub = ACADEMY_BY_USER[userId];
+  const on = academyHasAccess(userId);
+  const [label, color] = sub ? (ACADEMY_STATUS_LABELS[sub.status] || [sub.status, '#94a3b8']) : ['Sin plan', '#64748b'];
+  const until = sub?.status === 'cancelled' && sub.access_until ? ` · hasta ${new Date(sub.access_until).toLocaleDateString('es')}` : '';
+  const source = sub?.paypal_subscription_id ? ' · PayPal' : (sub ? ' · manual' : '');
+  const button = on
+    ? `<button class="row-action row-action-danger" type="button" onclick="setAcademyAccess('${userId}', false)">Revocar</button>`
+    : `<button class="row-action row-action-primary" type="button" onclick="setAcademyAccess('${userId}', true)">Activar</button>`;
+  return `<div class="academy-line"><strong>CDL Ultra</strong><span style="color:${color}">${label}${until}${source}</span>${button}</div>`;
+}
+
+async function setAcademyAccess(userId, shouldGrant) {
+  const { error } = await sp.rpc('admin_set_academy_access', { target_user_id: userId, should_grant: shouldGrant });
   if (error) {
     Toastify({ text: `No se pudo cambiar el plan: ${error.message}`, duration: 5000, backgroundColor: '#e74c3c' }).showToast();
     return;
   }
-  Toastify({ text: shouldGrant ? 'Premium activado: Radar Pro y todos los cursos' : 'Usuario cambiado a Freemium', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
+  Toastify({ text: shouldGrant ? 'Plan CDL Ultra activado' : 'Plan CDL Ultra revocado', duration: 2500, backgroundColor: shouldGrant ? '#10b981' : '#475569' }).showToast();
   await refreshUsers();
 }
 

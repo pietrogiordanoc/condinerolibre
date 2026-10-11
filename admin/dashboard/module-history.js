@@ -3,6 +3,12 @@ let latestEventId = null;
 let historyRefreshTimer = null;
 let historyRequestVersion = 0;
 
+// Nivel comercial (Freemium / Premium / Ultra) con el mismo criterio que la lista de usuarios.
+function planTierBadge(userId, plan, attrs = '') {
+  const tier = commercialTierFor(userId, plan);
+  return `<span class="pill tier-pill ${tier.className}"${attrs}>${tier.label}</span>`;
+}
+
 function scheduleGlobalHistoryRefresh() {
   clearTimeout(historyRefreshTimer);
   historyRefreshTimer = setTimeout(() => refreshGlobalHistory(), 150);
@@ -103,9 +109,7 @@ async function refreshGlobalHistory() {
       
       // Plan
       const plan = profile?.plan || "free";
-      const planBadge = plan === "paid" 
-        ? '<span class="pill pill-paid">PAID</span>' 
-        : '<span class="pill pill-free">FREE</span>';
+      const planBadge = planTierBadge(profile?.id, plan);
       
       // Estado online/offline
       const isOnline = userPresence?.online && (Math.abs(Date.now() - new Date(userPresence.last_seen).getTime()) <= 120000);
@@ -153,9 +157,7 @@ async function openHistory(uId, email) {
   if (profile) {
     const displayName = profile.display_name || profile.full_name || profile.name || email.split('@')[0];
     const plan = profile.plan || 'free';
-    const planBadge = plan === 'paid' 
-      ? '<span class="pill pill-paid" style="font-size:10px; padding:3px 8px;">PAID</span>' 
-      : '<span class="pill pill-free" style="font-size:10px; padding:3px 8px;">FREE</span>';
+    const planBadge = planTierBadge(uId, plan, ' style="font-size:10px; padding:3px 8px;"');
     
     const isOnline = presence?.online && (Math.abs(Date.now() - new Date(presence.last_seen).getTime()) <= 120000);
     const statusBadge = isOnline
