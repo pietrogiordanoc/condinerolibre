@@ -30,6 +30,7 @@ interface InstrumentRowProps {
   stats?: { totalSignals: number; winRatePct: number | null; avgResultPct: number | null } | null;
   experimentalSlEnabled: boolean;
   isPreview?: boolean;
+  isInstrumentObscured?: boolean;
   onRequestRegistration?: () => void;
 }
 
@@ -79,7 +80,7 @@ const formatInstrumentPrice = (value: number): { primary: string; fraction: stri
 };
 
 const InstrumentRow: React.FC<InstrumentRowProps> = ({ 
-  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, onOpenTutorial, onPinChange, chartStatus, stats, experimentalSlEnabled, isPreview = false, onRequestRegistration
+  instrument, isConnected, onToggleConnect, globalRefreshTrigger, strategy, onAnalysisUpdate, isTestMode = false, onOpenChart, onOpenTutorial, onPinChange, chartStatus, stats, experimentalSlEnabled, isPreview = false, isInstrumentObscured = false, onRequestRegistration
 }) => {
   const [analysis, setAnalysis] = useState<MultiTimeframeAnalysis | null>(() => GlobalAnalysisCache[instrument.id]?.analysis || null);
   const [isLoading, setIsLoading] = useState(false);
@@ -386,7 +387,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       </div>
 
-      <div className="flex w-[208px] shrink-0 items-center gap-1.5 overflow-hidden">
+      <div className={`flex w-[208px] shrink-0 items-center gap-1.5 overflow-hidden ${isInstrumentObscured ? 'blur-sm select-none' : ''}`}>
         <InstrumentIcon instrument={instrument} />
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 whitespace-nowrap">

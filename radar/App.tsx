@@ -484,6 +484,14 @@ const App: React.FC = () => {
   const affiliateProgressLabel = affiliateAmountToPayout === 0
     ? 'Listo para PayPal'
     : `Faltan $${(affiliateAmountToPayout / 100).toFixed(2)} para PayPal`;
+  const visibleInstrumentIndexes = new Map<string, number>();
+  let visibleInstrumentIndex = 0;
+  sortedInstruments.forEach((instrument) => {
+    if (isInstrumentVisible(instrument)) {
+      visibleInstrumentIndexes.set(instrument.id, visibleInstrumentIndex);
+      visibleInstrumentIndex += 1;
+    }
+  });
 
   return (
     <div className="min-h-screen pb-24 bg-[#050505] text-white selection:bg-emerald-500/30">
@@ -707,6 +715,7 @@ const App: React.FC = () => {
                   stats={signalStats[instrument.symbol]}
                   experimentalSlEnabled={experimentalSlEnabled}
                   isPreview={isGuestPreview}
+                  isInstrumentObscured={isGuestPreview && (visibleInstrumentIndexes.get(instrument.id) ?? 0) > 0}
                   onRequestRegistration={openGuestRegistration}
                 />
               </div>
