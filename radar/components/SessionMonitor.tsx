@@ -615,39 +615,40 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
     const compactSessions = [sessions.asia, sessions.europe, sessions.america];
 
     return (
-      <div className="mx-auto mb-4 max-w-[1500px] px-4 md:px-8">
-        <div className="flex h-[92px] items-center justify-between gap-4 overflow-x-auto rounded-xl border border-[#274254] bg-[#08090e] px-4 md:px-6">
-          <div className="flex shrink-0 items-center gap-3 border-r border-slate-700 pr-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">Sessions</span>
+      <div className="mb-4 px-4">
+        <div className="flex h-[52px] min-w-max items-stretch overflow-x-auto rounded-lg border border-cyan-400/30 bg-[#080d14] font-mono">
+          <div className="flex items-center gap-2 border-r border-cyan-400/25 px-4 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]" />
+            Sessions
           </div>
-          <div className="flex min-w-max flex-1 items-center justify-center gap-2 md:gap-3">
-            {compactSessions.map(session => {
-              const isOpen = session.status === 'open';
+          {compactSessions.map(session => {
+            const isOpen = session.status === 'open';
+            const transitionTime = session.nextChangeAt
+              ? new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit' }).format(session.nextChangeAt)
+              : '--';
 
-              return (
-                <div
-                  key={session.name}
-                  className={`rounded-md border px-3 py-2 font-mono ${
-                    isOpen
-                      ? 'border-emerald-400/45 bg-emerald-500/[0.10] text-emerald-200'
-                      : 'border-slate-600/50 bg-slate-800/45 text-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 text-[10px] font-black tracking-wide">
-                    <span className={`h-2 w-2 rounded-full ${isOpen ? 'bg-emerald-400' : 'bg-slate-500'}`} />
-                    {session.name}
-                  </div>
-                  <div className="mt-1 text-[9px] font-bold uppercase tracking-wide">
-                    {isOpen ? `Cierra en ${session.timeLeft || '--'}` : `Abre en ${session.opensIn || '--'}`}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="shrink-0 border-l border-slate-700 pl-4 font-mono text-right">
-            <div className="text-[9px] font-black uppercase tracking-wide text-cyan-200">Tu hora</div>
-            <div className="text-xl font-black leading-none text-cyan-100">{localTime}</div>
-          </div>
+            return (
+              <div
+                key={session.name}
+                className={`flex items-center gap-2 border-r border-cyan-400/25 px-4 text-[10px] ${
+                  isOpen ? 'bg-emerald-500/[0.08] text-emerald-200' : 'text-slate-300'
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${isOpen ? 'bg-emerald-400' : 'bg-slate-500'}`} />
+                <span className="font-black tracking-wide">{session.name}</span>
+                <span className={`rounded px-1 py-0.5 text-[8px] font-black uppercase tracking-wide ${
+                  isOpen ? 'bg-emerald-400/20 text-emerald-300' : 'bg-slate-600/50 text-slate-400'
+                }`}>
+                  {isOpen ? 'Activa' : 'Cerrado'}
+                </span>
+                <span className="whitespace-nowrap text-[10px]">
+                  {isOpen
+                    ? `Lleva ${session.elapsed || '--'} · Cierra ${transitionTime} (Quedan ${session.timeLeft || '--'})`
+                    : `Abre ${transitionTime} · Faltan ${session.opensIn || '--'}`}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
