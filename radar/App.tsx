@@ -656,15 +656,14 @@ const App: React.FC = () => {
               <button className="text-[10px] font-bold text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">Mercado Cripto</button>
             </div>
           </div>
+          <SessionMonitor compact />
         </div>
       </header>
 
       <main className="max-w-[1500px] mx-auto px-4 md:px-8 mt-4 md:mt-6">
-        <SessionMonitor compact marketStats={marketQuietnessStats} />
-        
         <div className="grid grid-cols-1 gap-3 md:gap-4">
           {/* Desktop table header - Hidden on mobile */}
-          <div className="hidden md:flex sticky top-[104px] z-40 items-center justify-start gap-4 px-4 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
+          <div className="hidden md:flex sticky top-[170px] z-40 items-center justify-start gap-4 px-4 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="w-16 text-center shrink-0">Status</div>
             <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div className="w-[110px] shrink-0 text-center">Acción</div>

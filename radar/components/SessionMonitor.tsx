@@ -615,8 +615,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
     const compactSessions = [sessions.asia, sessions.europe, sessions.america];
 
     return (
-      <div className="mb-4 px-4">
-        <div className="flex h-[52px] min-w-max items-stretch overflow-x-auto rounded-lg border border-cyan-400/30 bg-[#080d14] font-mono">
+      <div className="mt-3">
+        <div className="flex h-[52px] w-full items-stretch overflow-x-auto rounded-lg border border-cyan-400/30 bg-[#080d14] font-mono">
           <div className="flex items-center gap-2 border-r border-cyan-400/25 px-4 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100">
             <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]" />
             Sessions
@@ -649,6 +649,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
               </div>
             );
           })}
+          <div className="ml-auto flex shrink-0 flex-col justify-center border-l border-cyan-400/25 px-4 text-right text-white">
+            <span className="text-[8px] font-black uppercase tracking-[0.14em] text-white/70">Tu hora</span>
+            <time className="text-sm font-black leading-none" dateTime={new Date().toTimeString().slice(0, 5)}>{localTime}</time>
+          </div>
         </div>
       </div>
     );
