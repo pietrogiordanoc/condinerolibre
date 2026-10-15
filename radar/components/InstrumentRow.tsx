@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Award, Badge, BadgeCheck, Info, Pin } from 'lucide-react';
+import { Info, Pin } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
-export const DESKTOP_GRID_COLUMNS = '64px 208px 28px 105px 100px 65px 300px 115px 130px 72px minmax(0, 1fr) 84px';
+export const DESKTOP_GRID_COLUMNS = '64px 208px 28px 105px 100px 65px 300px 80px 35px 130px 72px minmax(0, 1fr) 84px';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -465,32 +465,23 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
       </div>
 
-      <div className="flex w-[115px] shrink-0 items-center justify-center">
-        {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
-          const isPremium = tradeSetup.rr >= 2.5;
-          const isHighQuality = tradeSetup.rr >= 2;
-          const QualityIcon = isPremium ? Award : isHighQuality ? BadgeCheck : Badge;
-          const qualityLabel = isPremium
-            ? 'Setup Premium · R:R ≥ 2.5'
-            : isHighQuality
-              ? 'Setup de alta calidad · R:R ≥ 2.0'
-              : 'Setup estándar · R:R inferior a 2.0';
-          const qualityColor = isPremium ? 'text-cyan-300' : isHighQuality ? 'text-emerald-400' : 'text-neutral-400';
+      <div className="flex w-[80px] shrink-0 items-center justify-center">
+        {profitInfo && tradeSetup?.rr && !copyStatus && (
+          <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex items-baseline">
+            <span className={`font-mono text-base leading-none ${getRRColor(tradeSetup.rr)} ${isPreview ? 'blur-sm select-none' : ''}`}>{profitInfo.value}</span>
+          </button>
+        )}
+      </div>
 
-          return (
-            <button type="button" onClick={isPreview ? requestRegistration : undefined} className="relative flex items-center gap-1">
-              <div className="flex items-baseline">
-                <span className={`font-mono text-base leading-none ${getRRColor(tradeSetup.rr)} ${isPreview ? 'blur-sm select-none' : ''}`}>{profitInfo.value}</span>
-              </div>
-              <span className={`group relative flex items-center ${qualityColor} ${isPreview ? 'blur-sm select-none' : ''}`} aria-label={qualityLabel}>
-                <QualityIcon className="h-4 w-4" aria-hidden="true" />
-                <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[190px] -translate-x-1/2 rounded border border-neutral-700 bg-[#111827] px-2 py-1 text-center text-[9px] leading-tight text-neutral-100 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                  {qualityLabel}
-                </span>
-              </span>
-            </button>
-          );
-        })()}
+      <div className="flex items-center justify-center">
+        {tradeSetup && tradeSetup.rr >= 2.5 && !copyStatus && (
+          <span className={`group relative flex ${isPreview ? 'blur-sm select-none' : ''}`} aria-label="Setup Premium · R:R ≥ 2.5">
+            <img src="../images/tic_icons/premiumbadge.png" alt="" aria-hidden="true" className="h-5 w-5 object-contain" />
+            <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[190px] -translate-x-1/2 rounded border border-neutral-700 bg-[#111827] px-2 py-1 text-center text-[9px] leading-tight text-neutral-100 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+              Setup Premium · R:R ≥ 2.5
+            </span>
+          </span>
+        )}
       </div>
 
       <div className="flex items-center justify-center">

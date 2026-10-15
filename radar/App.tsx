@@ -676,6 +676,7 @@ const App: React.FC = () => {
             </div>
             <div className="text-center">Trade Setup</div>
             <div className="text-center">Pips</div>
+            <div aria-hidden="true" />
             <div className="text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Estadística de precisión">
                 Precisión <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
