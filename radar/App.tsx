@@ -667,7 +667,7 @@ const App: React.FC = () => {
             <div className="text-center">Status</div>
             <div className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div className="text-center">Acción</div>
-            <div className="text-center">MTF Alignment</div>
+            <div className="text-center">Align.</div>
             <div className="text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
@@ -681,7 +681,7 @@ const App: React.FC = () => {
             <div className="text-center">
               {experimentalSlEnabled && (
                 <button onClick={() => setMetricInfo('sl')} className="inline-flex items-center gap-1 text-amber-300 hover:text-amber-100" title="Cómo se calcula Validación SL">
-                  Validación SL <span className="rounded-full border border-amber-500/60 px-1 text-[8px] normal-case">i</span>
+                  SL % <span className="rounded-full border border-amber-500/60 px-1 text-[8px] normal-case">i</span>
                 </button>
               )}
             </div>

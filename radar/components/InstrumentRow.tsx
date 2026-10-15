@@ -5,7 +5,7 @@ import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../s
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
-export const DESKTOP_GRID_COLUMNS = '64px 190px 110px 124px 56px 350px 100px 116px 120px minmax(0, 1fr) 84px';
+export const DESKTOP_GRID_COLUMNS = '64px 200px 100px 96px 61px 405px 105px 126px 72px minmax(0, 1fr) 84px';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -380,7 +380,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       </div>
 
-      <div className="flex w-[190px] shrink-0 items-center gap-1.5 overflow-hidden">
+      <div className="flex w-[200px] shrink-0 items-center gap-1.5 overflow-hidden">
         <InstrumentIcon instrument={instrument} />
         <span className="shrink-0 font-mono text-sm tracking-tight text-white">{instrument.symbol}</span>
         {newSignalTriggerId === globalRefreshTrigger && (
@@ -395,7 +395,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       </div>
 
-      <div className="w-[110px] shrink-0 flex items-center justify-center">
+      <div className="w-[100px] shrink-0 flex items-center justify-center">
         <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex items-center justify-center gap-2 rounded border px-2 py-1 text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
           <span className="flex items-center gap-2">
           <ChartMonitorIcon className="h-3 w-3" />
@@ -404,23 +404,23 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       </div>
 
-      <div className="grid w-[124px] shrink-0 grid-cols-4 gap-1">
+      <div className="grid w-[96px] shrink-0 grid-cols-4 gap-1">
         {(['4h', '1h', '15min', '5min'] as Timeframe[]).map(tf => (
           <div key={tf} className="flex min-w-0 flex-col gap-0.5">
             <span className="text-center text-[7px] uppercase text-neutral-600">{tf}</span>
-            <div className={`h-1 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
+            <div className={`mx-auto h-1 w-1/2 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
           </div>
         ))}
       </div>
 
-      <div className="flex w-14 shrink-0 items-center justify-center gap-1">
+      <div className="flex w-[61px] shrink-0 items-center justify-center gap-1">
         <span className={`font-mono text-base ${getScoreColor(analysis?.powerScore || 0)}`}>
             {isLoading ? '--' : `${analysis?.powerScore || 0}`}
         </span>
         <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
-      <div className="w-[350px] shrink-0">
+      <div className="w-[405px] shrink-0">
         {tradeSetup && isHighSignal && (
             <div className="relative flex items-center justify-between gap-3 rounded border border-neutral-800 bg-neutral-900 px-3 py-1 font-mono text-[10px]">
                 <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
@@ -447,7 +447,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
       </div>
 
-      <div className="flex w-[100px] shrink-0 items-center justify-center">
+      <div className="flex w-[105px] shrink-0 items-center justify-center">
         {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
           const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
           return (
