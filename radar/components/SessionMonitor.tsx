@@ -617,6 +617,15 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
 
     return (
       <div className="mt-3">
+        <style>{`
+          @keyframes recommendationPrompt {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+          }
+          .recommendation-prompt {
+            animation: recommendationPrompt 2s ease-in-out 3;
+          }
+        `}</style>
         <div className="flex h-[52px] w-full items-stretch overflow-x-auto rounded-lg border border-cyan-400/30 bg-[#080d14] font-mono">
           <div className="flex items-center gap-2 border-r border-cyan-400/25 px-4 text-[10px] font-black uppercase tracking-[0.18em] text-cyan-100">
             <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]" />
@@ -653,14 +662,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
           <button
             type="button"
             onClick={handleToggleExpand}
-            className="ml-auto flex shrink-0 items-center gap-2 border-l border-cyan-400/25 px-4 text-[9px] uppercase tracking-[0.14em] text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white"
-            title="Ver recomendaciones"
+            className="ml-auto flex shrink-0 items-center gap-2 border-l border-cyan-400/25 px-4 text-[9px] uppercase tracking-[0.14em] text-amber-300 transition-colors hover:bg-amber-400/10 hover:text-amber-200"
+            title="Ver recomendaciones y datos del mercado"
           >
-            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M9.1 9a3 3 0 1 1 5.2 2c-.7.7-1.3 1.1-1.3 2.5" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 21h6" />
-            </svg>
-            Recomendaciones
+            <span className="recommendation-prompt font-bold">Ver datos</span>
             {hasUnreadAdvice && <span className="rounded-full bg-amber-400 px-1.5 py-0.5 text-[8px] text-black">{sessions.advice.length}</span>}
           </button>
           <div className="flex shrink-0 flex-col justify-center border-l border-cyan-400/25 px-4 text-right text-white">
