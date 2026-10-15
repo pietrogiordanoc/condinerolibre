@@ -491,7 +491,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
 
       <div className="flex items-center justify-center">
         {stats && stats.totalSignals > 0 ? (
-          <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex items-baseline gap-1 font-mono">
+          <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex flex-col items-center font-mono">
             <div className={`${stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-base' : 'text-rose-400 text-base'} ${isPreview ? 'blur-sm select-none' : ''}`}>
               {stats.winRatePct ?? '--'}%
             </div>
