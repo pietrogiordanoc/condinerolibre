@@ -649,11 +649,49 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
               </div>
             );
           })}
-          <div className="ml-auto flex shrink-0 flex-col justify-center border-l border-cyan-400/25 px-4 text-right text-white">
+          <button
+            type="button"
+            onClick={handleToggleExpand}
+            className="ml-auto flex shrink-0 items-center gap-2 border-l border-cyan-400/25 px-4 text-[9px] uppercase tracking-[0.14em] text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white"
+            title="Ver recomendaciones"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M9.1 9a3 3 0 1 1 5.2 2c-.7.7-1.3 1.1-1.3 2.5" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 21h6" />
+            </svg>
+            Recomendaciones
+            {hasUnreadAdvice && <span className="rounded-full bg-amber-400 px-1.5 py-0.5 text-[8px] text-black">{sessions.advice.length}</span>}
+          </button>
+          <div className="flex shrink-0 flex-col justify-center border-l border-cyan-400/25 px-4 text-right text-white">
             <span className="text-[8px] font-black uppercase tracking-[0.14em] text-white/70">Tu hora</span>
             <time className="text-sm font-black leading-none" dateTime={new Date().toTimeString().slice(0, 5)}>{localTime}</time>
           </div>
         </div>
+        {expanded && (
+          <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm" onClick={() => setExpanded(false)}>
+            <section className="max-h-[80vh] w-full max-w-xl overflow-y-auto rounded-xl border border-cyan-400/30 bg-[#0b1118] shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="recommendations-title" onClick={(event) => event.stopPropagation()}>
+              <div className="flex items-center justify-between border-b border-cyan-400/15 px-5 py-4">
+                <div>
+                  <h2 id="recommendations-title" className="text-sm uppercase tracking-[0.14em] text-cyan-100">Recomendaciones de mercado</h2>
+                  <p className="mt-1 text-[10px] text-neutral-500">{sessions.advice.length} avisos activos</p>
+                </div>
+                <button type="button" onClick={() => setExpanded(false)} className="rounded p-1 text-neutral-400 transition-colors hover:bg-white/10 hover:text-white" title="Cerrar recomendaciones" aria-label="Cerrar recomendaciones">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              </div>
+              <div className="space-y-2 p-5">
+                {sessions.advice.map((message, index) => (
+                  <div key={`${message}-${index}`} className="flex items-start gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs leading-relaxed text-neutral-200">
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400" />
+                    <p>{message}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     );
   }
