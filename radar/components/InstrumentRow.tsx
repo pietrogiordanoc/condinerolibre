@@ -5,7 +5,7 @@ import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../s
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
-export const DESKTOP_GRID_COLUMNS = '64px 200px 100px 96px 61px 365px 105px 126px 72px minmax(0, 1fr) 84px';
+export const DESKTOP_GRID_COLUMNS = '64px 208px 105px 100px 65px 330px 115px 130px 72px minmax(0, 1fr) 84px';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -343,7 +343,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   return (
     <>
       {/* Desktop Layout */}
-      <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className={`hidden md:grid min-h-[48px] items-center gap-3 px-3 py-1.5 rounded-xl border transition-colors duration-200
+      <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className={`hidden md:grid min-h-[48px] items-center gap-3 px-3 py-1.5 font-normal rounded-xl border transition-colors duration-200
         ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
         hover:bg-white/[0.04] hover:border-white/10
         ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
@@ -393,7 +393,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       </div>
 
-      <div className="flex w-[200px] shrink-0 items-center gap-1.5 overflow-hidden">
+      <div className="flex w-[208px] shrink-0 items-center gap-1.5 overflow-hidden">
         <InstrumentIcon instrument={instrument} />
         <span className="shrink-0 font-mono text-sm tracking-tight text-white">{instrument.symbol}</span>
         {newSignalTriggerId === globalRefreshTrigger && (
@@ -403,7 +403,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
         {compactPrice && (
           <span className="shrink-0 font-mono leading-none text-neutral-200">
-            <span className="text-xs font-semibold">{compactPrice.primary}</span>
+            <span className="text-xs">{compactPrice.primary}</span>
             {compactPrice.fraction && <span className="text-[8px] text-neutral-500">{compactPrice.fraction}</span>}
           </span>
         )}
@@ -413,7 +413,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       </div>
 
-      <div className="w-[100px] shrink-0 flex items-center justify-center">
+      <div className="w-[105px] shrink-0 flex items-center justify-center">
         <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex items-center justify-center gap-2 rounded border px-2 py-1 text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
           <span className="flex items-center gap-2">
           <ChartMonitorIcon className="h-3 w-3" />
@@ -422,7 +422,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </button>
       </div>
 
-      <div className="grid w-[96px] shrink-0 grid-cols-4 gap-1">
+      <div className="grid w-[100px] shrink-0 grid-cols-4 gap-1">
         {(['4h', '1h', '15min', '5min'] as Timeframe[]).map(tf => (
           <div key={tf} className="flex min-w-0 flex-col gap-0.5">
             <span className="text-center text-[7px] uppercase text-neutral-600">{tf}</span>
@@ -431,16 +431,16 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         ))}
       </div>
 
-      <div className="flex w-[61px] shrink-0 items-center justify-center gap-1">
+      <div className="flex w-[65px] shrink-0 items-center justify-center gap-1">
         <span className={`font-mono text-base ${getScoreColor(analysis?.powerScore || 0)}`}>
             {isLoading ? '--' : `${analysis?.powerScore || 0}`}
         </span>
         <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
-      <div className="w-[365px] shrink-0">
+      <div className="w-[330px] shrink-0">
         {tradeSetup && isHighSignal && (
-            <div className="relative flex items-center justify-between gap-3 rounded border border-neutral-800 bg-neutral-900 px-3 py-1 font-mono text-[10px]">
+            <div className="relative flex items-center gap-3 rounded border border-neutral-800 bg-neutral-900 px-3 py-1 font-mono text-[10px]">
                 <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
                   <span className="text-[9px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'} </span>
                   <span className={`text-xs text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.entry)}</span>
@@ -460,12 +460,12 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
                     <span className="text-xs text-amber-100">--</span>
                   </div>
                 )}
-                {isPreview && <button type="button" onClick={requestRegistration} className="absolute inset-0 flex items-center justify-center rounded bg-black/45 text-[9px] font-bold uppercase tracking-wider text-emerald-200 backdrop-blur-[1px]">Crear cuenta para desbloquear</button>}
+                {isPreview && <button type="button" onClick={requestRegistration} className="absolute inset-0 flex items-center justify-center rounded bg-black/45 text-[9px] uppercase tracking-wider text-emerald-200 backdrop-blur-[1px]">Crear cuenta para desbloquear</button>}
             </div>
         )}
       </div>
 
-      <div className="flex w-[105px] shrink-0 items-center justify-center">
+      <div className="flex w-[115px] shrink-0 items-center justify-center">
         {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
           const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
           return (
@@ -500,7 +500,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       <div aria-hidden="true" />
 
       <div className="text-center">
-        <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[8px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
+        <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[8px] tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
       </div>
 
     </div>
