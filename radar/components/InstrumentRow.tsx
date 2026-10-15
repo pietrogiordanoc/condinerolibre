@@ -5,7 +5,7 @@ import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../s
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
-export const DESKTOP_GRID_COLUMNS = '64px 208px 28px 105px 100px 65px 300px 80px 35px 130px 72px minmax(0, 1fr) 84px';
+export const DESKTOP_GRID_COLUMNS = '64px 252px 28px 105px 100px 65px 300px 80px 28px 130px 56px minmax(0, 1fr) 84px';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -387,7 +387,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       </div>
 
-      <div className={`flex w-[208px] shrink-0 items-center gap-1.5 overflow-hidden ${isInstrumentObscured ? 'blur-sm select-none' : ''}`}>
+      <div className={`flex w-[252px] shrink-0 items-center gap-1.5 overflow-hidden ${isInstrumentObscured ? 'blur-sm select-none' : ''}`}>
         <InstrumentIcon instrument={instrument} />
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 whitespace-nowrap">
@@ -498,7 +498,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       </div>
 
       <div className="text-center">
-        {experimentalSlEnabled && <span className="text-[9px] text-neutral-700">En evaluación</span>}
+        {experimentalSlEnabled && <span className="text-[9px] text-neutral-700">Eval.</span>}
       </div>
 
       <div aria-hidden="true" />
