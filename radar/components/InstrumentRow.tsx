@@ -5,6 +5,8 @@ import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../s
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
+export const DESKTOP_GRID_COLUMNS = '64px 190px 110px 124px 56px 350px 100px 116px 120px minmax(0, 1fr) 84px';
+
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
   trigger: number, 
@@ -328,7 +330,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   return (
     <>
       {/* Desktop Layout */}
-      <div className={`hidden md:flex min-h-[48px] items-center justify-start gap-3 px-3 py-1.5 rounded-xl border transition-colors duration-200
+      <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className={`hidden md:grid min-h-[48px] items-center gap-3 px-3 py-1.5 rounded-xl border transition-colors duration-200
         ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
         hover:bg-white/[0.04] hover:border-white/10
         ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
@@ -460,7 +462,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         })()}
       </div>
 
-      <div className="flex w-[116px] shrink-0 items-center justify-center">
+      <div className="flex items-center justify-center">
         {stats && stats.totalSignals > 0 ? (
           <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex items-baseline gap-1 font-mono">
             <div className={`${stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-base' : 'text-rose-400 text-base'} ${isPreview ? 'blur-sm select-none' : ''}`}>
@@ -473,13 +475,13 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
       </div>
 
-      {experimentalSlEnabled && (
-        <div className="w-[120px] shrink-0 text-center">
-          <span className="text-[9px] text-neutral-700">En evaluación</span>
-        </div>
-      )}
+      <div className="text-center">
+        {experimentalSlEnabled && <span className="text-[9px] text-neutral-700">En evaluación</span>}
+      </div>
 
-      <div className="ml-auto w-[84px] shrink-0 text-center">
+      <div aria-hidden="true" />
+
+      <div className="text-center">
         <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[8px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
       </div>
 

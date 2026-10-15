@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { ALL_INSTRUMENTS, REFRESH_INTERVAL_MS } from './constants.tsx';
 import { STRATEGIES } from './utils/tradingLogic';
 import { MultiTimeframeAnalysis, ActionType } from './types';
-import InstrumentRow, { GlobalAnalysisCache } from './components/InstrumentRow';
+import InstrumentRow, { DESKTOP_GRID_COLUMNS, GlobalAnalysisCache } from './components/InstrumentRow';
 import TimerDonut from './components/TimerDonut';
 import TradingViewModal from './components/TradingViewModal';
 import TendencialModal from './components/TendencialModal';
@@ -663,28 +663,30 @@ const App: React.FC = () => {
       <main className="max-w-[1500px] mx-auto px-4 md:px-8 mt-4 md:mt-6">
         <div className="grid grid-cols-1 gap-2">
           {/* Desktop table header - Hidden on mobile */}
-          <div className="hidden md:flex sticky top-[170px] z-40 items-center justify-start gap-4 px-4 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
-            <div className="w-16 text-center shrink-0">Status</div>
-            <div className="w-[190px] shrink-0 cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
-            <div className="w-[110px] shrink-0 text-center">Acción</div>
-            <div className="w-[124px] shrink-0 text-center">MTF Alignment</div>
-            <div className="w-14 shrink-0 text-center">
+          <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className="hidden md:grid sticky top-[170px] z-40 items-center gap-3 px-3 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
+            <div className="text-center">Status</div>
+            <div className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
+            <div className="text-center">Acción</div>
+            <div className="text-center">MTF Alignment</div>
+            <div className="text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
-            <div className="w-[350px] shrink-0 text-center">Trade Setup</div>
-            <div className="w-[100px] shrink-0 text-center">Pips</div>
-            <div className="w-[116px] shrink-0 text-center">
+            <div className="text-center">Trade Setup</div>
+            <div className="text-center">Pips</div>
+            <div className="text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Estadística de precisión">
                 Precisión <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
               </button>
             </div>
-            {experimentalSlEnabled && (
-              <div className="w-[120px] shrink-0 text-center">
+            <div className="text-center">
+              {experimentalSlEnabled && (
                 <button onClick={() => setMetricInfo('sl')} className="inline-flex items-center gap-1 text-amber-300 hover:text-amber-100" title="Cómo se calcula Validación SL">
                   Validación SL <span className="rounded-full border border-amber-500/60 px-1 text-[8px] normal-case">i</span>
                 </button>
-              </div>
-            )}
+              )}
+            </div>
+            <div aria-hidden="true" />
+            <div aria-hidden="true" />
           </div>
           
           {sortedInstruments.map(instrument => {
