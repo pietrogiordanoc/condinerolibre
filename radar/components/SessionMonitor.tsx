@@ -250,6 +250,7 @@ const getTimelineSegments = (now: Date, userTimeZone: string): TimelineSegment[]
 };
 
 interface SessionMonitorProps {
+  compact?: boolean;
   marketStats?: {
     totalConnected: number;
     waiting: number;
@@ -259,7 +260,7 @@ interface SessionMonitorProps {
   };
 }
 
-const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
+const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, marketStats }) => {
   const [expanded, setExpanded] = useState(false);
   const [sessions, setSessions] = useState<{
     asia: SessionInfo;
@@ -610,6 +611,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ marketStats }) => {
     userTimeZone
   );
   const currentTimePercent = ((localNow.getTime() - localDayStart) / (localDayEnd - localDayStart)) * 100;
+  if (compact) {
+    return <div className="mx-auto mb-4 h-[92px] max-w-[1500px] bg-[#08090e]" aria-hidden="true" />;
+  }
+
   const activeTimelineSession = [sessions.asia, sessions.europe, sessions.america].find(session => session.status === 'open');
   return (
     <div className="max-w-[1500px] mx-auto px-4 md:px-8 mb-4 md:mb-6">

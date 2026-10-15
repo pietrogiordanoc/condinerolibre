@@ -660,7 +660,7 @@ const App: React.FC = () => {
       </header>
 
       <main className="max-w-[1500px] mx-auto px-4 md:px-8 mt-4 md:mt-6">
-        <SessionMonitor marketStats={marketQuietnessStats} />
+        <SessionMonitor compact marketStats={marketQuietnessStats} />
         
         <div className="grid grid-cols-1 gap-3 md:gap-4">
           {/* Desktop table header - Hidden on mobile */}
