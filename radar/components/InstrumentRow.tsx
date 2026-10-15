@@ -322,6 +322,8 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   const isHighSignal = analysis?.action === ActionType.ENTRAR_AHORA && (analysis?.powerScore || 0) >= 85;
   const profitInfo = tradeSetup ? calculateProfitDisplay(tradeSetup.tp, tradeSetup.entry, instrument) : null;
   const requestRegistration = () => onRequestRegistration?.();
+  const isChartMinimized = chartStatus === 'minimized';
+  const shouldHighlightPin = isBookmarked || isChartMinimized;
 
   return (
     <>
@@ -386,8 +388,8 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
         {currentPrice > 0 && <span className="shrink-0 font-mono text-[10px] text-neutral-200">${currentPrice.toLocaleString()}</span>}
         <span className="hidden truncate text-[8px] font-medium text-neutral-500 xl:inline">{instrument.name}</span>
-        <button onClick={togglePin} className={`ml-auto shrink-0 p-0.5 transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
-          <Pin className="h-4 w-4" fill={isBookmarked ? 'currentColor' : 'none'} />
+        <button onClick={togglePin} className={`ml-auto shrink-0 p-0.5 transition-colors ${shouldHighlightPin ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={shouldHighlightPin ? 'Quitar fijación' : 'Fijar arriba'}>
+          <Pin className="h-4 w-4" fill={shouldHighlightPin ? 'currentColor' : 'none'} />
         </button>
       </div>
 
@@ -508,8 +510,8 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
             <span className="text-[8px] text-neutral-700 uppercase">{instrument.type}</span>
           </div>
         </div>
-        <button onClick={togglePin} className={`p-1 rounded transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
-          <Pin className="w-6 h-6" fill={isBookmarked ? 'currentColor' : 'none'} />
+        <button onClick={togglePin} className={`p-1 rounded transition-colors ${shouldHighlightPin ? 'text-amber-300' : 'text-neutral-700'}`} title={shouldHighlightPin ? 'Quitar fijación' : 'Fijar arriba'}>
+          <Pin className="w-6 h-6" fill={shouldHighlightPin ? 'currentColor' : 'none'} />
         </button>
       </div>
 
