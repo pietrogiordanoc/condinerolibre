@@ -326,7 +326,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
   return (
     <>
       {/* Desktop Layout */}
-      <div className={`hidden md:flex items-center justify-start gap-4 p-3 px-4 rounded-xl border transition-colors duration-200
+      <div className={`hidden md:flex min-h-[48px] items-center justify-start gap-3 px-3 py-1.5 rounded-xl border transition-colors duration-200
         ${isBookmarked ? 'bg-white/[0.04] border-white/10' : 'bg-white/[0.02] border-white/[0.06]'}
         hover:bg-white/[0.04] hover:border-white/10
         ${newSignalTriggerId === globalRefreshTrigger ? 'animate-pulse-new-signal' : ''}`}>
@@ -367,117 +367,104 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         }
       `}</style>
       
-      <div className="flex flex-col items-center justify-center gap-1 w-16">
+      <div className="flex items-center justify-center gap-1.5 w-16">
         <span className={`text-[8px] uppercase tracking-wider ${isLoading ? 'text-neutral-500' : marketOpen ? 'text-emerald-500' : 'text-neutral-700'}`}>
           {isLoading ? 'Espera' : marketOpen ? 'Abierto' : 'Cerrado'}
         </span>
-        <div className="h-6 w-10 rounded-full transition-all duration-200 flex items-center p-0.5 bg-neutral-900 border border-neutral-800">
-          <div className={`h-5 w-5 rounded-full transition-all duration-300 ${isLoading ? 'bg-neutral-600 translate-x-0' : (!marketOpen ? 'bg-neutral-700 translate-x-0' : 'bg-emerald-500 translate-x-4')}`} />
+        <div className="h-4 w-7 rounded-full transition-all duration-200 flex items-center p-0.5 bg-neutral-900 border border-neutral-800">
+          <div className={`h-3 w-3 rounded-full transition-all duration-300 ${isLoading ? 'bg-neutral-600 translate-x-0' : (!marketOpen ? 'bg-neutral-700 translate-x-0' : 'bg-emerald-500 translate-x-3')}`} />
         </div>
       </div>
 
-      <div className="flex flex-col w-[190px] shrink-0">
-        <div className="flex items-center space-x-2">
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-                <InstrumentIcon instrument={instrument} />
-                <span className="font-mono text-white text-sm tracking-tight">{instrument.symbol}</span>
-                {newSignalTriggerId === globalRefreshTrigger && (
-                    <span className="px-1.5 py-0.5 rounded text-[8px] uppercase tracking-widest bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
-                        NOW
-                    </span>
-                )}
-            </div>
-              <div className="flex items-center gap-1.5 mt-1">
-                <button onClick={togglePin} className={`p-0.5 transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
-                  <Pin className="w-6 h-6" fill={isBookmarked ? 'currentColor' : 'none'} />
-                </button>
-                {currentPrice > 0 && <span className="text-[11px] font-mono text-neutral-200 leading-none">${currentPrice.toLocaleString()}</span>}
-              </div>
-            <span className="text-[9px] text-neutral-500 font-medium leading-none mt-0.5">{instrument.name}</span>
-          </div>
-        </div>
-        <span className="text-[9px] text-neutral-700 uppercase tracking-widest">{instrument.type}</span>
-      </div>
-
-      <div className="w-[110px] shrink-0 flex items-center justify-center">
-        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded border text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
-          <span className="flex items-center gap-2">
-          <ChartMonitorIcon className="w-4 h-4" />
-          <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
+      <div className="flex w-[190px] shrink-0 items-center gap-1.5 overflow-hidden">
+        <InstrumentIcon instrument={instrument} />
+        <span className="shrink-0 font-mono text-sm tracking-tight text-white">{instrument.symbol}</span>
+        {newSignalTriggerId === globalRefreshTrigger && (
+          <span className="shrink-0 rounded border border-cyan-500/25 bg-cyan-500/15 px-1 py-0.5 text-[7px] uppercase tracking-widest text-cyan-400">
+            NOW
           </span>
-          {chartStatus === 'minimized' && <span className="text-[7px] tracking-widest text-cyan-200">GRÁFICO FIJADO</span>}
+        )}
+        {currentPrice > 0 && <span className="shrink-0 font-mono text-[10px] text-neutral-200">${currentPrice.toLocaleString()}</span>}
+        <span className="hidden truncate text-[8px] font-medium text-neutral-500 xl:inline">{instrument.name}</span>
+        <button onClick={togglePin} className={`ml-auto shrink-0 p-0.5 transition-colors ${isBookmarked ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={isBookmarked ? 'Quitar fijación' : 'Fijar arriba'}>
+          <Pin className="h-4 w-4" fill={isBookmarked ? 'currentColor' : 'none'} />
         </button>
       </div>
 
-      <div className="flex flex-col gap-1 w-[124px] shrink-0">
+      <div className="w-[110px] shrink-0 flex items-center justify-center">
+        <button onClick={() => onOpenChart(instrument.symbol)} className={`w-[110px] flex items-center justify-center gap-2 rounded border px-2 py-1 text-[9px] uppercase tracking-wider transition-colors ${getActionColor(analysis?.action, analysis?.powerScore, analysis?.mainSignal)} ${chartStatus === 'minimized' ? 'ring-2 ring-cyan-400/80 border-cyan-300 bg-cyan-500/15 text-cyan-100 animate-pulse' : chartStatus === 'visible' ? 'ring-1 ring-cyan-500/40' : ''}`} title="Abrir gráfico y ver acción">
+          <span className="flex items-center gap-2">
+          <ChartMonitorIcon className="h-3 w-3" />
+          <span>{getActionText(analysis?.action, analysis?.powerScore, analysis?.mainSignal)}</span>
+          </span>
+        </button>
+      </div>
+
+      <div className="grid w-[124px] shrink-0 grid-cols-4 gap-1">
         {(['4h', '1h', '15min', '5min'] as Timeframe[]).map(tf => (
-          <div key={tf} className="flex items-center gap-2">
-            <span className="w-8 text-[8px] text-neutral-600 uppercase">{tf}</span>
-            <div className={`h-1 flex-1 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
+          <div key={tf} className="flex min-w-0 flex-col gap-0.5">
+            <span className="text-center text-[7px] uppercase text-neutral-600">{tf}</span>
+            <div className={`h-1 rounded-sm transition-colors duration-200 ${getSignalDotColor(tf)}`}></div>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col items-center w-14 shrink-0">
-        <span className={`text-base font-mono ${getScoreColor(analysis?.powerScore || 0)}`}>
+      <div className="flex w-14 shrink-0 items-center justify-center gap-1">
+        <span className={`font-mono text-base ${getScoreColor(analysis?.powerScore || 0)}`}>
             {isLoading ? '--' : `${analysis?.powerScore || 0}`}
         </span>
-        <span className="text-[8px] text-neutral-700 uppercase tracking-wider">Score</span>
+        <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
       <div className="w-[280px] shrink-0">
         {tradeSetup && isHighSignal && (
-            <div className="flex flex-col gap-1">
-              <div className="relative grid grid-cols-3 gap-2 bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-[10px] font-mono">
-                <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
-                  <span className="block text-[10px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'}</span>
-                  <span className={`block text-base text-cyan-200 truncate ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.entry)}</span>
+            <div className="relative flex items-center gap-2 rounded border border-neutral-800 bg-neutral-900 px-2 py-1 font-mono text-[10px]">
+                <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
+                  <span className="text-[8px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'} </span>
+                  <span className={`text-[11px] text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.entry)}</span>
                 </button>
-                <button onClick={() => handleCopySetupValue('TakeProfit', tradeSetup.tp)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar TakeProfit">
-                  <span className="block text-[10px] text-cyan-400">{copyStatus === 'TakeProfit' ? 'Copiado' : 'TakeProfit'}</span>
-                  <span className={`block text-base text-cyan-200 truncate ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.tp)}</span>
+                <button onClick={() => handleCopySetupValue('TakeProfit', tradeSetup.tp)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar TakeProfit">
+                  <span className="text-[8px] text-cyan-400">{copyStatus === 'TakeProfit' ? 'Copiado' : 'TP'} </span>
+                  <span className={`text-[11px] text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.tp)}</span>
                 </button>
                 {experimentalSlEnabled && tradeSetup.sl ? (
-                  <button onClick={() => handleCopySetupValue('StopLoss', tradeSetup.sl)} className="min-w-0 text-left hover:opacity-80 transition-opacity" title="Copiar StopLoss">
-                    <span className="block text-[10px] text-amber-400">{copyStatus === 'StopLoss' ? 'Copiado' : 'StopLoss'}</span>
-                    <span className={`block text-base text-amber-100 truncate ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.sl)}</span>
+                  <button onClick={() => handleCopySetupValue('StopLoss', tradeSetup.sl)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar StopLoss">
+                    <span className="text-[8px] text-amber-400">{copyStatus === 'StopLoss' ? 'Copiado' : 'SL'} </span>
+                    <span className={`text-[11px] text-amber-100 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.sl)}</span>
                   </button>
                 ) : (
-                  <div className="min-w-0">
-                    <span className="block text-[10px] text-amber-400">StopLoss</span>
-                    <span className="block text-base text-amber-100 truncate">--</span>
+                  <div className="min-w-0 whitespace-nowrap">
+                    <span className="text-[8px] text-amber-400">SL </span>
+                    <span className="text-[11px] text-amber-100">--</span>
                   </div>
                 )}
                 {isPreview && <button type="button" onClick={requestRegistration} className="absolute inset-0 flex items-center justify-center rounded bg-black/45 text-[9px] font-bold uppercase tracking-wider text-emerald-200 backdrop-blur-[1px]">Crear cuenta para desbloquear</button>}
-              </div>
             </div>
         )}
       </div>
 
-      <div className="w-[84px] shrink-0 text-center">
+      <div className="flex w-[84px] shrink-0 items-center justify-center">
         {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
           const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
           return (
-            <button type="button" onClick={isPreview ? requestRegistration : undefined} className="relative flex flex-col items-center gap-1">
+            <button type="button" onClick={isPreview ? requestRegistration : undefined} className="relative flex items-center gap-1">
               <div className="flex items-baseline gap-1">
-                <span className={`text-lg font-mono leading-none ${getRRColor(tradeSetup.rr)} ${isPreview ? 'blur-sm select-none' : ''}`}>{profitInfo.value}</span>
-                <span className="text-[9px] text-neutral-500">{profitInfo.unit}</span>
+                <span className={`font-mono text-base leading-none ${getRRColor(tradeSetup.rr)} ${isPreview ? 'blur-sm select-none' : ''}`}>{profitInfo.value}</span>
+                <span className="text-[8px] text-neutral-500">{profitInfo.unit}</span>
               </div>
-              {qualityMsg && <div className={`px-2 py-0.5 rounded border text-[10px] font-mono leading-tight ${qualityMsg.color} ${isPreview ? 'blur-sm select-none' : ''}`}>{qualityMsg.label.replace('Setup ', '')}</div>}
-              {isPreview && <span className="absolute -bottom-2 whitespace-nowrap text-[8px] font-bold uppercase tracking-wide text-emerald-300">Desbloquear</span>}
+              {qualityMsg && <div className={`rounded border px-1 py-0.5 font-mono text-[8px] leading-tight ${qualityMsg.color} ${isPreview ? 'blur-sm select-none' : ''}`}>{qualityMsg.label.replace('Setup ', '')}</div>}
             </button>
           );
         })()}
       </div>
 
-      <div className="w-[104px] shrink-0 text-center">
+      <div className="flex w-[104px] shrink-0 items-center justify-center">
         {stats && stats.totalSignals > 0 ? (
-          <button type="button" onClick={isPreview ? requestRegistration : undefined} className="font-mono">
+          <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex items-baseline gap-1 font-mono">
             <div className={`${stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-base' : 'text-rose-400 text-base'} ${isPreview ? 'blur-sm select-none' : ''}`}>
               {stats.winRatePct ?? '--'}%
             </div>
-            <div className={`text-[10px] text-neutral-500 ${isPreview ? 'blur-sm select-none' : ''}`}>{stats.totalSignals} cerradas</div>
+            <div className={`text-[8px] text-neutral-500 ${isPreview ? 'blur-sm select-none' : ''}`}>{stats.totalSignals} cerradas</div>
           </button>
         ) : (
           <span className="text-[9px] text-neutral-700">Sin datos</span>
@@ -491,7 +478,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       )}
 
       <div className="w-[84px] shrink-0 text-center">
-        <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[9px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
+        <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[8px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
       </div>
 
     </div>
