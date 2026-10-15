@@ -3,6 +3,7 @@ import { Info, Pin } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
+import InstrumentIcon from './InstrumentIcon';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -379,6 +380,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <div className="flex items-center space-x-2">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
+                <InstrumentIcon instrument={instrument} />
                 <span className="font-mono text-white text-sm tracking-tight">{instrument.symbol}</span>
                 {newSignalTriggerId === globalRefreshTrigger && (
                     <span className="px-1.5 py-0.5 rounded text-[8px] uppercase tracking-widest bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
@@ -503,6 +505,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex flex-col flex-1">
           <div className="flex items-center gap-2">
+            <InstrumentIcon instrument={instrument} />
             <span className="font-mono text-white text-sm tracking-tight">{instrument.symbol}</span>
             {newSignalTriggerId === globalRefreshTrigger && (
               <span className="px-1.5 py-0.5 rounded text-[7px] uppercase tracking-widest bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
