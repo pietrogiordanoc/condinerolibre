@@ -671,9 +671,9 @@ const App: React.FC = () => {
             <div className="w-14 shrink-0 text-center">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('score')}>Score</span>
             </div>
-            <div className="w-[280px] shrink-0 text-center">Trade Setup</div>
-            <div className="w-[84px] shrink-0 text-center">Pips</div>
-            <div className="w-[104px] shrink-0 text-center">
+            <div className="w-[350px] shrink-0 text-center">Trade Setup</div>
+            <div className="w-[100px] shrink-0 text-center">Pips</div>
+            <div className="w-[116px] shrink-0 text-center">
               <button onClick={() => setMetricInfo('history')} className="inline-flex items-center gap-1 hover:text-white" title="Estadística de precisión">
                 Precisión <span className="rounded-full border border-neutral-600 px-1 text-[8px] normal-case">i</span>
               </button>

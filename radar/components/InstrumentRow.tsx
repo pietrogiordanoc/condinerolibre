@@ -416,26 +416,26 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
-      <div className="w-[280px] shrink-0">
+      <div className="w-[350px] shrink-0">
         {tradeSetup && isHighSignal && (
-            <div className="relative flex items-center gap-2 rounded border border-neutral-800 bg-neutral-900 px-2 py-1 font-mono text-[10px]">
+            <div className="relative flex items-center justify-between gap-3 rounded border border-neutral-800 bg-neutral-900 px-3 py-1 font-mono text-[10px]">
                 <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">
-                  <span className="text-[8px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'} </span>
-                  <span className={`text-[11px] text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.entry)}</span>
+                  <span className="text-[9px] text-cyan-400">{copyStatus === 'ENTRY' ? 'Copiado' : 'ENTRY'} </span>
+                  <span className={`text-xs text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.entry)}</span>
                 </button>
                 <button onClick={() => handleCopySetupValue('TakeProfit', tradeSetup.tp)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar TakeProfit">
-                  <span className="text-[8px] text-cyan-400">{copyStatus === 'TakeProfit' ? 'Copiado' : 'TP'} </span>
-                  <span className={`text-[11px] text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.tp)}</span>
+                  <span className="text-[9px] text-cyan-400">{copyStatus === 'TakeProfit' ? 'Copiado' : 'TP'} </span>
+                  <span className={`text-xs text-cyan-200 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.tp)}</span>
                 </button>
                 {experimentalSlEnabled && tradeSetup.sl ? (
                   <button onClick={() => handleCopySetupValue('StopLoss', tradeSetup.sl)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar StopLoss">
-                    <span className="text-[8px] text-amber-400">{copyStatus === 'StopLoss' ? 'Copiado' : 'SL'} </span>
-                    <span className={`text-[11px] text-amber-100 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.sl)}</span>
+                    <span className="text-[9px] text-amber-400">{copyStatus === 'StopLoss' ? 'Copiado' : 'SL'} </span>
+                    <span className={`text-xs text-amber-100 ${isPreview ? 'blur-sm select-none' : ''}`}>{formatSetupValue(tradeSetup.sl)}</span>
                   </button>
                 ) : (
                   <div className="min-w-0 whitespace-nowrap">
-                    <span className="text-[8px] text-amber-400">SL </span>
-                    <span className="text-[11px] text-amber-100">--</span>
+                    <span className="text-[9px] text-amber-400">SL </span>
+                    <span className="text-xs text-amber-100">--</span>
                   </div>
                 )}
                 {isPreview && <button type="button" onClick={requestRegistration} className="absolute inset-0 flex items-center justify-center rounded bg-black/45 text-[9px] font-bold uppercase tracking-wider text-emerald-200 backdrop-blur-[1px]">Crear cuenta para desbloquear</button>}
@@ -443,7 +443,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         )}
       </div>
 
-      <div className="flex w-[84px] shrink-0 items-center justify-center">
+      <div className="flex w-[100px] shrink-0 items-center justify-center">
         {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
           const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
           return (
@@ -458,7 +458,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         })()}
       </div>
 
-      <div className="flex w-[104px] shrink-0 items-center justify-center">
+      <div className="flex w-[116px] shrink-0 items-center justify-center">
         {stats && stats.totalSignals > 0 ? (
           <button type="button" onClick={isPreview ? requestRegistration : undefined} className="flex items-baseline gap-1 font-mono">
             <div className={`${stats.winRatePct !== null && stats.winRatePct >= 50 ? 'text-emerald-400 text-base' : 'text-rose-400 text-base'} ${isPreview ? 'blur-sm select-none' : ''}`}>
@@ -477,7 +477,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         </div>
       )}
 
-      <div className="w-[84px] shrink-0 text-center">
+      <div className="ml-auto w-[84px] shrink-0 text-center">
         <button onClick={onOpenTutorial} className="rounded border border-cyan-400/40 px-2 py-1 text-[8px] font-bold tracking-wider text-cyan-200 transition-colors hover:bg-cyan-400/10 hover:text-white">TUTORIAL</button>
       </div>
 
