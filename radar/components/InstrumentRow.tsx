@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Info, Pin } from 'lucide-react';
+import { Award, Badge, BadgeCheck, Info, Pin } from 'lucide-react';
 import { Instrument, MultiTimeframeAnalysis, SignalType, ActionType, Timeframe, Strategy, Candlestick, TradeSetup } from '../types';
 import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../services/twelveDataService';
 import { audioService } from '../utils/audioService';
@@ -317,13 +317,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
     return 'text-amber-400'; // High quality base
   };
 
-  const getSignalQualityMessage = (rr?: number) => {
-    if (!rr) return null;
-    if (rr >= 2.5) return { label: 'A+  Setup premium', color: 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5' };
-    if (rr >= 2.0) return { label: 'A   Alta calidad', color: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5' };
-    return { label: 'B   Estándar', color: 'text-neutral-400 border-neutral-700 bg-transparent' };
-  };
-
   const getSignalDotColor = (tf: Timeframe) => {
     if (isLoading || !analysis || !analysis.signals) return 'bg-neutral-800';
     const sig = analysis.signals[tf];
@@ -467,14 +460,27 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
 
       <div className="flex w-[115px] shrink-0 items-center justify-center">
         {profitInfo && tradeSetup?.rr && !copyStatus && (() => {
-          const qualityMsg = getSignalQualityMessage(tradeSetup.rr);
+          const isPremium = tradeSetup.rr >= 2.5;
+          const isHighQuality = tradeSetup.rr >= 2;
+          const QualityIcon = isPremium ? Award : isHighQuality ? BadgeCheck : Badge;
+          const qualityLabel = isPremium
+            ? 'Setup Premium · R:R ≥ 2.5'
+            : isHighQuality
+              ? 'Setup de alta calidad · R:R ≥ 2.0'
+              : 'Setup estándar · R:R inferior a 2.0';
+          const qualityColor = isPremium ? 'text-cyan-300' : isHighQuality ? 'text-emerald-400' : 'text-neutral-400';
+
           return (
             <button type="button" onClick={isPreview ? requestRegistration : undefined} className="relative flex items-center gap-1">
-              <div className="flex items-baseline gap-1">
+              <div className="flex items-baseline">
                 <span className={`font-mono text-base leading-none ${getRRColor(tradeSetup.rr)} ${isPreview ? 'blur-sm select-none' : ''}`}>{profitInfo.value}</span>
-                <span className="text-[8px] text-neutral-500">{profitInfo.unit}</span>
               </div>
-              {qualityMsg && <div className={`rounded border px-1 py-0.5 font-mono text-[8px] leading-tight ${qualityMsg.color} ${isPreview ? 'blur-sm select-none' : ''}`}>{qualityMsg.label.replace('Setup ', '')}</div>}
+              <span className={`group relative flex items-center ${qualityColor} ${isPreview ? 'blur-sm select-none' : ''}`} aria-label={qualityLabel}>
+                <QualityIcon className="h-4 w-4" aria-hidden="true" />
+                <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-max max-w-[190px] -translate-x-1/2 rounded border border-neutral-700 bg-[#111827] px-2 py-1 text-center text-[9px] leading-tight text-neutral-100 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  {qualityLabel}
+                </span>
+              </span>
             </button>
           );
         })()}
