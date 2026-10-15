@@ -659,7 +659,7 @@ const App: React.FC = () => {
               <button className="text-[10px] font-bold text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">Mercado Cripto</button>
             </div>
           </div>
-          <SessionMonitor compact />
+          <SessionMonitor compact marketStats={marketQuietnessStats} />
           <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className="hidden md:grid mt-2 items-center gap-3 px-3 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="text-center">Status</div>
             <div className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>

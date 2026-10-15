@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import fundamentalsData from '../fundamentals.json';
 
 interface SessionInfo {
@@ -667,9 +668,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
             <time className="text-sm font-black leading-none" dateTime={new Date().toTimeString().slice(0, 5)}>{localTime}</time>
           </div>
         </div>
-        {expanded && (
-          <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm" onClick={() => setExpanded(false)}>
-            <section className="max-h-[80vh] w-full max-w-xl overflow-y-auto rounded-xl border border-cyan-400/30 bg-[#0b1118] shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="recommendations-title" onClick={(event) => event.stopPropagation()}>
+        {expanded && createPortal(
+          <div className="pointer-events-none fixed inset-0 z-[1000] flex items-center justify-center p-4">
+            <section className="pointer-events-auto max-h-[82vh] w-[min(92vw,860px)] overflow-y-auto rounded-xl border border-cyan-400/30 bg-[#0b1118] shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="recommendations-title">
               <div className="flex items-center justify-between border-b border-cyan-400/15 px-5 py-4">
                 <div>
                   <h2 id="recommendations-title" className="text-sm uppercase tracking-[0.14em] text-cyan-100">Recomendaciones de mercado</h2>
@@ -689,8 +690,56 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
                   </div>
                 ))}
               </div>
+              {marketStats && (
+                <div className="border-t border-white/10 px-5 py-4">
+                  <h3 className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">Estado del mercado</h3>
+                  <div className="mt-2 flex items-center gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs text-neutral-300">
+                    <span className={`flex h-7 w-7 items-center justify-center rounded-md border text-base ${
+                      marketStats.quietPercentage >= 70
+                        ? 'border-slate-500/50 bg-slate-700/40 text-slate-300'
+                        : 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300'
+                    }`}>
+                      {marketStats.quietPercentage >= 70 ? '−' : '↗'}
+                    </span>
+                    <div>
+                      <p className="uppercase tracking-wide text-neutral-100">{marketStats.quietPercentage >= 70 ? 'Mercado pasivo' : 'Mercado activo'}</p>
+                      <p className="mt-0.5 text-[10px] text-neutral-500">{marketStats.waiting} de {marketStats.totalConnected} instrumentos esperando señal</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="border-t border-white/10 px-5 py-4">
+                <h3 className="text-[10px] uppercase tracking-[0.14em] text-neutral-500">Próximos fundamentales</h3>
+                <div className="mt-2 space-y-2">
+                  {upcomingEvents.slice(0, 3).map((event) => {
+                    const eventDate = new Date(event.timestamp);
+                    const timeUntil = event.timestamp - Date.now();
+                    const daysUntil = Math.floor(timeUntil / (1000 * 60 * 60 * 24));
+                    const hoursUntil = Math.floor(timeUntil / (1000 * 60 * 60));
+                    const dateLabel = eventDate.toLocaleDateString('es-ES', {
+                      day: '2-digit',
+                      month: 'short',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+                    const timeLabel = daysUntil > 0 ? `en ${daysUntil}d ${hoursUntil % 24}h` : `en ${hoursUntil}h`;
+                    const timeColor = hoursUntil <= 4 ? 'text-rose-400' : hoursUntil <= 24 ? 'text-orange-400' : 'text-cyan-400';
+
+                    return (
+                      <div key={`${event.name}-${event.timestamp}`} className="rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 text-xs">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className={event.impact === 'extreme' ? 'text-rose-400' : 'text-orange-400'}>{event.name}</span>
+                          <span className={timeColor}>{timeLabel}</span>
+                        </div>
+                        <p className="mt-1 text-[10px] text-neutral-500">{event.description} · {dateLabel}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </section>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     );
