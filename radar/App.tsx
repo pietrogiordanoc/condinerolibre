@@ -686,7 +686,7 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1500px] mx-auto px-4 md:px-8">
+      <main className="max-w-[1500px] mx-auto px-4 pt-2 md:px-8">
         <div className="grid grid-cols-1 gap-2">
           {sortedInstruments.map(instrument => {
             const isVisible = isInstrumentVisible(instrument);
