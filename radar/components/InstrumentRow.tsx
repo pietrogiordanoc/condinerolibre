@@ -5,7 +5,7 @@ import { fetchTimeSeries, PriceStore, resampleCandles, isMarketOpen } from '../s
 import { audioService } from '../utils/audioService';
 import InstrumentIcon from './InstrumentIcon';
 
-export const DESKTOP_GRID_COLUMNS = '64px 208px 105px 100px 65px 330px 115px 130px 72px minmax(0, 1fr) 84px';
+export const DESKTOP_GRID_COLUMNS = '64px 208px 28px 105px 100px 65px 300px 115px 130px 72px minmax(0, 1fr) 84px';
 
 export const GlobalAnalysisCache: Record<string, { 
   analysis: MultiTimeframeAnalysis, 
@@ -401,7 +401,10 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
           </span>
         )}
         <span className="hidden truncate text-[8px] font-medium text-neutral-500 xl:inline">{instrument.name}</span>
-        <button onClick={togglePin} className={`ml-auto shrink-0 p-0.5 transition-colors ${shouldHighlightPin ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={shouldHighlightPin ? 'Quitar fijación' : 'Fijar arriba'}>
+      </div>
+
+      <div className="flex items-center justify-center">
+        <button onClick={togglePin} className={`shrink-0 p-0.5 transition-colors ${shouldHighlightPin ? 'text-amber-300' : 'text-neutral-700 hover:text-neutral-400'}`} title={shouldHighlightPin ? 'Quitar fijación' : 'Fijar arriba'}>
           <Pin className="h-4 w-4" fill={shouldHighlightPin ? 'currentColor' : 'none'} />
         </button>
       </div>
@@ -431,7 +434,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
-      <div className="w-[330px] shrink-0">
+      <div className="w-[300px] shrink-0">
         {tradeSetup && isHighSignal && (
             <div className="relative flex items-center gap-3 rounded border border-neutral-800 bg-neutral-900 px-3 py-1 font-mono text-[10px]">
                 <button onClick={() => handleCopySetupValue('ENTRY', tradeSetup.entry)} className="min-w-0 whitespace-nowrap text-left hover:opacity-80 transition-opacity" title="Copiar ENTRY">

@@ -666,6 +666,7 @@ const App: React.FC = () => {
           <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className="hidden md:grid sticky top-[170px] z-40 items-center gap-3 px-3 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="text-center">Status</div>
             <div className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
+            <div aria-hidden="true" />
             <div className="text-center">Acción</div>
             <div className="text-center">Align.</div>
             <div className="text-center">
