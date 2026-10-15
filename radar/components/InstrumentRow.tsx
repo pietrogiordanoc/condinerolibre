@@ -404,7 +404,7 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
               </span>
             )}
           </div>
-          <span className="block truncate text-[8px] text-neutral-500">{instrument.name}</span>
+          <span className="block truncate text-xs text-neutral-500">{instrument.name}</span>
         </div>
       </div>
 

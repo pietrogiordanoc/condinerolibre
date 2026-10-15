@@ -570,13 +570,6 @@ const App: React.FC = () => {
                 >
                   Entry
                 </button>
-                <button 
-                  onClick={() => playManualSound('exit')}
-                  className="px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-500 text-[9px] font-black uppercase border border-rose-500/20 hover:bg-rose-500/20 transition-all"
-                  title="Test Exit Sound"
-                >
-                  Exit
-                </button>
               </div>
               <div className="h-6 w-px bg-white/10"></div>
               <div className="flex items-center space-x-2">
@@ -615,9 +608,11 @@ const App: React.FC = () => {
               onClick={handleRefreshComplete}
             />
             </div>
-            <button onClick={isGuestPreview ? openGuestRegistration : () => setIsAccountPanelOpen(true)} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-emerald-200">
-              {isGuestPreview ? 'Crear cuenta' : 'Mi plan'}
-            </button>
+            {isGuestPreview && (
+              <button onClick={openGuestRegistration} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-neutral-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-emerald-200">
+                Crear cuenta
+              </button>
+            )}
           </div>
         </div>
         
