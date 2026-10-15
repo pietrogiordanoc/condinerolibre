@@ -388,19 +388,23 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
 
       <div className="flex w-[208px] shrink-0 items-center gap-1.5 overflow-hidden">
         <InstrumentIcon instrument={instrument} />
-        <span className="shrink-0 font-mono text-sm tracking-tight text-white">{instrument.symbol}</span>
-        {newSignalTriggerId === globalRefreshTrigger && (
-          <span className="shrink-0 rounded border border-cyan-500/25 bg-cyan-500/15 px-1 py-0.5 text-[7px] uppercase tracking-widest text-cyan-400">
-            NOW
-          </span>
-        )}
-        {compactPrice && (
-          <span className="shrink-0 font-mono leading-none text-neutral-200">
-            <span className="text-xs">{compactPrice.primary}</span>
-            {compactPrice.fraction && <span className="text-[8px] text-neutral-500">{compactPrice.fraction}</span>}
-          </span>
-        )}
-        <span className="hidden truncate text-[8px] font-medium text-neutral-500 xl:inline">{instrument.name}</span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <span className="shrink-0 font-mono text-sm tracking-tight text-white">{instrument.symbol}</span>
+            {newSignalTriggerId === globalRefreshTrigger && (
+              <span className="shrink-0 rounded border border-cyan-500/25 bg-cyan-500/15 px-1 py-0.5 text-[7px] uppercase tracking-widest text-cyan-400">
+                NOW
+              </span>
+            )}
+            {compactPrice && (
+              <span className="shrink-0 font-mono leading-none text-neutral-200">
+                <span className="text-xs">{compactPrice.primary}</span>
+                {compactPrice.fraction && <span className="text-[8px] text-neutral-500">{compactPrice.fraction}</span>}
+              </span>
+            )}
+          </div>
+          <span className="block truncate text-[8px] text-neutral-500">{instrument.name}</span>
+        </div>
       </div>
 
       <div className="flex items-center justify-center">
