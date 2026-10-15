@@ -499,7 +499,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <header className={`sticky top-0 bg-[#050505]/95 backdrop-blur-2xl border-b border-white/5 px-4 md:px-8 py-3 md:py-5 ${hasVisibleChart ? 'z-50' : 'z-[150]'}`}>
+      <header className={`sticky top-0 bg-[#050505]/95 backdrop-blur-2xl border-b border-white/5 px-4 pb-0 pt-3 md:px-8 md:pb-0 md:pt-5 ${hasVisibleChart ? 'z-50' : 'z-[150]'}`}>
         <div className="max-w-[1500px] mx-auto flex flex-col items-start md:items-center md:flex-row justify-between gap-3 md:gap-6">
           <div className={`flex items-center space-x-3 md:space-x-4 p-1 md:p-2 relative ${showDebugFrames ? 'border-2 border-red-500' : ''}`}>
             {showDebugFrames && <span className="absolute -top-3 left-2 bg-[#050505] px-2 text-xs text-red-500 z-50">HEADER-1: LOGO</span>}
@@ -614,7 +614,7 @@ const App: React.FC = () => {
         </div>
         
         {/* HEADER-4: FILTERS + MENU ROW */}
-        <div className={`max-w-[1500px] mx-auto px-4 md:px-8 py-2 relative ${showDebugFrames ? 'border-2 border-purple-500' : ''}`}>
+        <div className={`max-w-[1500px] mx-auto px-4 pb-0 pt-2 md:px-8 relative ${showDebugFrames ? 'border-2 border-purple-500' : ''}`}>
           {showDebugFrames && <span className="absolute -top-3 left-4 md:left-8 bg-[#050505] px-2 text-xs text-purple-500 z-50">HEADER-4: FILTERS+MENU</span>}
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-start gap-3 md:gap-4">
             {/* Search */}
@@ -657,13 +657,7 @@ const App: React.FC = () => {
             </div>
           </div>
           <SessionMonitor compact />
-        </div>
-      </header>
-
-      <main className="max-w-[1500px] mx-auto px-4 md:px-8 mt-4 md:mt-6">
-        <div className="grid grid-cols-1 gap-2">
-          {/* Desktop table header - Hidden on mobile */}
-          <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className="hidden md:grid sticky top-[170px] z-40 items-center gap-3 px-3 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 mb-4 text-[10px] uppercase tracking-widest text-neutral-600">
+          <div style={{ gridTemplateColumns: DESKTOP_GRID_COLUMNS }} className="hidden md:grid mt-2 items-center gap-3 px-3 py-3 bg-[#080808]/95 backdrop-blur-xl rounded-xl border border-white/10 text-[10px] uppercase tracking-widest text-neutral-600">
             <div className="text-center">Status</div>
             <div className="cursor-pointer hover:text-white transition-colors" onClick={() => requestSort('symbol')}>Instrument</div>
             <div aria-hidden="true" />
@@ -689,7 +683,11 @@ const App: React.FC = () => {
             <div aria-hidden="true" />
             <div aria-hidden="true" />
           </div>
-          
+        </div>
+      </header>
+
+      <main className="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 gap-2">
           {sortedInstruments.map(instrument => {
             const isVisible = isInstrumentVisible(instrument);
             return (

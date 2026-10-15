@@ -431,7 +431,6 @@ const InstrumentRow: React.FC<InstrumentRowProps> = ({
         <span className={`font-mono text-base ${getScoreColor(analysis?.powerScore || 0)}`}>
             {isLoading ? '--' : `${analysis?.powerScore || 0}`}
         </span>
-        <span className="text-[7px] uppercase tracking-wider text-neutral-700">Score</span>
       </div>
 
       <div className="w-[300px] shrink-0">
