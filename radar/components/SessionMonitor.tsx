@@ -612,7 +612,45 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({ compact = false, market
   );
   const currentTimePercent = ((localNow.getTime() - localDayStart) / (localDayEnd - localDayStart)) * 100;
   if (compact) {
-    return <div className="mx-auto mb-4 h-[92px] max-w-[1500px] bg-[#08090e]" aria-hidden="true" />;
+    const compactSessions = [sessions.asia, sessions.europe, sessions.america];
+
+    return (
+      <div className="mx-auto mb-4 max-w-[1500px] px-4 md:px-8">
+        <div className="flex h-[92px] items-center justify-between gap-4 overflow-x-auto rounded-xl border border-[#274254] bg-[#08090e] px-4 md:px-6">
+          <div className="flex shrink-0 items-center gap-3 border-r border-slate-700 pr-4">
+            <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">Sessions</span>
+          </div>
+          <div className="flex min-w-max flex-1 items-center justify-center gap-2 md:gap-3">
+            {compactSessions.map(session => {
+              const isOpen = session.status === 'open';
+
+              return (
+                <div
+                  key={session.name}
+                  className={`rounded-md border px-3 py-2 font-mono ${
+                    isOpen
+                      ? 'border-emerald-400/45 bg-emerald-500/[0.10] text-emerald-200'
+                      : 'border-slate-600/50 bg-slate-800/45 text-slate-300'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 text-[10px] font-black tracking-wide">
+                    <span className={`h-2 w-2 rounded-full ${isOpen ? 'bg-emerald-400' : 'bg-slate-500'}`} />
+                    {session.name}
+                  </div>
+                  <div className="mt-1 text-[9px] font-bold uppercase tracking-wide">
+                    {isOpen ? `Cierra en ${session.timeLeft || '--'}` : `Abre en ${session.opensIn || '--'}`}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="shrink-0 border-l border-slate-700 pl-4 font-mono text-right">
+            <div className="text-[9px] font-black uppercase tracking-wide text-cyan-200">Tu hora</div>
+            <div className="text-xl font-black leading-none text-cyan-100">{localTime}</div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const activeTimelineSession = [sessions.asia, sessions.europe, sessions.america].find(session => session.status === 'open');
