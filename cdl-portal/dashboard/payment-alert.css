@@ -1,0 +1,26 @@
+.payment-alert[hidden] { display: none; }
+.payment-alert {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 2px solid #ffdc41;
+  background: #c7161d;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(199, 22, 29, .45);
+}
+.payment-alert-icon { flex: 0 0 auto; font-size: 30px; animation: payment-alert-pulse 1.2s ease-in-out infinite; }
+.payment-alert-copy { flex: 1; min-width: 0; }
+.payment-alert-copy strong { font-size: 16px; }
+.payment-alert-copy p { margin: 5px 0 0; font-size: 14px; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+.payment-alert-link { flex: 0 0 auto; padding: 11px 15px; border-radius: 7px; background: #ffdc41; color: #301800; font-size: 12px; font-weight: 700; text-decoration: none; }
+@keyframes payment-alert-pulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .payment-alert-icon { animation: none; } }
+@media (max-width: 650px) {
+  .payment-alert { flex-wrap: wrap; gap: 10px; padding: 12px; }
+  .payment-alert-copy { flex-basis: calc(100% - 46px); }
+}

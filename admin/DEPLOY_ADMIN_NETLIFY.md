@@ -1,5 +1,13 @@
 # 🚨 INSTRUCCIONES DE DEPLOY - ADMIN PANEL
 
+## Avisos de pago manuales
+
+Antes de publicar los archivos del admin y del portal, aplica en Supabase la migración
+`radar/supabase/migrations/20261120100000_add_manual_payment_alerts.sql`.
+En Usuarios, el botón **Aviso de pago** permite escribir, activar y desactivar el
+mensaje de cada usuario. El portal actualiza el cintillo cada 30 segundos. El aviso
+es manual: no modifica pagos, suscripciones ni permisos de acceso.
+
 ## ⚠️ PROBLEMA ACTUAL
 El admin da 404 porque la estructura de carpetas en Netlify no es correcta.
 

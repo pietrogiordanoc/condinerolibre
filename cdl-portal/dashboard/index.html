@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/cdl-portal/dashboard/payment-alert.css?v=20261120">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -1917,6 +1918,14 @@
   </div>
 
   <main>
+    <div id="paymentAlert" class="payment-alert" role="status" hidden>
+      <span class="payment-alert-icon" aria-hidden="true">⚠️</span>
+      <div class="payment-alert-copy">
+        <strong>¡ATENCIÓN! REVISA TU PAGO</strong>
+        <p id="paymentAlertText"></p>
+      </div>
+      <a class="payment-alert-link" href="https://www.paypal.com/myaccount/autopay/" target="_blank" rel="noopener noreferrer">REVISAR PAYPAL →</a>
+    </div>
 
     <!-- VISTA MI CUENTA -->
     <section id="viewProfile">
@@ -2701,6 +2710,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://www.paypal.com/sdk/js?client-id=ATeQqFo-1rpKLpkSsABudZfD5nPLEeFEX44Cq84qFkvvDHY8OohSadLVzvjXubX6sqhtwwGPVDyUJ51K&vault=true&intent=subscription"></script>
   <script src="course-order.js"></script>
+  <script src="payment-alert.js?v=20261120"></script>
 
   <script>
     window.applyCourseCardOrder?.();
@@ -4564,6 +4574,9 @@
         `;
         return;
       }
+
+      if (typeof startPaymentAlert === 'function') startPaymentAlert(sp, session.user.id);
+      else console.error('No se pudo cargar el módulo de aviso de pago.');
 
       // Registrar el acceso aunque la sesión haya sido recuperada automáticamente
       try {

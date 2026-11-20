@@ -280,7 +280,7 @@ function renderUsers() {
         <td data-label="SL Experimental"><label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:${u.experimental_sl_enabled ? '#fbbf24' : '#64748b'};"><input type="checkbox" ${u.experimental_sl_enabled ? 'checked' : ''} onchange="toggleExperimentalSl('${u.id}', this.checked)"> ${u.experimental_sl_enabled ? 'Activo' : 'Inactivo'}</label></td>
         <td data-label="Ubicación">${u.pres.ciudad || "—"}, ${u.pres.pais || "—"}</td>
         <td data-label="IP/Fingerprint"><span style="${ipStyle}">${(u.pres.ip_address || "—").slice(0,15)}${ipWarning}</span><br><small style="${fpStyle}">${(u.pres.fingerprint || "—").slice(0,10)}${fpWarning}</small></td>
-        <td data-label="Acción">${blockBtn}</td>
+        <td data-label="Acción"><div class="row-actions">${blockBtn}<button class="row-action row-action-danger" type="button" onclick="openPaymentAlertModal('${u.id}')">Aviso de pago</button></div></td>
         <td data-label="Notas"><button class="btn-note-view" onclick="openNoteModal('${u.id}', '${escapeJS(u.displayName)}', '${noteEscaped}')" title="${u.notas_admin ? 'Ver/editar nota' : 'Añadir nota'}">${notePreview}</button></td>
       </tr>${ultraAccess && studyTrackingOpen ? studyTrackingRow(u.id) : ''}`;
   }).join("");
@@ -414,6 +414,7 @@ function renderMobileUserDetail(section = 'summary') {
       ${section === 'activity' ? '<button type="button" class="btn btn-primary" onclick="mobileUserAction(\'history\')">Ver historial</button>' : ''}
       ${section === 'access' ? '<button type="button" class="btn" onclick="mobileUserAction(\'phone\')">Editar teléfono</button>' : ''}
       <button type="button" class="btn" onclick="mobileUserAction('note')">Notas</button>
+      <button type="button" class="btn btn-danger" onclick="mobileUserAction('payment-alert')">Aviso de pago</button>
       <button type="button" class="btn ${user.blocked ? 'btn-primary' : 'btn-danger'}" onclick="mobileUserAction('block')">${user.blocked ? 'Desbloquear' : 'Bloquear'}</button>
     </div>`;
 }
@@ -443,6 +444,7 @@ window.mobileUserAction = function(action) {
   if (action === 'history') openHistory(user.id, user.email);
   if (action === 'phone') openPhoneModal(user.id, user.displayName, user.phone || '');
   if (action === 'note') openNoteModal(user.id, user.displayName, user.notas_admin || '');
+  if (action === 'payment-alert') openPaymentAlertModal(user.id);
   if (action === 'block') toggleBlock(user.id, !user.blocked);
 };
 

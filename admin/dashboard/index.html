@@ -259,6 +259,24 @@
     </div>
   </div>
 
+  <div id="modalPaymentAlert" class="modal-backdrop" onclick="if(event.target===this) closePaymentAlertModal()">
+    <div class="modal" style="width:min(560px, 96vw);">
+      <div class="modal-header">
+        <div><div style="font-weight:900;">Aviso de pago</div><div id="paymentAlertUser" class="muted"></div></div>
+        <button onclick="closePaymentAlertModal()" class="btn">✕ Cerrar</button>
+      </div>
+      <div style="padding:24px; display:grid; gap:12px;">
+        <label for="paymentAlertMessage">Mensaje que verá este usuario en su portal</label>
+        <textarea id="paymentAlertMessage" class="note-textarea" style="min-height:120px; margin:0;" maxlength="500"></textarea>
+        <div id="paymentAlertStatus" class="muted" role="status"></div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;">
+          <button id="disablePaymentAlertBtn" class="btn">Desactivar aviso</button>
+          <button id="savePaymentAlertBtn" class="btn btn-danger">Guardar y activar aviso</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="modalBackdrop" class="modal-backdrop">
     <div class="modal" style="width: min(1200px, 98vw);">
       <div class="modal-header">
@@ -288,7 +306,8 @@
   <script src="/admin/dashboard/module-presence.js?v=20261005"></script>
   <script src="/admin/dashboard/module-history.js?v=20261011"></script>
   <script src="/admin/dashboard/module-notes.js?v=20261005"></script>
-  <script src="/admin/dashboard/module-users.js?v=20261011-tiers"></script>
+  <script src="/admin/dashboard/module-users.js?v=20261120-payment-alert"></script>
+  <script src="/admin/dashboard/module-payment-alert.js?v=20261120"></script>
   <script src="/admin/dashboard/module-affiliates.js?v=20261005"></script>
   <script src="/admin/dashboard/module-study-center.js?v=20261005"></script>
   <script src="/admin/dashboard/module-plan-changes.js?v=20261011"></script>
