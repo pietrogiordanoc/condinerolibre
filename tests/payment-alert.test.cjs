@@ -34,13 +34,14 @@ function createClient(rows, options = {}) {
   };
 }
 
-function adminContext(client) {
+function adminContext(client, options = {}) {
   const ids = ['paymentAlertUser', 'paymentAlertMessage', 'paymentAlertStatus', 'savePaymentAlertBtn', 'disablePaymentAlertBtn', 'modalPaymentAlert'];
   const elements = Object.fromEntries(ids.map((id) => [id, { style: {}, value: '', textContent: '', disabled: false }]));
   const context = vm.createContext({
-    document: { getElementById: (id) => elements[id] },
+    document: { getElementById: (id) => elements[id], querySelectorAll: () => [] },
     PROFILES: [{ id: 'user-1', full_name: 'Alumno', email: 'alumno@example.test' }],
     sp: client,
+    fetchAllRows: options.fetchAllRows || (async () => ({ data: [], error: null })),
     Toastify: () => ({ showToast() {} }),
     console: { error() {} },
     Date
@@ -65,16 +66,55 @@ function portalContext(client, userId) {
 test('admin activa un mensaje propio y lo desactiva sin guardar cambios pendientes', async () => {
   const rows = new Map();
   const { context, elements } = adminContext(createClient(rows));
+  await context.refreshPaymentAlertIndicators();
   await context.openPaymentAlertModal('user-1');
   elements.paymentAlertMessage.value = 'Revisa tu pago';
   await elements.savePaymentAlertBtn.onclick();
   assert.equal(rows.get('user-1').message, 'Revisa tu pago');
   assert.equal(rows.get('user-1').active, true);
+  assert.match(context.paymentAlertButton('user-1'), /payment-alert-active/);
+  assert.match(context.paymentAlertButton('user-1', true), /Aviso activo/);
 
   elements.paymentAlertMessage.value = '';
   await elements.disablePaymentAlertBtn.onclick();
   assert.equal(rows.get('user-1').active, false);
   assert.equal(rows.get('user-1').message, 'Revisa tu pago');
+  assert.doesNotMatch(context.paymentAlertButton('user-1'), /payment-alert-active/);
+  assert.match(context.paymentAlertButton('user-1'), /Aviso de pago/);
+});
+
+test('el indicador carga el estado guardado y distingue errores de estados inactivos', async () => {
+  let fail = false;
+  const { context } = adminContext(createClient(new Map()), {
+    fetchAllRows: async () => fail
+      ? { data: [], error: new Error('connection failed') }
+      : { data: [{ user_id: 'user-1' }], error: null }
+  });
+  await context.refreshPaymentAlertIndicators();
+  assert.match(context.paymentAlertButton('user-1'), /Aviso activo/);
+  assert.doesNotMatch(context.paymentAlertButton('user-2'), /payment-alert-active/);
+
+  fail = true;
+  await context.refreshPaymentAlertIndicators();
+  assert.match(context.paymentAlertButton('user-1'), /Estado del aviso no disponible/);
+});
+
+test('una consulta anterior no sobrescribe el estado recién activado', async () => {
+  let resolveFirst;
+  let requests = 0;
+  const { context } = adminContext(createClient(new Map()), {
+    fetchAllRows: () => {
+      requests++;
+      if (requests === 1) return new Promise((resolve) => { resolveFirst = resolve; });
+      return Promise.resolve({ data: [{ user_id: 'user-1' }], error: null });
+    }
+  });
+  const oldRequest = context.refreshPaymentAlertIndicators();
+  context.setPaymentAlertIndicator('user-1', true);
+  await flush();
+  resolveFirst({ data: [], error: null });
+  await oldRequest;
+  assert.match(context.paymentAlertButton('user-1'), /Aviso activo/);
 });
 
 test('portal muestra solo el aviso activo del usuario y actualiza al cambiarlo', async () => {

@@ -2,7 +2,61 @@ let paymentAlertUserId = null;
 let paymentAlertActive = false;
 let paymentAlertBusy = false;
 let paymentAlertRequest = 0;
+let activePaymentAlerts = null;
+let paymentAlertIndicatorVersion = 0;
 const paymentAlertDefaultMessage = 'No pudimos procesar tu pago. Revisa tu método de pago en PayPal para evitar una posible interrupción del servicio.';
+
+function paymentAlertButtonState(userId) {
+  const active = activePaymentAlerts?.has(userId) || false;
+  return {
+    active,
+    label: active ? 'Aviso activo' : 'Aviso de pago',
+    title: activePaymentAlerts === null ? 'Estado del aviso no disponible' : active ? 'Aviso de pago activo' : 'Aviso de pago desactivado'
+  };
+}
+
+function paymentAlertButton(userId, mobile = false) {
+  const state = paymentAlertButtonState(userId);
+  const action = mobile ? "mobileUserAction('payment-alert')" : `openPaymentAlertModal('${userId}')`;
+  const classes = mobile ? 'btn btn-danger' : 'row-action row-action-danger';
+  return `<button type="button" class="${classes}${state.active ? ' payment-alert-active' : ''}" data-payment-alert-user="${userId}" title="${state.title}" onclick="${action}">${state.label}</button>`;
+}
+
+function updatePaymentAlertButtons() {
+  document.querySelectorAll('[data-payment-alert-user]').forEach((button) => {
+    const state = paymentAlertButtonState(button.dataset.paymentAlertUser);
+    button.classList.toggle('payment-alert-active', state.active);
+    button.textContent = state.label;
+    button.title = state.title;
+  });
+}
+
+async function refreshPaymentAlertIndicators() {
+  const version = ++paymentAlertIndicatorVersion;
+  try {
+    const { data, error } = await fetchAllRows(() => sp.from('manual_payment_alerts')
+      .select('user_id').eq('active', true).order('user_id'));
+    if (error) throw error;
+    if (version !== paymentAlertIndicatorVersion) return;
+    activePaymentAlerts = new Set(data.map((row) => row.user_id));
+  } catch (error) {
+    if (version !== paymentAlertIndicatorVersion) return;
+    activePaymentAlerts = null;
+    console.error('No se pudieron cargar los estados de avisos de pago:', error);
+  }
+  updatePaymentAlertButtons();
+}
+
+function setPaymentAlertIndicator(userId, active) {
+  paymentAlertIndicatorVersion++;
+  if (activePaymentAlerts === null) {
+    refreshPaymentAlertIndicators();
+    return;
+  }
+  if (active) activePaymentAlerts.add(userId);
+  else activePaymentAlerts.delete(userId);
+  updatePaymentAlertButtons();
+}
 
 async function openPaymentAlertModal(userId) {
   const user = PROFILES.find((profile) => profile.id === userId);
@@ -74,6 +128,7 @@ async function savePaymentAlert(active) {
     }
 
     paymentAlertActive = active;
+    setPaymentAlertIndicator(userId, active);
     document.getElementById('paymentAlertStatus').textContent = active ? 'Aviso activo' : 'Aviso desactivado';
     Toastify({ text: active ? 'Aviso de pago activado' : 'Aviso de pago desactivado', duration: 3000, backgroundColor: '#10b981' }).showToast();
   } catch (error) {
