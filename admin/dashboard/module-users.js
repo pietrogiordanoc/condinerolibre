@@ -176,10 +176,15 @@ function handleSort(key) {
   renderUsers();
 }
 
+function isPaymentAlertPriorityEnabled() {
+  return document.getElementById('prioritizePaymentAlerts').getAttribute('aria-checked') === 'true';
+}
+
 function renderUsers() {
   const q = (document.getElementById("q").value || "").toLowerCase();
   const tierF = document.getElementById("tierFilter").value;
   const statF = document.getElementById("statusFilter").value;
+  const prioritizeAlerts = isPaymentAlertPriorityEnabled();
 
   let rows = PROFILES.map(p => {
     const pres = PRESENCE_BY_ID[p.id] || {};
@@ -209,6 +214,11 @@ function renderUsers() {
   if (statF !== "all") rows = rows.filter(r => (statF === "online" ? r.online : !r.online));
 
   rows.sort((a, b) => {
+    if (prioritizeAlerts) {
+      const aAlert = paymentAlertButtonState(a.id).active;
+      const bAlert = paymentAlertButtonState(b.id).active;
+      if (aAlert !== bAlert) return Number(bAlert) - Number(aAlert);
+    }
     // Primero ordenar por estado online (ONLINE primero)
     if (a.online !== b.online) {
       return b.online - a.online; // online=true (1) primero que online=false (0)

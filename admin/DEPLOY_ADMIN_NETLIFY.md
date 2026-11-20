@@ -7,6 +7,8 @@ Antes de publicar los archivos del admin y del portal, aplica en Supabase la mig
 En Usuarios, el botón **Aviso de pago** permite escribir, activar y desactivar el
 mensaje de cada usuario. El portal actualiza el cintillo cada 30 segundos. El aviso
 es manual: no modifica pagos, suscripciones ni permisos de acceso.
+El interruptor **Avisados primero** coloca arriba a los usuarios con aviso activo
+y recuerda su estado en el navegador; **Limpiar** no lo desactiva.
 
 ## ⚠️ PROBLEMA ACTUAL
 El admin da 404 porque la estructura de carpetas en Netlify no es correcta.

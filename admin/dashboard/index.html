@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   
   <!-- Archivos del Sistema -->
-  <link rel="stylesheet" href="/admin/dashboard/admin-ui.css?v=20261120-payment-alert">
+  <link rel="stylesheet" href="/admin/dashboard/admin-ui.css?v=20261120-alert-priority">
 </head>
 <body>
   <div class="container">
@@ -67,6 +67,11 @@
         <option value="offline">Offline</option>
       </select>
       <button id="clearBtn" class="btn">Limpiar</button>
+      <button id="prioritizePaymentAlerts" class="alert-priority-switch" type="button" role="switch" aria-checked="false">
+        <span class="alert-priority-track" aria-hidden="true"><span></span></span>
+        Avisados primero
+      </button>
+      <span id="alertPriorityStatus" class="alert-priority-status" role="status"></span>
     </div>
 
     <div class="section-title"><span>⚙</span> GESTIÓN DE CLIENTES</div>
@@ -306,12 +311,12 @@
   <script src="/admin/dashboard/module-presence.js?v=20261005"></script>
   <script src="/admin/dashboard/module-history.js?v=20261011"></script>
   <script src="/admin/dashboard/module-notes.js?v=20261005"></script>
-  <script src="/admin/dashboard/module-users.js?v=20261120-payment-alert-state"></script>
-  <script src="/admin/dashboard/module-payment-alert.js?v=20261120-state"></script>
+  <script src="/admin/dashboard/module-users.js?v=20261120-alert-priority"></script>
+  <script src="/admin/dashboard/module-payment-alert.js?v=20261120-priority"></script>
   <script src="/admin/dashboard/module-affiliates.js?v=20261005"></script>
   <script src="/admin/dashboard/module-study-center.js?v=20261005"></script>
   <script src="/admin/dashboard/module-plan-changes.js?v=20261011"></script>
   <script src="/admin/dashboard/module-support-messages.js?v=202610061804"></script>
-  <script src="/admin/dashboard/admin-core.js?v=20261005"></script>
+  <script src="/admin/dashboard/admin-core.js?v=20261120-alert-priority"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ let paymentAlertBusy = false;
 let paymentAlertRequest = 0;
 let activePaymentAlerts = null;
 let paymentAlertIndicatorVersion = 0;
+let paymentAlertIndicatorsFailed = false;
 const paymentAlertDefaultMessage = 'No pudimos procesar tu pago. Revisa tu método de pago en PayPal para evitar una posible interrupción del servicio.';
 
 function paymentAlertButtonState(userId) {
@@ -31,6 +32,15 @@ function updatePaymentAlertButtons() {
   });
 }
 
+function updatePaymentAlertIndicatorDisplay() {
+  const prioritize = isPaymentAlertPriorityEnabled();
+  document.getElementById('alertPriorityStatus').textContent = prioritize && paymentAlertIndicatorsFailed
+    ? 'No se pudo cargar el estado de los avisos.'
+    : '';
+  if (prioritize) renderUsers();
+  else updatePaymentAlertButtons();
+}
+
 async function refreshPaymentAlertIndicators() {
   const version = ++paymentAlertIndicatorVersion;
   try {
@@ -39,12 +49,14 @@ async function refreshPaymentAlertIndicators() {
     if (error) throw error;
     if (version !== paymentAlertIndicatorVersion) return;
     activePaymentAlerts = new Set(data.map((row) => row.user_id));
+    paymentAlertIndicatorsFailed = false;
   } catch (error) {
     if (version !== paymentAlertIndicatorVersion) return;
     activePaymentAlerts = null;
+    paymentAlertIndicatorsFailed = true;
     console.error('No se pudieron cargar los estados de avisos de pago:', error);
   }
-  updatePaymentAlertButtons();
+  updatePaymentAlertIndicatorDisplay();
 }
 
 function setPaymentAlertIndicator(userId, active) {
@@ -55,7 +67,7 @@ function setPaymentAlertIndicator(userId, active) {
   }
   if (active) activePaymentAlerts.add(userId);
   else activePaymentAlerts.delete(userId);
-  updatePaymentAlertButtons();
+  updatePaymentAlertIndicatorDisplay();
 }
 
 async function openPaymentAlertModal(userId) {

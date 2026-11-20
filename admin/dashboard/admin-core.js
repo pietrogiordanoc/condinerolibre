@@ -162,6 +162,24 @@ document.getElementById("logoutBtn").onclick = async () => {
 document.getElementById("q").oninput = renderUsers;
 document.getElementById("tierFilter").onchange = renderUsers;
 document.getElementById("statusFilter").onchange = renderUsers;
+const paymentAlertPrioritySwitch = document.getElementById('prioritizePaymentAlerts');
+const paymentAlertPriorityStorageKey = 'cdl-admin-payment-alerts-first';
+try {
+  paymentAlertPrioritySwitch.setAttribute('aria-checked', String(localStorage.getItem(paymentAlertPriorityStorageKey) === 'true'));
+} catch (error) {
+  console.error('No se pudo recuperar la preferencia de avisos:', error);
+}
+paymentAlertPrioritySwitch.onclick = () => {
+  const enabled = paymentAlertPrioritySwitch.getAttribute('aria-checked') !== 'true';
+  paymentAlertPrioritySwitch.setAttribute('aria-checked', String(enabled));
+  try {
+    localStorage.setItem(paymentAlertPriorityStorageKey, String(enabled));
+  } catch (error) {
+    console.error('No se pudo guardar la preferencia de avisos:', error);
+    Toastify({ text: 'No se pudo recordar el orden de avisos en este navegador.', duration: 5000, backgroundColor: '#e74c3c' }).showToast();
+  }
+  updatePaymentAlertIndicatorDisplay();
+};
 document.getElementById("clearBtn").onclick = () => { 
   document.getElementById("q").value=""; 
   document.getElementById("tierFilter").value="all";

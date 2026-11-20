@@ -35,13 +35,14 @@ function createClient(rows, options = {}) {
 }
 
 function adminContext(client, options = {}) {
-  const ids = ['paymentAlertUser', 'paymentAlertMessage', 'paymentAlertStatus', 'savePaymentAlertBtn', 'disablePaymentAlertBtn', 'modalPaymentAlert'];
+  const ids = ['paymentAlertUser', 'paymentAlertMessage', 'paymentAlertStatus', 'savePaymentAlertBtn', 'disablePaymentAlertBtn', 'modalPaymentAlert', 'alertPriorityStatus'];
   const elements = Object.fromEntries(ids.map((id) => [id, { style: {}, value: '', textContent: '', disabled: false }]));
   const context = vm.createContext({
     document: { getElementById: (id) => elements[id], querySelectorAll: () => [] },
     PROFILES: [{ id: 'user-1', full_name: 'Alumno', email: 'alumno@example.test' }],
     sp: client,
     fetchAllRows: options.fetchAllRows || (async () => ({ data: [], error: null })),
+    isPaymentAlertPriorityEnabled: () => false,
     Toastify: () => ({ showToast() {} }),
     console: { error() {} },
     Date
@@ -49,6 +50,68 @@ function adminContext(client, options = {}) {
   vm.runInContext(read('admin/dashboard/module-payment-alert.js'), context);
   return { context, elements };
 }
+
+test('avisados primero conserva filtros y el orden online dentro de cada grupo', async () => {
+  const elements = {
+    q: { value: '' },
+    tierFilter: { value: 'all' },
+    statusFilter: { value: 'all' },
+    prioritizePaymentAlerts: { getAttribute: () => 'true' },
+    alertPriorityStatus: { textContent: '' },
+    usersTbody: { innerHTML: '' },
+    mobileUserList: { innerHTML: '' },
+    savePaymentAlertBtn: {},
+    disablePaymentAlertBtn: {},
+    savePhoneBtn: {},
+    clearPhoneBtn: {},
+    phoneInput: { addEventListener() {} }
+  };
+  const context = vm.createContext({
+    window: {},
+    document: { getElementById: (id) => elements[id], querySelectorAll: () => [] },
+    PRESENCE_BY_ID: {
+      online: { online: true, last_seen: new Date().toISOString() },
+      alertedOnline: { online: true, last_seen: new Date().toISOString() }
+    },
+    sp: {},
+    escapeJS: (value) => value || '',
+    console: { error() {} },
+    Date
+  });
+  vm.runInContext(read('admin/dashboard/module-users.js'), context);
+  vm.runInContext(read('admin/dashboard/module-payment-alert.js'), context);
+  vm.runInContext(`
+    PROFILES = [
+      { id: 'online', email: 'online@example.test', full_name: 'Alberto', plan: 'free' },
+      { id: 'alertedOffline', email: 'offline@example.test', full_name: 'Berta', plan: 'free' },
+      { id: 'alertedOnline', email: 'alerted@example.test', full_name: 'Carlos', plan: 'free' }
+    ];
+    activePaymentAlerts = new Set(['alertedOffline', 'alertedOnline']);
+    renderUsers();
+  `, context);
+  assert.deepEqual(Array.from(vm.runInContext('MOBILE_USER_ROWS_BY_ID.keys()', context)), ['alertedOnline', 'alertedOffline', 'online']);
+
+  elements.statusFilter.value = 'online';
+  context.renderUsers();
+  assert.deepEqual(Array.from(vm.runInContext('MOBILE_USER_ROWS_BY_ID.keys()', context)), ['alertedOnline', 'online']);
+  elements.prioritizePaymentAlerts.getAttribute = () => 'false';
+  elements.statusFilter.value = 'all';
+  context.renderUsers();
+  assert.deepEqual(Array.from(vm.runInContext('MOBILE_USER_ROWS_BY_ID.keys()', context)), ['online', 'alertedOnline', 'alertedOffline']);
+});
+
+test('activar o quitar un aviso actualiza inmediatamente el orden prioritario', async () => {
+  const rows = new Map();
+  let renders = 0;
+  const { context } = adminContext(createClient(rows));
+  context.isPaymentAlertPriorityEnabled = () => true;
+  context.renderUsers = () => { renders++; };
+  await context.refreshPaymentAlertIndicators();
+  assert.equal(renders, 1);
+  context.setPaymentAlertIndicator('user-1', true);
+  context.setPaymentAlertIndicator('user-1', false);
+  assert.equal(renders, 3);
+});
 
 function portalContext(client, userId) {
   const elements = { paymentAlert: { hidden: true }, paymentAlertText: { textContent: '' } };
